@@ -87,7 +87,23 @@ class TaskDetail extends StatelessWidget {
                 ),
                 const Text(
                   'Hendrik Steen'
-                )
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+                  child: ElevatedButton.icon(
+                    icon: const Icon(Icons.check),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)
+                      )
+                    ),
+
+                    onPressed: () {},
+                    label: const Text("Finish Task")
+                  ),
+                ),
               ],
             )
         )

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:household_organizer/model/task.dart';
+import 'package:household_organizer/screens/pie_chart.dart';
+import './bar_chart.dart';
 import './task_view.dart';
 import 'task_widget.dart';
 
@@ -49,7 +51,15 @@ class _HouseholdHomeState extends State<HouseholdHome> {
                   child: const Text('See more'),
                 ),
               ],
-            )
+            ),
+            PieChart(pieData: [
+              PieData(xData: "5 Points", yData: 5, text: "Hans"),
+              PieData(xData: "5 Points", yData: 5, text: "Max"),
+              PieData(xData: "6 Points", yData: 6, text: "Lisa"),
+              PieData(xData: "10 Points", yData: 10, text: "Stefan")
+
+            ]),
+            BarChart()
           ],
         )
       )
