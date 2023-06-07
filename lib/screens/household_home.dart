@@ -4,6 +4,7 @@ import 'package:household_organizer/screens/pie_chart.dart';
 import './bar_chart.dart';
 import './task_view.dart';
 import 'task_widget.dart';
+import 'package:household_organizer/db/test.dart';
 
 class HouseholdHome extends StatefulWidget {
   final String householdName;
@@ -59,7 +60,13 @@ class _HouseholdHomeState extends State<HouseholdHome> {
               PieData(xData: "10 Points", yData: 10, text: "Stefan")
 
             ]),
-            BarChart()
+            BarChart(),
+            ElevatedButton(
+                onPressed: () {
+                  getSampleData();
+                },
+                child: Text("Test API")
+            )
           ],
         )
       )
