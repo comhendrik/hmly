@@ -1,30 +1,30 @@
-class Task {
+class Tasks {
   String id;
   String title;
   DateTime date;
   bool isDone;
 
-  Task({
+  Tasks({
     required this.id,
     required this.title,
     required this.date,
     this.isDone = false
   });
 
-  static List<Task> getTasks() {
+  static List<Tasks> getTasks() {
     return [
-      Task(id: '0', title: 'Waschen', date: DateTime(2023, 1,11)),
-      Task(id: '1', title: 'Fugen', date: DateTime(2023, 5,3)),
-      Task(id: '2', title: 'Fugen', date: DateTime(2023,5,4)),
-      Task(id: '3', title: 'Fugen', date: DateTime(2023,5,7)),
-      Task(id: '4', title: 'Fugen', date: DateTime(2023,12,31)),
-      Task(id: '5', title: 'Waschen', date: DateTime(2023,12,45))
+      Tasks(id: '0', title: 'Waschen', date: DateTime(2023, 1,11)),
+      Tasks(id: '1', title: 'Fugen', date: DateTime(2023, 5,3)),
+      Tasks(id: '2', title: 'Fugen', date: DateTime(2023,5,4)),
+      Tasks(id: '3', title: 'Fugen', date: DateTime(2023,5,7)),
+      Tasks(id: '4', title: 'Fugen', date: DateTime(2023,12,31)),
+      Tasks(id: '5', title: 'Waschen', date: DateTime(2023,12,45))
     ];
   }
 
 }
 
-List<Task> getNumberOfTasks(List<Task> list, int number) {
+List<Tasks> getNumberOfTasks(List<Tasks> list, int number) {
   if (list.length >= number) {
     return list.take(number).toList();
   }

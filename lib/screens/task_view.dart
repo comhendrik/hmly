@@ -10,7 +10,7 @@ class TaskView extends StatefulWidget {
 }
 
 class _TaskView extends State<TaskView> {
-  final List<Task> tasks = Task.getTasks();
+  final List<Tasks> tasks = Tasks.getTasks();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class _TaskView extends State<TaskView> {
                     ),
                   ],
                 ),
-                for (Task task in tasks)
+                for (Tasks task in tasks)
                   TaskWidget(task: task)
               ],
             )

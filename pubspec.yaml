@@ -37,6 +37,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   syncfusion_flutter_charts: ^21.2.8
   pocketbase: ^0.10.0
+  dartz: ^0.10.1
+  equatable: ^2.0.5
+  mocktail: ^0.3.0
 
 dev_dependencies:
   flutter_test:

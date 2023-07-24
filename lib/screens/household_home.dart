@@ -16,7 +16,7 @@ class HouseholdHome extends StatefulWidget {
 }
 
 class _HouseholdHomeState extends State<HouseholdHome> {
-  final List<Task> tasks = Task.getTasks();
+  final List<Tasks> tasks = Tasks.getTasks();
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class _HouseholdHomeState extends State<HouseholdHome> {
                 'Current Tasks',
                 style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20)
             ),
-            for (Task task in getNumberOfTasks(tasks, 3))
+            for (Tasks task in getNumberOfTasks(tasks, 3))
               TaskWidget(task: task),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,

@@ -6,7 +6,7 @@ void getSampleData() async {
 
   final _ = await pb.collection('users').authWithPassword('test@test.com', '12345678');
 
-  final result = await pb.collection('household').getOne('g7szpsys0r944se');
+  final result = await pb.collection('household').getOne('id');
 
   final users = result.data['users'];
 

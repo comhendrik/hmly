@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../model/task.dart';
 
 class TaskWidget extends StatelessWidget {
-  final Task task;
+  final Tasks task;
   const TaskWidget({super.key, required this.task});
 
   @override
@@ -48,7 +48,7 @@ class TaskWidget extends StatelessWidget {
 }
 
 class TaskDetail extends StatelessWidget {
-  final Task task;
+  final Tasks task;
   const TaskDetail({super.key, required this.task});
 
   @override
