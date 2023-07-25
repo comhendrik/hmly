@@ -4,14 +4,19 @@ void getSampleData() async {
   final pb = PocketBase('http://127.0.0.1:8090');
 
 
-  final _ = await pb.collection('users').authWithPassword('test@test.com', '12345678');
+  final res = await pb.collection('users').authWithPassword('test@test.com', '12345678');
+  print(res);
+  print(res.runtimeType);
 
-  final result = await pb.collection('household').getOne('id');
 
-  final users = result.data['users'];
-
-  users.forEach((id) async {
-    final user =  await pb.collection('users').getOne(id);
-    print(user.data['username']);
-  });
+  try {
+    final result = await pb.collection('tasks').getFullList(filter: 'household="ehhmumqij2n1mmn"');
+    print(result);
+    for (final task in result) {
+      print(task.runtimeType);
+    }
+  } catch(err) {
+    print(err);
+    print("errror is catched");
+  }
 }

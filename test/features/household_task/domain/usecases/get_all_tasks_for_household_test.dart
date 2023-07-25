@@ -19,8 +19,8 @@ void main() {
     getAllTasksForHousehold = GetAllTasksForHousehold(mockRepository);
   });
 
-  final tHouseholdTask = HouseholdTask(id: '0', title: 'Waschen', date: DateTime(2023, 1,11));
-  final tHouseholdTask1 = HouseholdTask(id: '1', title: 'Waschen', date: DateTime(2023, 1,11));
+  final tHouseholdTask = HouseholdTask(id: '0', title: 'Waschen', date: DateTime(2023, 1,11), isDone: false);
+  final tHouseholdTask1 = HouseholdTask(id: '1', title: 'Waschen', isDone: false);
   final tHouseholdTaskList = [tHouseholdTask, tHouseholdTask1];
 
   test('should get Tasks from Repository if call is successful', () async {

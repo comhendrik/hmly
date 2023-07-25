@@ -1,14 +1,14 @@
 class HouseholdTask {
   String id;
   String title;
-  DateTime date;
+  DateTime? date;
   bool isDone;
 
   HouseholdTask({
     required this.id,
     required this.title,
-    required this.date,
-    this.isDone = false
+    this.date,
+    required this.isDone
   });
 
   String getCurrentDate() {
