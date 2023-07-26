@@ -2,7 +2,7 @@ import 'package:household_organizer/features/household_task/domain/entities/hous
 
 class HouseholdTaskModel extends HouseholdTask {
 
-   HouseholdTaskModel({
+  HouseholdTaskModel({
     required String id,
     required String title,
     required DateTime? date,

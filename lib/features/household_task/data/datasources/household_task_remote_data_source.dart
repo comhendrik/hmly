@@ -8,13 +8,15 @@ abstract class HouseholdTaskRemoteDataSource {
 }
 
 class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource {
-  final PocketBase pb;
+  final RecordService userRecordService;
+  final RecordService householdRecordService;
   final String email;
   final String password;
   final String householdId;
 
   HouseholdTaskRemoteDataSourceImpl({
-    required this.pb,
+    required this.userRecordService,
+    required this.householdRecordService,
     required this.email,
     required this.password,
     required this.householdId
@@ -22,17 +24,15 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
 
   @override
   Future<List<HouseholdTaskModel>> getAllTaskForHousehold() async {
-
-
-    final _ = await pb.collection('users').authWithPassword(email, password);
+    final _ = await userRecordService.authWithPassword(email, password);
     try {
-      final result = await pb.collection('household').getFullList(filter: 'household=$householdId');
+      final result = await householdRecordService.getFullList(filter: 'household=$householdId');
       List<HouseholdTaskModel> householdTaskModelList = [];
       for (final task in result) {
         householdTaskModelList.add(HouseholdTaskModel.fromJSON(task.data));
       }
       return householdTaskModelList;
-    } catch(_) {
+    } catch(err) {
       throw ServerException();
     }
 

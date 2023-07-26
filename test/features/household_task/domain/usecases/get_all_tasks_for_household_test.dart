@@ -7,6 +7,7 @@ import 'package:household_organizer/features/household_task/domain/repositories/
 import 'package:household_organizer/features/household_task/domain/usecases/get_all_tasks_for_household.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:dartz/dartz.dart';
+import '../../../../statics.dart';
 
 class MockHouseholdTaskRepository extends Mock implements HouseholdTaskRepository {}
 
@@ -19,9 +20,7 @@ void main() {
     getAllTasksForHousehold = GetAllTasksForHousehold(mockRepository);
   });
 
-  final tHouseholdTask = HouseholdTask(id: '0', title: 'Waschen', date: DateTime(2023, 1,11), isDone: false);
-  final tHouseholdTask1 = HouseholdTask(id: '1', title: 'Waschen', isDone: false);
-  final tHouseholdTaskList = [tHouseholdTask, tHouseholdTask1];
+
 
   test('should get Tasks from Repository if call is successful', () async {
     when(() => mockRepository.getAllTasksForHousehold()).thenAnswer((_) async => Right(tHouseholdTaskList));
