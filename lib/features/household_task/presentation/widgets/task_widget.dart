@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import '../model/task.dart';
+import 'package:household_organizer/features/household_task/domain/entities/household_task.dart';
+import '../../../../model/task.dart';
 
 class TaskWidget extends StatelessWidget {
-  final Tasks task;
+  final HouseholdTask task;
   const TaskWidget({super.key, required this.task});
 
   @override
@@ -33,7 +34,7 @@ class TaskWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                'Due to ${getCurrentDate(task.date)}',
+                'Due to ${task.getCurrentDate()}',
                 style: const TextStyle(
                   fontWeight: FontWeight.w200,
                   color: Colors.grey,
@@ -48,7 +49,7 @@ class TaskWidget extends StatelessWidget {
 }
 
 class TaskDetail extends StatelessWidget {
-  final Tasks task;
+  final HouseholdTask task;
   const TaskDetail({super.key, required this.task});
 
   @override
@@ -79,7 +80,7 @@ class TaskDetail extends StatelessWidget {
                   style: TextStyle(fontWeight: FontWeight.bold)
                 ),
                 Text(
-                  getCurrentDate(task.date)
+                  task.getCurrentDate()
                 ),
                 const Text(
                   'Assigned to',

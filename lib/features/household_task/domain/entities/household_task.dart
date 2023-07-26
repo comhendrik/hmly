@@ -12,6 +12,9 @@ class HouseholdTask {
   });
 
   String getCurrentDate() {
+    if (date == null) {
+      return "no date";
+    }
     var currentDate = date.toString();
 
     var dateParse = DateTime.parse(currentDate);

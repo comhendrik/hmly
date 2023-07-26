@@ -9,14 +9,14 @@ abstract class HouseholdTaskRemoteDataSource {
 
 class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource {
   final RecordService userRecordService;
-  final RecordService householdRecordService;
+  final RecordService taskRecordService;
   final String email;
   final String password;
   final String householdId;
 
   HouseholdTaskRemoteDataSourceImpl({
     required this.userRecordService,
-    required this.householdRecordService,
+    required this.taskRecordService,
     required this.email,
     required this.password,
     required this.householdId
@@ -26,10 +26,10 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
   Future<List<HouseholdTaskModel>> getAllTaskForHousehold() async {
     final _ = await userRecordService.authWithPassword(email, password);
     try {
-      final result = await householdRecordService.getFullList(filter: 'household=$householdId');
+      final result = await taskRecordService.getFullList(filter: 'household="$householdId"');
       List<HouseholdTaskModel> householdTaskModelList = [];
       for (final task in result) {
-        householdTaskModelList.add(HouseholdTaskModel.fromJSON(task.data));
+        householdTaskModelList.add(HouseholdTaskModel.fromJSON(task.data, task.id));
       }
       return householdTaskModelList;
     } catch(err) {

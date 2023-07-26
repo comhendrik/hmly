@@ -11,7 +11,7 @@ void main() {
 
   group('fromJSON', () {
     test('should return HouseholdTaskModel from JSON', () async {
-      final result = HouseholdTaskModel.fromJSON(tHouseholdTaskModelJSON);
+      final result = HouseholdTaskModel.fromJSON(tHouseholdTaskModelJSON, 'id');
       expect(result.title, equals(tHouseholdTaskModel.title));
     });
   });

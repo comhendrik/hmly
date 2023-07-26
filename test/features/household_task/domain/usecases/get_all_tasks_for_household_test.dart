@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/features/household_task/domain/entities/household_task.dart';
-import 'package:household_organizer/features/household_task/domain/repositories/househald_task_repository.dart';
+import 'package:household_organizer/features/household_task/domain/repositories/household_task_repository.dart';
 import 'package:household_organizer/features/household_task/domain/usecases/get_all_tasks_for_household.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:dartz/dartz.dart';

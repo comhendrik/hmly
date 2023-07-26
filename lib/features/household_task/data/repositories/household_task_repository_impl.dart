@@ -3,7 +3,7 @@ import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/features/household_task/data/datasources/household_task_remote_data_source.dart';
 import 'package:household_organizer/features/household_task/domain/entities/household_task.dart';
-import 'package:household_organizer/features/household_task/domain/repositories/househald_task_repository.dart';
+import 'package:household_organizer/features/household_task/domain/repositories/household_task_repository.dart';
 
 class HouseholdTaskRepositoryImpl implements HouseholdTaskRepository {
 

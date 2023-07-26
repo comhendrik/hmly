@@ -56,7 +56,7 @@ final tHouseholdTaskListRecordModel = [
 ];
 
 final tHouseholdTaskModelList = [
-  HouseholdTaskModel.fromJSON(tHouseholdTaskListRecordModel[0].data)
+  HouseholdTaskModel.fromJSON(tHouseholdTaskListRecordModel[0].data, 'id')
 ];
 
 

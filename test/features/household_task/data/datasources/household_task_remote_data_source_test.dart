@@ -21,7 +21,7 @@ void main() {
     householdId = 'ehhmumqij2n1mmn';
     email = 'test@test.com';
     password = '12345678';
-    dataSource = HouseholdTaskRemoteDataSourceImpl(userRecordService: mockRecordServiceUser, householdRecordService: mockRecordServiceHousehold, email: email, password: password, householdId: householdId);
+    dataSource = HouseholdTaskRemoteDataSourceImpl(userRecordService: mockRecordServiceUser, taskRecordService: mockRecordServiceHousehold, email: email, password: password, householdId: householdId);
   });
   
   group('getAllTasksForHousehold', () {

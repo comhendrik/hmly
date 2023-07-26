@@ -15,7 +15,7 @@ class HouseholdTaskModel extends HouseholdTask {
   );
    
    
-   factory HouseholdTaskModel.fromJSON(Map<String, dynamic> json) {
+   factory HouseholdTaskModel.fromJSON(Map<String, dynamic> json, String id) {
      String? dueToString = json['due_to'];
      DateTime? dueTo;
      if (dueToString == "") {
@@ -24,7 +24,7 @@ class HouseholdTaskModel extends HouseholdTask {
        dueTo = DateTime.tryParse(dueToString!);
      }
      return HouseholdTaskModel(
-         id: json['id'],
+         id: id,
          title: json['title'],
          date: dueTo,
          isDone: json['isDone']);

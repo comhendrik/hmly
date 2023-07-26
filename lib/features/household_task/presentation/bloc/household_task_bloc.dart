@@ -13,6 +13,7 @@ class HouseholdTaskBloc extends Bloc<HouseholdTaskEvent, HouseholdTaskState> {
   final GetAllTasksForHousehold getTasks;
   HouseholdTaskBloc({required this.getTasks}) : super(HouseholdTaskInitial()) {
     on<HouseholdTaskEvent>((event, emit) async {
+      emit(HouseholdTaskInitial());
       if (event is GetAllTasksForHouseholdEvent)  {
         emit(HouseholdTaskLoading());
         final resultEither = await getTasks.execute();
