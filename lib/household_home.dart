@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:household_organizer/features/household/presentation/pages/household_page.dart';
 import 'package:household_organizer/features/household_task/presentation/pages/household_task_page.dart';
 
 class HouseholdHome extends StatefulWidget {
@@ -24,6 +25,7 @@ class _HouseholdHomeState extends State<HouseholdHome> {
                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                 ),
                 const HouseholdTaskPage(),
+                const HouseholdPage(),
               ],
             )
         )
