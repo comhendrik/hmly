@@ -1,13 +1,15 @@
-class HouseholdTask {
-  String id;
-  String title;
-  DateTime? date;
-  bool isDone;
+import 'package:equatable/equatable.dart';
 
-  HouseholdTask({
+class HouseholdTask extends Equatable {
+  final String id;
+  final String title;
+  final DateTime? date;
+  final bool isDone;
+
+  const HouseholdTask({
     required this.id,
     required this.title,
-    this.date,
+    required this.date,
     required this.isDone
   });
 
@@ -24,12 +26,10 @@ class HouseholdTask {
     return formattedDate;
   }
 
+  @override
+  List<Object> get props => [id, title, date ?? Object(), isDone];
+
 }
 
-  List<HouseholdTask> getSpecificNumberOfTasks(List<HouseholdTask> list, int number) {
-    if (list.length >= number) {
-      return list.take(number).toList();
-    }
-    return list;
-  }
+
 

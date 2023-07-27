@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:household_organizer/features/household_task/domain/entities/household_task.dart';
-import '../../../../model/task.dart';
 
 class TaskWidget extends StatelessWidget {
   final HouseholdTask task;
