@@ -17,16 +17,21 @@ class _ControlsState extends State<Controls> {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        dispatchNews();
-      },
-      child: const Text("Get Newsss"),
+    return Column(
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            dispatchAllTasksForHousehold();
+          },
+          child: const Text("Get Tasks"),
+        )
+      ],
     );
   }
 
-  void dispatchNews() {
+  void dispatchAllTasksForHousehold() {
     BlocProvider.of<HouseholdTaskBloc>(context)
         .add(GetAllTasksForHouseholdEvent());
   }
+
 }

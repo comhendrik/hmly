@@ -2,6 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/features/household/data/datasources/household_remote_data_source.dart';
 import 'package:household_organizer/features/household/data/models/household_model.dart';
+import 'package:household_organizer/features/household/data/models/user_model.dart';
+import 'package:household_organizer/features/household/domain/entities/user.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:pocketbase/pocketbase.dart';
 
@@ -28,6 +30,7 @@ void main() {
   group('getAllTasksForHousehold', () {
 
     final tHouseholdRecordModel = RecordModel(
+      id: "id",
       data: {
         "id": "RECORD_ID",
         "collectionId": "gvartmnoybe3m81",
@@ -36,13 +39,34 @@ void main() {
         "updated": "2022-01-01 23:59:59.456Z",
         "title": "test",
         "users": [
-          "RELATION_RECORD_ID"
+          "id"
         ],
         "minWeeklyPoints": 123
       },
     );
 
-    final tHouseholdModel = HouseholdModel.fromJSON(tHouseholdRecordModel.data);
+    final tUserRecordModel = RecordModel(
+      id: "id",
+      data: {
+        "id": "RECORD_ID",
+        "collectionId": "_pb_users_auth_",
+        "collectionName": "users",
+        "username": "username123",
+        "verified": false,
+        "emailVisibility": true,
+        "email": "test@example.com",
+        "created": "2022-01-01 01:00:00.123Z",
+        "updated": "2022-01-01 23:59:59.456Z",
+        "name": "test",
+        "avatar": "filename.jpg"
+      },
+    );
+
+    const tUser = UserModel(id: "id", username: "username123", householdId: "id", email: "test@example.com", name: "test");
+
+    final tUsers = [tUser];
+
+    final tHouseholdModel = HouseholdModel.fromJSON(tHouseholdRecordModel.data, 'id', tUsers);
 
     final RecordAuth tAuth = RecordAuth(
         token :"test token",
@@ -67,6 +91,8 @@ void main() {
       when(() => mockRecordServiceUser.authWithPassword(email, password)).thenAnswer((_) async => tAuth);
 
       when(() => mockRecordServiceHousehold.getOne(householdId)).thenAnswer((_) async => tHouseholdRecordModel);
+
+      when(() => mockRecordServiceUser.getOne("id")).thenAnswer((_) async => tUserRecordModel);
 
       final result = await dataSource.loadHousehold();
 

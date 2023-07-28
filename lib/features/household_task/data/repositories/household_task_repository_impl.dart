@@ -21,4 +21,14 @@ class HouseholdTaskRepositoryImpl implements HouseholdTaskRepository {
       return Left(ServerFailure());
     }
   }
+
+
+  @override
+  Future<Either<Failure, HouseholdTask>> createHouseholdTask(String title, int pointsWorth) async {
+    try {
+      return Right(await remoteDataSource.createHouseholdTask(title, pointsWorth));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
 }

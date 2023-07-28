@@ -46,6 +46,7 @@ void main() {
 
     final tHouseholdTaskListRecordModel = [
       RecordModel(
+        id: "id",
         data: {
           "id":"id",
           "created":"2023-07-25 18:59:34.004Z",
@@ -79,20 +80,21 @@ void main() {
         }),
         meta :{}
     );
+
     test('should return data when call is successful', () async {
 
 
       when(() => mockRecordServiceUser.authWithPassword(email, password)).thenAnswer((_) async => tAuth);
 
-      when(() => mockRecordServiceTask.getFullList(filter: 'household="$householdId"')).thenAnswer((_) async => tHouseholdTaskListRecordModel);
+      when(() => mockRecordServiceTask.getFullList(filter: 'household="$householdId"', sort: '-created')).thenAnswer((_) async => tHouseholdTaskListRecordModel);
 
       final result = await dataSource.getAllTaskForHousehold();
 
-      verify(() => mockRecordServiceTask.getFullList(filter: 'household="$householdId"'));
+      verify(() => mockRecordServiceTask.getFullList(filter: 'household="$householdId"', sort: '-created'));
 
       verify(() => mockRecordServiceUser.authWithPassword(email, password));
 
-      expect(result.length, tHouseholdTaskModelList.length);
+      expect(result, tHouseholdTaskModelList);
 
 
     });
@@ -102,7 +104,7 @@ void main() {
 
       when(() => mockRecordServiceUser.authWithPassword(email, password)).thenAnswer((_) async => tAuth);
 
-      when(() => mockRecordServiceTask.getFullList(filter: 'household="$householdId"')).thenThrow(ServerException());
+      when(() => mockRecordServiceTask.getFullList(filter: 'household="$householdId"', sort: '-created')).thenThrow(ServerException());
 
 
       expect(dataSource.getAllTaskForHousehold(), throwsA(const TypeMatcher<ServerException>()));

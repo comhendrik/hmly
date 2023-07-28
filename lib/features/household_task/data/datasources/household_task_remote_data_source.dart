@@ -5,6 +5,7 @@ import 'package:pocketbase/pocketbase.dart';
 
 abstract class HouseholdTaskRemoteDataSource {
   Future<List<HouseholdTask>> getAllTaskForHousehold();
+  Future<HouseholdTask> createHouseholdTask(String title, int pointsWorth);
 }
 
 class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource {
@@ -24,14 +25,32 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
 
   @override
   Future<List<HouseholdTaskModel>> getAllTaskForHousehold() async {
-    final _ = await userRecordService.authWithPassword(email, password);
     try {
-      final result = await taskRecordService.getFullList(filter: 'household="$householdId"');
+      final _ = await userRecordService.authWithPassword(email, password);
+      final result = await taskRecordService.getFullList(filter: 'household="$householdId"', sort: '-created');
       List<HouseholdTaskModel> householdTaskModelList = [];
       for (final task in result) {
         householdTaskModelList.add(HouseholdTaskModel.fromJSON(task.data, task.id));
       }
       return householdTaskModelList;
+    } catch(err) {
+      throw ServerException();
+    }
+
+  }
+
+  @override
+  Future<HouseholdTaskModel> createHouseholdTask(String title, int pointsWorth) async {
+
+    try {
+      final body = <String, dynamic>{
+        "title": title,
+        "household": householdId,
+        "points_worth": pointsWorth,
+      };
+
+      final record = await taskRecordService.create(body: body);
+      return HouseholdTaskModel.fromJSON(record.data, record.id);
     } catch(err) {
       throw ServerException();
     }

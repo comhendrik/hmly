@@ -8,3 +8,13 @@ abstract class HouseholdTaskEvent extends Equatable {
 }
 
 class GetAllTasksForHouseholdEvent extends HouseholdTaskEvent {}
+
+class CreateHouseholdTaskEvent extends HouseholdTaskEvent {
+  final String title;
+  final int pointsWorth;
+
+  const CreateHouseholdTaskEvent({
+    required this.title,
+    required this.pointsWorth
+  });
+}

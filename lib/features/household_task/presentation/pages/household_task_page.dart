@@ -48,6 +48,7 @@ class HouseholdTaskPage extends StatelessWidget {
                 },
               ),
               // Bottom half
+              const CreateHouseholdTaskSheet(),
               const Controls()
             ],
           ),

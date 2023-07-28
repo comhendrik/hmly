@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class BarChart extends StatefulWidget {
-  // ignore: prefer_const_constructors_in_immutables
   BarChart({Key? key}) : super(key: key);
 
   @override

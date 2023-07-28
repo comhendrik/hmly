@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/features/household/domain/entities/household.dart';
+import 'package:household_organizer/features/household/domain/entities/user.dart';
 import 'package:household_organizer/features/household/domain/usecases/load_household.dart';
 import 'package:household_organizer/features/household/presentation/bloc/household_bloc.dart';
 import 'package:mocktail/mocktail.dart';
@@ -19,12 +20,16 @@ void main() {
 
   group('getAllTasksForHousehold', () {
 
-    const tHousehold = Household(id: 'id', title: 'title', users: ['users'], minWeeklyPoints: 123);
+    const tUser = User(id: "id", username: "username123", householdId: "id", email: "test@example.com", name: "test");
+
+    final tUsers = [tUser];
+
+    final tHousehold = Household(id: 'id', title: 'title', users: tUsers, minWeeklyPoints: 123);
 
     test(
         'should get data from getNews use case',
             () async {
-          when(() => usecase.execute()).thenAnswer((_) async => const Right(tHousehold));
+          when(() => usecase.execute()).thenAnswer((_) async => Right(tHousehold));
 
           bloc.add(LoadHouseholdEvent());
 
@@ -40,7 +45,7 @@ void main() {
         'should emit [Initial(), Loading(), Loaded()] when the server request is succesful',
             () async {
 
-          when(() => usecase.execute()).thenAnswer((_) async => const Right(tHousehold));
+          when(() => usecase.execute()).thenAnswer((_) async => Right(tHousehold));
 
 
           expectLater(bloc.stream, emitsInOrder(

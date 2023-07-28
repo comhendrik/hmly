@@ -4,4 +4,5 @@ import 'package:dartz/dartz.dart';
 
 abstract class HouseholdTaskRepository {
   Future<Either<Failure, List<HouseholdTask>>> getAllTasksForHousehold();
+  Future<Either<Failure, HouseholdTask>> createHouseholdTask(String title, int pointsWorth);
 }

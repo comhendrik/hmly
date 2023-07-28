@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:household_organizer/features/household/data/models/household_model.dart';
+import 'package:household_organizer/features/household/data/models/user_model.dart';
 import 'package:household_organizer/features/household/domain/entities/household.dart';
 
 void main() {
@@ -16,7 +17,11 @@ void main() {
     "minWeeklyPoints": 123
   };
 
-  final tHouseholdModel = HouseholdModel.fromJSON(tHouseholdModelJSON);
+  const tUser = UserModel(id: "id", username: "username123", householdId: "id", email: "test@example.com", name: "test");
+
+  final tUsers = [tUser];
+
+  final tHouseholdModel = HouseholdModel.fromJSON(tHouseholdModelJSON, "id", tUsers);
 
   test('should be an instance of type householdTask', ()  async {
     expect(tHouseholdModel, isA<Household>());
@@ -24,7 +29,7 @@ void main() {
 
   group('fromJSON', () {
     test('should return HouseholdTaskModel from JSON', () async {
-      final result = HouseholdModel.fromJSON(tHouseholdModelJSON);
+      final result = HouseholdModel.fromJSON(tHouseholdModelJSON, "id", tUsers);
       expect(result, equals(tHouseholdModel));
     });
   });

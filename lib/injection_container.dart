@@ -6,6 +6,7 @@ import 'package:household_organizer/features/household/presentation/bloc/househo
 import 'package:household_organizer/features/household_task/data/datasources/household_task_remote_data_source.dart';
 import 'package:household_organizer/features/household_task/data/repositories/household_task_repository_impl.dart';
 import 'package:household_organizer/features/household_task/domain/repositories/household_task_repository.dart';
+import 'package:household_organizer/features/household_task/domain/usecases/create_household_task.dart';
 import 'package:household_organizer/features/household_task/domain/usecases/get_all_tasks_for_household.dart';
 import 'package:household_organizer/features/household_task/presentation/bloc/household_task_bloc.dart';
 
@@ -19,7 +20,8 @@ Future<void> init() async {
   // Bloc
   sl.registerFactory(
         () => HouseholdTaskBloc(
-      getTasks: sl(),
+          getTasks: sl(),
+          createTask: sl()
     ),
   );
   sl.registerFactory(
@@ -30,6 +32,7 @@ Future<void> init() async {
 
   // Use cases
   sl.registerLazySingleton(() => GetAllTasksForHousehold(sl()));
+  sl.registerLazySingleton(() => CreateHouseholdTask(repository: sl()));
 
 
   sl.registerLazySingleton(() => LoadHousehold(repository: sl()));

@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/features/household_task/domain/entities/household_task.dart';
+import 'package:household_organizer/features/household_task/domain/usecases/create_household_task.dart';
 import 'package:household_organizer/features/household_task/domain/usecases/get_all_tasks_for_household.dart';
 import 'package:household_organizer/features/household_task/presentation/bloc/household_task_bloc.dart';
 import 'package:mocktail/mocktail.dart';
@@ -8,13 +9,17 @@ import 'package:flutter_test/flutter_test.dart';
 
 class MockGetAllTasksForHousehold extends Mock implements GetAllTasksForHousehold {}
 
+class MockCreateHouseholdTask extends Mock implements CreateHouseholdTask {}
+
 void main() {
-  late MockGetAllTasksForHousehold usecase;
+  late MockGetAllTasksForHousehold getAllTasksForHousehold;
+  late MockCreateHouseholdTask createHouseholdTask;
   late HouseholdTaskBloc bloc;
 
   setUpAll(() {
-    usecase = MockGetAllTasksForHousehold();
-    bloc = HouseholdTaskBloc(getTasks: usecase);
+    getAllTasksForHousehold = MockGetAllTasksForHousehold();
+    createHouseholdTask = MockCreateHouseholdTask();
+    bloc = HouseholdTaskBloc(getTasks: getAllTasksForHousehold, createTask: createHouseholdTask);
   });
 
   group('getAllTasksForHousehold', () {
@@ -26,13 +31,13 @@ void main() {
     test(
         'should get data from getNews use case',
             () async {
-          when(() => usecase.execute()).thenAnswer((_) async => Right(tHouseholdTaskList));
+          when(() => getAllTasksForHousehold.execute()).thenAnswer((_) async => Right(tHouseholdTaskList));
 
           bloc.add(GetAllTasksForHouseholdEvent());
 
-          await untilCalled(() => usecase.execute());
+          await untilCalled(() => getAllTasksForHousehold.execute());
 
-          verify(() => usecase.execute());
+          verify(() => getAllTasksForHousehold.execute());
 
 
         }
@@ -42,7 +47,7 @@ void main() {
         'should emit [Initial(), Loading(), Loaded()] when the server request is succesful',
             () async {
 
-          when(() => usecase.execute()).thenAnswer((_) async => Right(tHouseholdTaskList));
+          when(() => getAllTasksForHousehold.execute()).thenAnswer((_) async => Right(tHouseholdTaskList));
 
 
           expectLater(bloc.stream, emitsInOrder(
@@ -62,7 +67,7 @@ void main() {
         'should emit [Initial(), Loading(), Error()] when the request is unsuccessful',
             () async {
 
-          when(() => usecase.execute()).thenAnswer((_) async => Left(ServerFailure()));
+          when(() => getAllTasksForHousehold.execute()).thenAnswer((_) async => Left(ServerFailure()));
 
 
           expectLater(bloc.stream, emitsInOrder(

@@ -18,16 +18,20 @@ void main() {
     usecase = LoadHousehold(repository: repository);
   });
 
-  const tHousehold = Household(id: 'id', title: 'title', users: ['asdf'], minWeeklyPoints: 123);
+  const tUser = User(id: "id", username: "username123", householdId: "id", email: "test@example.com", name: "test");
+
+  final tUsers = [tUser];
+
+  final tHousehold = Household(id: 'id', title: 'title', users: tUsers, minWeeklyPoints: 123);
 
   test('should get valid object when call is successful', () async {
-    when(() => repository.loadHousehold()).thenAnswer((_) async => const Right(tHousehold));
+    when(() => repository.loadHousehold()).thenAnswer((_) async => Right(tHousehold));
 
     final result = await usecase.execute();
 
     verify(() => repository.loadHousehold());
 
-    expect(result, equals(const Right(tHousehold)));
+    expect(result, equals( Right(tHousehold)));
   });
 
   test('should get ServerFailure when call is unsuccessful', () async {

@@ -4,8 +4,10 @@ import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/features/household/data/datasources/household_remote_data_source.dart';
 import 'package:household_organizer/features/household/data/models/household_model.dart';
+import 'package:household_organizer/features/household/data/models/user_model.dart';
 import 'package:household_organizer/features/household/data/repositories/household_repository_impl.dart';
 import 'package:household_organizer/features/household/domain/entities/household.dart';
+import 'package:household_organizer/features/household/domain/entities/user.dart';
 import 'package:household_organizer/features/household_task/data/datasources/household_task_remote_data_source.dart';
 import 'package:household_organizer/features/household_task/data/models/household_task_model.dart';
 import 'package:household_organizer/features/household_task/domain/entities/household_task.dart';
@@ -25,9 +27,13 @@ void main() {
 
   group('getAllTasksForHousehold', () {
 
+    const tUser = UserModel(id: "id", username: "username123", householdId: "id", email: "test@example.com", name: "test");
 
-    const tHouseholdModel = HouseholdModel(id: 'id', title: 'title', users: ['users'], minWeeklyPoints: 123);
-    const Household tHousehold = tHouseholdModel;
+    final List<User> tUsers = [tUser];
+
+
+    final tHouseholdModel = HouseholdModel(id: 'id', title: 'title', users: tUsers, minWeeklyPoints: 123);
+    final Household tHousehold = tHouseholdModel;
     test('should return data, when call is successful', () async {
 
 
@@ -35,7 +41,7 @@ void main() {
 
       final result = await repository.loadHousehold();
 
-      expect(result, equals(const Right(tHousehold)));
+      expect(result, equals(Right(tHousehold)));
 
     });
     test('should return failure, when call is unsuccessful', () async {
