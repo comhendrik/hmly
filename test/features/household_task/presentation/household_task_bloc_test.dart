@@ -83,4 +83,95 @@ void main() {
         }
     );
   });
+
+  group('createHouseholdTask', () {
+
+    final tTitle = 'Waschen';
+    final tPointsWorth = 2;
+    final tHouseholdTask = HouseholdTask(id: '0', title: tTitle, date: DateTime(2023, 1,11), isDone: false);
+    final tHouseholdTask1 = HouseholdTask(id: '1', title: 'Wischen',date: null, isDone: false);
+    final tHouseholdTaskList = [tHouseholdTask, tHouseholdTask1];
+
+    test(
+        'should get data from getNews use case',
+            () async {
+          when(() => createHouseholdTask.execute(tTitle, tPointsWorth)).thenAnswer((_) async => Right(tHouseholdTask));
+
+          bloc.add(CreateHouseholdTaskEvent(title: tTitle, pointsWorth: tPointsWorth));
+
+          await untilCalled(() => createHouseholdTask.execute(tTitle, tPointsWorth));
+
+          verify(() => createHouseholdTask.execute(tTitle, tPointsWorth));
+
+
+        }
+    );
+
+    test(
+        'should emit [Initial(), Loading(), Loaded()] when the server request is succesful',
+            () async {
+
+          when(() => createHouseholdTask.execute(tTitle, tPointsWorth)).thenAnswer((_) async => Right(tHouseholdTask));
+
+          when(() => getAllTasksForHousehold.execute()).thenAnswer((_) async => Right(tHouseholdTaskList));
+
+
+          expectLater(bloc.stream, emitsInOrder(
+              [
+                HouseholdTaskInitial(),
+                HouseholdTaskLoading(),
+                HouseholdTaskLoaded(householdTaskList: tHouseholdTaskList)
+              ]
+          ));
+
+          bloc.add(GetAllTasksForHouseholdEvent());
+
+        }
+    );
+
+    test(
+        'should emit [Initial(), Loading(), Error()] when the request of creating is unsuccessful',
+            () async {
+
+          when(() => createHouseholdTask.execute(tTitle, tPointsWorth)).thenAnswer((_) async => Left(ServerFailure()));
+
+          when(() => getAllTasksForHousehold.execute()).thenAnswer((_) async => Left(ServerFailure()));
+
+
+          expectLater(bloc.stream, emitsInOrder(
+              [
+                HouseholdTaskInitial(),
+                HouseholdTaskLoading(),
+                const HouseholdTaskError(errorMsg: 'Server Failure')
+              ]
+          ));
+
+          bloc.add(CreateHouseholdTaskEvent(title: tTitle, pointsWorth: tPointsWorth));
+
+        }
+    );
+
+    test(
+        'should emit [Initial(), Loading(), Error()] when the request of fetching all data is unsuccessful',
+            () async {
+
+          when(() => createHouseholdTask.execute(tTitle, tPointsWorth)).thenAnswer((_) async => Right(tHouseholdTask));
+
+          when(() => getAllTasksForHousehold.execute()).thenAnswer((_) async => Left(ServerFailure()));
+
+
+          expectLater(bloc.stream, emitsInOrder(
+              [
+                HouseholdTaskInitial(),
+                HouseholdTaskLoading(),
+                const HouseholdTaskError(errorMsg: 'Server Failure')
+              ]
+          ));
+
+          bloc.add(CreateHouseholdTaskEvent(title: tTitle, pointsWorth: tPointsWorth));
+
+        }
+    );
+    
+  });
 }
