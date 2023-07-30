@@ -16,19 +16,21 @@ class _HouseholdHomeState extends State<HouseholdHome> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-        body: SafeArea(
-            child: ListView(
-              padding: const EdgeInsets.all(20),
-              children: [
-                Text(
-                  widget.householdName,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-                ),
-                const HouseholdTaskPage(),
-                const HouseholdPage(),
-              ],
-            )
-        )
+      primary: false,
+      resizeToAvoidBottomInset: true,
+      body: SafeArea(
+          child: ListView(
+            padding: const EdgeInsets.all(20),
+            children: [
+              Text(
+                widget.householdName,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+              ),
+              const HouseholdTaskPage(),
+              const HouseholdPage(),
+            ],
+          )
+      )
     );
   }
 }

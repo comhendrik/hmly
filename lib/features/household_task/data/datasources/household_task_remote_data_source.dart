@@ -41,14 +41,14 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
 
   @override
   Future<HouseholdTaskModel> createHouseholdTask(String title, int pointsWorth) async {
-
+    final body = <String, dynamic>{
+      "title": title,
+      "household": householdId,
+      "points_worth": pointsWorth,
+    };
     try {
-      final body = <String, dynamic>{
-        "title": title,
-        "household": householdId,
-        "points_worth": pointsWorth,
-      };
 
+      final _ = await userRecordService.authWithPassword(email, password);
       final record = await taskRecordService.create(body: body);
       return HouseholdTaskModel.fromJSON(record.data, record.id);
     } catch(err) {

@@ -25,25 +25,29 @@ class _CreateHouseholdTaskSheetState extends State<CreateHouseholdTaskSheet> {
         child: const Text('showModalBottomSheet'),
         onPressed: () {
           showModalBottomSheet<void>(
+            isScrollControlled: true,
             context: context,
             builder: (BuildContext context) {
-              return SizedBox(
-                height:  MediaQuery.of(context).size.height / 3,
-                child: Center(
+              var keyboardHeight = MediaQuery.of(context).viewInsets.bottom ?? 0.0;
+              return AnimatedPadding(
+                padding: EdgeInsets.only(bottom: keyboardHeight),
+                duration: Duration(milliseconds: 20),
+                child: SafeArea(
+                  bottom: keyboardHeight <= 0.0,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       TextField(
-                        controller: titleController,
-                        keyboardType: TextInputType.text,
-                        decoration: const InputDecoration(
-                          hintText: 'Enter a title',
-                          contentPadding: EdgeInsets.all(20)
-                        ),
-                        onChanged: (value) {
-                          inputStr = value;
-                        }
+                          controller: titleController,
+                          keyboardType: TextInputType.text,
+                          decoration: const InputDecoration(
+                              hintText: 'Enter a title',
+                              contentPadding: EdgeInsets.all(20)
+                          ),
+                          onChanged: (value) {
+                            inputStr = value;
+                          }
                       ),
                       TextField(
                           controller: numberController,

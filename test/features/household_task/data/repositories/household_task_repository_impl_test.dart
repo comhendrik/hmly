@@ -41,4 +41,27 @@ void main() {
 
     });
   });
+
+  group('createHouseholdTask', () {
+    final tTitle = 'Waschen';
+    final tPointsWorth = 2;
+    final tHouseholdTask = HouseholdTask(id: '0', title: tTitle, date: DateTime(2023, 1,11), isDone: false);
+
+    test('should return data, when call is successful', () async {
+      when(() => remoteDataSource.createHouseholdTask(tTitle, tPointsWorth)).thenAnswer((_) async => tHouseholdTask);
+
+      final result = await repository.createHouseholdTask(tTitle, tPointsWorth);
+
+      expect(result, equals(Right(tHouseholdTask)));
+
+    });
+    test('should return failure, when call is unsuccessful', () async {
+      when(() => remoteDataSource.createHouseholdTask(tTitle, tPointsWorth)).thenThrow(ServerException());
+
+      final result = await repository.createHouseholdTask(tTitle, tPointsWorth);
+
+      expect(result, equals(Left(ServerFailure())));
+
+    });
+  });
 }
