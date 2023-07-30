@@ -24,18 +24,22 @@ class HouseholdTaskPage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               const Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                       'Current Tasks',
                       style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20)
                   ),
+                  Controls()
                 ],
+
               ),
               BlocBuilder<HouseholdTaskBloc, HouseholdTaskState>(
                 builder: (context, state) {
                   if (state is HouseholdTaskInitial) {
-                    return const Text("Yaayy, there is nothing to do");
+                    BlocProvider.of<HouseholdTaskBloc>(context)
+                        .add(GetAllTasksForHouseholdEvent());
+                    return const Text("Data is loading...");
                   } else if (state is HouseholdTaskLoading) {
                     return const CircularProgressIndicator();
                   } else if (state is HouseholdTaskLoaded) {
@@ -47,9 +51,7 @@ class HouseholdTaskPage extends StatelessWidget {
                   }
                 },
               ),
-              // Bottom half
-              const CreateHouseholdTaskSheet(),
-              const Controls()
+
             ],
           ),
         ),

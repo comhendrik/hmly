@@ -21,8 +21,8 @@ class _CreateHouseholdTaskSheetState extends State<CreateHouseholdTaskSheet> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: ElevatedButton(
-        child: const Text('showModalBottomSheet'),
+      child: IconButton(
+        icon: const Icon(Icons.assignment_add),
         onPressed: () {
           showModalBottomSheet<void>(
             isScrollControlled: true,

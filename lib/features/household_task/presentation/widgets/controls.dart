@@ -19,11 +19,12 @@ class _ControlsState extends State<Controls> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ElevatedButton(
+        IconButton(
+          icon: const Icon(Icons.update),
           onPressed: () {
             dispatchAllTasksForHousehold();
           },
-          child: const Text("Get Tasks"),
+
         )
       ],
     );

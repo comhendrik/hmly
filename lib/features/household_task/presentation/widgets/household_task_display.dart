@@ -19,7 +19,7 @@ class HouseholdTaskDisplay extends StatelessWidget {
               );
             }).toList()),
         Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextButton(
               style: TextButton.styleFrom(
@@ -34,6 +34,7 @@ class HouseholdTaskDisplay extends StatelessWidget {
               },
               child: const Text('See more'),
             ),
+            const CreateHouseholdTaskSheet(),
           ],
         ),
       ],
