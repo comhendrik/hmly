@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:household_organizer/features/household/presentation/pages/household_page.dart';
 import 'package:household_organizer/features/household_task/presentation/pages/household_task_page.dart';
+import 'test_secure_storage.dart';
 
 class HouseholdHome extends StatefulWidget {
   final String householdName;
@@ -28,6 +29,9 @@ class _HouseholdHomeState extends State<HouseholdHome> {
               ),
               const HouseholdTaskPage(),
               const HouseholdPage(),
+
+              //Only for testing purposes
+              const SControls()
             ],
           )
       )
