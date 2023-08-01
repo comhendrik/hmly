@@ -1,3 +1,10 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:household_organizer/features/authentication/data/datasources/auth_local_data_source.dart';
+import 'package:household_organizer/features/authentication/data/repositories/auth_repository_impl.dart';
+import 'package:household_organizer/features/authentication/domain/repositories/auth_repository.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/create_auth_data.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/load_auth_data.dart';
+import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:household_organizer/features/household/data/datasources/household_remote_data_source.dart';
 import 'package:household_organizer/features/household/data/repositories/household_repository_impl.dart';
 import 'package:household_organizer/features/household/domain/repositories/household_repository.dart';
@@ -30,12 +37,19 @@ Future<void> init() async {
     ),
   );
 
+  sl.registerFactory(
+        () => AuthBloc(createAuth: sl(), loadAuth: sl())
+  );
+
   // Use cases
   sl.registerLazySingleton(() => GetAllTasksForHousehold(sl()));
   sl.registerLazySingleton(() => CreateHouseholdTask(repository: sl()));
 
 
   sl.registerLazySingleton(() => LoadHousehold(repository: sl()));
+
+  sl.registerLazySingleton(() => CreateAuthData(repository: sl()));
+  sl.registerLazySingleton(() => LoadAuthData(repository: sl()));
 
   // Repository
   sl.registerLazySingleton<HouseholdTaskRepository>(
@@ -46,6 +60,12 @@ Future<void> init() async {
 
   sl.registerLazySingleton<HouseholdRepository>(
         () => HouseholdRepositoryImpl(remoteDataSource: sl()
+    ),
+  );
+
+  sl.registerLazySingleton<AuthRepository>(
+        () => AuthRepositoryImpl(
+      localDataSource: sl(),
     ),
   );
 
@@ -60,6 +80,13 @@ Future<void> init() async {
   sl.registerLazySingleton<HouseholdRemoteDataSource>(
     //TODO: Need to make it possible to use different accounts
         () => HouseholdRemoteDataSourceImpl(userRecordService: RecordService(pb, 'users'), householdRecordService: RecordService(pb, 'household'), email: "test@test.com", password: "12345678", householdId: "g7szpsys0r944se"),
+  );
+
+  const storage = FlutterSecureStorage();
+
+  sl.registerLazySingleton<AuthLocalDataSource>(
+    //TODO: Need to make it possible to use different accounts
+        () => AuthLocalDataSourceImpl(storage: storage),
   );
   //! Cor
   //

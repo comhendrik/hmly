@@ -24,7 +24,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     String email = await storage.read(key: "email") ?? "no data";
     String password = await storage.read(key: "password") ?? "no data";
     if (email == "no data" || password == "no data") {
-      throw ServerException();
+      throw CacheException();
     }
     return AuthModel(email: email, password: password);
   }

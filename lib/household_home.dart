@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:household_organizer/features/authentication/presentation/pages/auth_page.dart';
 import 'package:household_organizer/features/household/presentation/pages/household_page.dart';
 import 'package:household_organizer/features/household_task/presentation/pages/household_task_page.dart';
 import 'test_secure_storage.dart';
@@ -31,7 +32,8 @@ class _HouseholdHomeState extends State<HouseholdHome> {
               const HouseholdPage(),
 
               //Only for testing purposes
-              const SControls()
+              const SControls(),
+              const AuthPage(),
             ],
           )
       )
