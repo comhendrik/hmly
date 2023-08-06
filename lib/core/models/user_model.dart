@@ -1,4 +1,4 @@
-import 'package:household_organizer/features/household/domain/entities/user.dart';
+import 'package:household_organizer/core/entities/user.dart';
 
 class UserModel extends User {
 
@@ -17,11 +17,11 @@ class UserModel extends User {
   );
 
 
-  factory UserModel.fromJSON(Map<String, dynamic> json, String id, String householdId) {
+  factory UserModel.fromJSON(Map<String, dynamic> json, String id) {
     return UserModel(
         id: id,
         username: json['username'],
-        householdId: householdId,
+        householdId: json['household'],
         email: json['email'],
         name: json['name']
     );

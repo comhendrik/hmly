@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/features/household/domain/entities/household.dart';
-import 'package:household_organizer/features/household/domain/entities/user.dart';
+import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/features/household/domain/repositories/household_repository.dart';
 import 'package:household_organizer/features/household/domain/usecases/load_household.dart';
 import 'package:mocktail/mocktail.dart';

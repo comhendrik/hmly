@@ -71,6 +71,7 @@ Future<void> init() async {
 
   final pb = PocketBase('http://127.0.0.1:8090');
 
+  const storage = FlutterSecureStorage();
   // Data sources
   sl.registerLazySingleton<HouseholdTaskRemoteDataSource>(
     //TODO: Need to make it possible to use different accounts
@@ -82,11 +83,11 @@ Future<void> init() async {
         () => HouseholdRemoteDataSourceImpl(userRecordService: RecordService(pb, 'users'), householdRecordService: RecordService(pb, 'household'), email: "test@test.com", password: "12345678", householdId: "g7szpsys0r944se"),
   );
 
-  const storage = FlutterSecureStorage();
+
 
   sl.registerLazySingleton<AuthLocalDataSource>(
     //TODO: Need to make it possible to use different accounts
-        () => AuthLocalDataSourceImpl(storage: storage),
+        () => AuthLocalDataSourceImpl(storage: storage, userRecordService: RecordService(pb, 'users'), householdRecordService: RecordService(pb, 'household')),
   );
   //! Cor
   //

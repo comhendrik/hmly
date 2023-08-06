@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:household_organizer/features/household/domain/entities/user.dart';
+import 'package:household_organizer/core/entities/user.dart';
 
 class Household extends Equatable {
   final String id;

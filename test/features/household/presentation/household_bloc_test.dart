@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/features/household/domain/entities/household.dart';
-import 'package:household_organizer/features/household/domain/entities/user.dart';
+import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/features/household/domain/usecases/load_household.dart';
 import 'package:household_organizer/features/household/presentation/bloc/household_bloc.dart';
 import 'package:mocktail/mocktail.dart';

@@ -22,8 +22,10 @@ class _SControlsState extends State<SControls> {
           icon: const Icon(Icons.update),
           onPressed: () async {
             //await _storage.write(key: "Test", value: "third test");
-            String value = await _storage.read(key: "Test") ?? "no data";
-            print(value);
+            await _storage.delete(key: "email");
+            await _storage.delete(key: "password");
+           // String value = await _storage.read(key: "email") ?? "no data";
+           // print(value);
 
           },
 

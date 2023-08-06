@@ -1,5 +1,5 @@
 import 'package:household_organizer/features/household/domain/entities/household.dart';
-import 'package:household_organizer/features/household/domain/entities/user.dart';
+import 'package:household_organizer/core/entities/user.dart';
 
 class HouseholdModel extends Household {
 

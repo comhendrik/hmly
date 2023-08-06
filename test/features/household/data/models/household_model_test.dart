@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:household_organizer/features/household/data/models/household_model.dart';
-import 'package:household_organizer/features/household/data/models/user_model.dart';
+import 'package:household_organizer/core/models/user_model.dart';
 import 'package:household_organizer/features/household/domain/entities/household.dart';
 
 void main() {
