@@ -18,7 +18,7 @@ class HouseholdTaskBloc extends Bloc<HouseholdTaskEvent, HouseholdTaskState> {
       emit(HouseholdTaskInitial());
       if (event is GetAllTasksForHouseholdEvent)  {
         emit(HouseholdTaskLoading());
-        final resultEither = await getTasks.execute();
+        final resultEither = await getTasks.execute(event.householdId);
         resultEither.fold(
             (failure) async {
               emit(const HouseholdTaskError(errorMsg: 'Server Failure'));
@@ -29,13 +29,13 @@ class HouseholdTaskBloc extends Bloc<HouseholdTaskEvent, HouseholdTaskState> {
         );
       } else if (event is CreateHouseholdTaskEvent) {
         emit(HouseholdTaskLoading());
-        final resultEither = await createTask.execute(event.title, event.pointsWorth);
+        final resultEither = await createTask.execute(event.householdId, event.title, event.pointsWorth);
         await resultEither.fold(
                 (failure) async {
               emit(const HouseholdTaskError(errorMsg: 'Server Failure'));
             },
                 (task) async {
-              final resultEitherTasks = await getTasks.execute();
+              final resultEitherTasks = await getTasks.execute(event.householdId);
               await resultEitherTasks.fold(
                       (failure) async {
                     emit(const HouseholdTaskError(errorMsg: 'Server Failure'));

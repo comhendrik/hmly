@@ -1,4 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/features/authentication/data/datasources/auth_local_data_source.dart';
 import 'package:household_organizer/features/authentication/data/repositories/auth_repository_impl.dart';
 import 'package:household_organizer/features/authentication/domain/repositories/auth_repository.dart';
@@ -75,12 +76,12 @@ Future<void> init() async {
   // Data sources
   sl.registerLazySingleton<HouseholdTaskRemoteDataSource>(
     //TODO: Need to make it possible to use different accounts
-        () => HouseholdTaskRemoteDataSourceImpl(userRecordService: RecordService(pb, 'users'), taskRecordService: RecordService(pb, 'tasks'), email: "test@test.com", password: "12345678", householdId: "ehhmumqij2n1mmn"),
+        () => HouseholdTaskRemoteDataSourceImpl(userRecordService: RecordService(pb, 'users'), taskRecordService: RecordService(pb, 'tasks')),
   );
 
   sl.registerLazySingleton<HouseholdRemoteDataSource>(
     //TODO: Need to make it possible to use different accounts
-        () => HouseholdRemoteDataSourceImpl(userRecordService: RecordService(pb, 'users'), householdRecordService: RecordService(pb, 'household'), email: "test@test.com", password: "12345678", householdId: "g7szpsys0r944se"),
+        () => HouseholdRemoteDataSourceImpl(userRecordService: RecordService(pb, 'users'), householdRecordService: RecordService(pb, 'household')),
   );
 
 

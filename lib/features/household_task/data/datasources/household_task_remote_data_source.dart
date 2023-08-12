@@ -2,31 +2,25 @@ import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/features/household_task/data/models/household_task_model.dart';
 import 'package:household_organizer/features/household_task/domain/entities/household_task.dart';
 import 'package:pocketbase/pocketbase.dart';
-
+import 'package:household_organizer/core/entities/user.dart';
 abstract class HouseholdTaskRemoteDataSource {
-  Future<List<HouseholdTask>> getAllTaskForHousehold();
-  Future<HouseholdTask> createHouseholdTask(String title, int pointsWorth);
+  Future<List<HouseholdTask>> getAllTaskForHousehold(String householdId);
+  Future<HouseholdTask> createHouseholdTask(String householdId, String title, int pointsWorth);
 }
 
 class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource {
   final RecordService userRecordService;
   final RecordService taskRecordService;
-  final String email;
-  final String password;
-  final String householdId;
+
 
   HouseholdTaskRemoteDataSourceImpl({
     required this.userRecordService,
     required this.taskRecordService,
-    required this.email,
-    required this.password,
-    required this.householdId
   });
 
   @override
-  Future<List<HouseholdTaskModel>> getAllTaskForHousehold() async {
+  Future<List<HouseholdTaskModel>> getAllTaskForHousehold(String householdId) async {
     try {
-      final _ = await userRecordService.authWithPassword(email, password);
       final result = await taskRecordService.getFullList(filter: 'household="$householdId"', sort: '-created');
       List<HouseholdTaskModel> householdTaskModelList = [];
       for (final task in result) {
@@ -40,15 +34,13 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
   }
 
   @override
-  Future<HouseholdTaskModel> createHouseholdTask(String title, int pointsWorth) async {
+  Future<HouseholdTaskModel> createHouseholdTask(String householdId, String title, int pointsWorth) async {
     final body = <String, dynamic>{
       "title": title,
       "household": householdId,
       "points_worth": pointsWorth,
     };
     try {
-
-      final _ = await userRecordService.authWithPassword(email, password);
       final record = await taskRecordService.create(body: body);
       return HouseholdTaskModel.fromJSON(record.data, record.id);
     } catch(err) {

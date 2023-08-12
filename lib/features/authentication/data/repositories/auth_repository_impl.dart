@@ -25,6 +25,8 @@ class AuthRepositoryImpl implements AuthRepository {
       return Right(await localDataSource.loadAuthData());
     } on CacheException {
       return Left(CacheFailure());
+    } on ServerException {
+      return Left(ServerFailure());
     }
   }
 }

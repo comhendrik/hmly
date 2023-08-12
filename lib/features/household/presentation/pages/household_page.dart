@@ -7,9 +7,11 @@ import '../widgets/widget.dart';
 import '../../../../injection_container.dart';
 
 class HouseholdPage extends StatelessWidget {
+  final User mainUser;
 
   const HouseholdPage({
     super.key,
+    required this.mainUser
   });
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class HouseholdPage extends StatelessWidget {
                   }
                 },
               ),
-              const Controls()
+              Controls(householdId: mainUser.householdId,)
             ],
           ),
         ),

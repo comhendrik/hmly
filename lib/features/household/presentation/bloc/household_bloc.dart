@@ -15,7 +15,7 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
       emit(HouseholdInitial());
       if (event is LoadHouseholdEvent)  {
         emit(HouseholdLoading());
-        final resultEither = await loadHousehold.execute();
+        final resultEither = await loadHousehold.execute(event.householdId);
         resultEither.fold(
                 (failure) async {
               emit(const HouseholdError(errorMsg: 'Server Failure'));

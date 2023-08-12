@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Controls extends StatefulWidget {
+  final String householdId;
   const Controls({
-    super.key
+    super.key,
+    required this.householdId
   });
 
 
@@ -19,14 +21,14 @@ class _ControlsState extends State<Controls> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        dispatchNews();
+        dispatchNews(widget.householdId);
       },
       child: const Text("Get Household Data"),
     );
   }
 
-  void dispatchNews() {
+  void dispatchNews(String householdId) {
     BlocProvider.of<HouseholdBloc>(context)
-        .add(LoadHouseholdEvent());
+        .add(LoadHouseholdEvent(householdId: householdId));
   }
 }

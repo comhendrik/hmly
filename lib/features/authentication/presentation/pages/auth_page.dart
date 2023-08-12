@@ -1,8 +1,11 @@
+import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:household_organizer/features/authentication/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:household_organizer/test_secure_storage.dart';
+import 'package:household_organizer/features/household/presentation/pages/household_page.dart';
+import 'package:household_organizer/features/household_task/presentation/pages/household_task_page.dart';
+import 'package:household_organizer/features/authentication/presentation/widgets/LogoutButton.dart';
 
 import '../../../../injection_container.dart';
 
@@ -19,44 +22,54 @@ class AuthPage extends StatelessWidget {
   BlocProvider<AuthBloc> buildBody(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<AuthBloc>(),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            children: <Widget>[
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                      'Testing',
-                      style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20)
-                  )
-                ],
-              ),
-              BlocBuilder<AuthBloc, AuthState>(
-                builder: (context, state) {
-                  if (state is AuthInitial) {
-                    BlocProvider.of<AuthBloc>(context)
-                        .add(LoadAuthEvent());
-                    return const Text("Data is loading...");
-                  } else if (state is AuthLoading) {
-                    return const CircularProgressIndicator();
-                  } else if (state is AuthLoaded) {
-                    return Column(children: [Text(state.authData.email)]);
-                  } else if (state is AuthError) {
-                    return Text(state.errorMsg);
-                  } else if (state is AuthCreate){
-                    return const AuthenticationWidget();
-                  } else {
-                  return const Text("...");
-                  }
-                },
-              ),
-              const SControls(),
-            ],
-          ),
-        ),
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          if (state is AuthInitial) {
+            BlocProvider.of<AuthBloc>(context)
+                .add(LoadAuthEvent());
+            return const Text("Data is loading...");
+          } else if (state is AuthLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is AuthLoaded) {
+            return AuthenticatedView(mainUser: state.authData);
+          } else if (state is AuthError) {
+            return Text(state.errorMsg);
+          } else if (state is AuthCreate){
+            return const AuthenticationWidget();
+          } else {
+            return const Text("...");
+          }
+        },
       ),
+    );
+  }
+}
+
+
+class AuthenticatedView extends StatefulWidget {
+  final User mainUser;
+  const AuthenticatedView({super.key, required this.mainUser});
+
+
+  @override
+  State<AuthenticatedView> createState() => _AuthenticatedView();
+}
+
+class _AuthenticatedView extends State<AuthenticatedView> {
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.all(20),
+      children: [
+        Text(
+          "Welcome back ${widget.mainUser.name}",
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+        ),
+        HouseholdTaskPage(mainUser: widget.mainUser,),
+        HouseholdPage(mainUser: widget.mainUser,),
+        const LogoutButton(),
+      ],
     );
   }
 }

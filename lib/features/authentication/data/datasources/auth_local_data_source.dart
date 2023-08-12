@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/core/models/user_model.dart';
@@ -33,7 +34,6 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     try {
       final _ = await userRecordService.authWithPassword(email, password);
       final user = await userRecordService.getFirstListItem('email="$email"');
-
       return UserModel.fromJSON(user.data, user.id);
     } catch (_) {
       throw ServerException();

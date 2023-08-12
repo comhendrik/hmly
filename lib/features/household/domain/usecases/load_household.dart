@@ -8,7 +8,7 @@ class LoadHousehold {
 
   LoadHousehold({required this.repository});
 
-  Future<Either<Failure, Household>> execute() async {
-    return await repository.loadHousehold();
+  Future<Either<Failure, Household>> execute(String householdId) async {
+    return await repository.loadHousehold(householdId);
   }
 }

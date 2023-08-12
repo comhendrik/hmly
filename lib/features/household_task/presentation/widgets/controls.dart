@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Controls extends StatefulWidget {
+  final String householdId;
   const Controls({
-    super.key
+    super.key,
+    required this.householdId
   });
 
 
@@ -32,7 +34,7 @@ class _ControlsState extends State<Controls> {
 
   void dispatchAllTasksForHousehold() {
     BlocProvider.of<HouseholdTaskBloc>(context)
-        .add(GetAllTasksForHouseholdEvent());
+        .add(GetAllTasksForHouseholdEvent(householdId: widget.householdId));
   }
 
 }

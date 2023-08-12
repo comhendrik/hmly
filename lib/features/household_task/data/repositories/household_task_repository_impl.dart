@@ -14,9 +14,9 @@ class HouseholdTaskRepositoryImpl implements HouseholdTaskRepository {
   });
 
   @override
-  Future<Either<Failure, List<HouseholdTask>>> getAllTasksForHousehold() async {
+  Future<Either<Failure, List<HouseholdTask>>> getAllTasksForHousehold(String householdId) async {
     try {
-      return Right(await remoteDataSource.getAllTaskForHousehold());
+      return Right(await remoteDataSource.getAllTaskForHousehold(householdId));
     } on ServerException {
       return Left(ServerFailure());
     }
@@ -24,9 +24,9 @@ class HouseholdTaskRepositoryImpl implements HouseholdTaskRepository {
 
 
   @override
-  Future<Either<Failure, HouseholdTask>> createHouseholdTask(String title, int pointsWorth) async {
+  Future<Either<Failure, HouseholdTask>> createHouseholdTask(String householdId, String title, int pointsWorth) async {
     try {
-      return Right(await remoteDataSource.createHouseholdTask(title, pointsWorth));
+      return Right(await remoteDataSource.createHouseholdTask(householdId, title, pointsWorth));
     } on ServerException {
       return Left(ServerFailure());
     }

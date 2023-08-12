@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/features/household_task/presentation/bloc/household_task_bloc.dart';
 class CreateHouseholdTaskSheet extends StatefulWidget {
+  final String householdId;
   const CreateHouseholdTaskSheet({
-    super.key
+    super.key,
+    required this.householdId
   });
 
 
@@ -67,7 +70,7 @@ class _CreateHouseholdTaskSheetState extends State<CreateHouseholdTaskSheet> {
                             icon: const Icon(Icons.cancel_outlined, color: Colors.red,),
                             onPressed: () => Navigator.pop(context),
                           ),
-                          ElevatedButton(onPressed: () => createHouseholdTask(inputStr, int.parse(numberStr)), child: const Text("Create New Task")),
+                          ElevatedButton(onPressed: () => createHouseholdTask(widget.householdId, inputStr, int.parse(numberStr)), child: const Text("Create New Task")),
                         ],
                       )
                     ],
@@ -81,9 +84,9 @@ class _CreateHouseholdTaskSheetState extends State<CreateHouseholdTaskSheet> {
     );
   }
 
-  void createHouseholdTask(String title, int pointsWorth) {
+  void createHouseholdTask(String householdId, String title, int pointsWorth) {
     BlocProvider.of<HouseholdTaskBloc>(context)
-        .add(CreateHouseholdTaskEvent(title: title, pointsWorth: pointsWorth));
+        .add(CreateHouseholdTaskEvent(householdId: householdId, title: title, pointsWorth: pointsWorth));
   }
 
 }

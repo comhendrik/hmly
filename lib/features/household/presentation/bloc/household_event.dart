@@ -8,4 +8,10 @@ abstract class HouseholdEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadHouseholdEvent extends HouseholdEvent {}
+class LoadHouseholdEvent extends HouseholdEvent {
+  final String householdId;
+
+  const LoadHouseholdEvent({
+    required this.householdId,
+  });
+}

@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:household_organizer/core/entities/user.dart';
+import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/create_auth_data.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/load_auth_data.dart';
 
@@ -18,10 +19,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await createAuth.execute(event.email, event.password);
         final resultEither = await loadAuth.execute();
         await resultEither.fold(
-                (failure) async {
-              emit(const AuthError(errorMsg: 'Server Failure'));
+            (failure) async {
+              if (failure.runtimeType == CacheFailure) {
+                emit(const AuthError(errorMsg: 'Cache Failure'));
+              } else {
+                emit(const AuthError(errorMsg: 'Server Failure'));
+              }
             },
-                (auth) async {
+            (auth) async {
               emit(AuthLoaded(authData: auth));
             }
         );
@@ -29,11 +34,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthLoading());
         final resultEither = await loadAuth.execute();
         await resultEither.fold(
-                (failure) async {
+            (failure) async {
               emit(AuthCreate());
             },
-                (auth) async {
-                  emit(AuthLoaded(authData: auth));
+            (auth) async {
+              emit(AuthLoaded(authData: auth));
             }
         );
       }

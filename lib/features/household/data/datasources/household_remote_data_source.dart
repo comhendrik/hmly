@@ -5,27 +5,20 @@ import 'package:household_organizer/core/entities/user.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 abstract class HouseholdRemoteDataSource {
-  Future<HouseholdModel> loadHousehold();
+  Future<HouseholdModel> loadHousehold(String householdId);
 }
 
 class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
   final RecordService userRecordService;
   final RecordService householdRecordService;
-  final String email;
-  final String password;
-  final String householdId;
 
   HouseholdRemoteDataSourceImpl({
     required this.userRecordService,
     required this.householdRecordService,
-    required this.email,
-    required this.password,
-    required this.householdId
   });
 
   @override
-  Future<HouseholdModel> loadHousehold() async {
-    final _ = await userRecordService.authWithPassword(email, password);
+  Future<HouseholdModel> loadHousehold(String householdId) async {
     try {
       final result = await householdRecordService.getOne(householdId);
       final users = await userRecordService.getFullList(filter: 'household="$householdId"');

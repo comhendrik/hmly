@@ -8,7 +8,7 @@ class CreateHouseholdTask {
 
   CreateHouseholdTask({required this.repository});
 
-  Future<Either<Failure, HouseholdTask>> execute(String title, int pointsWorth) async {
-    return await repository.createHouseholdTask(title, pointsWorth);
+  Future<Either<Failure, HouseholdTask>> execute(String householdId, String title, int pointsWorth) async {
+    return await repository.createHouseholdTask(householdId, title, pointsWorth);
   }
 }

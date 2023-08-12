@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:household_organizer/core/entities/user.dart';
+import 'package:household_organizer/features/authentication/presentation/pages/auth_page.dart';
 import 'injection_container.dart' as di;
 import 'household_home.dart';
 void main() async {
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         useMaterial3: true,
       ),
-      home: const HouseholdHome(householdName: "Haushalt Steen"),
+      home: const HouseholdHome(),
     );
   }
 }
