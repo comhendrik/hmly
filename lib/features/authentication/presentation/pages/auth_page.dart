@@ -31,7 +31,7 @@ class AuthPage extends StatelessWidget {
           } else if (state is AuthLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is AuthLoaded) {
-            return AuthenticatedView(mainUser: state.authData);
+            return state.authData.householdId == "" ? Text("Create Household or add yourself to one.") : AuthenticatedView(mainUser: state.authData);
           } else if (state is AuthError) {
             return Text(state.errorMsg);
           } else if (state is AuthCreate){

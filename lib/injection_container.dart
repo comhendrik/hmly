@@ -1,9 +1,10 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:household_organizer/core/entities/user.dart';
-import 'package:household_organizer/features/authentication/data/datasources/auth_local_data_source.dart';
+import 'package:household_organizer/features/authentication/data/datasources/auth_data_source.dart';
 import 'package:household_organizer/features/authentication/data/repositories/auth_repository_impl.dart';
 import 'package:household_organizer/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/create_auth_data.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/create_auth_data_on_server.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/load_auth_data.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:household_organizer/features/household/data/datasources/household_remote_data_source.dart';
@@ -39,7 +40,7 @@ Future<void> init() async {
   );
 
   sl.registerFactory(
-        () => AuthBloc(createAuth: sl(), loadAuth: sl())
+        () => AuthBloc(createAuth: sl(), loadAuth: sl(), createAuthDataOnServer: sl())
   );
 
   // Use cases
@@ -51,6 +52,7 @@ Future<void> init() async {
 
   sl.registerLazySingleton(() => CreateAuthData(repository: sl()));
   sl.registerLazySingleton(() => LoadAuthData(repository: sl()));
+  sl.registerLazySingleton(() => CreateAuthDataOnServer(repository: sl()));
 
   // Repository
   sl.registerLazySingleton<HouseholdTaskRepository>(
@@ -86,9 +88,9 @@ Future<void> init() async {
 
 
 
-  sl.registerLazySingleton<AuthLocalDataSource>(
+  sl.registerLazySingleton<AuthDataSource>(
     //TODO: Need to make it possible to use different accounts
-        () => AuthLocalDataSourceImpl(storage: storage, userRecordService: RecordService(pb, 'users'), householdRecordService: RecordService(pb, 'household')),
+        () => AuthDataSourceImpl(storage: storage, userRecordService: RecordService(pb, 'users'), householdRecordService: RecordService(pb, 'household')),
   );
   //! Cor
   //

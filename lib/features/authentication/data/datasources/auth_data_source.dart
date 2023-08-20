@@ -5,18 +5,19 @@ import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/core/models/user_model.dart';
 import 'package:pocketbase/pocketbase.dart';
 
-abstract class AuthLocalDataSource {
+abstract class AuthDataSource {
   Future<void> createAuthData(String email, String password);
   Future<UserModel> loadAuthData();
+  Future<UserModel> createAuthDataOnServer(String email, String password,String passwordConfirm, String username, String name);
 }
 
-class AuthLocalDataSourceImpl implements AuthLocalDataSource {
+class AuthDataSourceImpl implements AuthDataSource {
 
   final RecordService userRecordService;
   final RecordService householdRecordService;
   final FlutterSecureStorage storage;
 
-  AuthLocalDataSourceImpl({required this.userRecordService, required this.householdRecordService, required this.storage});
+  AuthDataSourceImpl({required this.userRecordService, required this.householdRecordService, required this.storage});
 
   @override
   Future<void> createAuthData(String email, String password) async {
@@ -36,6 +37,25 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       final user = await userRecordService.getFirstListItem('email="$email"');
       return UserModel.fromJSON(user.data, user.id);
     } catch (_) {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<UserModel> createAuthDataOnServer(String email, String password, String passwordConfirm, String username, String name) async {
+    final body = <String, dynamic>{
+      "username": username,
+      "email": email,
+      "emailVisibility": true,
+      "password": password,
+      "passwordConfirm": passwordConfirm,
+      "name": name,
+      "weeklyPoints": 0,
+    };
+    try {
+      final record = await userRecordService.create(body: body);
+      return UserModel.fromJSON(record.data, record.id);
+    } catch(err) {
       throw ServerException();
     }
   }

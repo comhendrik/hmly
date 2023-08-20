@@ -21,3 +21,19 @@ class CreateAuthEvent extends AuthEvent {
 
 class LoadAuthEvent extends AuthEvent {}
 
+class CreateAuthDataOnServerEvent extends AuthEvent {
+  final String email;
+  final String password;
+  final String passwordConfirm;
+  final String username;
+  final String name;
+
+  const CreateAuthDataOnServerEvent({
+    required this.email,
+    required this.password,
+    required this.passwordConfirm,
+    required this.username,
+    required this.name,
+  });
+}
+
