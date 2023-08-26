@@ -31,7 +31,7 @@ class AuthPage extends StatelessWidget {
           } else if (state is AuthLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is AuthLoaded) {
-            return state.authData.householdId == "" ? Text("Create Household or add yourself to one.") : AuthenticatedView(mainUser: state.authData);
+            return state.authData.householdId == "" ? AddAuthDataToHouseholdView(user: state.authData) : AuthenticatedView(mainUser: state.authData);
           } else if (state is AuthError) {
             return Text(state.errorMsg);
           } else if (state is AuthCreate){
@@ -72,4 +72,53 @@ class _AuthenticatedView extends State<AuthenticatedView> {
       ],
     );
   }
+}
+
+class AddAuthDataToHouseholdView extends StatefulWidget {
+  final User user;
+
+  const AddAuthDataToHouseholdView({super.key, required this.user});
+
+
+  @override
+  State<AddAuthDataToHouseholdView> createState() => _AddAuthDataToHouseholdView();
+}
+
+class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
+
+  final householdIdController = TextEditingController();
+  String householdIdStr = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        children: [
+          const Text("Add yourself to household"),
+          TextField(
+              controller: householdIdController,
+              keyboardType: TextInputType.text,
+              decoration: const InputDecoration(
+                  hintText: 'insert id of household',
+                  contentPadding: EdgeInsets.all(20)
+              ),
+              onChanged: (value) {
+                householdIdStr = value;
+              }
+          ),
+          ElevatedButton(onPressed: () {
+            addAuthDataToHouseholdId(widget.user, householdIdStr);
+          }, child: const Text("Add user to household")
+          ),
+          const LogoutButton(),
+        ],
+      ),
+    );
+  }
+
+  void addAuthDataToHouseholdId(User user, String householdId) {
+    BlocProvider.of<AuthBloc>(context)
+        .add(AddAuthDataToHouseholdEvent(user: user, householdId: householdId));
+  }
+
 }

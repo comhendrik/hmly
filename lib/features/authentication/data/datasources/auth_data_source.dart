@@ -2,10 +2,12 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:household_organizer/core/error/exceptions.dart';
+import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/core/models/user_model.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 abstract class AuthDataSource {
+  Future<void> addAuthDataToHousehold(String userId, String householdId);
   Future<void> createAuthData(String email, String password);
   Future<UserModel> loadAuthData();
   Future<UserModel> createAuthDataOnServer(String email, String password,String passwordConfirm, String username, String name);
@@ -18,6 +20,18 @@ class AuthDataSourceImpl implements AuthDataSource {
   final FlutterSecureStorage storage;
 
   AuthDataSourceImpl({required this.userRecordService, required this.householdRecordService, required this.storage});
+
+  @override
+  Future<void> addAuthDataToHousehold(String userId, String householdId) async {
+    final body = <String, dynamic>{
+      "household": householdId,
+    };
+    try {
+      final _ = await userRecordService.update(userId, body: body);
+    } catch(err) {
+      throw ServerException();
+    }
+  }
 
   @override
   Future<void> createAuthData(String email, String password) async {

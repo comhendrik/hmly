@@ -7,6 +7,16 @@ abstract class AuthEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class AddAuthDataToHouseholdEvent extends AuthEvent {
+  final User user;
+  final String householdId;
+
+  const AddAuthDataToHouseholdEvent({
+    required this.user,
+    required this.householdId
+  });
+}
+
 class CreateAuthEvent extends AuthEvent {
 
   final String email;
