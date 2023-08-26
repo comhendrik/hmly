@@ -66,7 +66,6 @@ class _AuthenticatedView extends State<AuthenticatedView> {
           "Welcome back ${widget.mainUser.name}",
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
         ),
-        HouseholdTaskPage(mainUser: widget.mainUser,),
         HouseholdPage(mainUser: widget.mainUser,),
         const LogoutButton(),
       ],

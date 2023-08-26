@@ -6,6 +6,7 @@ import 'package:pocketbase/pocketbase.dart';
 
 abstract class HouseholdRemoteDataSource {
   Future<HouseholdModel> loadHousehold(String householdId);
+  Future<void> createHousehold(String title, int minWeeklyPoints);
 }
 
 class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
@@ -28,6 +29,20 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
         userList.add(UserModel.fromJSON(userResult.data, user.id));
       }
       return HouseholdModel.fromJSON(result.data, result.id, userList);
+    } catch(err) {
+      throw ServerException();
+    }
+
+  }
+
+  @override
+  Future<void> createHousehold(String title, int minWeeklyPoints) async {
+    final body = <String, dynamic>{
+      "title": title,
+      "minWeeklyPoints": minWeeklyPoints,
+    };
+    try {
+      await householdRecordService.create(body: body);
     } catch(err) {
       throw ServerException();
     }
