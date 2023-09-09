@@ -58,24 +58,63 @@ class AuthenticatedView extends StatefulWidget {
 
 class _AuthenticatedView extends State<AuthenticatedView> {
 
+  int currentPageIndex = 0;
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(20),
-      children: [
-        Text(
-          "Welcome back ${widget.mainUser.name}",
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-        ),
-        HouseholdPage(mainUser: widget.mainUser,),
-        const LogoutButton(),
-        ElevatedButton(onPressed: () {
-          deleteAuthDataFromHousehold(widget.mainUser);
+    return Scaffold(
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentPageIndex = index;
+          });
         },
-            child: const Text("Delete user from Household")
-        )
-      ],
+        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+        indicatorColor: Colors.lightBlueAccent,
+        selectedIndex: currentPageIndex,
+        destinations: const <Widget>[
+          NavigationDestination(
+            selectedIcon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
+            label: 'Home',
+          ),
+          NavigationDestination(
+            selectedIcon: Icon(Icons.person),
+            icon: Icon(Icons.person_outline),
+            label: 'Account',
+          ),
+        ],
+      ),
+      body: <Widget>[
+        Container(
+          alignment: Alignment.center,
+          child: ListView(
+            padding: const EdgeInsets.all(20),
+            children: [
+              Text(
+                "Welcome back ${widget.mainUser.name}",
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              ),
+              HouseholdPage(mainUser: widget.mainUser,),
+
+            ],
+          ),
+        ),
+        Container(
+          alignment: Alignment.center,
+          child: Column(
+            children: [
+              const LogoutButton(),
+              ElevatedButton(onPressed: () {
+                deleteAuthDataFromHousehold(widget.mainUser);
+              },
+                  child: const Text("Delete user from Household")
+              )
+            ],
+          ),
+        ),
+      ][currentPageIndex],
     );
+
   }
 
   void deleteAuthDataFromHousehold(User user) {
