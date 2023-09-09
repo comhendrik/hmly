@@ -6,6 +6,7 @@ import 'package:household_organizer/features/authentication/domain/repositories/
 import 'package:household_organizer/features/authentication/domain/usecases/add_auth_data_to_household.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/create_auth_data.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/create_auth_data_on_server.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/delete_auth_data_from_household.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/load_auth_data.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:household_organizer/features/household/data/datasources/household_remote_data_source.dart';
@@ -22,7 +23,6 @@ import 'package:household_organizer/features/household_task/presentation/bloc/ho
 
 import 'package:get_it/get_it.dart';
 import 'package:pocketbase/pocketbase.dart';
-//TODO: Make it possible to fetch from different accounts and use different households
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -41,7 +41,7 @@ Future<void> init() async {
   );
 
   sl.registerFactory(
-        () => AuthBloc(createAuth: sl(), loadAuth: sl(), createAuthDataOnServer: sl(), addAuthDataToHousehold: sl())
+        () => AuthBloc(createAuth: sl(), loadAuth: sl(), createAuthDataOnServer: sl(), addAuthDataToHousehold: sl(), deleteAuthDataFromHousehold: sl())
   );
 
   // Use cases
@@ -52,6 +52,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => LoadHousehold(repository: sl()));
 
   sl.registerLazySingleton(() => AddAuthDataToHousehold(repository: sl()));
+  sl.registerLazySingleton(() => DeleteAuthDataFromHousehold(repository: sl()));
   sl.registerLazySingleton(() => CreateAuthData(repository: sl()));
   sl.registerLazySingleton(() => LoadAuthData(repository: sl()));
   sl.registerLazySingleton(() => CreateAuthDataOnServer(repository: sl()));

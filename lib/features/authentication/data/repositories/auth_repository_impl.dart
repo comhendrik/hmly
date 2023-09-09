@@ -23,6 +23,15 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Either<Failure, void>> deleteAuthDataFromHousehold(User user) async {
+    try {
+      return Right(await dataSource.deleteAuthDataFromHousehold(user));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
   Future<void> createAuthData(String email, String password) async {
     await dataSource.createAuthData(email, password);
   }

@@ -17,6 +17,14 @@ class AddAuthDataToHouseholdEvent extends AuthEvent {
   });
 }
 
+class DeleteAuthDataFromHouseholdEvent extends AuthEvent {
+  final User user;
+
+  const DeleteAuthDataFromHouseholdEvent({
+    required this.user
+  });
+}
+
 class CreateAuthEvent extends AuthEvent {
 
   final String email;

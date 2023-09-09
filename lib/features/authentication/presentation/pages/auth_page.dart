@@ -1,4 +1,5 @@
 import 'package:household_organizer/core/entities/user.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/delete_auth_data_from_household.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:household_organizer/features/authentication/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -68,8 +69,18 @@ class _AuthenticatedView extends State<AuthenticatedView> {
         ),
         HouseholdPage(mainUser: widget.mainUser,),
         const LogoutButton(),
+        ElevatedButton(onPressed: () {
+          deleteAuthDataFromHousehold(widget.mainUser);
+        },
+            child: const Text("Delete user from Household")
+        )
       ],
     );
+  }
+
+  void deleteAuthDataFromHousehold(User user) {
+    BlocProvider.of<AuthBloc>(context)
+        .add(DeleteAuthDataFromHouseholdEvent(user: user));
   }
 }
 
@@ -106,7 +117,7 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
               }
           ),
           ElevatedButton(onPressed: () {
-            addAuthDataToHouseholdId(widget.user, householdIdStr);
+            addAuthDataToHousehold(widget.user, householdIdStr);
           }, child: const Text("Add user to household")
           ),
           const LogoutButton(),
@@ -115,9 +126,10 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
     );
   }
 
-  void addAuthDataToHouseholdId(User user, String householdId) {
+  void addAuthDataToHousehold(User user, String householdId) {
     BlocProvider.of<AuthBloc>(context)
         .add(AddAuthDataToHouseholdEvent(user: user, householdId: householdId));
   }
+
 
 }

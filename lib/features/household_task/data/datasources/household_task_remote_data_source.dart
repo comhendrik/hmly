@@ -28,6 +28,7 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
       }
       return householdTaskModelList;
     } catch(err) {
+      print(err);
       throw ServerException();
     }
 
@@ -44,6 +45,7 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
       final record = await taskRecordService.create(body: body);
       return HouseholdTaskModel.fromJSON(record.data, record.id);
     } catch(err) {
+      print(err);
       throw ServerException();
     }
 

@@ -30,6 +30,7 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
       }
       return HouseholdModel.fromJSON(result.data, result.id, userList);
     } catch(err) {
+      print(err);
       throw ServerException();
     }
 
@@ -44,6 +45,7 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
     try {
       await householdRecordService.create(body: body);
     } catch(err) {
+      print(err);
       throw ServerException();
     }
 
