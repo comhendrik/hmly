@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 class User extends Equatable {
   final String id;
   final String username;
-  final householdId;
+  final String householdId;
   final String email;
   final String name;
 
@@ -15,6 +15,7 @@ class User extends Equatable {
     required this.name
   });
 
+  //TODO: Implementing use of WeeklyPoints!!!
   @override
   List<Object> get props => [id, username, householdId, email, name];
 

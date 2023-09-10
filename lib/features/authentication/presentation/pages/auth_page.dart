@@ -103,6 +103,7 @@ class _AuthenticatedView extends State<AuthenticatedView> {
           alignment: Alignment.center,
           child: Column(
             children: [
+              AccountView(mainUser: widget.mainUser),
               const LogoutButton(),
               ElevatedButton(onPressed: () {
                 deleteAuthDataFromHousehold(widget.mainUser);
@@ -169,6 +170,5 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
     BlocProvider.of<AuthBloc>(context)
         .add(AddAuthDataToHouseholdEvent(user: user, householdId: householdId));
   }
-
 
 }
