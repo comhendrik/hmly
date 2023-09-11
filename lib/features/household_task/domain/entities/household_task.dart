@@ -5,12 +5,14 @@ class HouseholdTask extends Equatable {
   final String title;
   final DateTime? date;
   final bool isDone;
+  final int pointsWorth;
 
   const HouseholdTask({
     required this.id,
     required this.title,
     required this.date,
-    required this.isDone
+    required this.isDone,
+    required this.pointsWorth
   });
 
   String getCurrentDate() {

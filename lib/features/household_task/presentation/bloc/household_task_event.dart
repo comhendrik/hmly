@@ -26,3 +26,13 @@ class CreateHouseholdTaskEvent extends HouseholdTaskEvent {
     required this.pointsWorth
   });
 }
+
+class UpdateHouseholdTaskEvent extends HouseholdTaskEvent {
+  final String taskId;
+  final String householdId;
+
+  const UpdateHouseholdTaskEvent({
+    required this.taskId,
+    required this.householdId
+  });
+}

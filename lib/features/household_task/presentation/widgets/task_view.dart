@@ -5,7 +5,12 @@ import 'widgets.dart';
 class TaskView extends StatelessWidget {
 
   final List<HouseholdTask> tasks;
-  const TaskView({super.key, required this.tasks});
+  final String householdId;
+  const TaskView({
+    super.key,
+    required this.tasks,
+    required this.householdId
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +36,7 @@ class TaskView extends StatelessWidget {
                   ],
                 ),
                 for (HouseholdTask task in tasks)
-                  TaskWidget(task: task)
+                  TaskWidget(task: task,householdId: householdId,)
               ],
             )
         )

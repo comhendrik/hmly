@@ -7,11 +7,13 @@ class HouseholdTaskModel extends HouseholdTask {
     required String title,
     required DateTime? date,
     required bool isDone,
+    required int pointsWorth
   }) : super (
     id: id,
     title: title,
     date: date,
     isDone: isDone,
+    pointsWorth: pointsWorth,
   );
    
    
@@ -24,10 +26,12 @@ class HouseholdTaskModel extends HouseholdTask {
        dueTo = DateTime.tryParse(dueToString!);
      }
      return HouseholdTaskModel(
-         id: id,
-         title: json['title'],
-         date: dueTo,
-         isDone: json['isDone']);
+       id: id,
+       title: json['title'],
+       date: dueTo,
+       isDone: json['isDone'],
+       pointsWorth: json['points_worth']
+     );
    }
 
 }

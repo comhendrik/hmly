@@ -6,6 +6,7 @@ import 'package:household_organizer/core/entities/user.dart';
 abstract class HouseholdTaskRemoteDataSource {
   Future<List<HouseholdTask>> getAllTaskForHousehold(String householdId);
   Future<HouseholdTask> createHouseholdTask(String householdId, String title, int pointsWorth);
+  Future<void> updateHouseholdTask(String taskId);
 }
 
 class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource {
@@ -44,6 +45,20 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
     try {
       final record = await taskRecordService.create(body: body);
       return HouseholdTaskModel.fromJSON(record.data, record.id);
+    } catch(err) {
+      print(err);
+      throw ServerException();
+    }
+
+  }
+
+  @override
+  Future<void> updateHouseholdTask(String taskId) async {
+    final body = <String, dynamic>{
+      "isDone": true
+    };
+    try {
+      final record = await taskRecordService.update(taskId, body: body);
     } catch(err) {
       print(err);
       throw ServerException();

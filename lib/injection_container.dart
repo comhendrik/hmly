@@ -1,5 +1,4 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/features/authentication/data/datasources/auth_data_source.dart';
 import 'package:household_organizer/features/authentication/data/repositories/auth_repository_impl.dart';
 import 'package:household_organizer/features/authentication/domain/repositories/auth_repository.dart';
@@ -19,6 +18,7 @@ import 'package:household_organizer/features/household_task/data/repositories/ho
 import 'package:household_organizer/features/household_task/domain/repositories/household_task_repository.dart';
 import 'package:household_organizer/features/household_task/domain/usecases/create_household_task.dart';
 import 'package:household_organizer/features/household_task/domain/usecases/get_all_tasks_for_household.dart';
+import 'package:household_organizer/features/household_task/domain/usecases/update_household_task.dart';
 import 'package:household_organizer/features/household_task/presentation/bloc/household_task_bloc.dart';
 
 import 'package:get_it/get_it.dart';
@@ -31,7 +31,8 @@ Future<void> init() async {
   sl.registerFactory(
         () => HouseholdTaskBloc(
           getTasks: sl(),
-          createTask: sl()
+          createTask: sl(),
+          updateTask: sl(),
     ),
   );
   sl.registerFactory(
@@ -47,6 +48,7 @@ Future<void> init() async {
   // Use cases
   sl.registerLazySingleton(() => GetAllTasksForHousehold(sl()));
   sl.registerLazySingleton(() => CreateHouseholdTask(repository: sl()));
+  sl.registerLazySingleton(() => UpdateHouseholdTask(repository: sl()));
 
 
   sl.registerLazySingleton(() => LoadHousehold(repository: sl()));

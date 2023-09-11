@@ -17,7 +17,7 @@ class HouseholdTaskDisplay extends StatelessWidget {
           Column(
               children: getNumberOfTasks(allTasks, 3).map((task){
                 return Container(
-                  child: TaskWidget(task: task),
+                  child: TaskWidget(task: task, householdId: mainUser.householdId,),
                 );
               }).toList()),
           Row(
@@ -31,7 +31,7 @@ class HouseholdTaskDisplay extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TaskView(tasks: allTasks)),
+                    MaterialPageRoute(builder: (context) => TaskView(tasks: allTasks, householdId: mainUser.householdId,)),
                   );
                 },
                 child: const Text('See more'),

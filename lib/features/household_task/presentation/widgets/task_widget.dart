@@ -1,9 +1,25 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'package:household_organizer/features/household_task/domain/entities/household_task.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:household_organizer/features/household_task/presentation/bloc/household_task_bloc.dart';
 
-class TaskWidget extends StatelessWidget {
+class TaskWidget extends StatefulWidget {
   final HouseholdTask task;
-  const TaskWidget({super.key, required this.task});
+  final String householdId;
+
+  const TaskWidget({
+    super.key,
+    required this.task,
+    required this.householdId
+  });
+
+  @override
+  State<TaskWidget> createState() => _TaskWidgetState();
+}
+
+class _TaskWidgetState extends State<TaskWidget> {
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +27,7 @@ class TaskWidget extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>  TaskDetail(task: task)),
+          MaterialPageRoute(builder: (context) =>  TaskDetail(task: task,householdId: householdId,)),
         );
       },
       child: Container(
@@ -26,14 +42,14 @@ class TaskWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                task.title,
+                widget.task.title,
                 style: const TextStyle(
                   fontSize: 16,
                   color: Colors.black,
                 ),
               ),
               Text(
-                'Due to ${task.getCurrentDate()}',
+                'Due to ${widget.task.getCurrentDate()}',
                 style: const TextStyle(
                   fontWeight: FontWeight.w200,
                   color: Colors.grey,
@@ -47,10 +63,22 @@ class TaskWidget extends StatelessWidget {
   }
 }
 
-class TaskDetail extends StatelessWidget {
+class TaskDetail extends StatefulWidget {
   final HouseholdTask task;
-  const TaskDetail({super.key, required this.task});
+  final String householdId;
 
+  const TaskDetail({
+    super.key,
+    required this.task,
+    required this.householdId
+  });
+
+  @override
+  State<TaskDetail> createState() => _TaskDetailState();
+
+}
+
+class _TaskDetailState extends State<TaskDetail> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -69,7 +97,7 @@ class TaskDetail extends StatelessWidget {
                         }
                     ),
                     Text(
-                      task.title,
+                      widget.task.title,
                       style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                     ),
                   ],
@@ -79,15 +107,19 @@ class TaskDetail extends StatelessWidget {
                   style: TextStyle(fontWeight: FontWeight.bold)
                 ),
                 Text(
-                  task.getCurrentDate()
+                    widget.task.getCurrentDate()
                 ),
                 const Text(
                   'Assigned to',
                     style: TextStyle(fontWeight: FontWeight.bold)
                 ),
                 const Text(
-                  'Hendrik Steen'
+                  'Placeholder Hendrik Steen'
                 ),
+                const Text(
+                    'Points Worth:'
+                ),
+                Text(widget.task.pointsWorth.toString()),
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
                   child: ElevatedButton.icon(
@@ -101,12 +133,21 @@ class TaskDetail extends StatelessWidget {
                     ),
 
                     onPressed: () {},
-                    label: const Text("Finish Task")
+                    label: Text(widget.task.isDone ? "Undo Task" : "Finish Task")
                   ),
                 ),
               ],
             )
         )
     );
+
   }
+
+  //TODO: Access of context
+
+  void updateTask() {
+    BlocProvider.of<HouseholdTaskBloc>(context)
+        .add(UpdateHouseholdTaskEvent(taskId: widget.task.id, householdId: widget.householdId));
+  }
+
 }
