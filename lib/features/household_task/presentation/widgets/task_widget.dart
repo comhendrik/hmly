@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:household_organizer/features/household_task/domain/entities/household_task.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +25,7 @@ class _TaskWidgetState extends State<TaskWidget> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>  TaskDetail(task: task,householdId: householdId,)),
+          MaterialPageRoute(builder: (context) =>  TaskDetail(task: widget.task,householdId: widget.householdId,)),
         );
       },
       child: Container(
@@ -55,11 +53,21 @@ class _TaskWidgetState extends State<TaskWidget> {
                   color: Colors.grey,
                 ),
               ),
+              Text("Is done: ${widget.task.isDone}"),
+              ElevatedButton(onPressed: () {
+                updateTask(widget.task.id, widget.task.isDone, widget.householdId);
+              }, child: const Text("Testing update")
+              )
             ],
           ),
         ),
       ),
     );
+  }
+
+  void updateTask(String taskId, bool isDone, String householdId) {
+    BlocProvider.of<HouseholdTaskBloc>(context)
+        .add(UpdateHouseholdTaskEvent(taskId: taskId, isDone: isDone, householdId: householdId));
   }
 }
 
@@ -132,7 +140,11 @@ class _TaskDetailState extends State<TaskDetail> {
                       )
                     ),
 
-                    onPressed: () {},
+                    onPressed: () {
+
+
+
+                    },
                     label: Text(widget.task.isDone ? "Undo Task" : "Finish Task")
                   ),
                 ),
@@ -145,9 +157,5 @@ class _TaskDetailState extends State<TaskDetail> {
 
   //TODO: Access of context
 
-  void updateTask() {
-    BlocProvider.of<HouseholdTaskBloc>(context)
-        .add(UpdateHouseholdTaskEvent(taskId: widget.task.id, householdId: widget.householdId));
-  }
 
 }
