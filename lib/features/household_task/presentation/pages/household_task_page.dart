@@ -23,17 +23,7 @@ class HouseholdTaskPage extends StatelessWidget {
       child: Center(
         child: Column(
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                    'Current Tasks',
-                    style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20)
-                ),
-                Controls(householdId: mainUser.householdId,)
-              ],
 
-            ),
             BlocBuilder<HouseholdTaskBloc, HouseholdTaskState>(
               builder: (context, state) {
                 if (state is HouseholdTaskInitial) {

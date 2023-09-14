@@ -73,9 +73,9 @@ class _AuthenticatedView extends State<AuthenticatedView> {
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(
-            selectedIcon: Icon(Icons.home),
-            icon: Icon(Icons.home_outlined),
-            label: 'Home',
+            selectedIcon: Icon(Icons.task),
+            icon: Icon(Icons.task_outlined),
+            label: 'Tasks',
           ),
           NavigationDestination(
             selectedIcon: Icon(Icons.person),

@@ -36,30 +36,44 @@ class _TaskWidgetState extends State<TaskWidget> {
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 10),
           tileColor: Colors.white,
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          title: Row(
             children: [
-              Text(
-                widget.task.title,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.task.title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const DetailInfo(icon: Icons.person, title: '<Placeholer>'),
+                  DetailInfo(icon: Icons.calendar_month, title: widget.task.getCurrentDate()),
+                  DetailInfo(icon: Icons.timeline, title: widget.task.pointsWorth.toString()),
+                ],
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+                child: ElevatedButton.icon(
+                    icon: Icon(widget.task.isDone ? Icons.close : Icons.check),
+                    style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)
+                        )
+                    ),
+
+                    onPressed: () {
+                      updateTask(widget.task.id, widget.task.isDone, widget.householdId);
+                    },
+                    label: Text(widget.task.isDone ? 'Undo' : 'Finish')
                 ),
               ),
-              Text(
-                'Due to ${widget.task.getCurrentDate()}',
-                style: const TextStyle(
-                  fontWeight: FontWeight.w200,
-                  color: Colors.grey,
-                ),
-              ),
-              Text("Is done: ${widget.task.isDone}"),
-              ElevatedButton(onPressed: () {
-                updateTask(widget.task.id, widget.task.isDone, widget.householdId);
-              }, child: const Text("Testing update")
-              )
             ],
-          ),
+
+          )
         ),
       ),
     );
@@ -155,7 +169,36 @@ class _TaskDetailState extends State<TaskDetail> {
 
   }
 
-  //TODO: Access of context
 
+}
+
+class DetailInfo extends StatelessWidget {
+
+  /// Widget for showing an Icon besides a text. Used in this application for TaskWidgets in List
+
+  final IconData icon;
+  final String title;
+
+  const DetailInfo({
+    super.key,
+    required this.icon,
+    required this.title
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon),
+        Text(
+          '  $title',
+          style: const TextStyle(
+            fontWeight: FontWeight.w200,
+            color: Colors.grey,
+          )
+        )
+      ],
+    );
+  }
 
 }

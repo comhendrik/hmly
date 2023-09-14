@@ -16,31 +16,24 @@ class HouseholdTaskDisplay extends StatelessWidget {
     if (allTasks.isNotEmpty) {
       return Column(
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                  'Current Tasks',
+                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20)
+              ),
+              CreateHouseholdTaskSheet(householdId: mainUser.householdId,),
+              Controls(householdId: mainUser.householdId,)
+            ],
+
+          ),
           Column(
-              children: getNumberOfTasks(allTasks, 3).map((task){
+              children: allTasks.map((task){
                 return Container(
                   child: TaskWidget(task: task, householdId: mainUser.householdId,),
                 );
               }).toList()),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.black,
-
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => TaskView(tasks: allTasks, householdId: mainUser.householdId,)),
-                  );
-                },
-                child: const Text('See more'),
-              ),
-              CreateHouseholdTaskSheet(householdId: mainUser.householdId,),
-            ],
-          ),
         ],
       );
     } else {
