@@ -19,63 +19,101 @@ class TaskWidget extends StatefulWidget {
 
 class _TaskWidgetState extends State<TaskWidget> {
 
+  bool showControls = false;
+
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) =>  TaskDetail(task: widget.task,householdId: widget.householdId,)),
-        );
+        setState(() {
+          showControls = !showControls;
+        });
       },
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 5),
-        child: ListTile(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5),
-          ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-          tileColor: Colors.white,
-          title: Row(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
+        children: [
+          ListTile(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+              tileColor: Colors.white,
+              title: Row(
                 children: [
-                  Text(
-                    widget.task.title,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.task.title,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                      ),
+                      const DetailInfo(icon: Icons.person, title: '<Placeholer>'),
+                      DetailInfo(icon: Icons.calendar_month, title: widget.task.getCurrentDate()),
+                      DetailInfo(icon: Icons.timeline, title: widget.task.pointsWorth.toString()),
+
+
+
+                    ],
+                  ),
+                ],
+              )
+          ),
+          //TODO: Make disabling controls possible currently impossible, because when updating the state with setState(), wont be reloaded properly
+          //if (showControls)
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.white,
+                ),
+                borderRadius: const BorderRadius.all(Radius.circular(20))
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+                    child: ElevatedButton.icon(
+                        icon: Icon(widget.task.isDone ? Icons.close : Icons.check),
+                        style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)
+                            )
+                        ),
+
+                        onPressed: () {
+                          updateTask(widget.task.id, widget.task.isDone, widget.householdId);
+                        },
+                        label: Text(widget.task.isDone ? 'Undo' : 'Finish')
                     ),
                   ),
-                  const DetailInfo(icon: Icons.person, title: '<Placeholer>'),
-                  DetailInfo(icon: Icons.calendar_month, title: widget.task.getCurrentDate()),
-                  DetailInfo(icon: Icons.timeline, title: widget.task.pointsWorth.toString()),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+                    child: ElevatedButton.icon(
+                        icon: const Icon(Icons.delete),
+                        style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: Colors.red,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)
+                            )
+                        ),
+
+                        onPressed: () {
+                          //TODO: Add delete option
+                        },
+                        label: const Text('Delete Task')
+                    ),
+                  ),
                 ],
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
-                child: ElevatedButton.icon(
-                    icon: Icon(widget.task.isDone ? Icons.close : Icons.check),
-                    style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)
-                        )
-                    ),
-
-                    onPressed: () {
-                      updateTask(widget.task.id, widget.task.isDone, widget.householdId);
-                    },
-                    label: Text(widget.task.isDone ? 'Undo' : 'Finish')
-                ),
-              ),
-            ],
-
-          )
-        ),
-      ),
+            )
+        ],
+      )
     );
   }
 

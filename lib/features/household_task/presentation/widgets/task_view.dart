@@ -36,7 +36,8 @@ class TaskView extends StatelessWidget {
                   ],
                 ),
                 for (HouseholdTask task in tasks)
-                  TaskWidget(task: task,householdId: householdId,)
+                  TaskWidget(task: task,householdId: householdId,),
+                  Text("Hello")
               ],
             )
         )
