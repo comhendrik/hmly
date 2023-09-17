@@ -15,17 +15,69 @@ class _AccountView extends State<AccountView> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        children: [
-          const Text("Account:"),
-          Text("E-Mail:${widget.mainUser.email}"),
-          Text("Username: ${widget.mainUser.username}"),
-          Text("Name: ${widget.mainUser.name}"),
-          Text("ID: ${widget.mainUser.id}"),
-          Text("current household: ${widget.mainUser.householdId}")
-        ],
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.person, weight: 5.0),
+                Text('Account Information', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+              ],
+            ),
+            const SizedBox(height: 10.0),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                _buildListTileWithShadow(
+                  leadingIcon: Icons.email,
+                  title: 'Email',
+                  subtitle: widget.mainUser.email,
+                ),
+                _buildListTileWithShadow(
+                  leadingIcon: Icons.person,
+                  title: 'Username',
+                  subtitle: widget.mainUser.username,
+                ),
+                _buildListTileWithShadow(
+                  leadingIcon: Icons.person,
+                  title: 'Full Name',
+                  subtitle: widget.mainUser.name,
+                ),
+                _buildListTileWithShadow(
+                  leadingIcon: Icons.confirmation_number,
+                  title: 'ID',
+                  subtitle: widget.mainUser.id,
+                ),
+                _buildListTileWithShadow(
+                  leadingIcon: Icons.home,
+                  title: 'Current Household',
+                  subtitle: widget.mainUser.householdId,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
+  Widget _buildListTileWithShadow({required IconData leadingIcon, required String title, required String subtitle}) {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.0)
+      ),
+      child: Card(
+        elevation: 0.125,
+        // No elevation for the Card; we'll use the shadow from the Container
+        child: ListTile(
+          leading: Icon(leadingIcon),
+          title: Text(title),
+          subtitle: Text(subtitle),
+        ),
+      ),
+    );
+  }
 }

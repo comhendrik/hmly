@@ -104,11 +104,16 @@ class _AuthenticatedView extends State<AuthenticatedView> {
           child: Column(
             children: [
               AccountView(mainUser: widget.mainUser),
-              const LogoutButton(),
-              ElevatedButton(onPressed: () {
-                deleteAuthDataFromHousehold(widget.mainUser);
-              },
-                  child: const Text("Delete user from Household")
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const LogoutButton(),
+                  ElevatedButton(onPressed: () {
+                    deleteAuthDataFromHousehold(widget.mainUser);
+                  },
+                      child: const Text("Delete user from Household")
+                  )
+                ],
               )
             ],
           ),
