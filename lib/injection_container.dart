@@ -17,6 +17,7 @@ import 'package:household_organizer/features/household_task/data/datasources/hou
 import 'package:household_organizer/features/household_task/data/repositories/household_task_repository_impl.dart';
 import 'package:household_organizer/features/household_task/domain/repositories/household_task_repository.dart';
 import 'package:household_organizer/features/household_task/domain/usecases/create_household_task.dart';
+import 'package:household_organizer/features/household_task/domain/usecases/delete_household_task.dart';
 import 'package:household_organizer/features/household_task/domain/usecases/get_all_tasks_for_household.dart';
 import 'package:household_organizer/features/household_task/domain/usecases/update_household_task.dart';
 import 'package:household_organizer/features/household_task/presentation/bloc/household_task_bloc.dart';
@@ -33,6 +34,7 @@ Future<void> init() async {
           getTasks: sl(),
           createTask: sl(),
           updateTask: sl(),
+          deleteTask: sl(),
     ),
   );
   sl.registerFactory(
@@ -49,6 +51,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetAllTasksForHousehold(sl()));
   sl.registerLazySingleton(() => CreateHouseholdTask(repository: sl()));
   sl.registerLazySingleton(() => UpdateHouseholdTask(repository: sl()));
+  sl.registerLazySingleton(() => DeleteHouseholdTask(repository: sl()));
 
 
   sl.registerLazySingleton(() => LoadHousehold(repository: sl()));

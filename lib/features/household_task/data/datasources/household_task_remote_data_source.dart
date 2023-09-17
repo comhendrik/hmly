@@ -7,6 +7,7 @@ abstract class HouseholdTaskRemoteDataSource {
   Future<List<HouseholdTask>> getAllTaskForHousehold(String householdId);
   Future<HouseholdTask> createHouseholdTask(String householdId, String title, int pointsWorth);
   Future<void> updateHouseholdTask(String taskId, bool isDone);
+  Future<void> deleteHouseholdTask(String taskId);
 }
 
 class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource {
@@ -59,6 +60,17 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
     };
     try {
       final record = await taskRecordService.update(taskId, body: body);
+    } catch(err) {
+      print(err);
+      throw ServerException();
+    }
+
+  }
+
+  @override
+  Future<void> deleteHouseholdTask(String taskId) async {
+    try {
+      final record = await taskRecordService.delete(taskId);
     } catch(err) {
       print(err);
       throw ServerException();

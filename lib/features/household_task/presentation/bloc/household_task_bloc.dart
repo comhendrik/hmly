@@ -6,6 +6,7 @@ import 'package:household_organizer/features/household_task/domain/entities/hous
 import 'package:household_organizer/features/household_task/domain/usecases/create_household_task.dart';
 import '../../domain/usecases/get_all_tasks_for_household.dart';
 import 'package:household_organizer/features/household_task/domain/usecases/update_household_task.dart';
+import 'package:household_organizer/features/household_task/domain/usecases/delete_household_task.dart';
 
 part 'household_task_event.dart';
 part 'household_task_state.dart';
@@ -15,10 +16,12 @@ class HouseholdTaskBloc extends Bloc<HouseholdTaskEvent, HouseholdTaskState> {
   final GetAllTasksForHousehold getTasks;
   final CreateHouseholdTask createTask;
   final UpdateHouseholdTask updateTask;
+  final DeleteHouseholdTask deleteTask;
   HouseholdTaskBloc({
     required this.getTasks,
     required this.createTask,
-    required this.updateTask
+    required this.updateTask,
+    required this.deleteTask
   }) : super(HouseholdTaskInitial()) {
     on<HouseholdTaskEvent>((event, emit) async {
       emit(HouseholdTaskInitial());
@@ -70,6 +73,24 @@ class HouseholdTaskBloc extends Bloc<HouseholdTaskEvent, HouseholdTaskState> {
                       }
                   );
                 });
+      } else if (event is DeleteHouseholdTaskEvent) {
+        emit(HouseholdTaskLoading());
+        final resultEither = await deleteTask.execute(event.taskId);
+        await resultEither.fold(
+                (failure) async {
+              emit(const HouseholdTaskError(errorMsg: 'Server Failure'));
+            },
+                (_) async {
+              final resultEitherTasks = await getTasks.execute(event.householdId);
+              await resultEitherTasks.fold(
+                      (failure) async {
+                    emit(const HouseholdTaskError(errorMsg: 'Server Failure'));
+                  },
+                      (tasks) async {
+                    emit(HouseholdTaskLoaded(householdTaskList: tasks));
+                  }
+              );
+            });
       }
     });
   }

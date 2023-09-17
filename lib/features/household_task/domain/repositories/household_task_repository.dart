@@ -6,4 +6,5 @@ abstract class HouseholdTaskRepository {
   Future<Either<Failure, List<HouseholdTask>>> getAllTasksForHousehold(String householdId);
   Future<Either<Failure, HouseholdTask>> createHouseholdTask(String householdId, String title, int pointsWorth);
   Future<Either<Failure, void>> updateHouseholdTask(String taskId, bool isDone);
+  Future<Either<Failure, void>> deleteHouseholdTask(String taskId);
 }

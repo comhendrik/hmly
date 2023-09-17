@@ -38,3 +38,13 @@ class UpdateHouseholdTaskEvent extends HouseholdTaskEvent {
     required this.isDone,
   });
 }
+
+class DeleteHouseholdTaskEvent extends HouseholdTaskEvent {
+  final String taskId;
+  final String householdId;
+
+  const DeleteHouseholdTaskEvent({
+    required this.taskId,
+    required this.householdId
+  });
+}

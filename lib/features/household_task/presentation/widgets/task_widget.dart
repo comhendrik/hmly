@@ -104,7 +104,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                         ),
 
                         onPressed: () {
-                          //TODO: Add delete option
+                          deleteTask(widget.task.id, widget.householdId);
                         },
                         label: const Text('Delete Task')
                     ),
@@ -120,6 +120,10 @@ class _TaskWidgetState extends State<TaskWidget> {
   void updateTask(String taskId, bool isDone, String householdId) {
     BlocProvider.of<HouseholdTaskBloc>(context)
         .add(UpdateHouseholdTaskEvent(taskId: taskId, isDone: isDone, householdId: householdId));
+  }
+  void deleteTask(String taskId, String householdId) {
+    BlocProvider.of<HouseholdTaskBloc>(context)
+        .add(DeleteHouseholdTaskEvent(taskId: taskId,householdId: householdId));
   }
 }
 
