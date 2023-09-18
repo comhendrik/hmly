@@ -31,27 +31,27 @@ class _AccountView extends State<AccountView> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                _buildListTileWithShadow(
+                _buildListTile(
                   leadingIcon: Icons.email,
                   title: 'Email',
                   subtitle: widget.mainUser.email,
                 ),
-                _buildListTileWithShadow(
+                _buildListTile(
                   leadingIcon: Icons.person,
                   title: 'Username',
                   subtitle: widget.mainUser.username,
                 ),
-                _buildListTileWithShadow(
+                _buildListTile(
                   leadingIcon: Icons.person,
                   title: 'Full Name',
                   subtitle: widget.mainUser.name,
                 ),
-                _buildListTileWithShadow(
+                _buildListTile(
                   leadingIcon: Icons.confirmation_number,
                   title: 'ID',
                   subtitle: widget.mainUser.id,
                 ),
-                _buildListTileWithShadow(
+                _buildListTile(
                   leadingIcon: Icons.home,
                   title: 'Current Household',
                   subtitle: widget.mainUser.householdId,
@@ -64,7 +64,7 @@ class _AccountView extends State<AccountView> {
     );
   }
 
-  Widget _buildListTileWithShadow({required IconData leadingIcon, required String title, required String subtitle}) {
+  Widget _buildListTile({required IconData leadingIcon, required String title, required String subtitle}) {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0)
@@ -72,11 +72,30 @@ class _AccountView extends State<AccountView> {
       child: Card(
         elevation: 0.125,
         // No elevation for the Card; we'll use the shadow from the Container
-        child: ListTile(
-          leading: Icon(leadingIcon),
-          title: Text(title),
-          subtitle: Text(subtitle),
-        ),
+        child: Row(
+          children: [
+            Container(
+              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(16.0), // Adjust the radius as needed
+              ),
+              child: Icon(
+                leadingIcon,
+                color: Colors.white, // Change the icon color as needed
+                size: 25.0, // Adjust the icon size as needed
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title),
+                Text(subtitle),
+              ],
+            )
+          ],
+        )
       ),
     );
   }
