@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/features/household_task/domain/entities/household_task.dart';
 import 'widgets.dart';
 
@@ -6,10 +7,12 @@ class TaskView extends StatelessWidget {
 
   final List<HouseholdTask> tasks;
   final String householdId;
+  final User mainUser;
   const TaskView({
     super.key,
     required this.tasks,
-    required this.householdId
+    required this.householdId,
+    required this.mainUser
   });
 
   @override
@@ -36,7 +39,7 @@ class TaskView extends StatelessWidget {
                   ],
                 ),
                 for (HouseholdTask task in tasks)
-                  TaskWidget(task: task,householdId: householdId,),
+                  TaskWidget(task: task,householdId: householdId, mainUser: mainUser,),
                   Text("Hello")
               ],
             )

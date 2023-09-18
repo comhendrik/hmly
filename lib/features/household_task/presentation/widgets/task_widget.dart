@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/features/household_task/domain/entities/household_task.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:household_organizer/features/household_task/presentation/bloc/household_task_bloc.dart';
@@ -6,11 +7,13 @@ import 'package:household_organizer/features/household_task/presentation/bloc/ho
 class TaskWidget extends StatefulWidget {
   final HouseholdTask task;
   final String householdId;
+  final User mainUser;
 
   const TaskWidget({
     super.key,
     required this.task,
-    required this.householdId
+    required this.householdId,
+    required this.mainUser
   });
 
   @override
@@ -86,7 +89,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                         ),
 
                         onPressed: () {
-                          updateTask(widget.task.id, widget.task.isDone, widget.householdId);
+                          updateTask(widget.task, widget.householdId, widget.mainUser.id);
                         },
                         label: Text(widget.task.isDone ? 'Undo' : 'Finish')
                     ),
@@ -117,9 +120,9 @@ class _TaskWidgetState extends State<TaskWidget> {
     );
   }
 
-  void updateTask(String taskId, bool isDone, String householdId) {
+  void updateTask(HouseholdTask task, String householdId, String userId) {
     BlocProvider.of<HouseholdTaskBloc>(context)
-        .add(UpdateHouseholdTaskEvent(taskId: taskId, isDone: isDone, householdId: householdId));
+        .add(UpdateHouseholdTaskEvent(task: task, householdId: householdId, userId: userId));
   }
   void deleteTask(String taskId, String householdId) {
     BlocProvider.of<HouseholdTaskBloc>(context)

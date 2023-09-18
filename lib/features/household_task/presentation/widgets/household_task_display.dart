@@ -31,7 +31,7 @@ class HouseholdTaskDisplay extends StatelessWidget {
           Column(
               children: allTasks.map((task){
                 return Container(
-                  child: TaskWidget(task: task, householdId: mainUser.householdId,),
+                  child: TaskWidget(task: task, householdId: mainUser.householdId, mainUser: mainUser,),
                 );
               }).toList()),
         ],

@@ -28,14 +28,14 @@ class CreateHouseholdTaskEvent extends HouseholdTaskEvent {
 }
 
 class UpdateHouseholdTaskEvent extends HouseholdTaskEvent {
-  final String taskId;
-  final bool isDone;
+  final HouseholdTask task;
   final String householdId;
+  final String userId;
 
   const UpdateHouseholdTaskEvent({
-    required this.taskId,
+    required this.task,
     required this.householdId,
-    required this.isDone,
+    required this.userId,
   });
 }
 

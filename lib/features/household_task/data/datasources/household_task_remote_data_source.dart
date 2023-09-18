@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/features/household_task/data/models/household_task_model.dart';
 import 'package:household_organizer/features/household_task/domain/entities/household_task.dart';
@@ -6,7 +7,7 @@ import 'package:household_organizer/core/entities/user.dart';
 abstract class HouseholdTaskRemoteDataSource {
   Future<List<HouseholdTask>> getAllTaskForHousehold(String householdId);
   Future<HouseholdTask> createHouseholdTask(String householdId, String title, int pointsWorth);
-  Future<void> updateHouseholdTask(String taskId, bool isDone);
+  Future<void> updateHouseholdTask(HouseholdTask task, String userId);
   Future<void> deleteHouseholdTask(String taskId);
 }
 
@@ -54,12 +55,18 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
   }
 
   @override
-  Future<void> updateHouseholdTask(String taskId, bool isDone) async {
-    final body = <String, dynamic>{
-      "isDone": !isDone
+  Future<void> updateHouseholdTask(HouseholdTask task, String userId) async {
+    final taskBody = <String, dynamic>{
+      "isDone": !task.isDone
     };
     try {
-      final record = await taskRecordService.update(taskId, body: body);
+      final record = await taskRecordService.update(task.id, body: taskBody);
+      if (task.isDone == true) {
+        final userBody = <String, dynamic> {
+          "weeklyPoints+" : task.pointsWorth
+        };
+        final _ = await userRecordService.update(userId, body: userBody);
+      }
     } catch(err) {
       print(err);
       throw ServerException();
