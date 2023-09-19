@@ -4,9 +4,11 @@ import 'package:household_organizer/features/authentication/presentation/bloc/au
 import 'package:household_organizer/features/authentication/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:household_organizer/features/charts/presentation/widgets/bar_chart.dart';
 import 'package:household_organizer/features/household/presentation/pages/household_page.dart';
 import 'package:household_organizer/features/household_task/presentation/pages/household_task_page.dart';
 import 'package:household_organizer/features/authentication/presentation/widgets/LogoutButton.dart';
+
 
 import '../../../../injection_container.dart';
 
@@ -78,6 +80,11 @@ class _AuthenticatedView extends State<AuthenticatedView> {
             label: 'Tasks',
           ),
           NavigationDestination(
+            selectedIcon: Icon(Icons.bar_chart),
+            icon: Icon(Icons.bar_chart_outlined),
+            label: 'Statistics',
+          ),
+          NavigationDestination(
             selectedIcon: Icon(Icons.person),
             icon: Icon(Icons.person_outline),
             label: 'Account',
@@ -95,6 +102,20 @@ class _AuthenticatedView extends State<AuthenticatedView> {
                 style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
               ),
               HouseholdPage(mainUser: widget.mainUser,),
+
+            ],
+          ),
+        ),
+        Container(
+          alignment: Alignment.center,
+          child: ListView(
+            padding: const EdgeInsets.all(20),
+            children: [
+              const Text(
+                "Statistics",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              ),
+              WeeklyBarChart()
 
             ],
           ),

@@ -24,7 +24,7 @@ class _AccountView extends State<AccountView> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(Icons.person, weight: 5.0),
-                Text('Account Information', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+                Text(' Account Information', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
               ],
             ),
             const SizedBox(height: 10.0),
@@ -78,7 +78,7 @@ class _AccountView extends State<AccountView> {
               margin: EdgeInsets.all(10),
               padding: EdgeInsets.all(10.0),
               decoration: BoxDecoration(
-                color: Colors.grey,
+                color: Colors.blueGrey,
                 borderRadius: BorderRadius.circular(16.0), // Adjust the radius as needed
               ),
               child: Icon(
@@ -90,7 +90,7 @@ class _AccountView extends State<AccountView> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title),
+                Text(title, style: TextStyle(fontWeight: FontWeight.bold),),
                 Text(subtitle),
               ],
             )
