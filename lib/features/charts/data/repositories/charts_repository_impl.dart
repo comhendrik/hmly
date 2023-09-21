@@ -17,7 +17,13 @@ class ChartsRepositoryImpl implements ChartsRepository {
   Future<Either<Failure, List<BarChartData>>> getWeeklyBarChartData(String userId) async {
     try {
       final weeklyBarChartData = await dataSource.getWeeklyBarChartData(userId);
-      //TODO: sort data so that the current day is the last item
+
+      int currentDayOfWeek = DateTime.now().weekday;
+
+      for (var i = 6; i >= currentDayOfWeek; i -= 1) {
+        weeklyBarChartData.insert(0, weeklyBarChartData[6]);
+        weeklyBarChartData.removeLast();
+      }
 
       return Right(weeklyBarChartData);
     } on ServerException {

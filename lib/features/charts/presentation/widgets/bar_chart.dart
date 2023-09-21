@@ -24,7 +24,10 @@ class BarChartState extends State<BarChart> {
   @override
   Widget build(BuildContext context) {
     return SfCartesianChart(
-        title: ChartTitle(text: 'Your Activity'),
+        title: ChartTitle(
+            text: 'Your Weekly Activity',
+            textStyle: const TextStyle(fontWeight: FontWeight.bold),
+        ),
         primaryXAxis: CategoryAxis(),
         primaryYAxis: NumericAxis(minimum: 0, maximum: 10, interval: 2),
         tooltipBehavior: _tooltip,

@@ -11,7 +11,6 @@ class GetWeeklyChartData {
   });
 
   Future<Either<Failure, List<BarChartData>>> execute(String userId, String householdId) async {
-    //TODO: fetch data for bar and pie chart at the same time or maybe create a new usecase for that
     return await repository.getWeeklyBarChartData(userId);
   }
 }
