@@ -4,6 +4,7 @@ import 'package:household_organizer/features/authentication/presentation/bloc/au
 import 'package:household_organizer/features/authentication/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:household_organizer/features/charts/presentation/pages/chart_page.dart';
 import 'package:household_organizer/features/charts/presentation/widgets/bar_chart.dart';
 import 'package:household_organizer/features/charts/presentation/widgets/pie_chart.dart';
 import 'package:household_organizer/features/household/presentation/pages/household_page.dart';
@@ -117,8 +118,8 @@ class _AuthenticatedView extends State<AuthenticatedView> {
                 "Statistics",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
               ),
-              BarChart(),
-              HouseholdPieChart()
+              ChartPage(mainUser: widget.mainUser),
+
 
             ],
           ),

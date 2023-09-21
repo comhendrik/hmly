@@ -8,6 +8,11 @@ import 'package:household_organizer/features/authentication/domain/usecases/crea
 import 'package:household_organizer/features/authentication/domain/usecases/delete_auth_data_from_household.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/load_auth_data.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:household_organizer/features/charts/data/datasources/charts_data_source.dart';
+import 'package:household_organizer/features/charts/data/repositories/charts_repository_impl.dart';
+import 'package:household_organizer/features/charts/domain/repositories/charts_repository.dart';
+import 'package:household_organizer/features/charts/domain/usecases/get_weekly_chart_data.dart';
+import 'package:household_organizer/features/charts/presentation/bloc/chart_bloc.dart';
 import 'package:household_organizer/features/household/data/datasources/household_remote_data_source.dart';
 import 'package:household_organizer/features/household/data/repositories/household_repository_impl.dart';
 import 'package:household_organizer/features/household/domain/repositories/household_repository.dart';
@@ -47,6 +52,14 @@ Future<void> init() async {
         () => AuthBloc(createAuth: sl(), loadAuth: sl(), createAuthDataOnServer: sl(), addAuthDataToHousehold: sl(), deleteAuthDataFromHousehold: sl())
   );
 
+  sl.registerFactory(
+        () => ChartBloc(
+            getWeeklyChartData: sl()
+        ,)
+  );
+
+
+
   // Use cases
   sl.registerLazySingleton(() => GetAllTasksForHousehold(sl()));
   sl.registerLazySingleton(() => CreateHouseholdTask(repository: sl()));
@@ -62,6 +75,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => LoadAuthData(repository: sl()));
   sl.registerLazySingleton(() => CreateAuthDataOnServer(repository: sl()));
 
+  sl.registerLazySingleton(() => GetWeeklyChartData(repository: sl()));
+
   // Repository
   sl.registerLazySingleton<HouseholdTaskRepository>(
         () => HouseholdTaskRepositoryImpl(
@@ -76,6 +91,12 @@ Future<void> init() async {
 
   sl.registerLazySingleton<AuthRepository>(
         () => AuthRepositoryImpl(
+      dataSource: sl(),
+    ),
+  );
+
+  sl.registerLazySingleton<ChartsRepository>(
+        () => ChartsRepositoryImpl(
       dataSource: sl(),
     ),
   );
@@ -99,6 +120,11 @@ Future<void> init() async {
   sl.registerLazySingleton<AuthDataSource>(
     //TODO: Need to make it possible to use different accounts
         () => AuthDataSourceImpl(storage: storage, userRecordService: RecordService(pb, 'users'), householdRecordService: RecordService(pb, 'household')),
+  );
+
+  sl.registerLazySingleton<ChartsDataSource>(
+    //TODO: Need to make it possible to use different accounts
+        () => ChartsDataSourceImpl(userRecordService: RecordService(pb, 'users'), pointRecordService: RecordService(pb, 'points')),
   );
   //! Cor
   //

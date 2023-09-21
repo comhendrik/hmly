@@ -5,16 +5,16 @@ import 'package:household_organizer/features/household_task/data/models/househol
 import 'package:household_organizer/features/household_task/domain/entities/household_task.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:household_organizer/core/entities/user.dart';
-abstract class ChartsRemoteDataSource {
+abstract class ChartsDataSource {
   Future<List<BarChartDataModel>> getWeeklyBarChartData(String userId);
 }
 
-class ChartsRemoteDataSourceImpl implements ChartsRemoteDataSource {
+class ChartsDataSourceImpl implements ChartsDataSource {
   final RecordService userRecordService;
   final RecordService pointRecordService;
 
 
-  ChartsRemoteDataSourceImpl({
+  ChartsDataSourceImpl({
     required this.userRecordService,
     required this.pointRecordService,
   });
@@ -22,7 +22,7 @@ class ChartsRemoteDataSourceImpl implements ChartsRemoteDataSource {
   @override
   Future<List<BarChartDataModel>> getWeeklyBarChartData(String userId) async {
     try {
-      final result = await pointRecordService.getFullList(filter: 'user="$userId"', sort: '-created');
+      final result = await pointRecordService.getFullList(filter: 'user="$userId"', sort: 'day_number');
       List<BarChartDataModel> barCharDataModelList = [];
       for (final day in result) {
         barCharDataModelList.add(BarChartDataModel.fromJSON(day.data, day.id));
