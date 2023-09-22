@@ -3,6 +3,7 @@ import 'package:household_organizer/features/charts/presentation/bloc/chart_bloc
 import 'package:household_organizer/features/charts/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:household_organizer/features/household/presentation/widgets/pie_chart.dart';
 
 
 import '../../../../injection_container.dart';
@@ -33,6 +34,24 @@ class ChartPage extends StatelessWidget {
           } else if (state is ChartLoaded) {
             return Column(
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Row(
+                      children: [
+                        Icon(Icons.insert_chart, weight: 5.0),
+                        Text(
+                          " Statistics",
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                        ),
+                      ],
+                    ),
+                    IconButton(onPressed: () {
+                      BlocProvider.of<ChartBloc>(context)
+                          .add(GetWeeklyChartDataEvent(userId: mainUser.id, householdId: mainUser.householdId));
+                    }, icon: const Icon(Icons.update)),
+                  ],
+                ),
                 Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8.0)
@@ -55,18 +74,20 @@ class ChartPage extends StatelessWidget {
                                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0,),
                               )
                           ),
-                          const Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Points reached today', style: TextStyle(fontWeight: FontWeight.bold),),
+                           const Column(
+                             crossAxisAlignment: CrossAxisAlignment.start,
+                             children: [
+                               Text('Points reached today', style: TextStyle(fontWeight: FontWeight.bold),),
                             ],
-                          )
+                          ),
                         ],
                       )
                   ),
                 ),
 
-                BarChart(data: state.barChartDataList)
+                BarChart(data: state.barChartDataList),
+                HouseholdPieChart(),
+                ReminderButton(dailyPoints: state.barChartDataList.last.value,),
               ],
             );
           } else if (state is ChartError) {
@@ -77,5 +98,8 @@ class ChartPage extends StatelessWidget {
         },
       ),
     );
+
   }
+
+
 }

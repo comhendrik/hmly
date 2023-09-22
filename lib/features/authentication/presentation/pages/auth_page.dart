@@ -4,6 +4,7 @@ import 'package:household_organizer/features/authentication/presentation/bloc/au
 import 'package:household_organizer/features/authentication/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:household_organizer/features/charts/presentation/bloc/chart_bloc.dart';
 import 'package:household_organizer/features/charts/presentation/pages/chart_page.dart';
 import 'package:household_organizer/features/charts/presentation/widgets/bar_chart.dart';
 import 'package:household_organizer/features/charts/presentation/widgets/pie_chart.dart';
@@ -83,8 +84,8 @@ class _AuthenticatedView extends State<AuthenticatedView> {
             label: 'Tasks',
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.bar_chart),
-            icon: Icon(Icons.bar_chart_outlined),
+            selectedIcon: Icon(Icons.insert_chart),
+            icon: Icon(Icons.insert_chart_outlined),
             label: 'Statistics',
           ),
           NavigationDestination(
@@ -114,13 +115,7 @@ class _AuthenticatedView extends State<AuthenticatedView> {
           child: ListView(
             padding: const EdgeInsets.all(20),
             children: [
-              const Text(
-                "Statistics",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-              ),
               ChartPage(mainUser: widget.mainUser),
-
-
             ],
           ),
         ),
