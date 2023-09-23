@@ -75,7 +75,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => LoadAuthData(repository: sl()));
   sl.registerLazySingleton(() => CreateAuthDataOnServer(repository: sl()));
 
-  sl.registerLazySingleton(() => GetWeeklyChartData(repository: sl()));
+  sl.registerLazySingleton(() => GetWeeklyBarChartData(repository: sl()));
 
   // Repository
   sl.registerLazySingleton<HouseholdTaskRepository>(

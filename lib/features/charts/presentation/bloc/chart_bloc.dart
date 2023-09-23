@@ -8,7 +8,7 @@ part 'chart_event.dart';
 part 'chart_state.dart';
 
 class ChartBloc extends Bloc<ChartEvent, ChartState> {
-  final GetWeeklyChartData getWeeklyChartData;
+  final GetWeeklyBarChartData getWeeklyChartData;
   ChartBloc({
     required this.getWeeklyChartData
   }) : super(ChartInitial()) {

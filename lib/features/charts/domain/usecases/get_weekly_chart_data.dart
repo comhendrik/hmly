@@ -3,10 +3,10 @@ import 'package:dartz/dartz.dart';
 import 'package:household_organizer/features/charts/domain/entities/bar_chart_data.dart';
 import 'package:household_organizer/features/charts/domain/repositories/charts_repository.dart';
 
-class GetWeeklyChartData {
+class GetWeeklyBarChartData {
   final ChartsRepository repository;
 
-  GetWeeklyChartData({
+  GetWeeklyBarChartData({
     required this.repository
   });
 
