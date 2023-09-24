@@ -2,7 +2,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:household_organizer/features/charts/domain/entities/bar_chart_data.dart';
-import 'package:household_organizer/features/charts/domain/usecases/get_weekly_chart_data.dart';
+import 'package:household_organizer/features/charts/domain/usecases/get_weekly_bar_chart_data.dart';
 
 part 'chart_event.dart';
 part 'chart_state.dart';
