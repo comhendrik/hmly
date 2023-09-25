@@ -62,8 +62,8 @@ class ChartPage extends StatelessWidget {
                       child: Row(
                         children: [
                           Container(
-                            margin: EdgeInsets.all(10),
-                            padding: EdgeInsets.only(left: 25.0,top: 15.0,right: 25.0,bottom: 15.0),
+                            margin: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.only(left: 25.0,top: 15.0,right: 25.0,bottom: 15.0),
                             decoration: BoxDecoration(
                               color: Colors.blueGrey,
                               borderRadius: BorderRadius.circular(16.0), // Adjust the radius as needed
@@ -71,7 +71,7 @@ class ChartPage extends StatelessWidget {
                               child: Text(
                                 "${state.barChartDataList.last.value}",
 
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0,),
+                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0,),
                               )
                           ),
                            const Column(
@@ -86,7 +86,7 @@ class ChartPage extends StatelessWidget {
                 ),
 
                 BarChart(data: state.barChartDataList),
-                HouseholdPieChart(),
+                HouseholdPieChart(data: state.pieChartDataList),
                 ReminderButton(dailyPoints: state.barChartDataList.last.value,),
               ],
             );

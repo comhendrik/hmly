@@ -2,17 +2,18 @@ import 'package:equatable/equatable.dart';
 
 class PieChartData extends Equatable {
   final String id;
-  final String day;
+  final String username;
   final int value;
+  final bool isDataOfUser;
 
   const PieChartData({
     required this.id,
-    required this.day,
-    required this.value
+    required this.username,
+    required this.value,
+    required this.isDataOfUser
   });
 
-
   @override
-  List<Object> get props => [id, day, value];
+  List<Object> get props => [id, username, value, isDataOfUser];
 
 }

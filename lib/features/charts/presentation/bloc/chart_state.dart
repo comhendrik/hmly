@@ -16,7 +16,8 @@ class ChartLoading extends ChartState {
 
 class ChartLoaded extends ChartState {
   final List<BarChartData> barChartDataList;
-  const ChartLoaded({required this.barChartDataList});
+  final List<PieChartData> pieChartDataList;
+  const ChartLoaded({required this.barChartDataList, required this.pieChartDataList});
 
   @override
   List<Object> get props => [];

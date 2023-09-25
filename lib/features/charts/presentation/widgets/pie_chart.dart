@@ -1,17 +1,11 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
+import 'package:household_organizer/features/charts/domain/entities/pie_chart_data.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HouseholdPieChart extends StatelessWidget {
-  final List<ChartData> chartData = [
-    ChartData(category: 'Hendrik', value: 35),
-    ChartData(category: 'Hannes', value: 45),
-    ChartData(category: 'Mara', value: 20),
-    ChartData(category: 'Lea', value: 23),
-  ];
+  final List<PieChartData> data;
 
-  HouseholdPieChart({super.key});
+  const HouseholdPieChart({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -20,22 +14,15 @@ class HouseholdPieChart extends StatelessWidget {
         text: "Your Household's activity today",
         textStyle: const TextStyle(fontWeight: FontWeight.bold),
       ),
-      series: <CircularSeries<ChartData, String>>[
-        PieSeries<ChartData, String>(
-          dataSource: chartData,
-          xValueMapper: (ChartData data, _) => data.category,
-          yValueMapper: (ChartData data, _) => data.value,
+      series: <CircularSeries<PieChartData, String>>[
+        PieSeries<PieChartData, String>(
+          dataSource: data,
+          xValueMapper: (PieChartData data, _) => data.isDataOfUser ? 'You' : data.username,
+          yValueMapper: (PieChartData data, _) => data.value,
           dataLabelSettings: const DataLabelSettings(isVisible: true),
         ),
       ],
       legend: Legend(isVisible: true),
     );
   }
-}
-
-class ChartData {
-  final String category;
-  final int value;
-
-  ChartData({required this.category, required this.value});
 }

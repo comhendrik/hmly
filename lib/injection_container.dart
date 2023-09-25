@@ -11,6 +11,7 @@ import 'package:household_organizer/features/authentication/presentation/bloc/au
 import 'package:household_organizer/features/charts/data/datasources/charts_data_source.dart';
 import 'package:household_organizer/features/charts/data/repositories/charts_repository_impl.dart';
 import 'package:household_organizer/features/charts/domain/repositories/charts_repository.dart';
+import 'package:household_organizer/features/charts/domain/usecases/get_daily_pie_chart_data.dart';
 import 'package:household_organizer/features/charts/domain/usecases/get_weekly_bar_chart_data.dart';
 import 'package:household_organizer/features/charts/presentation/bloc/chart_bloc.dart';
 import 'package:household_organizer/features/household/data/datasources/household_remote_data_source.dart';
@@ -54,8 +55,9 @@ Future<void> init() async {
 
   sl.registerFactory(
         () => ChartBloc(
-            getWeeklyChartData: sl()
-        ,)
+          getWeeklyBarChartData: sl(),
+          getDailyPieChartData: sl(),
+        )
   );
 
 
@@ -76,6 +78,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CreateAuthDataOnServer(repository: sl()));
 
   sl.registerLazySingleton(() => GetWeeklyBarChartData(repository: sl()));
+  sl.registerLazySingleton(() => GetDailyPieChartData(repository: sl()));
 
   // Repository
   sl.registerLazySingleton<HouseholdTaskRepository>(
