@@ -27,96 +27,71 @@ class _TaskWidgetState extends State<TaskWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          showControls = !showControls;
-        });
-      },
-      child: Column(
-        children: [
-          ListTile(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
-              ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-              tileColor: Colors.white,
-              title: Row(
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.0)
+      ),
+      child: Card(
+        elevation: 0.125,
+        color: widget.task.isDone ? Colors.green.shade50 : Colors.white,
+        // No elevation for the Card; we'll use the shadow from the Container
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.task.title,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                      const DetailInfo(icon: Icons.person, title: '<Placeholer>'),
-                      DetailInfo(icon: Icons.calendar_month, title: widget.task.getCurrentDate()),
-                      DetailInfo(icon: Icons.timeline, title: widget.task.pointsWorth.toString()),
+                  Text(
+                    widget.task.title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 15.0,),
+                  DetailInfo(icon: Icons.calendar_month, title: widget.task.getCurrentDate()),
+                  DetailInfo(icon: Icons.timeline, title: widget.task.pointsWorth.toString()),
+                ],
+              ),
+              Column(
+                children: [
+                  IconButton(
+                    icon: Icon(widget.task.isDone ? Icons.close : Icons.check),
+                    style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)
+                        )
+                    ),
 
+                    onPressed: () {
+                      updateTask(widget.task, widget.householdId, widget.mainUser.id);
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.delete),
+                    style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.red,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)
+                        )
+                    ),
 
-
-                    ],
+                    onPressed: () {
+                      deleteTask(widget.task.id, widget.householdId);
+                    },
                   ),
                 ],
               )
-          ),
-          //TODO: Make disabling controls possible currently impossible, because when updating the state with setState(), wont be reloaded properly
-          //if (showControls)
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.white,
-                ),
-                borderRadius: const BorderRadius.all(Radius.circular(20))
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
-                    child: ElevatedButton.icon(
-                        icon: Icon(widget.task.isDone ? Icons.close : Icons.check),
-                        style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)
-                            )
-                        ),
-
-                        onPressed: () {
-                          updateTask(widget.task, widget.householdId, widget.mainUser.id);
-                        },
-                        label: Text(widget.task.isDone ? 'Undo' : 'Finish')
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
-                    child: ElevatedButton.icon(
-                        icon: const Icon(Icons.delete),
-                        style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: Colors.red,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)
-                            )
-                        ),
-
-                        onPressed: () {
-                          deleteTask(widget.task.id, widget.householdId);
-                        },
-                        label: const Text('Delete Task')
-                    ),
-                  ),
-                ],
-              ),
-            )
-        ],
-      )
+            ],
+          )
+        )
+      ),
     );
   }
 
@@ -129,6 +104,9 @@ class _TaskWidgetState extends State<TaskWidget> {
         .add(DeleteHouseholdTaskEvent(taskId: taskId,householdId: householdId));
   }
 }
+
+
+//TODO: Maybe delete this one here!!!!
 
 class TaskDetail extends StatefulWidget {
   final HouseholdTask task;

@@ -16,7 +16,7 @@ class _AccountView extends State<AccountView> {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -75,8 +75,8 @@ class _AccountView extends State<AccountView> {
         child: Row(
           children: [
             Container(
-              margin: EdgeInsets.all(10),
-              padding: EdgeInsets.all(10.0),
+              margin: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10.0),
               decoration: BoxDecoration(
                 color: Colors.blueGrey,
                 borderRadius: BorderRadius.circular(16.0), // Adjust the radius as needed
@@ -90,7 +90,7 @@ class _AccountView extends State<AccountView> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: TextStyle(fontWeight: FontWeight.bold),),
+                Text(title, style: const TextStyle(fontWeight: FontWeight.bold),),
                 Text(subtitle),
               ],
             )

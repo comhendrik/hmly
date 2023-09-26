@@ -39,7 +39,6 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
           getLoginOrSignUp(showLogin),
           ElevatedButton(
               onPressed: () {
-                //TODO: No Update is happening
                 setState(() {
                   showLogin = !showLogin;
                 });

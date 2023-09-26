@@ -3,7 +3,6 @@ import 'package:household_organizer/features/charts/presentation/bloc/chart_bloc
 import 'package:household_organizer/features/charts/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:household_organizer/features/household/presentation/widgets/pie_chart.dart';
 
 
 import '../../../../injection_container.dart';

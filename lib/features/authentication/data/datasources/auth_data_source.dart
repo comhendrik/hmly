@@ -65,7 +65,6 @@ class AuthDataSourceImpl implements AuthDataSource {
     try {
       final _ = await userRecordService.authWithPassword(email, password);
       final user = await userRecordService.getFirstListItem('email="$email"');
-      print(user.data);
       return UserModel.fromJSON(user.data, user.id);
 
     } catch (_) {
