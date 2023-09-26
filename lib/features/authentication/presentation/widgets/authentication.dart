@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
+
+
 class AuthenticationWidget extends StatefulWidget {
   const AuthenticationWidget({
     super.key
@@ -11,24 +13,41 @@ class AuthenticationWidget extends StatefulWidget {
   State<AuthenticationWidget> createState() => _AuthenticationWidget();
 }
 
+//TODO: put sign up and login in one widget and add error handling
+
 class _AuthenticationWidget extends State<AuthenticationWidget> {
   bool showLogin = true;
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        getLoginOrSignUp(showLogin),
-        ElevatedButton(
-            onPressed: () {
-              //TODO: No Update is happening
-              setState(() {
-                showLogin = !showLogin;
-              });
-            },
-            child: showLogin ? const Text("No account? Register Now!") : const Text("Already registered? Login!")
-        )
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: ListView(
+        children: [
+          const Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.house, weight: 5.0),
+              Text(' Welcome', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+            ],
+          ),
+          const SizedBox(height: 5.0,),
+          Text(
+            showLogin ? 'Login': 'SignUp',
+            style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+          ),
+          getLoginOrSignUp(showLogin),
+          ElevatedButton(
+              onPressed: () {
+                //TODO: No Update is happening
+                setState(() {
+                  showLogin = !showLogin;
+                });
+              },
+              child: showLogin ? const Text("No account? Register Now!") : const Text("Already registered? Login!")
+          ),
+        ],
+      ),
     );
   }
 
@@ -63,13 +82,13 @@ class _LoginView extends State<LoginView> {
     return Center(
       child: Column(
         children: [
-          const Text("Login with your current data"),
           TextField(
               controller: emailController,
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
-                  hintText: 'email',
-                  contentPadding: EdgeInsets.all(20)
+                labelText: 'E-Mail',
+                hintText: 'Enter your e-mail address',
+                prefixIcon: Icon(Icons.person), // Icon for username
               ),
               onChanged: (value) {
                 emailStr = value;
@@ -79,16 +98,20 @@ class _LoginView extends State<LoginView> {
               controller: passwordController,
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
-                  hintText: 'password',
-                  contentPadding: EdgeInsets.all(20)
+                labelText: 'Password',
+                hintText: 'Enter your password',
+                prefixIcon: Icon(Icons.lock), // Icon for password
               ),
               onChanged: (value) {
                 passwordStr = value;
               }
           ),
-          ElevatedButton(onPressed: () {
-            login(emailStr, passwordStr);
-          }, child: const Text("Login")
+          ElevatedButton.icon(
+              onPressed: () {
+                login(emailStr, passwordStr);
+              },
+              icon: const Icon(Icons.arrow_forward),
+              label: const Text("Login")
           )
         ],
       ),
@@ -128,13 +151,13 @@ class _SignUpView extends State<SignUpView> {
     return Center(
       child: Column(
         children: [
-          const Text("Login with your current data"),
           TextField(
               controller: emailController,
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
-                  hintText: 'email',
-                  contentPadding: EdgeInsets.all(20)
+                labelText: 'E-Mail',
+                hintText: 'Enter your email address',
+                prefixIcon: Icon(Icons.email), // Icon for password
               ),
               onChanged: (value) {
                 emailStr = value;
@@ -144,8 +167,9 @@ class _SignUpView extends State<SignUpView> {
               controller: passwordController,
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
-                  hintText: 'password',
-                  contentPadding: EdgeInsets.all(20)
+                labelText: 'Password',
+                hintText: 'Enter your password',
+                prefixIcon: Icon(Icons.lock), // Icon for password
               ),
               onChanged: (value) {
                 passwordStr = value;
@@ -155,8 +179,9 @@ class _SignUpView extends State<SignUpView> {
               controller: passwordConfirmController,
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
-                  hintText: 'Confirm password',
-                  contentPadding: EdgeInsets.all(20)
+                labelText: 'Confirm Password',
+                hintText: 'Re-enter your password',
+                prefixIcon: Icon(Icons.lock), // Icon for password
               ),
               onChanged: (value) {
                 passwordConfirmStr = value;
@@ -166,8 +191,9 @@ class _SignUpView extends State<SignUpView> {
               controller: usernameController,
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
-                  hintText: 'username',
-                  contentPadding: EdgeInsets.all(20)
+                labelText: 'Username',
+                hintText: 'Enter your username',
+                prefixIcon: Icon(Icons.person), // Icon for password
               ),
               onChanged: (value) {
                 usernameStr = value;
@@ -177,16 +203,20 @@ class _SignUpView extends State<SignUpView> {
               controller: nameController,
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
-                  hintText: 'name',
-                  contentPadding: EdgeInsets.all(20)
+                labelText: 'Name',
+                hintText: 'Enter your name',
+                prefixIcon: Icon(Icons.badge), // Icon for password
               ),
               onChanged: (value) {
                 nameStr = value;
               }
           ),
-          ElevatedButton(onPressed: () {
-            signUp(emailStr, passwordStr, passwordConfirmStr, usernameStr, nameStr);
-          }, child: const Text("SignUp")
+          ElevatedButton.icon(
+              onPressed: () {
+                signUp(emailStr, passwordStr, passwordConfirmStr, usernameStr, nameStr);
+              },
+              icon: const Icon(Icons.arrow_forward),
+              label: const Text("Sign Up")
           )
         ],
       ),
@@ -199,3 +229,4 @@ class _SignUpView extends State<SignUpView> {
   }
 
 }
+

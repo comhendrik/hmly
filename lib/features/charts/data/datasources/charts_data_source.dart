@@ -14,11 +14,13 @@ abstract class ChartsDataSource {
 class ChartsDataSourceImpl implements ChartsDataSource {
   final RecordService userRecordService;
   final RecordService pointRecordService;
+  final RecordService householdRecordService;
 
 
   ChartsDataSourceImpl({
     required this.userRecordService,
     required this.pointRecordService,
+    required this.householdRecordService
   });
 
   @override
@@ -40,8 +42,15 @@ class ChartsDataSourceImpl implements ChartsDataSource {
   @override
   Future<List<PieChartDataModel>> getDailyPieChartData(String userId, String householdId) async {
     try {
-      //TODO: Impleming fetch from pocketbase
-      return [PieChartDataModel(id: "id", username: "fasfd", value: 35, isDataOfUser: false),PieChartDataModel(id: "id", username: "fasfd", value: 35, isDataOfUser: true)];
+      int currentDayOfWeek = DateTime.now().weekday;
+      print(householdId);
+      final userResult = await userRecordService.getFullList(filter: 'household="$householdId"');
+      List<PieChartDataModel> pieChartDataModelList = [];
+      for (final user in userResult) {
+        final userPieChartData = await pointRecordService.getFirstListItem('user="${user.id}" && day_number=$currentDayOfWeek');
+        pieChartDataModelList.add(PieChartDataModel.fromJSON(userPieChartData.data, userPieChartData.id, userId, user.data['name']));
+      }
+      return pieChartDataModelList;
     } catch(err) {
       print(err);
       throw ServerException();

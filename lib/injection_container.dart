@@ -127,7 +127,7 @@ Future<void> init() async {
 
   sl.registerLazySingleton<ChartsDataSource>(
     //TODO: Need to make it possible to use different accounts
-        () => ChartsDataSourceImpl(userRecordService: RecordService(pb, 'users'), pointRecordService: RecordService(pb, 'points')),
+        () => ChartsDataSourceImpl(userRecordService: RecordService(pb, 'users'), pointRecordService: RecordService(pb, 'points'), householdRecordService: RecordService(pb, 'household')),
   );
   //! Cor
   //
