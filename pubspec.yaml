@@ -45,6 +45,7 @@ dependencies:
   get_it: ^7.6.0
   flutter_secure_storage: ^8.0.0
   flutter_share: ^2.0.0
+  cron: ^0.5.1
 
 dev_dependencies:
   flutter_test:

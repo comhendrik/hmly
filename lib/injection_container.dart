@@ -110,7 +110,7 @@ Future<void> init() async {
   // Data sources
   sl.registerLazySingleton<HouseholdTaskRemoteDataSource>(
     //TODO: Need to make it possible to use different accounts
-        () => HouseholdTaskRemoteDataSourceImpl(userRecordService: RecordService(pb, 'users'), taskRecordService: RecordService(pb, 'tasks')),
+        () => HouseholdTaskRemoteDataSourceImpl(userRecordService: RecordService(pb, 'users'), taskRecordService: RecordService(pb, 'tasks'), pointRecordService: RecordService(pb, 'points')),
   );
 
   sl.registerLazySingleton<HouseholdRemoteDataSource>(

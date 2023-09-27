@@ -24,9 +24,10 @@ class HouseholdTaskRepositoryImpl implements HouseholdTaskRepository {
 
 
   @override
-  Future<Either<Failure, HouseholdTask>> createHouseholdTask(String householdId, String title, int pointsWorth) async {
+  Future<Either<Failure, HouseholdTask>> createHouseholdTask(String householdId, String title, int pointsWorth, DateTime dueTo) async {
     try {
-      return Right(await remoteDataSource.createHouseholdTask(householdId, title, pointsWorth));
+      //to create a new record even the datetime has to be passed as a string.
+      return Right(await remoteDataSource.createHouseholdTask(householdId, title, pointsWorth, dueTo.toString()));
     } on ServerException {
       return Left(ServerFailure());
     }

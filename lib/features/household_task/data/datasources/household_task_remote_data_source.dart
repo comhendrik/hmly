@@ -6,7 +6,7 @@ import 'package:pocketbase/pocketbase.dart';
 import 'package:household_organizer/core/entities/user.dart';
 abstract class HouseholdTaskRemoteDataSource {
   Future<List<HouseholdTask>> getAllTaskForHousehold(String householdId);
-  Future<HouseholdTask> createHouseholdTask(String householdId, String title, int pointsWorth);
+  Future<HouseholdTask> createHouseholdTask(String householdId, String title, int pointsWorth, String dueTo);
   Future<void> updateHouseholdTask(HouseholdTask task, String userId);
   Future<void> deleteHouseholdTask(String taskId);
 }
@@ -14,17 +14,19 @@ abstract class HouseholdTaskRemoteDataSource {
 class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource {
   final RecordService userRecordService;
   final RecordService taskRecordService;
+  final RecordService pointRecordService;
 
 
   HouseholdTaskRemoteDataSourceImpl({
     required this.userRecordService,
     required this.taskRecordService,
+    required this.pointRecordService
   });
 
   @override
   Future<List<HouseholdTaskModel>> getAllTaskForHousehold(String householdId) async {
     try {
-      final result = await taskRecordService.getFullList(filter: 'household="$householdId"', sort: '-created');
+      final result = await taskRecordService.getFullList(filter: 'household="$householdId"', sort: 'isDone');
       List<HouseholdTaskModel> householdTaskModelList = [];
       for (final task in result) {
         householdTaskModelList.add(HouseholdTaskModel.fromJSON(task.data, task.id));
@@ -38,11 +40,12 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
   }
 
   @override
-  Future<HouseholdTaskModel> createHouseholdTask(String householdId, String title, int pointsWorth) async {
+  Future<HouseholdTaskModel> createHouseholdTask(String householdId, String title, int pointsWorth, String dueTo) async {
     final body = <String, dynamic>{
       "title": title,
       "household": householdId,
       "points_worth": pointsWorth,
+      "due_to" : dueTo,
     };
     try {
       final record = await taskRecordService.create(body: body);
@@ -61,12 +64,18 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
     };
     try {
       final record = await taskRecordService.update(task.id, body: taskBody);
+      String operator = '+';
+
+      //task.isDone is static which is why this could will be exuceted, when you undo the task
       if (task.isDone == true) {
-        final userBody = <String, dynamic> {
-          "weeklyPoints+" : task.pointsWorth
-        };
-        final _ = await userRecordService.update(userId, body: userBody);
+        operator = '-';
       }
+      final pointBody = <String, dynamic> {
+        "value$operator" : task.pointsWorth
+      };
+      int currentDayOfWeek = DateTime.now().weekday;
+      final pointToUpdate = await pointRecordService.getFirstListItem('day_number=$currentDayOfWeek && user="$userId"');
+      final _ = await pointRecordService.update(pointToUpdate.id, body: pointBody);
     } catch(err) {
       print(err);
       throw ServerException();

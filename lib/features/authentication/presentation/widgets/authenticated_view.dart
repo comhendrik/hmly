@@ -29,7 +29,7 @@ class _AuthenticatedView extends State<AuthenticatedView> {
           });
         },
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-        indicatorColor: Colors.lightBlueAccent,
+        indicatorColor: Colors.white,
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(

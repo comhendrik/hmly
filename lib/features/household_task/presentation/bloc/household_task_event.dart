@@ -19,11 +19,13 @@ class CreateHouseholdTaskEvent extends HouseholdTaskEvent {
   final String householdId;
   final String title;
   final int pointsWorth;
+  final DateTime dueTo;
 
   const CreateHouseholdTaskEvent({
     required this.householdId,
     required this.title,
-    required this.pointsWorth
+    required this.pointsWorth,
+    required this.dueTo
   });
 }
 

@@ -4,7 +4,7 @@ import 'package:dartz/dartz.dart';
 
 abstract class HouseholdTaskRepository {
   Future<Either<Failure, List<HouseholdTask>>> getAllTasksForHousehold(String householdId);
-  Future<Either<Failure, HouseholdTask>> createHouseholdTask(String householdId, String title, int pointsWorth);
+  Future<Either<Failure, HouseholdTask>> createHouseholdTask(String householdId, String title, int pointsWorth, DateTime dueTo);
   Future<Either<Failure, void>> updateHouseholdTask(HouseholdTask task, String userId);
   Future<Either<Failure, void>> deleteHouseholdTask(String taskId);
 }
