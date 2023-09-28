@@ -99,7 +99,7 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
     super.dispose();
   }
 
-  void _addTask() {
+  void _addTask(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       final String title = _titleController.text;
       final DateTime dueTo = DateTime.parse(_dueToController.text);
@@ -107,6 +107,7 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
 
       setState(() {
         widget.onTaskAdded(title,dueTo,points);
+        Navigator.pop(context);
       });
 
       // Clear the input fields
@@ -206,7 +207,8 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
                     ),
 
                     onPressed: () {
-                      _addTask();
+                      _addTask(context);
+
                     },
                     label: const Text('Add Task')
                 ),

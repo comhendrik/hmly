@@ -81,10 +81,26 @@ class _TaskWidgetState extends State<TaskWidget> {
                             borderRadius: BorderRadius.circular(15)
                         )
                     ),
-
-                    onPressed: () {
-                      deleteTask(widget.task.id, widget.householdId);
-                    },
+                    onPressed: () => showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Delete Warning'),
+                        content: const Text('Do you really want to delete this task?'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: ()  => Navigator.pop(context, 'Cancel'),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              deleteTask(widget.task.id, widget.householdId);
+                              Navigator.pop(context, 'Delete');
+                            },
+                            child: const Text('Delete', style: TextStyle(color: Colors.red),),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               )
@@ -103,6 +119,7 @@ class _TaskWidgetState extends State<TaskWidget> {
     BlocProvider.of<HouseholdTaskBloc>(context)
         .add(DeleteHouseholdTaskEvent(taskId: taskId,householdId: householdId));
   }
+
 }
 
 
