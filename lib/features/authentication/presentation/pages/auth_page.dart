@@ -31,11 +31,10 @@ class AuthPage extends StatelessWidget {
           } else if (state is AuthLoaded) {
             return state.authData.householdId == "" ? AddAuthDataToHouseholdView(user: state.authData) : AuthenticatedView(mainUser: state.authData);
           } else if (state is AuthError) {
-            return Column(
-              children: [
-
-              ],
-            );
+            return BlocErrorWidget(errorMsg: state.errorMsg, reloadAction: () {
+              BlocProvider.of<AuthBloc>(context)
+                  .add(LoadAuthEvent());
+            });
           } else if (state is AuthCreate){
             return const AuthenticationWidget();
           } else {

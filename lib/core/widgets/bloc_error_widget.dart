@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class BlocErrorWidget extends StatelessWidget {
   final String errorMsg;
-  final void reloadAction;
+  final Function() reloadAction;
 
 
   const BlocErrorWidget({
@@ -18,7 +18,7 @@ class BlocErrorWidget extends StatelessWidget {
         children: [
           Text(errorMsg),
           ElevatedButton(onPressed: () {
-            reloadAction;
+            reloadAction();
           }, child: const Text("Try again"))
         ],
       ),

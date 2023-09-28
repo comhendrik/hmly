@@ -1,4 +1,5 @@
 import 'package:household_organizer/core/entities/user.dart';
+import 'package:household_organizer/core/widgets/bloc_error_widget.dart';
 import 'package:household_organizer/features/charts/presentation/bloc/chart_bloc.dart';
 import 'package:household_organizer/features/charts/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -90,7 +91,10 @@ class ChartPage extends StatelessWidget {
               ],
             );
           } else if (state is ChartError) {
-            return Text(state.errorMsg);
+            return BlocErrorWidget(errorMsg: state.errorMsg, reloadAction: () {
+              BlocProvider.of<ChartBloc>(context)
+                  .add(GetWeeklyChartDataEvent(userId: mainUser.id, householdId: mainUser.householdId));
+            });
           } else {
             return const Text("...");
           }

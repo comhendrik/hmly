@@ -1,4 +1,5 @@
 import 'package:household_organizer/core/entities/user.dart';
+import 'package:household_organizer/core/widgets/bloc_error_widget.dart';
 import 'package:household_organizer/features/household_task/presentation/bloc/household_task_bloc.dart';
 import 'package:household_organizer/features/household_task/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,10 @@ class HouseholdTaskPage extends StatelessWidget {
                 } else if (state is HouseholdTaskLoaded) {
                   return HouseholdTaskDisplay(mainUser: mainUser, allTasks: state.householdTaskList);
                 } else if (state is HouseholdTaskError) {
-                  return Text(state.errorMsg);
+                  return BlocErrorWidget(errorMsg: state.errorMsg, reloadAction: () {
+                    BlocProvider.of<HouseholdTaskBloc>(context)
+                        .add(GetAllTasksForHouseholdEvent(householdId: mainUser.householdId));
+                  });
                 } else {
                   return const Text("Error State");
                 }
