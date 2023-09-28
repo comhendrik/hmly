@@ -25,6 +25,11 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   @override
   Future<void> addAuthDataToHousehold(String userId, String householdId) async {
+    try {
+      final _ =  await householdRecordService.getOne(householdId);
+    } catch(err) {
+      throw NotFoundException();
+    }
     final body = <String, dynamic>{
       "household": householdId,
     };

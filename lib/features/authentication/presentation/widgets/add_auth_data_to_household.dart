@@ -20,42 +20,53 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
 
   final householdIdController = TextEditingController();
   String householdIdStr = '';
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Center(
-        child: Column(
-          children: [
-            const Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.house, weight: 5.0),
-                Text(' Add user to household!', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
-              ],
-            ),
-            TextField(
-                controller: householdIdController,
-                keyboardType: TextInputType.text,
-                decoration: const InputDecoration(
-                  labelText: 'Household Id',
-                  hintText: 'Enter an ID from an household',
-                  prefixIcon: Icon(Icons.person), // Icon for username
-                ),
-                onChanged: (value) {
-                  householdIdStr = value;
-                }
-            ),
-            ElevatedButton.icon(
-                onPressed: () {
-                  addAuthDataToHousehold(widget.user, householdIdStr);
-                },
-                icon: const Icon(Icons.arrow_forward),
-                label: const Text("Add user to household")
-            ),
-            const LogoutButton(),
-          ],
+    return Form(
+      key: _formKey,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Center(
+          child: Column(
+            children: [
+              const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.house, weight: 5.0),
+                  Text(' Add user to household!', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+                ],
+              ),
+              TextFormField(
+                  controller: householdIdController,
+                  keyboardType: TextInputType.text,
+                  decoration: const InputDecoration(
+                    labelText: 'Household Id',
+                    hintText: 'Enter an ID from an household',
+                    prefixIcon: Icon(Icons.person), // Icon for username
+                  ),
+                  validator: (value) {
+                    if (value == null || value.length != 15) {
+                      return 'The length must be exactly 15.';
+                    }
+                  },
+                  onChanged: (value) {
+                    householdIdStr = value;
+                  }
+              ),
+              ElevatedButton.icon(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      addAuthDataToHousehold(widget.user, householdIdStr);
+                    }
+                  },
+                  icon: const Icon(Icons.arrow_forward),
+                  label: const Text("Add user to household")
+              ),
+              const LogoutButton(),
+            ],
+          ),
         ),
       ),
     );

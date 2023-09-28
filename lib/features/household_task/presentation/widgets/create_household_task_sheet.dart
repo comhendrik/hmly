@@ -130,7 +130,7 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
               prefixIcon: Icon(Icons.title),
             ),
             validator: (value) {
-              if (value == null) {
+              if (value == null || value.isEmpty) {
                 return 'Please enter a title';
               }
               return null;
@@ -143,8 +143,11 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
               prefixIcon: Icon(Icons.calendar_today),
             ),
             validator: (value) {
-              if (value == null) {
+              if (value == null || value.isEmpty) {
                 return 'Please enter a due date';
+              }
+              if (DateTime.tryParse(value) == null) {
+                return 'enter valid date';
               }
               if (!DateTime.tryParse(value)!.isAfter(DateTime.now())) {
                 return 'Due date must be in the future';
@@ -160,7 +163,7 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
             ),
             keyboardType: TextInputType.number,
             validator: (value) {
-              if (value == null) {
+              if (value == null || value.isEmpty) {
                 return 'Please enter points worth';
               }
               if (int.tryParse(value) == null || int.parse(value) <= 0) {

@@ -19,6 +19,8 @@ class AuthRepositoryImpl implements AuthRepository {
       return Right(await dataSource.addAuthDataToHousehold(userId, householdId));
     } on ServerException {
       return Left(ServerFailure());
+    } on NotFoundException {
+      return Left(NotFoundFailure());
     }
   }
 

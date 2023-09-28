@@ -69,7 +69,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final resultEither = await addAuthDataToHousehold.execute(event.user.id, event.householdId);
         await resultEither.fold(
                 (failure) async {
-              emit(const AuthError(errorMsg: 'ServerFailure'));
+                  if (failure.runtimeType == ServerFailure) {
+                    emit(const AuthError(errorMsg: 'Server Failure'));
+                  } else {
+                    emit(AuthError(errorMsg: 'Household with ${event.householdId} not found'));
+                  }
             },
                 (_) async {
                   final newUser = User(id: event.user.id, username: event.user.username, householdId: event.householdId, email: event.user.email, name: event.user.name);
