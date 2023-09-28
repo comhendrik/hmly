@@ -4,6 +4,8 @@ import 'package:household_organizer/core/models/user_model.dart';
 import 'package:household_organizer/core/entities/user.dart';
 import 'package:pocketbase/pocketbase.dart';
 
+
+//TODO: Maybe put this household feature into authentication feature
 abstract class HouseholdRemoteDataSource {
   Future<HouseholdModel> loadHousehold(String householdId);
   Future<void> createHousehold(String title, int minWeeklyPoints);

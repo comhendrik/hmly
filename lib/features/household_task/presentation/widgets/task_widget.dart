@@ -23,6 +23,16 @@ class TaskWidget extends StatefulWidget {
 class _TaskWidgetState extends State<TaskWidget> {
 
   bool showControls = false;
+  bool isEditingTitle = false;
+  final titleEditingController = TextEditingController();
+  String titleStr = "";
+
+  @override
+  void initState() {
+    super.initState();
+    titleStr = widget.task.title;
+    titleEditingController.text = titleStr;
+  }
 
 
   @override
@@ -43,12 +53,36 @@ class _TaskWidgetState extends State<TaskWidget> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.task.title,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isEditingTitle = !isEditingTitle;
+                      });
+                    },
+                    child: isEditingTitle ?
+                    Container(
+                      width: 100, // Adjust the width as per your preference
+                      child: TextField(
+                        controller: titleEditingController,
+                        onEditingComplete: () {
+                          setState(() {
+                            isEditingTitle = false;
+                          });
+                        },
+                        onChanged: (value) {
+                          titleStr = value;
+                        },
+                        style: const TextStyle(fontSize: 12),
+                        // Adjust the font size
+                      ),
+                    )
+                    : Text(
+                      titleStr,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 15.0,),
@@ -122,100 +156,7 @@ class _TaskWidgetState extends State<TaskWidget> {
 
 }
 
-
-//TODO: Maybe delete this one here!!!!
-
-class TaskDetail extends StatefulWidget {
-  final HouseholdTask task;
-  final String householdId;
-
-  const TaskDetail({
-    super.key,
-    required this.task,
-    required this.householdId
-  });
-
-  @override
-  State<TaskDetail> createState() => _TaskDetailState();
-
-}
-
-class _TaskDetailState extends State<TaskDetail> {
-  @override
-  Widget build(BuildContext context) {
-    return  Scaffold(
-        body: SafeArea(
-            child: ListView(
-              padding: const EdgeInsets.all(20),
-              children: [
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    IconButton(
-                        icon: const Icon(Icons.arrow_back_ios),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        }
-                    ),
-                    Text(
-                      widget.task.title,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-                    ),
-                  ],
-                ),
-                const Text(
-                  'Due to:',
-                  style: TextStyle(fontWeight: FontWeight.bold)
-                ),
-                Text(
-                    widget.task.getCurrentDate()
-                ),
-                const Text(
-                  'Assigned to',
-                    style: TextStyle(fontWeight: FontWeight.bold)
-                ),
-                const Text(
-                  'Placeholder Hendrik Steen'
-                ),
-                const Text(
-                    'Points Worth:'
-                ),
-                Text(widget.task.pointsWorth.toString()),
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
-                  child: ElevatedButton.icon(
-                    icon: const Icon(Icons.check),
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)
-                      )
-                    ),
-
-                    onPressed: () {
-
-
-
-                    },
-                    label: Text(widget.task.isDone ? "Undo Task" : "Finish Task")
-                  ),
-                ),
-              ],
-            )
-        )
-    );
-
-  }
-
-
-}
-
-class DetailInfo extends StatelessWidget {
-
-  /// Widget for showing an Icon besides a text. Used in this application for TaskWidgets in List
-
+class DetailInfo extends StatefulWidget {
   final IconData icon;
   final String title;
 
@@ -226,19 +167,62 @@ class DetailInfo extends StatelessWidget {
   });
 
   @override
+  State<DetailInfo> createState() => _DetailInfoState();
+}
+
+class _DetailInfoState extends State<DetailInfo> {
+
+  bool showTextField = false;
+  final textEditionController = TextEditingController();
+  String textStr = "";
+
+
+  @override
+  void initState() {
+    super.initState();
+    textStr = widget.title;
+    textEditionController.text = textStr;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon),
-        Text(
-          '  $title',
-          style: const TextStyle(
-            fontWeight: FontWeight.w200,
-            color: Colors.grey,
+        Icon(widget.icon),
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              showTextField = true;
+            });
+          },
+          child: showTextField ?
+          Container(
+            width: 100, // Adjust the width as per your preference
+            child: TextField(
+              controller: textEditionController,
+              onEditingComplete: () {
+                setState(() {
+                  showTextField = false;
+                });
+              },
+              onChanged: (value) {
+                textStr = value;
+              },
+              style: const TextStyle(fontSize: 12),
+              // Adjust the font size
+            ),
           )
-        )
+          :
+          Text('  $textStr',
+              style: const TextStyle(
+                fontWeight: FontWeight.w200,
+                color: Colors.grey,
+              )
+          )
+        ),
+
       ],
     );
   }
-
 }
+

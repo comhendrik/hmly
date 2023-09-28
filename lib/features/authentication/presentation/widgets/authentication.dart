@@ -85,8 +85,8 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your password';
                   }
-                  if (value.length < 10) {
-                    return 'Use at least 10 characters for your password';
+                  if (value.length < 8) {
+                    return 'Use at least 8 characters for your password';
                   }
                   return null;
                 },
