@@ -51,77 +51,120 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
               showLogin ? 'Login': 'SignUp',
               style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
-            TextField(
-                controller: emailController,
-                keyboardType: TextInputType.text,
-                decoration: const InputDecoration(
-                  labelText: 'E-Mail',
-                  hintText: 'Enter your e-mail address',
-                  prefixIcon: Icon(Icons.person), // Icon for username
-                ),
-                onChanged: (value) {
-                  emailStr = value;
-                }
+            TextFormField(
+              controller: emailController,
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(
+                labelText: 'E-Mail',
+                hintText: 'Enter your e-mail address',
+                prefixIcon: Icon(Icons.person), // Icon for username
+              ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter an e-mail adress';
+                  }
+                  if (!value.contains('@') || !value.contains('.') || value.contains('@.')) {
+                    return 'No valid email';
+                  }
+                  return null;
+                },
+              onChanged: (value) {
+                emailStr = value;
+              }
             ),
-            TextField(
-                controller: passwordController,
-                keyboardType: TextInputType.text,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  hintText: 'Enter your password',
-                  prefixIcon: Icon(Icons.lock), // Icon for password
-                ),
-                onChanged: (value) {
-                  passwordStr = value;
-                }
+            TextFormField(
+              obscureText: true,
+              controller: passwordController,
+              keyboardType: TextInputType.text,
+              decoration: const InputDecoration(
+                labelText: 'Password',
+                hintText: 'Enter your password',
+                prefixIcon: Icon(Icons.lock), // Icon for password
+              ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your password';
+                  }
+                  if (value.length < 10) {
+                    return 'Use at least 10 characters for your password';
+                  }
+                  return null;
+                },
+              onChanged: (value) {
+                passwordStr = value;
+              }
             ),
             if (!showLogin)
               Column(
                 children: [
-                  TextField(
-                      controller: passwordConfirmController,
-                      keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(
-                        labelText: 'Confirm Password',
-                        hintText: 'Re-enter your password',
-                        prefixIcon: Icon(Icons.lock), // Icon for password
-                      ),
-                      onChanged: (value) {
-                        passwordConfirmStr = value;
+                  TextFormField(
+                    obscureText: true,
+                    controller: passwordConfirmController,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: 'Confirm Password',
+                      hintText: 'Re-enter your password',
+                      prefixIcon: Icon(Icons.lock), // Icon for password
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please re-enter your password';
                       }
+                      if (value != passwordStr) {
+                        return 'The passwords arent matching';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      passwordConfirmStr = value;
+                    }
                   ),
-                  TextField(
-                      controller: usernameController,
-                      keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(
-                        labelText: 'Username',
-                        hintText: 'Enter your username',
-                        prefixIcon: Icon(Icons.person), // Icon for password
-                      ),
-                      onChanged: (value) {
-                        usernameStr = value;
+                  TextFormField(
+                    controller: usernameController,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: 'Username',
+                      hintText: 'Enter your username',
+                      prefixIcon: Icon(Icons.person), // Icon for password
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your username';
                       }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      usernameStr = value;
+                    }
                   ),
-                  TextField(
-                      controller: nameController,
-                      keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(
-                        labelText: 'Name',
-                        hintText: 'Enter your name',
-                        prefixIcon: Icon(Icons.badge), // Icon for password
-                      ),
-                      onChanged: (value) {
-                        nameStr = value;
+                  TextFormField(
+                    controller: nameController,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: 'Name',
+                      hintText: 'Enter your name',
+                      prefixIcon: Icon(Icons.badge), // Icon for password
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your name';
                       }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      nameStr = value;
+                    }
                   ),
                 ],
               ),
             ElevatedButton.icon(
                 onPressed: () {
-                  if (showLogin) {
-                    login(emailStr, passwordStr);
-                  } else {
-                    signUp(emailStr, passwordStr, passwordConfirmStr, usernameStr, nameStr);
+                  if (_formKey.currentState!.validate()) {
+                    if (showLogin) {
+                      login(emailStr, passwordStr);
+                    } else {
+                      signUp(emailStr, passwordStr, passwordConfirmStr, usernameStr, nameStr);
+                    }
                   }
                 },
                 icon: const Icon(Icons.arrow_forward),
