@@ -79,9 +79,16 @@ class _EditableTextFieldState extends State<EditableTextField> {
                   return null;
               }
             },
+            onTapOutside: (_) {
+              setState(() {
+                textStr = widget.title;
+                showTextField = false;
+              });
+            },
             onChanged: (value) {
               textStr = value;
             },
+
             style: const TextStyle(fontSize: 12),
             // Adjust the font size
           ),

@@ -57,7 +57,6 @@ class _TaskWidgetState extends State<TaskWidget> {
                   EditableTextField(
                     title: widget.task.title,
                     callback: (data) {
-                      //TODO: Error handling
                       updateTask(widget.task, {"title" : data}, widget.householdId);
                     },
                     type: EditableTextFieldType.text,
@@ -92,7 +91,6 @@ class _TaskWidgetState extends State<TaskWidget> {
                       EditableTextField(
                         title: widget.task.pointsWorth.toString(),
                         callback: (data) {
-                          //TODO: Error handling
                           updateTask(widget.task, {"points_worth" : int.parse(data)}, widget.householdId);
                         },
                         type: EditableTextFieldType.number,
