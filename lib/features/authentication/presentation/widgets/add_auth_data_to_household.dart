@@ -4,8 +4,6 @@ import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:household_organizer/features/authentication/presentation/widgets/LogoutButton.dart';
 
-//TODO: Maybe make one widget for login signup and adding to household and make it dynamic, idea because they look similar and use DRY
-
 class AddAuthDataToHouseholdView extends StatefulWidget {
   final User user;
 
@@ -19,56 +17,103 @@ class AddAuthDataToHouseholdView extends StatefulWidget {
 class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
 
   final householdIdController = TextEditingController();
+  final householdTitleController = TextEditingController();
   String householdIdStr = '';
-  final _formKey = GlobalKey<FormState>();
+  String householdTitleStr = '';
+  final _idFormKey = GlobalKey<FormState>();
+  final _titleFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Center(
-          child: Column(
-            children: [
-              const Row(
-                mainAxisSize: MainAxisSize.min,
+    return Column(
+      children: [
+        const Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.house, weight: 5.0),
+            Text(' Add user to household!', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+          ],
+        ),
+        Form(
+          key: _idFormKey,
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Center(
+              child: Column(
                 children: [
-                  Icon(Icons.house, weight: 5.0),
-                  Text(' Add user to household!', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+                  const Text('Join an existing one:'),
+                  TextFormField(
+                      controller: householdIdController,
+                      keyboardType: TextInputType.text,
+                      decoration: const InputDecoration(
+                        labelText: 'Household Id',
+                        hintText: 'Enter an ID from an household',
+                        prefixIcon: Icon(Icons.person), // Icon for username
+                      ),
+                      validator: (value) {
+                        if (value == null || value.length != 15) {
+                          return 'The length must be exactly 15.';
+                        }
+                      },
+                      onChanged: (value) {
+                        householdIdStr = value;
+                      }
+                  ),
+                  ElevatedButton.icon(
+                      onPressed: () {
+                        if (_idFormKey.currentState!.validate()) {
+                          addAuthDataToHousehold(widget.user, householdIdStr);
+                        }
+                      },
+                      icon: const Icon(Icons.arrow_forward),
+                      label: const Text("Add")
+                  ),
                 ],
               ),
-              TextFormField(
-                  controller: householdIdController,
-                  keyboardType: TextInputType.text,
-                  decoration: const InputDecoration(
-                    labelText: 'Household Id',
-                    hintText: 'Enter an ID from an household',
-                    prefixIcon: Icon(Icons.person), // Icon for username
-                  ),
-                  validator: (value) {
-                    if (value == null || value.length != 15) {
-                      return 'The length must be exactly 15.';
-                    }
-                  },
-                  onChanged: (value) {
-                    householdIdStr = value;
-                  }
-              ),
-              ElevatedButton.icon(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      addAuthDataToHousehold(widget.user, householdIdStr);
-                    }
-                  },
-                  icon: const Icon(Icons.arrow_forward),
-                  label: const Text("Add user to household")
-              ),
-              const LogoutButton(),
-            ],
+            ),
           ),
         ),
-      ),
+        Form(
+          key: _titleFormKey,
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Center(
+              child: Column(
+                children: [
+                  const Text('Or create a new one'),
+                  TextFormField(
+                      controller: householdTitleController,
+                      keyboardType: TextInputType.text,
+                      decoration: const InputDecoration(
+                        labelText: 'Household Title',
+                        hintText: 'Enter a ID from an household',
+                        prefixIcon: Icon(Icons.person), // Icon for username
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please provide a title';
+                        }
+                      },
+                      onChanged: (value) {
+                        householdTitleStr = value;
+                      }
+                  ),
+                  ElevatedButton.icon(
+                      onPressed: () {
+                        if (_titleFormKey.currentState!.validate()) {
+                          print("yeah crreate household");
+                        }
+                      },
+                      icon: const Icon(Icons.arrow_forward),
+                      label: const Text("Create")
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const LogoutButton(),
+      ],
     );
   }
 
