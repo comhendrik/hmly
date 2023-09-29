@@ -46,7 +46,7 @@ class _EditableTextFieldState extends State<EditableTextField> {
         },
         child: showTextField ?
         Container(
-          width: 100, // Adjust the width as per your preference
+          width: MediaQuery. of(context). size. width / 2, // Adjust the width as per your preference
           child: TextFormField(
             controller: textEditionController,
             onEditingComplete: () {
@@ -67,12 +67,12 @@ class _EditableTextFieldState extends State<EditableTextField> {
                     return 'enter valid date';
                   }
                   if (!DateTime.tryParse(value)!.isAfter(DateTime.now())) {
-                    return 'Due date must be in the future';
+                    return 'Date not in future';
                   }
                   return null;
                 case EditableTextFieldType.number:
                   if (int.tryParse(value) == null || int.parse(value) <= 0) {
-                    return 'Please enter a valid positive number';
+                    return 'enter a positive number';
                   }
                   return null;
                 case EditableTextFieldType.text:
@@ -87,7 +87,7 @@ class _EditableTextFieldState extends State<EditableTextField> {
           ),
         )
             : Text(
-            textStr,
+            ' $textStr',
             style: widget.style
         ),
       ),
