@@ -34,9 +34,9 @@ class HouseholdTaskRepositoryImpl implements HouseholdTaskRepository {
   }
 
   @override
-  Future<Either<Failure, void>> updateHouseholdTask(HouseholdTask task, String userId) async {
+  Future<Either<Failure, void>> toggleIsDoneHouseholdTask(HouseholdTask task, String userId) async {
     try {
-      return Right(await remoteDataSource.updateHouseholdTask(task, userId));
+      return Right(await remoteDataSource.toggleIsDoneHouseholdTask(task, userId));
     } on ServerException {
       return Left(ServerFailure());
     }
@@ -46,6 +46,15 @@ class HouseholdTaskRepositoryImpl implements HouseholdTaskRepository {
   Future<Either<Failure, void>> deleteHouseholdTask(String taskId) async {
     try {
       return Right(await remoteDataSource.deleteHouseholdTask(taskId));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> updateHouseholdTask(HouseholdTask task, Map<String, dynamic> updateData) async {
+    try {
+      return Right(await remoteDataSource.updateHouseholdTask(task, updateData));
     } on ServerException {
       return Left(ServerFailure());
     }

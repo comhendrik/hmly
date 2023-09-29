@@ -25,6 +25,7 @@ import 'package:household_organizer/features/household_task/domain/repositories/
 import 'package:household_organizer/features/household_task/domain/usecases/create_household_task.dart';
 import 'package:household_organizer/features/household_task/domain/usecases/delete_household_task.dart';
 import 'package:household_organizer/features/household_task/domain/usecases/get_all_tasks_for_household.dart';
+import 'package:household_organizer/features/household_task/domain/usecases/toggle_is_done_household_task.dart';
 import 'package:household_organizer/features/household_task/domain/usecases/update_household_task.dart';
 import 'package:household_organizer/features/household_task/presentation/bloc/household_task_bloc.dart';
 
@@ -39,6 +40,7 @@ Future<void> init() async {
         () => HouseholdTaskBloc(
           getTasks: sl(),
           createTask: sl(),
+          toggleIsDoneHouseholdTask: sl(),
           updateTask: sl(),
           deleteTask: sl(),
     ),
@@ -65,6 +67,7 @@ Future<void> init() async {
   // Use cases
   sl.registerLazySingleton(() => GetAllTasksForHousehold(sl()));
   sl.registerLazySingleton(() => CreateHouseholdTask(repository: sl()));
+  sl.registerLazySingleton(() => ToggleIsDoneHouseholdTask(repository: sl()));
   sl.registerLazySingleton(() => UpdateHouseholdTask(repository: sl()));
   sl.registerLazySingleton(() => DeleteHouseholdTask(repository: sl()));
 

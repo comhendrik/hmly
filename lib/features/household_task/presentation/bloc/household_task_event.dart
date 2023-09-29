@@ -29,12 +29,12 @@ class CreateHouseholdTaskEvent extends HouseholdTaskEvent {
   });
 }
 
-class UpdateHouseholdTaskEvent extends HouseholdTaskEvent {
+class ToggleIsDoneHouseholdTaskEvent extends HouseholdTaskEvent {
   final HouseholdTask task;
   final String householdId;
   final String userId;
 
-  const UpdateHouseholdTaskEvent({
+  const ToggleIsDoneHouseholdTaskEvent({
     required this.task,
     required this.householdId,
     required this.userId,
@@ -47,6 +47,18 @@ class DeleteHouseholdTaskEvent extends HouseholdTaskEvent {
 
   const DeleteHouseholdTaskEvent({
     required this.taskId,
+    required this.householdId
+  });
+}
+
+class UpdateHouseholdTaskEvent extends HouseholdTaskEvent {
+  final HouseholdTask task;
+  final Map<String, dynamic> updateData;
+  final String householdId;
+
+  const UpdateHouseholdTaskEvent({
+    required this.task,
+    required this.updateData,
     required this.householdId
   });
 }

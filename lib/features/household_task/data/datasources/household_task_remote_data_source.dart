@@ -7,8 +7,9 @@ import 'package:household_organizer/core/entities/user.dart';
 abstract class HouseholdTaskRemoteDataSource {
   Future<List<HouseholdTask>> getAllTaskForHousehold(String householdId);
   Future<HouseholdTask> createHouseholdTask(String householdId, String title, int pointsWorth, String dueTo);
-  Future<void> updateHouseholdTask(HouseholdTask task, String userId);
+  Future<void> toggleIsDoneHouseholdTask(HouseholdTask task, String userId);
   Future<void> deleteHouseholdTask(String taskId);
+  Future<void> updateHouseholdTask(HouseholdTask task, Map<String, dynamic> updateData);
 }
 
 class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource {
@@ -58,7 +59,7 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
   }
 
   @override
-  Future<void> updateHouseholdTask(HouseholdTask task, String userId) async {
+  Future<void> toggleIsDoneHouseholdTask(HouseholdTask task, String userId) async {
     final taskBody = <String, dynamic>{
       "isDone": !task.isDone
     };
@@ -66,7 +67,7 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
       final record = await taskRecordService.update(task.id, body: taskBody);
       String operator = '+';
 
-      //task.isDone is static which is why this could will be exuceted, when you undo the task
+      //task.isDone is static which is why this will be executed, when you undo the task
       if (task.isDone == true) {
         operator = '-';
       }
@@ -87,6 +88,17 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
   Future<void> deleteHouseholdTask(String taskId) async {
     try {
       final record = await taskRecordService.delete(taskId);
+    } catch(err) {
+      print(err);
+      throw ServerException();
+    }
+
+  }
+
+  @override
+  Future<void> updateHouseholdTask(HouseholdTask task, Map<String, dynamic> updateData) async {
+    try {
+      final _ = await taskRecordService.update(task.id, body: updateData);
     } catch(err) {
       print(err);
       throw ServerException();

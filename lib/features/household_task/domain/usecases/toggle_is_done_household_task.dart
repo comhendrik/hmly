@@ -3,14 +3,14 @@ import 'package:household_organizer/features/household_task/domain/entities/hous
 import 'package:household_organizer/features/household_task/domain/repositories/household_task_repository.dart';
 import 'package:dartz/dartz.dart';
 
-class UpdateHouseholdTask {
+class ToggleIsDoneHouseholdTask {
   final HouseholdTaskRepository repository;
 
-  UpdateHouseholdTask({
+  ToggleIsDoneHouseholdTask({
     required this.repository
   });
 
-  Future<Either<Failure, void>> execute(HouseholdTask task, Map<String, dynamic> updateData) async {
-    return await repository.updateHouseholdTask(task, updateData);
+  Future<Either<Failure, void>> execute(HouseholdTask task, String userId) async {
+    return await repository.toggleIsDoneHouseholdTask(task, userId);
   }
 }

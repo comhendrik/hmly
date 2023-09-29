@@ -103,7 +103,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                     ),
 
                     onPressed: () {
-                      updateTask(widget.task, widget.householdId, widget.mainUser.id);
+                      toggleIsDoneHouseholdTask(widget.task, widget.householdId, widget.mainUser.id);
                     },
                   ),
                   IconButton(
@@ -145,9 +145,9 @@ class _TaskWidgetState extends State<TaskWidget> {
     );
   }
 
-  void updateTask(HouseholdTask task, String householdId, String userId) {
+  void toggleIsDoneHouseholdTask(HouseholdTask task, String householdId, String userId) {
     BlocProvider.of<HouseholdTaskBloc>(context)
-        .add(UpdateHouseholdTaskEvent(task: task, householdId: householdId, userId: userId));
+        .add(ToggleIsDoneHouseholdTaskEvent(task: task, householdId: householdId, userId: userId));
   }
   void deleteTask(String taskId, String householdId) {
     BlocProvider.of<HouseholdTaskBloc>(context)
