@@ -68,6 +68,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                           setState(() {
                             isEditingTitle = false;
                           });
+                          updateTask(widget.task, {"title" : titleStr}, widget.householdId);
                         },
                         onChanged: (value) {
                           titleStr = value;
@@ -86,8 +87,15 @@ class _TaskWidgetState extends State<TaskWidget> {
                     ),
                   ),
                   const SizedBox(height: 15.0,),
-                  DetailInfo(icon: Icons.calendar_month, title: widget.task.getCurrentDate()),
-                  DetailInfo(icon: Icons.timeline, title: widget.task.pointsWorth.toString()),
+                  DetailInfo(icon: Icons.calendar_month, title: widget.task.getCurrentDate(), callback: (data) {
+                    //TODO: Error handling
+                    final due_date = DateTime.parse(data);
+                    updateTask(widget.task, {"due_to" : due_date.toString()}, widget.householdId);
+                  }),
+                  DetailInfo(icon: Icons.timeline, title: widget.task.pointsWorth.toString(), callback: (data) {
+                    //TODO: Error handling
+                    updateTask(widget.task, {"points_worth" : int.parse(data)}, widget.householdId);
+                  }),
                 ],
               ),
               Column(
@@ -154,16 +162,23 @@ class _TaskWidgetState extends State<TaskWidget> {
         .add(DeleteHouseholdTaskEvent(taskId: taskId,householdId: householdId));
   }
 
+  void updateTask(HouseholdTask task, Map<String, dynamic> updateData, String householdId) {
+    BlocProvider.of<HouseholdTaskBloc>(context)
+        .add(UpdateHouseholdTaskEvent(task: task, updateData: updateData, householdId: householdId));
+  }
+
 }
 
 class DetailInfo extends StatefulWidget {
   final IconData icon;
   final String title;
+  final Function(String) callback;
 
   const DetailInfo({
     super.key,
     required this.icon,
-    required this.title
+    required this.title,
+    required this.callback
   });
 
   @override
@@ -204,6 +219,8 @@ class _DetailInfoState extends State<DetailInfo> {
                 setState(() {
                   showTextField = false;
                 });
+                widget.callback(textStr);
+
               },
               onChanged: (value) {
                 textStr = value;
@@ -225,4 +242,7 @@ class _DetailInfoState extends State<DetailInfo> {
     );
   }
 }
+
+
+
 

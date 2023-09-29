@@ -23,7 +23,7 @@ class HouseholdTask extends Equatable {
 
     var dateParse = DateTime.parse(currentDate);
 
-    var formattedDate = "${dateParse.day}.${dateParse.month}.${dateParse.year}";
+    var formattedDate = "${dateParse.year}-${dateParse.month}-${dateParse.day}";
 
     return formattedDate;
   }
