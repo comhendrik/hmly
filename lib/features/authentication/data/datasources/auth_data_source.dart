@@ -20,9 +20,15 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   final RecordService userRecordService;
   final RecordService householdRecordService;
+  final RecordService pointsRecordService;
   final FlutterSecureStorage storage;
 
-  AuthDataSourceImpl({required this.userRecordService, required this.householdRecordService, required this.storage});
+  AuthDataSourceImpl({
+    required this.userRecordService,
+    required this.householdRecordService,
+    required this.pointsRecordService,
+    required this.storage
+  });
 
   @override
   Future<void> addAuthDataToHousehold(String userId, String householdId) async {
@@ -107,6 +113,16 @@ class AuthDataSourceImpl implements AuthDataSource {
     };
     try {
       final record = await userRecordService.create(body: body);
+      final dayList = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+      for (var i = 1; i < 8; i++) {
+        final pointBody = <String, dynamic>{
+          "day": dayList[i-1],
+          "day_number": i,
+          "value" : 0,
+          "user" : record.id,
+        };
+        pointsRecordService.create(body: pointBody);
+      }
       return UserModel.fromJSON(record.data, record.id);
     } catch(err) {
       print(err);
