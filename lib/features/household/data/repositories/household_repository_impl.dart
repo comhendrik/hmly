@@ -22,12 +22,4 @@ class HouseholdRepositoryImpl implements HouseholdRepository {
     }
   }
 
-  @override
-  Future<Either<Failure, void>> createHousehold(String title, int minWeeklyPoints) async {
-    try {
-      return Right(await remoteDataSource.createHousehold(title, minWeeklyPoints));
-    } on ServerException {
-      return Left(ServerFailure());
-    }
-  }
 }

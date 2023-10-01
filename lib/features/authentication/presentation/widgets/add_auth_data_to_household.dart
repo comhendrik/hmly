@@ -37,7 +37,7 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
         Form(
           key: _idFormKey,
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(10.0),
             child: Center(
               child: Column(
                 children: [
@@ -59,14 +59,17 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
                         householdIdStr = value;
                       }
                   ),
-                  ElevatedButton.icon(
-                      onPressed: () {
-                        if (_idFormKey.currentState!.validate()) {
-                          addAuthDataToHousehold(widget.user, householdIdStr);
-                        }
-                      },
-                      icon: const Icon(Icons.arrow_forward),
-                      label: const Text("Add")
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: ElevatedButton.icon(
+                        onPressed: () {
+                          if (_idFormKey.currentState!.validate()) {
+                            addAuthDataToHousehold(widget.user, householdIdStr);
+                          }
+                        },
+                        icon: const Icon(Icons.arrow_forward),
+                        label: const Text("Add")
+                    ),
                   ),
                 ],
               ),
@@ -76,7 +79,7 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
         Form(
           key: _titleFormKey,
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(10.0),
             child: Center(
               child: Column(
                 children: [
@@ -98,15 +101,18 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
                         householdTitleStr = value;
                       }
                   ),
-                  ElevatedButton.icon(
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: ElevatedButton.icon(
                       onPressed: () {
                         if (_titleFormKey.currentState!.validate()) {
-                          print("yeah crreate household");
+                          createHouseholdAndAddAuthData(widget.user, householdTitleStr);
                         }
                       },
                       icon: const Icon(Icons.arrow_forward),
-                      label: const Text("Create")
-                  ),
+                      label: const Text("Create"),
+                    ),
+                  )
                 ],
               ),
             ),
@@ -122,4 +128,8 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
         .add(AddAuthDataToHouseholdEvent(user: user, householdId: householdId));
   }
 
+  void createHouseholdAndAddAuthData(User user, String householdTitle) {
+    BlocProvider.of<AuthBloc>(context)
+        .add(CreateHouseholdAndAddAuthDataEvent(user: user, householdTitle: householdTitle));
+  }
 }

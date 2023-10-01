@@ -25,6 +25,19 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Either<Failure, String>> createHouseholdAndAddAuthData(String userId, String householdTitle) async {
+    try {
+      return Right(await dataSource.createHouseholdAndAddAuthData(userId, householdTitle));
+    } on ServerException {
+      return Left(ServerFailure());
+    } on NotFoundException {
+      return Left(NotFoundFailure());
+    }
+  }
+
+
+
+  @override
   Future<Either<Failure, void>> deleteAuthDataFromHousehold(User user) async {
     try {
       return Right(await dataSource.deleteAuthDataFromHousehold(user));
@@ -33,6 +46,8 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
+
+  //TODO: Rename function so that it indicates that it means creating data in storage on phonef
   @override
   Future<void> createAuthData(String email, String password) async {
     await dataSource.createAuthData(email, password);

@@ -8,7 +8,6 @@ import 'package:pocketbase/pocketbase.dart';
 //TODO: Maybe put this household feature into authentication feature
 abstract class HouseholdRemoteDataSource {
   Future<HouseholdModel> loadHousehold(String householdId);
-  Future<void> createHousehold(String title, int minWeeklyPoints);
 }
 
 class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
@@ -38,18 +37,5 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
 
   }
 
-  @override
-  Future<void> createHousehold(String title, int minWeeklyPoints) async {
-    final body = <String, dynamic>{
-      "title": title,
-      "minWeeklyPoints": minWeeklyPoints,
-    };
-    try {
-      await householdRecordService.create(body: body);
-    } catch(err) {
-      print(err);
-      throw ServerException();
-    }
 
-  }
 }

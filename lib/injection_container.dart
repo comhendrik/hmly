@@ -3,6 +3,7 @@ import 'package:household_organizer/features/authentication/data/datasources/aut
 import 'package:household_organizer/features/authentication/data/repositories/auth_repository_impl.dart';
 import 'package:household_organizer/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/add_auth_data_to_household.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/create_Household_And_Add_Auth_Data.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/create_auth_data.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/create_auth_data_on_server.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/delete_auth_data_from_household.dart';
@@ -52,7 +53,14 @@ Future<void> init() async {
   );
 
   sl.registerFactory(
-        () => AuthBloc(createAuth: sl(), loadAuth: sl(), createAuthDataOnServer: sl(), addAuthDataToHousehold: sl(), deleteAuthDataFromHousehold: sl())
+        () => AuthBloc(
+            createAuth: sl(),
+            loadAuth: sl(),
+            createAuthDataOnServer: sl(),
+            createHouseholdAndAddAuthData: sl(),
+            addAuthDataToHousehold: sl(),
+            deleteAuthDataFromHousehold: sl()
+        )
   );
 
   sl.registerFactory(
@@ -75,6 +83,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => LoadHousehold(repository: sl()));
 
   sl.registerLazySingleton(() => AddAuthDataToHousehold(repository: sl()));
+  sl.registerLazySingleton(() => CreateHouseholdAndAddAuthData(repository: sl()));
   sl.registerLazySingleton(() => DeleteAuthDataFromHousehold(repository: sl()));
   sl.registerLazySingleton(() => CreateAuthData(repository: sl()));
   sl.registerLazySingleton(() => LoadAuthData(repository: sl()));

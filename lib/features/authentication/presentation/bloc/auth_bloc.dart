@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/add_auth_data_to_household.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/create_Household_And_Add_Auth_Data.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/create_auth_data.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/create_auth_data_on_server.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/delete_auth_data_from_household.dart';
@@ -16,12 +17,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoadAuthData loadAuth;
   final CreateAuthDataOnServer createAuthDataOnServer;
   final AddAuthDataToHousehold addAuthDataToHousehold;
+  final CreateHouseholdAndAddAuthData createHouseholdAndAddAuthData;
   final DeleteAuthDataFromHousehold deleteAuthDataFromHousehold;
   AuthBloc({
     required this.createAuth,
     required this.loadAuth,
     required this.createAuthDataOnServer,
     required this.addAuthDataToHousehold,
+    required this.createHouseholdAndAddAuthData,
     required this.deleteAuthDataFromHousehold
   }) : super(AuthInitial()) {
     on<AuthEvent>((event, emit) async {
@@ -78,6 +81,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                 (_) async {
                   final newUser = User(id: event.user.id, username: event.user.username, householdId: event.householdId, email: event.user.email, name: event.user.name);
                   emit(AuthLoaded(authData: newUser));
+            }
+        );
+      } else if (event is CreateHouseholdAndAddAuthDataEvent) {
+        emit(AuthLoading());
+        final resultEither = await createHouseholdAndAddAuthData.execute(event.user.id, event.householdTitle);
+        await resultEither.fold(
+                (failure) async {
+              if (failure.runtimeType == ServerFailure) {
+                emit(const AuthError(errorMsg: 'Server Failure'));
+              } else {
+                emit(AuthError(errorMsg: "Household with ${event.householdTitle} can't be created"));
+              }
+            },
+                (householdId) async {
+              final newUser = User(id: event.user.id, username: event.user.username, householdId: householdId, email: event.user.email, name: event.user.name);
+              emit(AuthLoaded(authData: newUser));
             }
         );
       } else if (event is DeleteAuthDataFromHouseholdEvent) {

@@ -15,3 +15,4 @@ class LoadHouseholdEvent extends HouseholdEvent {
     required this.householdId,
   });
 }
+

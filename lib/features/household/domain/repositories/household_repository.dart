@@ -4,5 +4,4 @@ import 'package:dartz/dartz.dart';
 
 abstract class HouseholdRepository {
   Future<Either<Failure, Household>> loadHousehold(String householdId);
-  Future<Either<Failure, void>> createHousehold(String title, int minWeeklyPoints);
 }

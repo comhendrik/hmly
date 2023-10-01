@@ -9,6 +9,7 @@ import 'package:pocketbase/pocketbase.dart';
 
 abstract class AuthDataSource {
   Future<void> addAuthDataToHousehold(String userId, String householdId);
+  Future<String> createHouseholdAndAddAuthData(String userId, String householdTitle);
   Future<void> deleteAuthDataFromHousehold(User user);
   Future<void> createAuthData(String email, String password);
   Future<UserModel> loadAuthData();
@@ -39,6 +40,22 @@ class AuthDataSourceImpl implements AuthDataSource {
       print(err);
       throw ServerException();
     }
+  }
+
+  @override
+  Future<String> createHouseholdAndAddAuthData(String userId, String householdTitle) async {
+    final body = <String, dynamic>{
+      "title": householdTitle,
+    };
+    try {
+      final result = await householdRecordService.create(body: body);
+      await addAuthDataToHousehold(userId, result.id);
+      return result.id;
+    } catch(err) {
+      print(err);
+      throw ServerException();
+    }
+
   }
 
   @override

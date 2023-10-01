@@ -17,6 +17,16 @@ class AddAuthDataToHouseholdEvent extends AuthEvent {
   });
 }
 
+class CreateHouseholdAndAddAuthDataEvent extends AuthEvent {
+  final User user;
+  final String householdTitle;
+
+  const CreateHouseholdAndAddAuthDataEvent({
+    required this.user,
+    required this.householdTitle
+  });
+}
+
 class DeleteAuthDataFromHouseholdEvent extends AuthEvent {
   final User user;
 
