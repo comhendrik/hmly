@@ -37,7 +37,7 @@ class HouseholdPage extends StatelessWidget {
                   } else if (state is HouseholdLoading) {
                     return const CircularProgressIndicator();
                   } else if (state is HouseholdLoaded) {
-                    return HouseholdTaskPage(mainUser: mainUser);
+                    return Text('Household: ${state.household.title}', style: const TextStyle(color: Colors.grey),);
                   } else if (state is HouseholdError) {
                     return BlocErrorWidget(errorMsg: state.errorMsg, reloadAction: () {
                       BlocProvider.of<HouseholdBloc>(context)

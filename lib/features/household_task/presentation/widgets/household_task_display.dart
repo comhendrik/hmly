@@ -47,9 +47,3 @@ class HouseholdTaskDisplay extends StatelessWidget {
   }
 }
 
-List<HouseholdTask> getNumberOfTasks(List<HouseholdTask> list, int number) {
-  if (list.length >= number) {
-    return list.take(number).toList();
-  }
-  return list;
-}

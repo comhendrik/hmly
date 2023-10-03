@@ -5,7 +5,7 @@ import 'package:household_organizer/features/authentication/presentation/bloc/au
 import 'package:household_organizer/features/authentication/presentation/widgets/LogoutButton.dart';
 import 'package:household_organizer/features/authentication/presentation/widgets/account_view.dart';
 import 'package:household_organizer/features/charts/presentation/pages/chart_page.dart';
-import 'package:household_organizer/features/household/presentation/pages/household_page.dart';
+import 'package:household_organizer/features/household_task/presentation/pages/household_task_page.dart';
 
 class AuthenticatedView extends StatefulWidget {
   final User mainUser;
@@ -59,7 +59,7 @@ class _AuthenticatedView extends State<AuthenticatedView> {
                 "Welcome back ${widget.mainUser.name}",
                 style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
               ),
-              HouseholdPage(mainUser: widget.mainUser,),
+              HouseholdTaskPage(mainUser: widget.mainUser)
 
             ],
           ),

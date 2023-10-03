@@ -21,13 +21,13 @@ class _ControlsState extends State<Controls> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        dispatchNews(widget.householdId);
+        loadHousehold(widget.householdId);
       },
       child: const Text("Get Household Data"),
     );
   }
 
-  void dispatchNews(String householdId) {
+  void loadHousehold(String householdId) {
     BlocProvider.of<HouseholdBloc>(context)
         .add(LoadHouseholdEvent(householdId: householdId));
   }

@@ -11,7 +11,7 @@ class HouseholdTaskPage extends StatelessWidget {
   final User mainUser;
   const HouseholdTaskPage({
     super.key,
-    required this.mainUser
+    required this.mainUser,
   });
   @override
   Widget build(BuildContext context) {

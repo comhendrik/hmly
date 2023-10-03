@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:household_organizer/core/entities/user.dart';
+import 'package:household_organizer/features/household/presentation/pages/household_page.dart';
 
 class AccountView extends StatefulWidget {
   final User mainUser;
@@ -51,11 +52,34 @@ class _AccountView extends State<AccountView> {
                   title: 'ID',
                   subtitle: widget.mainUser.id,
                 ),
-                _buildListTile(
-                  leadingIcon: Icons.home,
-                  title: 'Current Household',
-                  subtitle: widget.mainUser.householdId,
-                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => Scaffold(
+                            primary: false,
+                            resizeToAvoidBottomInset: true,
+                            body: SafeArea(
+                              bottom: false,
+                              child: Column(
+                                children: [
+                                  HouseholdPage(mainUser: widget.mainUser),
+                                  BackButton(onPressed: () {
+                                    Navigator.pop(context);
+                                  },)
+                                ],
+                              ),
+                            )
+                        ),
+                      ),
+                    );
+                  },
+                  child: _buildListTile(
+                    leadingIcon: Icons.home,
+                    title: 'Current Household',
+                    subtitle: widget.mainUser.householdId,
+                  ),
+                )
               ],
             ),
           ],
