@@ -7,12 +7,10 @@ class HouseholdModel extends Household {
     required String id,
     required String title,
     required List<User> users,
-    required int minWeeklyPoints,
   }) : super (
     id: id,
     title: title,
     users: users,
-    minWeeklyPoints: minWeeklyPoints
   );
 
 
@@ -21,7 +19,6 @@ class HouseholdModel extends Household {
       id: id,
       title: json['title'],
       users: users,
-      minWeeklyPoints: json['minWeeklyPoints']
     );
   }
 

@@ -109,7 +109,6 @@ class AuthDataSourceImpl implements AuthDataSource {
       "password": password,
       "passwordConfirm": passwordConfirm,
       "name": name,
-      "weeklyPoints": 0,
     };
     try {
       final record = await userRecordService.create(body: body);

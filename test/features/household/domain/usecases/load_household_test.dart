@@ -22,7 +22,7 @@ void main() {
 
   final tUsers = [tUser];
 
-  final tHousehold = Household(id: 'id', title: 'title', users: tUsers, minWeeklyPoints: 123);
+  final tHousehold = Household(id: 'id', title: 'title', users: tUsers);
 
   test('should get valid object when call is successful', () async {
     when(() => repository.loadHousehold()).thenAnswer((_) async => Right(tHousehold));

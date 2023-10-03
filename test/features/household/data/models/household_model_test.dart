@@ -14,7 +14,6 @@ void main() {
     "users": [
       "RELATION_RECORD_ID"
     ],
-    "minWeeklyPoints": 123
   };
 
   const tUser = UserModel(id: "id", username: "username123", householdId: "id", email: "test@example.com", name: "test");

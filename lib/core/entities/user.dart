@@ -15,7 +15,6 @@ class User extends Equatable {
     required this.name
   });
 
-  //TODO: Implementing use of WeeklyPoints!!!
   @override
   List<Object> get props => [id, username, householdId, email, name];
 
