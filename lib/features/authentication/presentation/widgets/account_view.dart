@@ -78,6 +78,7 @@ class _AccountView extends State<AccountView> {
                     leadingIcon: Icons.home,
                     title: 'Current Household',
                     subtitle: widget.mainUser.householdId,
+                    trailingIcon: Icons.arrow_forward
                   ),
                 )
               ],
@@ -88,7 +89,12 @@ class _AccountView extends State<AccountView> {
     );
   }
 
-  Widget _buildListTile({required IconData leadingIcon, required String title, required String subtitle}) {
+  Widget _buildListTile({
+    required IconData leadingIcon,
+    required String title,
+    required String subtitle,
+    IconData? trailingIcon
+  }) {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0)
@@ -97,26 +103,40 @@ class _AccountView extends State<AccountView> {
         elevation: 0.125,
         // No elevation for the Card; we'll use the shadow from the Container
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              margin: const EdgeInsets.all(10),
-              padding: const EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                color: Colors.blueGrey,
-                borderRadius: BorderRadius.circular(16.0), // Adjust the radius as needed
-              ),
+            Row(
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                    color: Colors.blueGrey,
+                    borderRadius: BorderRadius.circular(16.0), // Adjust the radius as needed
+                  ),
+                  child: Icon(
+                    leadingIcon,
+                    color: Colors.white, // Change the icon color as needed
+                    size: 25.0, // Adjust the icon size as needed
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title, style: const TextStyle(fontWeight: FontWeight.bold),),
+                    Text(subtitle),
+                  ],
+                ),
+
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
               child: Icon(
-                leadingIcon,
-                color: Colors.white, // Change the icon color as needed
+                trailingIcon,
+                color: Colors.black, // Change the icon color as needed
                 size: 25.0, // Adjust the icon size as needed
               ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: const TextStyle(fontWeight: FontWeight.bold),),
-                Text(subtitle),
-              ],
             )
           ],
         )
