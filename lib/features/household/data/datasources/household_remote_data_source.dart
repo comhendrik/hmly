@@ -8,6 +8,7 @@ import 'package:pocketbase/pocketbase.dart';
 //TODO: Maybe put this household feature into authentication feature
 abstract class HouseholdRemoteDataSource {
   Future<HouseholdModel> loadHousehold(String householdId);
+  Future<HouseholdModel> updateHouseholdTitle(String householdId, String title);
 }
 
 class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
@@ -23,6 +24,27 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
   Future<HouseholdModel> loadHousehold(String householdId) async {
     try {
       final result = await householdRecordService.getOne(householdId);
+      final users = await userRecordService.getFullList(filter: 'household="$householdId"');
+      List<User> userList = [];
+      for (final user in users) {
+        final userResult = await userRecordService.getOne(user.id);
+        userList.add(UserModel.fromJSON(userResult.data, user.id));
+      }
+      return HouseholdModel.fromJSON(result.data, result.id, userList);
+    } catch(err) {
+      print(err);
+      throw ServerException();
+    }
+
+  }
+
+  @override
+  Future<HouseholdModel> updateHouseholdTitle(String householdId, String householdTitle) async {
+    try {
+      final body = <String, dynamic> {
+        "title" : householdTitle,
+      };
+      final result = await householdRecordService.update(householdId, body: body);
       final users = await userRecordService.getFullList(filter: 'household="$householdId"');
       List<User> userList = [];
       for (final user in users) {

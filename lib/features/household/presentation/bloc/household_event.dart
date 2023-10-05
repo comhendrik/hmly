@@ -16,3 +16,13 @@ class LoadHouseholdEvent extends HouseholdEvent {
   });
 }
 
+class UpdateHouseholdTitleEvent extends HouseholdEvent {
+  final String householdId;
+  final String householdTitle;
+
+  const UpdateHouseholdTitleEvent({
+    required this.householdId,
+    required this.householdTitle
+  });
+}
+

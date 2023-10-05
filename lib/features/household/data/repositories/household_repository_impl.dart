@@ -22,4 +22,13 @@ class HouseholdRepositoryImpl implements HouseholdRepository {
     }
   }
 
+  @override
+  Future<Either<Failure, Household>> updateHouseholdTitle(String householdId, String householdTitle) async {
+    try {
+      return Right(await remoteDataSource.updateHouseholdTitle(householdId, householdTitle));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
 }
