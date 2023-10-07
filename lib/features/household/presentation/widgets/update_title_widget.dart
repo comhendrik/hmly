@@ -18,26 +18,40 @@ class _UpdateHouseholdTitleState extends State<UpdateHouseholdTitle> {
 
   final titleController = TextEditingController();
   String titleStr = "";
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
+    return Form(
+      key: _formKey,
+      child:Column(
+        children: [
 
-        Text('Household: ${widget.household.title}', style: const TextStyle(color: Colors.grey),),
-        TextField(
-          controller: titleController,
-          onChanged: (value) {
-            titleStr = value;
-          },
-        ),
-        ElevatedButton.icon(
-            onPressed: () {
-              updateHouseholdTitle(widget.household.id, titleStr);
+          Text('Household: ${widget.household.title}', style: const TextStyle(color: Colors.grey),),
+          TextFormField(
+            controller: titleController,
+
+            onChanged: (value) {
+              titleStr = value;
             },
-            icon: const Icon(Icons.update),
-            label: const Text("Update")
-        )
-      ],
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a title';
+              }
+              return null;
+            },
+          ),
+          ElevatedButton.icon(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  updateHouseholdTitle(widget.household.id, titleStr);
+                }
+              },
+              icon: const Icon(Icons.update),
+              label: const Text("Update")
+          )
+        ],
+      )
     );
   }
 

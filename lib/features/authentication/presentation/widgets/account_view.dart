@@ -52,35 +52,7 @@ class _AccountView extends State<AccountView> {
                   title: 'ID',
                   subtitle: widget.mainUser.id,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => Scaffold(
-                            primary: false,
-                            resizeToAvoidBottomInset: true,
-                            body: SafeArea(
-                              bottom: false,
-                              child: Column(
-                                children: [
-                                  HouseholdPage(mainUser: widget.mainUser),
-                                  BackButton(onPressed: () {
-                                    Navigator.pop(context);
-                                  },)
-                                ],
-                              ),
-                            )
-                        ),
-                      ),
-                    );
-                  },
-                  child: _buildListTile(
-                    leadingIcon: Icons.home,
-                    title: 'Current Household',
-                    subtitle: widget.mainUser.householdId,
-                    trailingIcon: Icons.arrow_forward
-                  ),
-                )
+                HouseholdPage(mainUser: widget.mainUser)
               ],
             ),
           ],
