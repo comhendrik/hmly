@@ -3,6 +3,7 @@ import 'package:household_organizer/core/widgets/bloc_error_widget.dart';
 import 'package:household_organizer/features/household/presentation/bloc/household_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:household_organizer/features/household/presentation/widgets/household_title_widget.dart';
 import 'package:household_organizer/features/household_task/presentation/pages/household_task_page.dart';
 import '../widgets/widget.dart';
 
@@ -23,34 +24,29 @@ class HouseholdPage extends StatelessWidget {
   BlocProvider<HouseholdBloc> buildBody(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<HouseholdBloc>(),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            children: <Widget>[
-              BlocBuilder<HouseholdBloc, HouseholdState>(
-                builder: (context, state) {
-                  if (state is HouseholdInitial) {
-                    BlocProvider.of<HouseholdBloc>(context)
-                        .add(LoadHouseholdEvent(householdId: mainUser.householdId));
-                    return Text("No data loaded for household id: '${mainUser.householdId}'");
-                  } else if (state is HouseholdLoading) {
-                    return const CircularProgressIndicator();
-                  } else if (state is HouseholdLoaded) {
-                    return UpdateHouseholdTitle(household: state.household);
-                  } else if (state is HouseholdError) {
-                    return BlocErrorWidget(errorMsg: state.errorMsg, reloadAction: () {
-                      BlocProvider.of<HouseholdBloc>(context)
-                          .add(LoadHouseholdEvent(householdId: mainUser.householdId));
-                    });
-                  } else {
-                    return const Text("...");
-                  }
-                },
-              ),
-            ],
+      child: Column(
+        children: <Widget>[
+          BlocBuilder<HouseholdBloc, HouseholdState>(
+            builder: (context, state) {
+              if (state is HouseholdInitial) {
+                BlocProvider.of<HouseholdBloc>(context)
+                    .add(LoadHouseholdEvent(householdId: mainUser.householdId));
+                return Text("No data loaded for household id: '${mainUser.householdId}'");
+              } else if (state is HouseholdLoading) {
+                return const CircularProgressIndicator();
+              } else if (state is HouseholdLoaded) {
+                return HouseholdTitleWidget(household: state.household);
+              } else if (state is HouseholdError) {
+                return BlocErrorWidget(errorMsg: state.errorMsg, reloadAction: () {
+                  BlocProvider.of<HouseholdBloc>(context)
+                      .add(LoadHouseholdEvent(householdId: mainUser.householdId));
+                });
+              } else {
+                return const Text("...");
+              }
+            },
           ),
-        ),
+        ],
       ),
     );
   }
