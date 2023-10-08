@@ -4,10 +4,12 @@ import 'package:household_organizer/features/household/presentation/widgets/upda
 
 class HouseholdDetailView extends StatefulWidget {
   final Household household;
+  final BuildContext context;
 
   const HouseholdDetailView({
     super.key,
-    required this.household
+    required this.household,
+    required this.context
   });
 
   @override
@@ -22,14 +24,34 @@ class _HouseholdDetailViewState extends State<HouseholdDetailView> {
         resizeToAvoidBottomInset: true,
         body: SafeArea(
           bottom: false,
-          child: Column(
-            children: [
-              UpdateHouseholdTitle(household: widget.household),
-              BackButton(onPressed: () {
-                Navigator.pop(context);
-              },
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.arrow_back, weight: 30.0)
+                      ),
+                      const Icon(Icons.house, weight: 5.0),
+                      const Text(' Household', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      UpdateHouseholdTitle(context: widget.context, household: widget.household),
+                    ],
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         )
     );

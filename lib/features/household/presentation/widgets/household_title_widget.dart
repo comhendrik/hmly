@@ -2,30 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/features/household/domain/entities/household.dart';
 import 'package:household_organizer/features/household/presentation/widgets/household_detail_view.dart';
-import 'widget.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HouseholdTitleWidget extends StatefulWidget {
+class HouseholdWidget extends StatefulWidget {
   final Household household;
   final User mainUser;
-  const HouseholdTitleWidget({
+  final BuildContext context;
+  const HouseholdWidget({
     super.key,
     required this.household,
-    required this.mainUser
+    required this.mainUser,
+    required this.context
   });
 
   @override
-  State<HouseholdTitleWidget> createState() => _HouseholdTitleWidgetState();
+  State<HouseholdWidget> createState() => _HouseholdWidgetState();
 }
 
-class _HouseholdTitleWidgetState extends State<HouseholdTitleWidget> {
+class _HouseholdWidgetState extends State<HouseholdWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => HouseholdDetailView(household: widget.household)
+            builder: (context) => HouseholdDetailView(context: widget.context, household: widget.household)
           ),
         );
       },

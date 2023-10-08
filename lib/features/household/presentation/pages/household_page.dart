@@ -4,8 +4,6 @@ import 'package:household_organizer/features/household/presentation/bloc/househo
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:household_organizer/features/household/presentation/widgets/household_title_widget.dart';
-import 'package:household_organizer/features/household_task/presentation/pages/household_task_page.dart';
-import '../widgets/widget.dart';
 
 import '../../../../injection_container.dart';
 
@@ -35,7 +33,7 @@ class HouseholdPage extends StatelessWidget {
               } else if (state is HouseholdLoading) {
                 return const CircularProgressIndicator();
               } else if (state is HouseholdLoaded) {
-                return HouseholdTitleWidget(household: state.household, mainUser: mainUser,);
+                return HouseholdWidget(household: state.household, mainUser: mainUser,context: context,);
               } else if (state is HouseholdError) {
                 return BlocErrorWidget(errorMsg: state.errorMsg, reloadAction: () {
                   BlocProvider.of<HouseholdBloc>(context)
