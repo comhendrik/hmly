@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/features/household/domain/entities/household.dart';
+import 'package:household_organizer/features/household/presentation/widgets/household_detail_view.dart';
 import 'widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HouseholdTitleWidget extends StatefulWidget {
   final Household household;
+  final User mainUser;
   const HouseholdTitleWidget({
     super.key,
-    required this.household
+    required this.household,
+    required this.mainUser
   });
 
   @override
@@ -20,22 +25,7 @@ class _HouseholdTitleWidgetState extends State<HouseholdTitleWidget> {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => Scaffold(
-                primary: false,
-                resizeToAvoidBottomInset: true,
-                body: SafeArea(
-                  bottom: false,
-                  child: Column(
-                    children: [
-                      UpdateHouseholdTitle(household: widget.household),
-                      BackButton(onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      )
-                    ],
-                  ),
-                )
-            ),
+            builder: (context) => HouseholdDetailView(household: widget.household)
           ),
         );
       },
@@ -47,7 +37,7 @@ class _HouseholdTitleWidgetState extends State<HouseholdTitleWidget> {
             elevation: 0.125,
             // No elevation for the Card; we'll use the shadow from the Container
             child: Padding(
-              padding: EdgeInsets.all(5.0),
+              padding: const EdgeInsets.all(5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
