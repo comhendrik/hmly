@@ -35,7 +35,6 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
       print(err);
       throw ServerException();
     }
-
   }
 
   @override

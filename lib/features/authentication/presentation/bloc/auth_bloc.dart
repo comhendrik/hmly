@@ -27,6 +27,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.createHouseholdAndAddAuthData,
     required this.deleteAuthDataFromHousehold
   }) : super(AuthInitial()) {
+
+    //TODO: Bug when creating new data on server and on device when username is already in use
     on<AuthEvent>((event, emit) async {
       emit(AuthInitial());
       if (event is CreateAuthEvent)  {
@@ -61,7 +63,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final resultEither = await createAuthDataOnServer.execute(event.email, event.password, event.passwordConfirm, event.username, event.name);
         await resultEither.fold(
                 (failure) async {
-              emit(AuthCreate());
+                  //TODO: Maybe use dynamic error messages, because username that is already in use is not the only failure, for example email, idea: check error message from datasource for email and username and provide a suiting errormsg
+              emit(const AuthError(errorMsg: 'Username or email is already in use'));
             },
                 (auth) async {
               emit(AuthLoaded(authData: auth));

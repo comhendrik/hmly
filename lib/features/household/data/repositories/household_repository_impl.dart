@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/features/household/data/datasources/household_remote_data_source.dart';
