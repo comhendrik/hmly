@@ -97,6 +97,72 @@ class _UpdateHouseholdTitleState extends State<UpdateHouseholdTitle> {
               ],
             ),
           ),
+          const SizedBox(height: 10,),
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //Row used to make width big enough
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text("Household Id", style: TextStyle(fontWeight: FontWeight.bold),),
+                  ],
+                ),
+                const SizedBox(height: 16.0),
+                Text(widget.household.id)
+              ],
+            ),
+          ),
+
+          //TODO: Placeholder for user
+          const SizedBox(height: 10,),
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //Row used to make width big enough
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text("Users", style: TextStyle(fontWeight: FontWeight.bold),),
+                  ],
+                ),
+                SizedBox(height: 16.0),
+                //TODO: Add list for user
+                Text("Hendrik"),
+                Text("Mara"),
+                Text("Hanens"),
+                Text("Lea")
+              ],
+            ),
+          ),
         ],
       )
     );

@@ -62,7 +62,6 @@ class _HouseholdWidgetState extends State<HouseholdWidget> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text('Current Household', style: TextStyle(fontWeight: FontWeight.bold),),
-                            Text(widget.household.id),
                             Text(widget.household.title),
                           ],
                         ),

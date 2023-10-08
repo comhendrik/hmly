@@ -3,7 +3,7 @@ import 'package:household_organizer/core/widgets/bloc_error_widget.dart';
 import 'package:household_organizer/features/household/presentation/bloc/household_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:household_organizer/features/household/presentation/widgets/household_title_widget.dart';
+import 'package:household_organizer/features/household/presentation/widgets/household_widget.dart';
 
 import '../../../../injection_container.dart';
 
