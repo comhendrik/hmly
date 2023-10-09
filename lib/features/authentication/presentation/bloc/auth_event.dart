@@ -65,3 +65,9 @@ class CreateAuthDataOnServerEvent extends AuthEvent {
   });
 }
 
+class LoadAuthDataWithOAuthEvent extends AuthEvent {
+
+  const LoadAuthDataWithOAuthEvent();
+
+}
+

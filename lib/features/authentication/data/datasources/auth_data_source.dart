@@ -6,6 +6,7 @@ import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/core/models/user_model.dart';
 import 'package:pocketbase/pocketbase.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 abstract class AuthDataSource {
   Future<void> addAuthDataToHousehold(String userId, String householdId);
@@ -14,6 +15,7 @@ abstract class AuthDataSource {
   Future<void> createAuthData(String email, String password);
   Future<UserModel> loadAuthData();
   Future<UserModel> createAuthDataOnServer(String email, String password,String passwordConfirm, String username, String name);
+  Future<UserModel> loadAuthDataWithOAuth();
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -85,6 +87,7 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   @override
   Future<UserModel> loadAuthData() async {
+    //TODO: Check if user is logged in with o auth
     String email = await storage.read(key: "email") ?? "no data";
     String password = await storage.read(key: "password") ?? "no data";
     if (email == "no data" || password == "no data") {
@@ -124,6 +127,24 @@ class AuthDataSourceImpl implements AuthDataSource {
       }
       return UserModel.fromJSON(record.data, record.id);
     } catch(err) {
+      print(err);
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<UserModel> loadAuthDataWithOAuth() async {
+    try {
+      final authData = await userRecordService.authWithOAuth2('google', (url) async {
+        // or use something like flutter_custom_tabs to make the transitions between native and web content more seamless
+        await launchUrl(url);
+
+      });
+      final user = await userRecordService.getFirstListItem('email="${authData.meta["email"]}"');
+      print(user);
+      return UserModel.fromJSON(user.data, user.id);
+
+    } catch (err) {
       print(err);
       throw ServerException();
     }

@@ -22,6 +22,7 @@ class _LogoutButtonState extends State<LogoutButton> {
       children: [
         ElevatedButton(
           onPressed: () async {
+            //TODO: Clear pocketbase authentication session
             await _storage.delete(key: "email");
             await _storage.delete(key: "password");
             if (!context.mounted) return;

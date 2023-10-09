@@ -8,6 +8,7 @@ import 'package:household_organizer/features/authentication/domain/usecases/crea
 import 'package:household_organizer/features/authentication/domain/usecases/create_auth_data_on_server.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/delete_auth_data_from_household.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/load_auth_data.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/load_auth_data_with_o_auth.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:household_organizer/features/charts/data/datasources/charts_data_source.dart';
 import 'package:household_organizer/features/charts/data/repositories/charts_repository_impl.dart';
@@ -56,12 +57,13 @@ Future<void> init() async {
 
   sl.registerFactory(
         () => AuthBloc(
-            createAuth: sl(),
-            loadAuth: sl(),
-            createAuthDataOnServer: sl(),
-            createHouseholdAndAddAuthData: sl(),
-            addAuthDataToHousehold: sl(),
-            deleteAuthDataFromHousehold: sl()
+          createAuth: sl(),
+          loadAuth: sl(),
+          createAuthDataOnServer: sl(),
+          createHouseholdAndAddAuthData: sl(),
+          addAuthDataToHousehold: sl(),
+          deleteAuthDataFromHousehold: sl(),
+          loadAuthDataWithOAuth: sl(),
         )
   );
 
@@ -91,6 +93,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CreateAuthData(repository: sl()));
   sl.registerLazySingleton(() => LoadAuthData(repository: sl()));
   sl.registerLazySingleton(() => CreateAuthDataOnServer(repository: sl()));
+  sl.registerLazySingleton(() => LoadAuthDataWithOAuth(repository: sl()));
 
   sl.registerLazySingleton(() => GetWeeklyBarChartData(repository: sl()));
   sl.registerLazySingleton(() => GetDailyPieChartData(repository: sl()));

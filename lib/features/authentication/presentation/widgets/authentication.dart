@@ -178,6 +178,13 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                 },
                 child: showLogin ? const Text("No account? Register Now!") : const Text("Already registered? Login!")
             ),
+
+            ElevatedButton(
+                onPressed: () {
+                  oAuth();
+                },
+                child: const Text("Sign in with google"),
+            ),
           ],
         ),
       )
@@ -188,6 +195,12 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
     BlocProvider.of<AuthBloc>(context)
         .add(CreateAuthEvent(email: email, password: password));
   }
+
+  void oAuth() {
+    BlocProvider.of<AuthBloc>(context)
+        .add(const LoadAuthDataWithOAuthEvent());
+  }
+
 
   void signUp(String email, String password, String passwordConfirm, String username, String name) {
     BlocProvider.of<AuthBloc>(context)

@@ -8,6 +8,7 @@ import 'package:household_organizer/features/authentication/domain/usecases/crea
 import 'package:household_organizer/features/authentication/domain/usecases/create_auth_data_on_server.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/delete_auth_data_from_household.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/load_auth_data.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/load_auth_data_with_o_auth.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -19,13 +20,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AddAuthDataToHousehold addAuthDataToHousehold;
   final CreateHouseholdAndAddAuthData createHouseholdAndAddAuthData;
   final DeleteAuthDataFromHousehold deleteAuthDataFromHousehold;
+  final LoadAuthDataWithOAuth loadAuthDataWithOAuth;
   AuthBloc({
     required this.createAuth,
     required this.loadAuth,
     required this.createAuthDataOnServer,
     required this.addAuthDataToHousehold,
     required this.createHouseholdAndAddAuthData,
-    required this.deleteAuthDataFromHousehold
+    required this.deleteAuthDataFromHousehold,
+    required this.loadAuthDataWithOAuth
   }) : super(AuthInitial()) {
 
     //TODO: Bug when creating new data on server and on device when username is already in use
@@ -112,6 +115,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                 (_) async {
               final newUser = User(id: event.user.id, username: event.user.username, householdId: "", email: event.user.email, name: event.user.name);
               emit(AuthLoaded(authData: newUser));
+            }
+        );
+      } else if (event is LoadAuthDataWithOAuthEvent) {
+        emit(AuthLoading());
+        final resultEither = await loadAuthDataWithOAuth.execute();
+        await resultEither.fold(
+                (failure) async {
+              emit(AuthError(errorMsg: "Server Failure"));
+            },
+                (auth) async {
+              emit(AuthLoaded(authData: auth));
             }
         );
       }
