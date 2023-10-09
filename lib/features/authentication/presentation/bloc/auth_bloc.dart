@@ -9,6 +9,7 @@ import 'package:household_organizer/features/authentication/domain/usecases/crea
 import 'package:household_organizer/features/authentication/domain/usecases/delete_auth_data_from_household.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/load_auth_data.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/load_auth_data_with_o_auth.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/logout.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -21,6 +22,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final CreateHouseholdAndAddAuthData createHouseholdAndAddAuthData;
   final DeleteAuthDataFromHousehold deleteAuthDataFromHousehold;
   final LoadAuthDataWithOAuth loadAuthDataWithOAuth;
+  final Logout logout;
   AuthBloc({
     required this.createAuth,
     required this.loadAuth,
@@ -28,7 +30,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.addAuthDataToHousehold,
     required this.createHouseholdAndAddAuthData,
     required this.deleteAuthDataFromHousehold,
-    required this.loadAuthDataWithOAuth
+    required this.loadAuthDataWithOAuth,
+    required this.logout,
   }) : super(AuthInitial()) {
 
     //TODO: Bug when creating new data on server and on device when username is already in use
@@ -128,6 +131,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               emit(AuthLoaded(authData: auth));
             }
         );
+      } else if (event is LogoutEvent) {
+        emit(AuthLoading());
+        logout.execute();
+        emit(AuthCreate());
       }
     });
   }

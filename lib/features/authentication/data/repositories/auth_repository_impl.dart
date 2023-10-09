@@ -84,4 +84,9 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(ServerFailure());
     }
   }
+
+  @override
+  void logout() async {
+    dataSource.logout();
+  }
 }

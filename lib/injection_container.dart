@@ -9,6 +9,7 @@ import 'package:household_organizer/features/authentication/domain/usecases/crea
 import 'package:household_organizer/features/authentication/domain/usecases/delete_auth_data_from_household.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/load_auth_data.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/load_auth_data_with_o_auth.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/logout.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:household_organizer/features/charts/data/datasources/charts_data_source.dart';
 import 'package:household_organizer/features/charts/data/repositories/charts_repository_impl.dart';
@@ -64,6 +65,7 @@ Future<void> init() async {
           addAuthDataToHousehold: sl(),
           deleteAuthDataFromHousehold: sl(),
           loadAuthDataWithOAuth: sl(),
+          logout: sl()
         )
   );
 
@@ -94,11 +96,13 @@ Future<void> init() async {
   sl.registerLazySingleton(() => LoadAuthData(repository: sl()));
   sl.registerLazySingleton(() => CreateAuthDataOnServer(repository: sl()));
   sl.registerLazySingleton(() => LoadAuthDataWithOAuth(repository: sl()));
+  sl.registerLazySingleton(() => Logout(repository: sl()));
 
   sl.registerLazySingleton(() => GetWeeklyBarChartData(repository: sl()));
   sl.registerLazySingleton(() => GetDailyPieChartData(repository: sl()));
 
   // Repository
+
   sl.registerLazySingleton<HouseholdTaskRepository>(
         () => HouseholdTaskRepositoryImpl(
       remoteDataSource: sl(),
@@ -124,6 +128,7 @@ Future<void> init() async {
 
   final pb = PocketBase('http://127.0.0.1:8090');
 
+
   const storage = FlutterSecureStorage();
   // Data sources
   sl.registerLazySingleton<HouseholdTaskRemoteDataSource>(
@@ -140,7 +145,7 @@ Future<void> init() async {
 
   sl.registerLazySingleton<AuthDataSource>(
     //TODO: Need to make it possible to use different accounts
-        () => AuthDataSourceImpl(storage: storage, userRecordService: RecordService(pb, 'users'), householdRecordService: RecordService(pb, 'household'), pointsRecordService: RecordService(pb, 'points')),
+        () => AuthDataSourceImpl(storage: storage, userRecordService: RecordService(pb, 'users'), householdRecordService: RecordService(pb, 'household'), pointsRecordService: RecordService(pb, 'points'), authStore: pb.authStore),
   );
 
   sl.registerLazySingleton<ChartsDataSource>(

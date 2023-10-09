@@ -71,3 +71,9 @@ class LoadAuthDataWithOAuthEvent extends AuthEvent {
 
 }
 
+class LogoutEvent extends AuthEvent {
+
+  const LogoutEvent();
+
+}
+

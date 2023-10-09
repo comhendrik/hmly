@@ -10,4 +10,5 @@ abstract class AuthRepository {
   Future<Either<Failure, User>> loadAuthData();
   Future<Either<Failure, User>> createAuthDataOnServer(String email, String password, String passwordConfirm, String username, String name);
   Future<Either<Failure, User>> loadAuthDataWithOAuth();
+  void logout();
 }

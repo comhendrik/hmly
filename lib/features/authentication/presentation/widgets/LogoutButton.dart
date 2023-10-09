@@ -27,7 +27,7 @@ class _LogoutButtonState extends State<LogoutButton> {
             await _storage.delete(key: "password");
             if (!context.mounted) return;
             BlocProvider.of<AuthBloc>(context)
-                .add(LoadAuthEvent());
+                .add(const LogoutEvent());
           },
           child: const Text("Logout"),
         )
