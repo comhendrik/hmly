@@ -16,6 +16,7 @@ abstract class AuthDataSource {
   Future<UserModel> loadAuthData();
   Future<UserModel> createAuthDataOnServer(String email, String password,String passwordConfirm, String username, String name);
   Future<UserModel> loadAuthDataWithOAuth();
+  void logout();
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -23,12 +24,14 @@ class AuthDataSourceImpl implements AuthDataSource {
   final RecordService userRecordService;
   final RecordService householdRecordService;
   final RecordService pointsRecordService;
+  final AuthStore authStore;
   final FlutterSecureStorage storage;
 
   AuthDataSourceImpl({
     required this.userRecordService,
     required this.householdRecordService,
     required this.pointsRecordService,
+    required this.authStore,
     required this.storage
   });
 
@@ -140,6 +143,7 @@ class AuthDataSourceImpl implements AuthDataSource {
         await launchUrl(url);
 
       });
+      //TODO error on specific emails
       final user = await userRecordService.getFirstListItem('email="${authData.meta["email"]}"');
       print(user);
       return UserModel.fromJSON(user.data, user.id);
@@ -148,5 +152,14 @@ class AuthDataSourceImpl implements AuthDataSource {
       print(err);
       throw ServerException();
     }
+  }
+
+  @override
+  void logout() async {
+    print(authStore.model);
+    await storage.write(key: "email", value: "");
+    await storage.write(key: "password", value: "");
+    authStore.clear();
+    print(authStore.model);
   }
 }
