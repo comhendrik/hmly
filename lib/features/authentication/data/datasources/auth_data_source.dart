@@ -146,7 +146,9 @@ class AuthDataSourceImpl implements AuthDataSource {
 
       });
       //TODO error on specific emails
-      final user = await userRecordService.getFirstListItem('email="${authData.meta["email"]}"');
+      print(authData.meta["rawUser"]["email"]);
+      print(authData.meta["username"]);
+      final user = await userRecordService.getFirstListItem('email="hsytinfo@gmail.com"');
       print(user);
       return UserModel.fromJSON(user.data, user.id);
 
