@@ -142,6 +142,8 @@ class AuthDataSourceImpl implements AuthDataSource {
         // or use something like flutter_custom_tabs to make the transitions between native and web content more seamless
         await launchUrl(url);
 
+        //TODO: When cancelling it shows a loading view
+
       });
       //TODO error on specific emails
       final user = await userRecordService.getFirstListItem('email="${authData.meta["email"]}"');
