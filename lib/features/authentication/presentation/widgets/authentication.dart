@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'widgets.dart';
 
@@ -171,6 +173,13 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                 icon: const Icon(Icons.arrow_forward),
                 label: Text(showLogin ? "Login" : "SignUp")
             ),
+            SignInButton(
+              Buttons.Google,
+              text: "Sign up with Google",
+              onPressed: () {
+                oAuth();
+              },
+            ),
             ElevatedButton(
                 onPressed: () {
                   setState(() {
@@ -180,12 +189,7 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                 child: showLogin ? const Text("No account? Register Now!") : const Text("Already registered? Login!")
             ),
 
-            ElevatedButton(
-                onPressed: () {
-                  oAuth();
-                },
-                child: const Text("Sign in with google"),
-            ),
+
             Text("Dev widget:"),
             const LogoutButton(),
           ],

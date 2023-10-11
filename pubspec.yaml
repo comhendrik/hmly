@@ -47,6 +47,7 @@ dependencies:
   flutter_share: ^2.0.0
   cron: ^0.5.1
   url_launcher: ^6.1.14
+  flutter_signin_button: ^2.0.0
 
 dev_dependencies:
   flutter_test:
