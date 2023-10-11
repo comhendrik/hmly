@@ -98,7 +98,7 @@ class AuthDataSourceImpl implements AuthDataSource {
     }
     try {
       final _ = await userRecordService.authWithPassword(email, password);
-      final user = await userRecordService.getFirstListItem('email="$email"');
+      RecordModel user = authStore.model;
       return UserModel.fromJSON(user.data, user.id);
 
     } catch (_) {
@@ -138,18 +138,19 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<UserModel> loadAuthDataWithOAuth() async {
     try {
-      final authData = await userRecordService.authWithOAuth2('google', (url) async {
+      final authData = await userRecordService.authWithOAuth2(
+          'google',
+          createData:  {
+            "name" : "google",
+          },
+          (url) async {
         // or use something like flutter_custom_tabs to make the transitions between native and web content more seamless
         await launchUrl(url);
-
         //TODO: When cancelling it shows a loading view
 
       });
       //TODO error on specific emails
-      print(authData.meta["rawUser"]["email"]);
-      print(authData.meta["username"]);
-      final user = await userRecordService.getFirstListItem('email="hsytinfo@gmail.com"');
-      print(user);
+      RecordModel user = authStore.model;
       return UserModel.fromJSON(user.data, user.id);
 
     } catch (err) {
