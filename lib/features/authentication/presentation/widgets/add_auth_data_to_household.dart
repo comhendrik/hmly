@@ -96,6 +96,9 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
                         if (value == null || value.isEmpty) {
                           return 'Please provide a title';
                         }
+                        if (value.length >= 15) {
+                          return 'Must be less than 15 characters';
+                        }
                       },
                       onChanged: (value) {
                         householdTitleStr = value;

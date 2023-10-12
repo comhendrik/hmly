@@ -1,5 +1,3 @@
-import 'package:dartz/dartz.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/core/error/failure.dart';
@@ -104,16 +102,7 @@ class AuthDataSourceImpl implements AuthDataSource {
     };
     try {
       final record = await userRecordService.create(body: body);
-      final dayList = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-      for (var i = 1; i < 8; i++) {
-        final pointBody = <String, dynamic>{
-          "day": dayList[i-1],
-          "day_number": i,
-          "value" : 0,
-          "user" : record.id,
-        };
-        pointsRecordService.create(body: pointBody);
-      }
+      createWeeklyPoints(record.id);
       login(email, password);
       return UserModel.fromJSON(record.data, record.id);
     } catch(err) {
@@ -136,8 +125,10 @@ class AuthDataSourceImpl implements AuthDataSource {
         //TODO: When cancelling it shows a loading view
 
       });
-      //TODO error on specific emails
       RecordModel user = authStore.model;
+
+      //TODO: Point creation is needed but only when signing user in with oauth
+      //createWeeklyPoints(user.id);
       return UserModel.fromJSON(user.data, user.id);
 
     } catch (err) {
@@ -151,5 +142,18 @@ class AuthDataSourceImpl implements AuthDataSource {
     print(authStore.model);
     authStore.clear();
     print(authStore.model);
+  }
+
+  void createWeeklyPoints(String userID) async {
+    final dayList = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    for (var i = 1; i < 8; i++) {
+      final pointBody = <String, dynamic>{
+        "day": dayList[i-1],
+        "day_number": i,
+        "value" : 0,
+        "user" : userID,
+      };
+      pointsRecordService.create(body: pointBody);
+    }
   }
 }

@@ -21,6 +21,7 @@ class ChartsRepositoryImpl implements ChartsRepository {
 
       int currentDayOfWeek = DateTime.now().weekday;
 
+
       for (var i = 6; i >= currentDayOfWeek; i -= 1) {
         weeklyBarChartData.insert(0, weeklyBarChartData[6]);
         weeklyBarChartData.removeLast();
