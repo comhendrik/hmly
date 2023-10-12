@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:household_organizer/core/entities/user.dart';
+import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:household_organizer/features/household/domain/entities/household.dart';
 import 'package:household_organizer/features/household/presentation/bloc/household_bloc.dart';
 import 'widget.dart';
@@ -117,4 +118,5 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
     BlocProvider.of<HouseholdBloc>(widget.context)
         .add(UpdateHouseholdTitleEvent(householdId: householdId, householdTitle: householdTitle));
   }
+
 }

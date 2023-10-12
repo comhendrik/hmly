@@ -1,4 +1,5 @@
 import 'package:household_organizer/core/error/exceptions.dart';
+import 'package:household_organizer/core/functions.dart';
 import 'package:household_organizer/features/household/data/models/household_model.dart';
 import 'package:household_organizer/core/models/user_model.dart';
 import 'package:household_organizer/core/entities/user.dart';
@@ -9,6 +10,7 @@ import 'package:pocketbase/pocketbase.dart';
 abstract class HouseholdRemoteDataSource {
   Future<HouseholdModel> loadHousehold(String householdId);
   Future<HouseholdModel> updateHouseholdTitle(String householdId, String title);
+  Future<void> deleteAuthDataFromHousehold(String userID);
 }
 
 class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
@@ -56,6 +58,16 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
       throw ServerException();
     }
 
+  }
+
+  @override
+  Future<void> deleteAuthDataFromHousehold(String userID) async {
+    try {
+      deleteUserFromHousehold(userRecordService, userID);
+    } catch(err) {
+      print(err);
+      throw ServerException();
+    }
   }
 
 
