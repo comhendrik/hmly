@@ -47,28 +47,21 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
 
-  //TODO: Rename function so that it indicates that it means creating data in storage on phonef
-  @override
-  Future<void> createAuthData(String email, String password) async {
-    await dataSource.createAuthData(email, password);
-  }
 
 
   @override
-  Future<Either<Failure, User>> loadAuthData() async {
+  Future<Either<Failure, User>> login(String email, String password) async {
     try {
-      return Right(await dataSource.loadAuthData());
-    } on CacheException {
-      return Left(CacheFailure());
+      return Right(await dataSource.login(email, password));
     } on ServerException {
       return Left(ServerFailure());
     }
   }
 
   @override
-  Future<Either<Failure, User>> createAuthDataOnServer(String email, String password, String passwordConfirm, String username, String name) async {
+  Future<Either<Failure, User>> signUp(String email, String password, String passwordConfirm, String username, String name) async {
     try {
-      return Right(await dataSource.createAuthDataOnServer(email, password, passwordConfirm, username, name));
+      return Right(await dataSource.signUp(email, password, passwordConfirm, username, name));
     } on ServerException {
       return Left(ServerFailure());
     }

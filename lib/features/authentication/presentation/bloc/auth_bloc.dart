@@ -4,50 +4,45 @@ import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/add_auth_data_to_household.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/create_Household_And_Add_Auth_Data.dart';
-import 'package:household_organizer/features/authentication/domain/usecases/create_auth_data.dart';
-import 'package:household_organizer/features/authentication/domain/usecases/create_auth_data_on_server.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/sign_up.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/delete_auth_data_from_household.dart';
-import 'package:household_organizer/features/authentication/domain/usecases/load_auth_data.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/login.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/load_auth_data_with_o_auth.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/logout.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final CreateAuthData createAuth;
-  final LoadAuthData loadAuth;
-  final CreateAuthDataOnServer createAuthDataOnServer;
+  final Login login;
+  final SignUp createAuthDataOnServer;
   final AddAuthDataToHousehold addAuthDataToHousehold;
   final CreateHouseholdAndAddAuthData createHouseholdAndAddAuthData;
   final DeleteAuthDataFromHousehold deleteAuthDataFromHousehold;
   final LoadAuthDataWithOAuth loadAuthDataWithOAuth;
   final Logout logout;
+  final AsyncAuthStore authStore;
   AuthBloc({
-    required this.createAuth,
-    required this.loadAuth,
+    required this.login,
     required this.createAuthDataOnServer,
     required this.addAuthDataToHousehold,
     required this.createHouseholdAndAddAuthData,
     required this.deleteAuthDataFromHousehold,
     required this.loadAuthDataWithOAuth,
     required this.logout,
+    required this.authStore
   }) : super(AuthInitial()) {
 
     //TODO: Bug when creating new data on server and on device when username is already in use
     on<AuthEvent>((event, emit) async {
       emit(AuthInitial());
-      if (event is CreateAuthEvent)  {
+      if (event is LoginAuthEvent)  {
         emit(AuthLoading());
-        await createAuth.execute(event.email, event.password);
-        final resultEither = await loadAuth.execute();
+        final resultEither = await login.execute(event.email, event.password);
         await resultEither.fold(
             (failure) async {
-              if (failure.runtimeType == CacheFailure) {
-                emit(const AuthError(errorMsg: 'Cache Failure'));
-              } else {
-                emit(const AuthError(errorMsg: 'Server Failure'));
-              }
+              const AuthError(errorMsg: 'Server Failure');
             },
             (auth) async {
               emit(AuthLoaded(authData: auth));
@@ -55,16 +50,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       } else if (event is LoadAuthEvent) {
         emit(AuthLoading());
-        final resultEither = await loadAuth.execute();
-        await resultEither.fold(
-            (failure) async {
-              emit(AuthCreate());
-            },
-            (auth) async {
-              emit(AuthLoaded(authData: auth));
-            }
-        );
-      } else if (event is CreateAuthDataOnServerEvent) {
+        if (authStore.model != null) {
+          RecordModel user = authStore.model;
+          //TODO: Function for creating user model from json
+          emit(AuthLoaded(authData: User(id: user.id,username: user.data["username"],householdId: user.data["household"],email: user.data["email"], name: user.data["name"])));
+        } else {
+          emit(AuthCreate());
+        }
+
+      } else if (event is SignUpAuthEvent) {
         emit(AuthLoading());
         final resultEither = await createAuthDataOnServer.execute(event.email, event.password, event.passwordConfirm, event.username, event.name);
         await resultEither.fold(

@@ -35,12 +35,12 @@ class DeleteAuthDataFromHouseholdEvent extends AuthEvent {
   });
 }
 
-class CreateAuthEvent extends AuthEvent {
+class LoginAuthEvent extends AuthEvent {
 
   final String email;
   final String password;
 
-  const CreateAuthEvent({
+  const LoginAuthEvent({
     required this.email,
     required this.password
   });
@@ -49,14 +49,14 @@ class CreateAuthEvent extends AuthEvent {
 
 class LoadAuthEvent extends AuthEvent {}
 
-class CreateAuthDataOnServerEvent extends AuthEvent {
+class SignUpAuthEvent extends AuthEvent {
   final String email;
   final String password;
   final String passwordConfirm;
   final String username;
   final String name;
 
-  const CreateAuthDataOnServerEvent({
+  const SignUpAuthEvent({
     required this.email,
     required this.password,
     required this.passwordConfirm,

@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/core/error/failure.dart';
@@ -12,9 +11,8 @@ abstract class AuthDataSource {
   Future<void> addAuthDataToHousehold(String userId, String householdId);
   Future<String> createHouseholdAndAddAuthData(String userId, String householdTitle);
   Future<void> deleteAuthDataFromHousehold(User user);
-  Future<void> createAuthData(String email, String password);
-  Future<UserModel> loadAuthData();
-  Future<UserModel> createAuthDataOnServer(String email, String password,String passwordConfirm, String username, String name);
+  Future<UserModel> login(String email, String password);
+  Future<UserModel> signUp(String email, String password,String passwordConfirm, String username, String name);
   Future<UserModel> loadAuthDataWithOAuth();
   void logout();
 }
@@ -25,14 +23,12 @@ class AuthDataSourceImpl implements AuthDataSource {
   final RecordService householdRecordService;
   final RecordService pointsRecordService;
   final AuthStore authStore;
-  final FlutterSecureStorage storage;
 
   AuthDataSourceImpl({
     required this.userRecordService,
     required this.householdRecordService,
     required this.pointsRecordService,
     required this.authStore,
-    required this.storage
   });
 
   @override
@@ -82,20 +78,10 @@ class AuthDataSourceImpl implements AuthDataSource {
     }
   }
 
-  @override
-  Future<void> createAuthData(String email, String password) async {
-    await storage.write(key: "email", value: email);
-    await storage.write(key: "password", value: password);
-  }
+
 
   @override
-  Future<UserModel> loadAuthData() async {
-    //TODO: Check if user is logged in with o auth
-    String email = await storage.read(key: "email") ?? "no data";
-    String password = await storage.read(key: "password") ?? "no data";
-    if (email == "no data" || password == "no data") {
-      throw CacheException();
-    }
+  Future<UserModel> login(String email, String password) async {
     try {
       final _ = await userRecordService.authWithPassword(email, password);
       RecordModel user = authStore.model;
@@ -107,7 +93,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<UserModel> createAuthDataOnServer(String email, String password, String passwordConfirm, String username, String name) async {
+  Future<UserModel> signUp(String email, String password, String passwordConfirm, String username, String name) async {
     final body = <String, dynamic>{
       "username": username,
       "email": email,
@@ -128,6 +114,7 @@ class AuthDataSourceImpl implements AuthDataSource {
         };
         pointsRecordService.create(body: pointBody);
       }
+      login(email, password);
       return UserModel.fromJSON(record.data, record.id);
     } catch(err) {
       print(err);
@@ -162,8 +149,6 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   void logout() async {
     print(authStore.model);
-    await storage.write(key: "email", value: "");
-    await storage.write(key: "password", value: "");
     authStore.clear();
     print(authStore.model);
   }

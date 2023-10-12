@@ -1,13 +1,11 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:household_organizer/features/authentication/data/datasources/auth_data_source.dart';
 import 'package:household_organizer/features/authentication/data/repositories/auth_repository_impl.dart';
 import 'package:household_organizer/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/add_auth_data_to_household.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/create_Household_And_Add_Auth_Data.dart';
-import 'package:household_organizer/features/authentication/domain/usecases/create_auth_data.dart';
-import 'package:household_organizer/features/authentication/domain/usecases/create_auth_data_on_server.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/sign_up.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/delete_auth_data_from_household.dart';
-import 'package:household_organizer/features/authentication/domain/usecases/load_auth_data.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/login.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/load_auth_data_with_o_auth.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/logout.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
@@ -32,12 +30,25 @@ import 'package:household_organizer/features/household_task/domain/usecases/get_
 import 'package:household_organizer/features/household_task/domain/usecases/toggle_is_done_household_task.dart';
 import 'package:household_organizer/features/household_task/domain/usecases/update_household_task.dart';
 import 'package:household_organizer/features/household_task/presentation/bloc/household_task_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:get_it/get_it.dart';
 import 'package:pocketbase/pocketbase.dart';
 final sl = GetIt.instance;
 
+
+
 Future<void> init() async {
+
+
+  //TODO: Maybe register store in getit instance
+  final prefs = await SharedPreferences.getInstance();
+  final store = AsyncAuthStore(
+    save:    (String data) async => prefs.setString('pb_auth', data),
+    initial: prefs.getString('pb_auth'),
+  );
+
+  final pb = PocketBase('http://127.0.0.1:8090', authStore: store);
   //! Features -
   // Bloc
   sl.registerFactory(
@@ -58,14 +69,14 @@ Future<void> init() async {
 
   sl.registerFactory(
         () => AuthBloc(
-          createAuth: sl(),
-          loadAuth: sl(),
+          login: sl(),
           createAuthDataOnServer: sl(),
           createHouseholdAndAddAuthData: sl(),
           addAuthDataToHousehold: sl(),
           deleteAuthDataFromHousehold: sl(),
           loadAuthDataWithOAuth: sl(),
-          logout: sl()
+          logout: sl(),
+          authStore: store
         )
   );
 
@@ -92,9 +103,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => AddAuthDataToHousehold(repository: sl()));
   sl.registerLazySingleton(() => CreateHouseholdAndAddAuthData(repository: sl()));
   sl.registerLazySingleton(() => DeleteAuthDataFromHousehold(repository: sl()));
-  sl.registerLazySingleton(() => CreateAuthData(repository: sl()));
-  sl.registerLazySingleton(() => LoadAuthData(repository: sl()));
-  sl.registerLazySingleton(() => CreateAuthDataOnServer(repository: sl()));
+  sl.registerLazySingleton(() => Login(repository: sl()));
+  sl.registerLazySingleton(() => SignUp(repository: sl()));
   sl.registerLazySingleton(() => LoadAuthDataWithOAuth(repository: sl()));
   sl.registerLazySingleton(() => Logout(repository: sl()));
 
@@ -126,10 +136,9 @@ Future<void> init() async {
     ),
   );
 
-  final pb = PocketBase('http://127.0.0.1:8090');
 
 
-  const storage = FlutterSecureStorage();
+
   // Data sources
   sl.registerLazySingleton<HouseholdTaskRemoteDataSource>(
     //TODO: Need to make it possible to use different accounts
@@ -145,7 +154,7 @@ Future<void> init() async {
 
   sl.registerLazySingleton<AuthDataSource>(
     //TODO: Need to make it possible to use different accounts
-        () => AuthDataSourceImpl(storage: storage, userRecordService: RecordService(pb, 'users'), householdRecordService: RecordService(pb, 'household'), pointsRecordService: RecordService(pb, 'points'), authStore: pb.authStore),
+        () => AuthDataSourceImpl(userRecordService: RecordService(pb, 'users'), householdRecordService: RecordService(pb, 'household'), pointsRecordService: RecordService(pb, 'points'), authStore: pb.authStore),
   );
 
   sl.registerLazySingleton<ChartsDataSource>(

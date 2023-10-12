@@ -200,7 +200,7 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
 
   void login(String email, String password) {
     BlocProvider.of<AuthBloc>(context)
-        .add(CreateAuthEvent(email: email, password: password));
+        .add(LoginAuthEvent(email: email, password: password));
   }
 
   void oAuth() {
@@ -211,7 +211,7 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
 
   void signUp(String email, String password, String passwordConfirm, String username, String name) {
     BlocProvider.of<AuthBloc>(context)
-        .add(CreateAuthDataOnServerEvent(email: email, password: password, passwordConfirm: passwordConfirm, username: username, name: name));
+        .add(SignUpAuthEvent(email: email, password: password, passwordConfirm: passwordConfirm, username: username, name: name));
   }
 }
 
