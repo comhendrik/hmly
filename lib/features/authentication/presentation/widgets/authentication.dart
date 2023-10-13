@@ -134,6 +134,10 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your username';
                       }
+
+                      if (value.contains(" ")) {
+                        return 'Must be in a valid format';
+                      }
                       return null;
                     },
                     onChanged: (value) {

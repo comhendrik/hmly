@@ -81,9 +81,10 @@ class _AuthenticatedView extends State<AuthenticatedView> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  //TODO: Logout Buttons auf account_view.dart
                   const LogoutButton(),
                   ElevatedButton(onPressed: () {
-                    deleteAuthDataFromHousehold(widget.mainUser);
+                    leaveHousehold(widget.mainUser);
                   },
                       child: const Text("Change household")
                   )
@@ -97,8 +98,8 @@ class _AuthenticatedView extends State<AuthenticatedView> {
 
   }
 
-  void deleteAuthDataFromHousehold(User user) {
+  void leaveHousehold(User user) {
     BlocProvider.of<AuthBloc>(context)
-        .add(DeleteAuthDataFromHouseholdEvent(user: user));
+        .add(LeaveHouseholdEvent(user: user));
   }
 }

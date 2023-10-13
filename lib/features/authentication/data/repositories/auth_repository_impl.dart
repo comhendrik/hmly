@@ -38,9 +38,9 @@ class AuthRepositoryImpl implements AuthRepository {
 
 
   @override
-  Future<Either<Failure, void>> deleteAuthDataFromHousehold(User user) async {
+  Future<Either<Failure, void>> leaveHousehold(User user) async {
     try {
-      return Right(await dataSource.deleteAuthDataFromHousehold(user));
+      return Right(await dataSource.leaveHousehold(user));
     } on ServerException {
       return Left(ServerFailure());
     }

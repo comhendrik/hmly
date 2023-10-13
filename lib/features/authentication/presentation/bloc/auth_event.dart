@@ -27,10 +27,10 @@ class CreateHouseholdAndAddAuthDataEvent extends AuthEvent {
   });
 }
 
-class DeleteAuthDataFromHouseholdEvent extends AuthEvent {
+class LeaveHouseholdEvent extends AuthEvent {
   final User user;
 
-  const DeleteAuthDataFromHouseholdEvent({
+  const LeaveHouseholdEvent({
     required this.user
   });
 }

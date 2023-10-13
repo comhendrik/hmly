@@ -41,7 +41,6 @@ class ChartsDataSourceImpl implements ChartsDataSource {
 
   @override
   Future<List<PieChartDataModel>> getDailyPieChartData(String userId, String householdId) async {
-    print("pie chart");
     try {
       int currentDayOfWeek = DateTime.now().weekday;
       final userResult = await userRecordService.getFullList(filter: 'household="$householdId"');

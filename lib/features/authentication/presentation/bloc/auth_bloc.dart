@@ -5,7 +5,7 @@ import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/add_auth_data_to_household.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/create_Household_And_Add_Auth_Data.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/sign_up.dart';
-import 'package:household_organizer/features/authentication/domain/usecases/delete_auth_data_from_household.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/leave_household.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/login.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/load_auth_data_with_o_auth.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/logout.dart';
@@ -19,7 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SignUp createAuthDataOnServer;
   final AddAuthDataToHousehold addAuthDataToHousehold;
   final CreateHouseholdAndAddAuthData createHouseholdAndAddAuthData;
-  final DeleteAuthDataFromHousehold deleteAuthDataFromHousehold;
+  final LeaveHousehold leaveHousehold;
   final LoadAuthDataWithOAuth loadAuthDataWithOAuth;
   final Logout logout;
   final AsyncAuthStore authStore;
@@ -28,7 +28,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.createAuthDataOnServer,
     required this.addAuthDataToHousehold,
     required this.createHouseholdAndAddAuthData,
-    required this.deleteAuthDataFromHousehold,
+    required this.leaveHousehold,
     required this.loadAuthDataWithOAuth,
     required this.logout,
     required this.authStore
@@ -102,9 +102,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               emit(AuthLoaded(authData: newUser));
             }
         );
-      } else if (event is DeleteAuthDataFromHouseholdEvent) {
+      } else if (event is LeaveHouseholdEvent) {
         emit(AuthLoading());
-        final resultEither = await deleteAuthDataFromHousehold.execute(event.user);
+        final resultEither = await leaveHousehold.execute(event.user);
         await resultEither.fold(
                 (failure) async {
               emit(const AuthError(errorMsg: 'ServerFailure'));

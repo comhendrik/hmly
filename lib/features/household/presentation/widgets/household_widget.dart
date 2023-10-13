@@ -25,7 +25,7 @@ class _HouseholdWidgetState extends State<HouseholdWidget> {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => HouseholdDetailView(context: widget.context, household: widget.household)
+            builder: (context) => HouseholdDetailView(context: widget.context, household: widget.household, mainUser: widget.mainUser,)
           ),
         );
       },

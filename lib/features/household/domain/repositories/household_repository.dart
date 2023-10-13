@@ -6,4 +6,5 @@ import 'package:dartz/dartz.dart';
 abstract class HouseholdRepository {
   Future<Either<Failure, Household>> loadHousehold(String householdId);
   Future<Either<Failure, Household>> updateHouseholdTitle(String householdId, String title);
+  Future<Either<Failure, void>> deleteAuthDataFromHousehold(String userID);
 }

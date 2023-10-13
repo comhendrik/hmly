@@ -5,7 +5,7 @@ import 'package:household_organizer/core/error/failure.dart';
 abstract class AuthRepository {
   Future<Either<Failure, void>> addAuthDataToHousehold(String userId, String householdId);
   Future<Either<Failure, String>> createHouseholdAndAddAuthData(String userId, String householdTitle);
-  Future<Either<Failure, void>> deleteAuthDataFromHousehold(User user);
+  Future<Either<Failure, void>> leaveHousehold(User user);
   Future<Either<Failure, User>> login(String email, String password);
   Future<Either<Failure, User>> signUp(String email, String password, String passwordConfirm, String username, String name);
   Future<Either<Failure, User>> loadAuthDataWithOAuth();

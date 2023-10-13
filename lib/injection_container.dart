@@ -4,7 +4,7 @@ import 'package:household_organizer/features/authentication/domain/repositories/
 import 'package:household_organizer/features/authentication/domain/usecases/add_auth_data_to_household.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/create_Household_And_Add_Auth_Data.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/sign_up.dart';
-import 'package:household_organizer/features/authentication/domain/usecases/delete_auth_data_from_household.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/leave_household.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/login.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/load_auth_data_with_o_auth.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/logout.dart';
@@ -18,6 +18,7 @@ import 'package:household_organizer/features/charts/presentation/bloc/chart_bloc
 import 'package:household_organizer/features/household/data/datasources/household_remote_data_source.dart';
 import 'package:household_organizer/features/household/data/repositories/household_repository_impl.dart';
 import 'package:household_organizer/features/household/domain/repositories/household_repository.dart';
+import 'package:household_organizer/features/household/domain/usecases/delete_auth_data_from_household.dart';
 import 'package:household_organizer/features/household/domain/usecases/load_household.dart';
 import 'package:household_organizer/features/household/domain/usecases/update_household_title.dart';
 import 'package:household_organizer/features/household/presentation/bloc/household_bloc.dart';
@@ -63,7 +64,8 @@ Future<void> init() async {
   sl.registerFactory(
         () => HouseholdBloc(
           loadHousehold: sl(),
-          updateHouseholdTitle: sl()
+          updateHouseholdTitle: sl(),
+          deleteAuthDataFromHousehold: sl()
     ),
   );
 
@@ -73,7 +75,7 @@ Future<void> init() async {
           createAuthDataOnServer: sl(),
           createHouseholdAndAddAuthData: sl(),
           addAuthDataToHousehold: sl(),
-          deleteAuthDataFromHousehold: sl(),
+          leaveHousehold: sl(),
           loadAuthDataWithOAuth: sl(),
           logout: sl(),
           authStore: store
@@ -99,10 +101,11 @@ Future<void> init() async {
 
   sl.registerLazySingleton(() => LoadHousehold(repository: sl()));
   sl.registerLazySingleton(() => UpdateHouseholdTitle(repository: sl()));
+  sl.registerLazySingleton(() => DeleteAuthDataFromHousehold(repository: sl()));
 
   sl.registerLazySingleton(() => AddAuthDataToHousehold(repository: sl()));
   sl.registerLazySingleton(() => CreateHouseholdAndAddAuthData(repository: sl()));
-  sl.registerLazySingleton(() => DeleteAuthDataFromHousehold(repository: sl()));
+  sl.registerLazySingleton(() => LeaveHousehold(repository: sl()));
   sl.registerLazySingleton(() => Login(repository: sl()));
   sl.registerLazySingleton(() => SignUp(repository: sl()));
   sl.registerLazySingleton(() => LoadAuthDataWithOAuth(repository: sl()));
@@ -161,6 +164,8 @@ Future<void> init() async {
     //TODO: Need to make it possible to use different accounts
         () => ChartsDataSourceImpl(userRecordService: RecordService(pb, 'users'), pointRecordService: RecordService(pb, 'points'), householdRecordService: RecordService(pb, 'household')),
   );
+
+
   //! Cor
   //
   //! External

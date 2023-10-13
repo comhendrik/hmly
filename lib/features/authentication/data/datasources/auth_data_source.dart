@@ -9,7 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 abstract class AuthDataSource {
   Future<void> addAuthDataToHousehold(String userId, String householdId);
   Future<String> createHouseholdAndAddAuthData(String userId, String householdTitle);
-  Future<void> deleteAuthDataFromHousehold(User user);
+  Future<void> leaveHousehold(User user);
   Future<UserModel> login(String email, String password);
   Future<UserModel> signUp(String email, String password,String passwordConfirm, String username, String name);
   Future<UserModel> loadAuthDataWithOAuth();
@@ -65,7 +65,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<void> deleteAuthDataFromHousehold(User user) async {
+  Future<void> leaveHousehold(User user) async {
     try {
       deleteUserFromHousehold(userRecordService, user.id);
     } catch(err) {

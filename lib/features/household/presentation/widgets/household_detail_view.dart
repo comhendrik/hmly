@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/features/household/domain/entities/household.dart';
 import 'package:household_organizer/features/household/presentation/widgets/household_information_widget.dart';
 
 class HouseholdDetailView extends StatefulWidget {
   final Household household;
   final BuildContext context;
+  final User mainUser;
 
   const HouseholdDetailView({
     super.key,
     required this.household,
-    required this.context
+    required this.context,
+    required this.mainUser
   });
 
   @override
@@ -46,7 +49,7 @@ class _HouseholdDetailViewState extends State<HouseholdDetailView> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      HouseholdInformationWidget(context: widget.context, household: widget.household),
+                      HouseholdInformationWidget(context: widget.context, household: widget.household, mainUser: widget.mainUser,),
                     ],
                   ),
                 ],

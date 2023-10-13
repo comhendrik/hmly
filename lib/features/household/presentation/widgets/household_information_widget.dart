@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:household_organizer/core/entities/user.dart';
-import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:household_organizer/features/household/domain/entities/household.dart';
 import 'package:household_organizer/features/household/presentation/bloc/household_bloc.dart';
 import 'widget.dart';
@@ -11,10 +10,12 @@ import 'package:flutter_share/flutter_share.dart';
 class HouseholdInformationWidget extends StatefulWidget {
   final BuildContext context;
   final Household household;
+  final User mainUser;
   const HouseholdInformationWidget({
     super.key,
     required this.context,
-    required this.household
+    required this.household,
+    required this.mainUser
   });
 
   @override
@@ -103,7 +104,19 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
               detailWidget: Column(
                 children: [
                   for (User user in widget.household.users)
-                    Text(user.name)
+                    Row(
+                      children: [
+                        Text(user.name),
+                        Text(user.id),
+                        if (user.id == widget.mainUser.id)
+                          IconButton(
+                              onPressed: () {
+                                deleteAuthDataFromHousehold(user.id, user.householdId);
+                              },
+                              icon: const Icon(Icons.delete)
+                          )
+                      ],
+                    )
                 ],
               ),
               buttonIcon: const Icon(Icons.person_add),
@@ -117,6 +130,11 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
   void updateHouseholdTitle(String householdId, String householdTitle) {
     BlocProvider.of<HouseholdBloc>(widget.context)
         .add(UpdateHouseholdTitleEvent(householdId: householdId, householdTitle: householdTitle));
+  }
+
+  void deleteAuthDataFromHousehold(String userID, String householdId) {
+    BlocProvider.of<HouseholdBloc>(widget.context)
+        .add(DeleteAuthDataFromHouseholdEvent(userID: userID, householdId: householdId));
   }
 
 }

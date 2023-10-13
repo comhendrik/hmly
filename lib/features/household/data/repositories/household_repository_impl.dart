@@ -32,4 +32,14 @@ class HouseholdRepositoryImpl implements HouseholdRepository {
     }
   }
 
+  @override
+  Future<Either<Failure, void>> deleteAuthDataFromHousehold(String userID) async {
+    try {
+      return Right(await remoteDataSource.deleteAuthDataFromHousehold(userID));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+
 }
