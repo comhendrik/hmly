@@ -8,7 +8,7 @@ class UpdateHouseholdTitle {
 
   UpdateHouseholdTitle({required this.repository});
 
-  Future<Either<Failure, Household>> execute(String householdId, String householdTitle) async {
-    return await repository.updateHouseholdTitle(householdId, householdTitle);
+  Future<Either<Failure, Household>> execute(String householdID, String householdTitle) async {
+    return await repository.updateHouseholdTitle(householdID, householdTitle);
   }
 }

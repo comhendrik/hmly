@@ -10,7 +10,7 @@ class ToggleIsDoneHouseholdTask {
     required this.repository
   });
 
-  Future<Either<Failure, void>> execute(HouseholdTask task, String userId) async {
-    return await repository.toggleIsDoneHouseholdTask(task, userId);
+  Future<Either<Failure, void>> execute(HouseholdTask task, String userID) async {
+    return await repository.toggleIsDoneHouseholdTask(task, userID);
   }
 }

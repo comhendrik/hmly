@@ -5,9 +5,9 @@ import 'package:household_organizer/features/household_task/domain/entities/hous
 import 'package:pocketbase/pocketbase.dart';
 import 'package:household_organizer/core/entities/user.dart';
 abstract class HouseholdTaskRemoteDataSource {
-  Future<List<HouseholdTask>> getAllTaskForHousehold(String householdId);
-  Future<HouseholdTask> createHouseholdTask(String householdId, String title, int pointsWorth, String dueTo);
-  Future<void> toggleIsDoneHouseholdTask(HouseholdTask task, String userId);
+  Future<List<HouseholdTask>> getAllTaskForHousehold(String householdID);
+  Future<HouseholdTask> createHouseholdTask(String householdID, String title, int pointsWorth, String dueTo);
+  Future<void> toggleIsDoneHouseholdTask(HouseholdTask task, String userID);
   Future<void> deleteHouseholdTask(String taskId);
   Future<void> updateHouseholdTask(HouseholdTask task, Map<String, dynamic> updateData);
 }
@@ -25,9 +25,9 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
   });
 
   @override
-  Future<List<HouseholdTaskModel>> getAllTaskForHousehold(String householdId) async {
+  Future<List<HouseholdTaskModel>> getAllTaskForHousehold(String householdID) async {
     try {
-      final result = await taskRecordService.getFullList(filter: 'household="$householdId"', sort: 'isDone');
+      final result = await taskRecordService.getFullList(filter: 'household="$householdID"', sort: 'isDone');
       List<HouseholdTaskModel> householdTaskModelList = [];
       for (final task in result) {
         householdTaskModelList.add(HouseholdTaskModel.fromJSON(task.data, task.id));
@@ -41,10 +41,10 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
   }
 
   @override
-  Future<HouseholdTaskModel> createHouseholdTask(String householdId, String title, int pointsWorth, String dueTo) async {
+  Future<HouseholdTaskModel> createHouseholdTask(String householdID, String title, int pointsWorth, String dueTo) async {
     final body = <String, dynamic>{
       "title": title,
-      "household": householdId,
+      "household": householdID,
       "points_worth": pointsWorth,
       "due_to" : dueTo,
     };
@@ -59,7 +59,7 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
   }
 
   @override
-  Future<void> toggleIsDoneHouseholdTask(HouseholdTask task, String userId) async {
+  Future<void> toggleIsDoneHouseholdTask(HouseholdTask task, String userID) async {
     final taskBody = <String, dynamic>{
       "isDone": !task.isDone
     };
@@ -75,7 +75,7 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
         "value$operator" : task.pointsWorth
       };
       int currentDayOfWeek = DateTime.now().weekday;
-      final pointToUpdate = await pointRecordService.getFirstListItem('day_number=$currentDayOfWeek && user="$userId"');
+      final pointToUpdate = await pointRecordService.getFirstListItem('day_number=$currentDayOfWeek && user="$userID"');
       final _ = await pointRecordService.update(pointToUpdate.id, body: pointBody);
     } catch(err) {
       print(err);

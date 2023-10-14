@@ -15,12 +15,12 @@ class PieChartDataModel extends PieChartData {
   );
 
 
-  factory PieChartDataModel.fromJSON(Map<String, dynamic> json, String id, String userId, String username) {
+  factory PieChartDataModel.fromJSON(Map<String, dynamic> json, String id, String userID, String username) {
     return PieChartDataModel(
       id: id,
       username: username,
       value: json['value'],
-      isDataOfUser: userId == json['user'],
+      isDataOfUser: userID == json['user'],
     );
 
   }

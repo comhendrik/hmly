@@ -10,7 +10,7 @@ class GetDailyPieChartData {
     required this.repository
   });
 
-  Future<Either<Failure, List<PieChartData>>> execute(String userId, String householdId) async {
-    return await repository.getDailyPieChartData(userId, householdId);
+  Future<Either<Failure, List<PieChartData>>> execute(String userID, String householdID) async {
+    return await repository.getDailyPieChartData(userID, householdID);
   }
 }

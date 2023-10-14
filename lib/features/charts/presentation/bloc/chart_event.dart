@@ -8,10 +8,10 @@ abstract class ChartEvent extends Equatable {
 }
 
 class GetWeeklyChartDataEvent extends ChartEvent {
-  final String userId;
-  final String householdId;
+  final String userID;
+  final String householdID;
 
   const GetWeeklyChartDataEvent({
-    required this.userId, required this.householdId
+    required this.userID, required this.householdID
   });
 }

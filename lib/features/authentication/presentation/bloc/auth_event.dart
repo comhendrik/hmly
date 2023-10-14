@@ -9,11 +9,11 @@ abstract class AuthEvent extends Equatable {
 
 class AddAuthDataToHouseholdEvent extends AuthEvent {
   final User user;
-  final String householdId;
+  final String householdID;
 
   const AddAuthDataToHouseholdEvent({
     required this.user,
-    required this.householdId
+    required this.householdID
   });
 }
 

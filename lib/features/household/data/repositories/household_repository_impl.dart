@@ -15,18 +15,18 @@ class HouseholdRepositoryImpl implements HouseholdRepository {
   });
 
   @override
-  Future<Either<Failure, Household>> loadHousehold(String householdId) async {
+  Future<Either<Failure, Household>> loadHousehold(String householdID) async {
     try {
-      return Right(await remoteDataSource.loadHousehold(householdId));
+      return Right(await remoteDataSource.loadHousehold(householdID));
     } on ServerException {
       return Left(ServerFailure());
     }
   }
 
   @override
-  Future<Either<Failure, Household>> updateHouseholdTitle(String householdId, String householdTitle) async {
+  Future<Either<Failure, Household>> updateHouseholdTitle(String householdID, String householdTitle) async {
     try {
-      return Right(await remoteDataSource.updateHouseholdTitle(householdId, householdTitle));
+      return Right(await remoteDataSource.updateHouseholdTitle(householdID, householdTitle));
     } on ServerException {
       return Left(ServerFailure());
     }

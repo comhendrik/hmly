@@ -20,13 +20,13 @@ class ChartBloc extends Bloc<ChartEvent, ChartState> {
       emit(ChartInitial());
       if (event is GetWeeklyChartDataEvent)  {
         emit(ChartLoading());
-        final barChartResultEither = await getWeeklyBarChartData.execute(event.userId, event.householdId);
+        final barChartResultEither = await getWeeklyBarChartData.execute(event.userID, event.householdID);
         await barChartResultEither.fold(
           (failure) async {
             emit(const ChartError(errorMsg: 'Server Failure'));
           },
           (barChartList) async {
-            final pieChartResultEither = await getDailyPieChartData.execute(event.userId, event.householdId);
+            final pieChartResultEither = await getDailyPieChartData.execute(event.userID, event.householdID);
             await pieChartResultEither.fold(
                 (failure) async {
                   emit(const ChartError(errorMsg: 'Server Failure'));

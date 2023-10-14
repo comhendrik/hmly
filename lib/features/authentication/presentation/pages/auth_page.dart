@@ -29,7 +29,7 @@ class AuthPage extends StatelessWidget {
           } else if (state is AuthLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is AuthLoaded) {
-            return state.authData.householdId == "" ? AddAuthDataToHouseholdView(user: state.authData) : AuthenticatedView(mainUser: state.authData);
+            return state.authData.householdID == "" ? AddAuthDataToHouseholdView(user: state.authData) : AuthenticatedView(mainUser: state.authData);
           } else if (state is AuthError) {
             return BlocErrorWidget(errorMsg: state.errorMsg, reloadAction: () {
               BlocProvider.of<AuthBloc>(context)

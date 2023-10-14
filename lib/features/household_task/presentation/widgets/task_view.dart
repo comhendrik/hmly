@@ -6,12 +6,12 @@ import 'widgets.dart';
 class TaskView extends StatelessWidget {
 
   final List<HouseholdTask> tasks;
-  final String householdId;
+  final String householdID;
   final User mainUser;
   const TaskView({
     super.key,
     required this.tasks,
-    required this.householdId,
+    required this.householdID,
     required this.mainUser
   });
 
@@ -39,7 +39,7 @@ class TaskView extends StatelessWidget {
                   ],
                 ),
                 for (HouseholdTask task in tasks)
-                  TaskWidget(task: task,householdId: householdId, mainUser: mainUser,),
+                  TaskWidget(task: task,householdID: householdID, mainUser: mainUser,),
               ],
             )
         )

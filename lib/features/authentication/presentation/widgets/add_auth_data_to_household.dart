@@ -16,9 +16,9 @@ class AddAuthDataToHouseholdView extends StatefulWidget {
 
 class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
 
-  final householdIdController = TextEditingController();
+  final householdIDController = TextEditingController();
   final householdTitleController = TextEditingController();
-  String householdIdStr = '';
+  String householdIDStr = '';
   String householdTitleStr = '';
   final _idFormKey = GlobalKey<FormState>();
   final _titleFormKey = GlobalKey<FormState>();
@@ -43,7 +43,7 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
                 children: [
                   const Text('Join an existing one:'),
                   TextFormField(
-                      controller: householdIdController,
+                      controller: householdIDController,
                       keyboardType: TextInputType.text,
                       decoration: const InputDecoration(
                         labelText: 'Household Id',
@@ -56,7 +56,7 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
                         }
                       },
                       onChanged: (value) {
-                        householdIdStr = value;
+                        householdIDStr = value;
                       }
                   ),
                   Padding(
@@ -64,7 +64,7 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
                     child: ElevatedButton.icon(
                         onPressed: () {
                           if (_idFormKey.currentState!.validate()) {
-                            addAuthDataToHousehold(widget.user, householdIdStr);
+                            addAuthDataToHousehold(widget.user, householdIDStr);
                           }
                         },
                         icon: const Icon(Icons.arrow_forward),
@@ -126,9 +126,9 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
     );
   }
 
-  void addAuthDataToHousehold(User user, String householdId) {
+  void addAuthDataToHousehold(User user, String householdID) {
     BlocProvider.of<AuthBloc>(context)
-        .add(AddAuthDataToHouseholdEvent(user: user, householdId: householdId));
+        .add(AddAuthDataToHouseholdEvent(user: user, householdID: householdID));
   }
 
   void createHouseholdAndAddAuthData(User user, String householdTitle) {

@@ -10,7 +10,7 @@ class GetWeeklyBarChartData {
     required this.repository
   });
 
-  Future<Either<Failure, List<BarChartData>>> execute(String userId, String householdId) async {
-    return await repository.getWeeklyBarChartData(userId);
+  Future<Either<Failure, List<BarChartData>>> execute(String userID, String householdID) async {
+    return await repository.getWeeklyBarChartData(userID);
   }
 }

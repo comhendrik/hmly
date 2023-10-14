@@ -7,7 +7,7 @@ class AddAuthDataToHousehold {
 
   AddAuthDataToHousehold({required this.repository});
 
-  Future<Either<Failure, void>> execute(String userId, String householdId) async {
-    return await repository.addAuthDataToHousehold(userId,householdId);
+  Future<Either<Failure, void>> execute(String userID, String householdID) async {
+    return await repository.addAuthDataToHousehold(userID,householdID);
   }
 }

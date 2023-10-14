@@ -21,7 +21,7 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
       emit(HouseholdInitial());
       if (event is LoadHouseholdEvent)  {
         emit(HouseholdLoading());
-        final resultEither = await loadHousehold.execute(event.householdId);
+        final resultEither = await loadHousehold.execute(event.householdID);
         resultEither.fold(
                 (failure) async {
               emit(const HouseholdError(errorMsg: 'Server Failure'));
@@ -32,7 +32,7 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
         );
       } else if (event is UpdateHouseholdTitleEvent) {
         emit(HouseholdLoading());
-        final resultEither = await updateHouseholdTitle.execute(event.householdId, event.householdTitle);
+        final resultEither = await updateHouseholdTitle.execute(event.householdID, event.householdTitle);
         resultEither.fold(
                 (failure) async {
               emit(const HouseholdError(errorMsg: 'Server Failure'));
@@ -49,7 +49,7 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
               emit(const HouseholdError(errorMsg: 'Server Failure'));
             },
                 (_) {
-                  add(LoadHouseholdEvent(householdId: event.householdId));
+                  add(LoadHouseholdEvent(householdID: event.householdID));
             }
         );
       }

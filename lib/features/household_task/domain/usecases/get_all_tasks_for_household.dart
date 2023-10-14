@@ -8,7 +8,7 @@ class GetAllTasksForHousehold {
 
   GetAllTasksForHousehold(this.repository);
 
-  Future<Either<Failure, List<HouseholdTask>>> execute(String householdId) async {
-    return await repository.getAllTasksForHousehold(householdId);
+  Future<Either<Failure, List<HouseholdTask>>> execute(String householdID) async {
+    return await repository.getAllTasksForHousehold(householdID);
   }
 }

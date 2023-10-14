@@ -28,8 +28,8 @@ class HouseholdPage extends StatelessWidget {
             builder: (context, state) {
               if (state is HouseholdInitial) {
                 BlocProvider.of<HouseholdBloc>(context)
-                    .add(LoadHouseholdEvent(householdId: mainUser.householdId));
-                return Text("No data loaded for household id: '${mainUser.householdId}'");
+                    .add(LoadHouseholdEvent(householdID: mainUser.householdID));
+                return Text("No data loaded for household id: '${mainUser.householdID}'");
               } else if (state is HouseholdLoading) {
                 return const CircularProgressIndicator();
               } else if (state is HouseholdLoaded) {
@@ -37,7 +37,7 @@ class HouseholdPage extends StatelessWidget {
               } else if (state is HouseholdError) {
                 return BlocErrorWidget(errorMsg: state.errorMsg, reloadAction: () {
                   BlocProvider.of<HouseholdBloc>(context)
-                      .add(LoadHouseholdEvent(householdId: mainUser.householdId));
+                      .add(LoadHouseholdEvent(householdID: mainUser.householdID));
                 });
               } else {
                 return const Text("...");

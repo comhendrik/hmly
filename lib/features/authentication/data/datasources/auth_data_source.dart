@@ -7,8 +7,8 @@ import 'package:pocketbase/pocketbase.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 abstract class AuthDataSource {
-  Future<void> addAuthDataToHousehold(String userId, String householdId);
-  Future<String> createHouseholdAndAddAuthData(String userId, String householdTitle);
+  Future<void> addAuthDataToHousehold(String userID, String householdID);
+  Future<String> createHouseholdAndAddAuthData(String userID, String householdTitle);
   Future<void> leaveHousehold(User user);
   Future<UserModel> login(String email, String password);
   Future<UserModel> signUp(String email, String password,String passwordConfirm, String username, String name);
@@ -31,17 +31,17 @@ class AuthDataSourceImpl implements AuthDataSource {
   });
 
   @override
-  Future<void> addAuthDataToHousehold(String userId, String householdId) async {
+  Future<void> addAuthDataToHousehold(String userID, String householdID) async {
     try {
-      final _ =  await householdRecordService.getOne(householdId);
+      final _ =  await householdRecordService.getOne(householdID);
     } catch(err) {
       throw NotFoundException();
     }
     final body = <String, dynamic>{
-      "household": householdId,
+      "household": householdID,
     };
     try {
-      final _ = await userRecordService.update(userId, body: body);
+      final _ = await userRecordService.update(userID, body: body);
     } catch(err) {
       print(err);
       throw ServerException();
@@ -49,13 +49,13 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<String> createHouseholdAndAddAuthData(String userId, String householdTitle) async {
+  Future<String> createHouseholdAndAddAuthData(String userID, String householdTitle) async {
     final body = <String, dynamic>{
       "title": householdTitle,
     };
     try {
       final result = await householdRecordService.create(body: body);
-      await addAuthDataToHousehold(userId, result.id);
+      await addAuthDataToHousehold(userID, result.id);
       return result.id;
     } catch(err) {
       print(err);

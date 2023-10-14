@@ -11,7 +11,7 @@ void main() {
   late MockRecordService mockRecordServiceUser;
   late MockRecordService mockRecordServiceTask;
   late HouseholdTaskRemoteDataSourceImpl dataSource;
-  late String householdId;
+  late String fhouseholdId;
   late String email;
   late String password;
   

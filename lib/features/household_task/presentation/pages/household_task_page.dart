@@ -29,7 +29,7 @@ class HouseholdTaskPage extends StatelessWidget {
               builder: (context, state) {
                 if (state is HouseholdTaskInitial) {
                   BlocProvider.of<HouseholdTaskBloc>(context)
-                      .add(GetAllTasksForHouseholdEvent(householdId: mainUser.householdId));
+                      .add(GetAllTasksForHouseholdEvent(householdID: mainUser.householdID));
                   return const Text("Data is loading...");
                 } else if (state is HouseholdTaskLoading) {
                   return const CircularProgressIndicator();
@@ -38,7 +38,7 @@ class HouseholdTaskPage extends StatelessWidget {
                 } else if (state is HouseholdTaskError) {
                   return BlocErrorWidget(errorMsg: state.errorMsg, reloadAction: () {
                     BlocProvider.of<HouseholdTaskBloc>(context)
-                        .add(GetAllTasksForHouseholdEvent(householdId: mainUser.householdId));
+                        .add(GetAllTasksForHouseholdEvent(householdID: mainUser.householdID));
                   });
                 } else {
                   return const Text("Error State");

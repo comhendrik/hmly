@@ -7,8 +7,8 @@ import 'package:household_organizer/features/household_task/domain/entities/hous
 import 'package:pocketbase/pocketbase.dart';
 import 'package:household_organizer/core/entities/user.dart';
 abstract class ChartsDataSource {
-  Future<List<BarChartDataModel>> getWeeklyBarChartData(String userId);
-  Future<List<PieChartDataModel>> getDailyPieChartData(String userId, String householdId);
+  Future<List<BarChartDataModel>> getWeeklyBarChartData(String userID);
+  Future<List<PieChartDataModel>> getDailyPieChartData(String userID, String householdID);
 }
 
 class ChartsDataSourceImpl implements ChartsDataSource {
@@ -24,9 +24,9 @@ class ChartsDataSourceImpl implements ChartsDataSource {
   });
 
   @override
-  Future<List<BarChartDataModel>> getWeeklyBarChartData(String userId) async {
+  Future<List<BarChartDataModel>> getWeeklyBarChartData(String userID) async {
     try {
-      final result = await pointRecordService.getFullList(filter: 'user="$userId"', sort: 'day_number');
+      final result = await pointRecordService.getFullList(filter: 'user="$userID"', sort: 'day_number');
       List<BarChartDataModel> barCharDataModelList = [];
       for (final day in result) {
         barCharDataModelList.add(BarChartDataModel.fromJSON(day.data, day.id));
@@ -40,14 +40,14 @@ class ChartsDataSourceImpl implements ChartsDataSource {
   }
 
   @override
-  Future<List<PieChartDataModel>> getDailyPieChartData(String userId, String householdId) async {
+  Future<List<PieChartDataModel>> getDailyPieChartData(String userID, String householdID) async {
     try {
       int currentDayOfWeek = DateTime.now().weekday;
-      final userResult = await userRecordService.getFullList(filter: 'household="$householdId"');
+      final userResult = await userRecordService.getFullList(filter: 'household="$householdID"');
       List<PieChartDataModel> pieChartDataModelList = [];
       for (final user in userResult) {
         final userPieChartData = await pointRecordService.getFirstListItem('user="${user.id}" && day_number=$currentDayOfWeek');
-        pieChartDataModelList.add(PieChartDataModel.fromJSON(userPieChartData.data, userPieChartData.id, userId, user.data['name']));
+        pieChartDataModelList.add(PieChartDataModel.fromJSON(userPieChartData.data, userPieChartData.id, userID, user.data['name']));
       }
       return pieChartDataModelList;
     } catch(err) {

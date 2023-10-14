@@ -111,7 +111,7 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
                         if (user.id == widget.mainUser.id)
                           IconButton(
                               onPressed: () {
-                                deleteAuthDataFromHousehold(user.id, user.householdId);
+                                deleteAuthDataFromHousehold(user.id, user.householdID);
                               },
                               icon: const Icon(Icons.delete)
                           )
@@ -127,14 +127,14 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
     );
   }
 
-  void updateHouseholdTitle(String householdId, String householdTitle) {
+  void updateHouseholdTitle(String householdID, String householdTitle) {
     BlocProvider.of<HouseholdBloc>(widget.context)
-        .add(UpdateHouseholdTitleEvent(householdId: householdId, householdTitle: householdTitle));
+        .add(UpdateHouseholdTitleEvent(householdID: householdID, householdTitle: householdTitle));
   }
 
-  void deleteAuthDataFromHousehold(String userID, String householdId) {
+  void deleteAuthDataFromHousehold(String userID, String householdID) {
     BlocProvider.of<HouseholdBloc>(widget.context)
-        .add(DeleteAuthDataFromHouseholdEvent(userID: userID, householdId: householdId));
+        .add(DeleteAuthDataFromHouseholdEvent(userID: userID, householdID: householdID));
   }
 
 }

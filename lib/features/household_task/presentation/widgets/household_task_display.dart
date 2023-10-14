@@ -23,15 +23,15 @@ class HouseholdTaskDisplay extends StatelessWidget {
                   'Current Tasks',
                   style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20)
               ),
-              CreateHouseholdTaskSheet(householdId: mainUser.householdId,),
-              Controls(householdId: mainUser.householdId,)
+              CreateHouseholdTaskSheet(householdID: mainUser.householdID,),
+              Controls(householdID: mainUser.householdID,)
             ],
 
           ),
           Column(
               children: allTasks.map((task){
                 return Container(
-                  child: TaskWidget(task: task, householdId: mainUser.householdId, mainUser: mainUser,),
+                  child: TaskWidget(task: task, householdID: mainUser.householdID, mainUser: mainUser,),
                 );
               }).toList()),
         ],
@@ -40,7 +40,7 @@ class HouseholdTaskDisplay extends StatelessWidget {
       return Column(
         children: [
           const Text("There is no Task. Create a new one"),
-          CreateHouseholdTaskSheet(householdId: mainUser.householdId,),
+          CreateHouseholdTaskSheet(householdID: mainUser.householdID,),
         ],
       );
     }

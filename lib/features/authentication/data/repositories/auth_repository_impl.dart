@@ -14,9 +14,9 @@ class AuthRepositoryImpl implements AuthRepository {
   });
 
   @override
-  Future<Either<Failure, void>> addAuthDataToHousehold(String userId, String householdId) async {
+  Future<Either<Failure, void>> addAuthDataToHousehold(String userID, String householdID) async {
     try {
-      return Right(await dataSource.addAuthDataToHousehold(userId, householdId));
+      return Right(await dataSource.addAuthDataToHousehold(userID, householdID));
     } on ServerException {
       return Left(ServerFailure());
     } on NotFoundException {
@@ -25,9 +25,9 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, String>> createHouseholdAndAddAuthData(String userId, String householdTitle) async {
+  Future<Either<Failure, String>> createHouseholdAndAddAuthData(String userID, String householdTitle) async {
     try {
-      return Right(await dataSource.createHouseholdAndAddAuthData(userId, householdTitle));
+      return Right(await dataSource.createHouseholdAndAddAuthData(userID, householdTitle));
     } on ServerException {
       return Left(ServerFailure());
     } on NotFoundException {

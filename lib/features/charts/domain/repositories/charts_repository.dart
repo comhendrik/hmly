@@ -4,6 +4,6 @@ import 'package:household_organizer/features/charts/domain/entities/bar_chart_da
 import 'package:household_organizer/features/charts/domain/entities/pie_chart_data.dart';
 
 abstract class ChartsRepository {
-  Future<Either<Failure, List<BarChartData>>> getWeeklyBarChartData(String userId);
-  Future<Either<Failure, List<PieChartData>>> getDailyPieChartData(String userId, String householdId);
+  Future<Either<Failure, List<BarChartData>>> getWeeklyBarChartData(String userID);
+  Future<Either<Failure, List<PieChartData>>> getDailyPieChartData(String userID, String householdID);
 }

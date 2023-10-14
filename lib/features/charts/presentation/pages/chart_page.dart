@@ -27,7 +27,7 @@ class ChartPage extends StatelessWidget {
         builder: (context, state) {
           if (state is ChartInitial) {
             BlocProvider.of<ChartBloc>(context)
-                .add(GetWeeklyChartDataEvent(userId: mainUser.id, householdId: mainUser.householdId));
+                .add(GetWeeklyChartDataEvent(userID: mainUser.id, householdID: mainUser.householdID));
             return const Text("Data is loading...");
           } else if (state is ChartLoading) {
             return const Center(child: CircularProgressIndicator());
@@ -48,7 +48,7 @@ class ChartPage extends StatelessWidget {
                     ),
                     IconButton(onPressed: () {
                       BlocProvider.of<ChartBloc>(context)
-                          .add(GetWeeklyChartDataEvent(userId: mainUser.id, householdId: mainUser.householdId));
+                          .add(GetWeeklyChartDataEvent(userID: mainUser.id, householdID: mainUser.householdID));
                     }, icon: const Icon(Icons.update)),
                   ],
                 ),
@@ -93,7 +93,7 @@ class ChartPage extends StatelessWidget {
           } else if (state is ChartError) {
             return BlocErrorWidget(errorMsg: state.errorMsg, reloadAction: () {
               BlocProvider.of<ChartBloc>(context)
-                  .add(GetWeeklyChartDataEvent(userId: mainUser.id, householdId: mainUser.householdId));
+                  .add(GetWeeklyChartDataEvent(userID: mainUser.id, householdID: mainUser.householdID));
             });
           } else {
             return const Text("...");

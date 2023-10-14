@@ -15,9 +15,9 @@ class ChartsRepositoryImpl implements ChartsRepository {
   });
 
   @override
-  Future<Either<Failure, List<BarChartData>>> getWeeklyBarChartData(String userId) async {
+  Future<Either<Failure, List<BarChartData>>> getWeeklyBarChartData(String userID) async {
     try {
-      final weeklyBarChartData = await dataSource.getWeeklyBarChartData(userId);
+      final weeklyBarChartData = await dataSource.getWeeklyBarChartData(userID);
 
       int currentDayOfWeek = DateTime.now().weekday;
 
@@ -34,9 +34,9 @@ class ChartsRepositoryImpl implements ChartsRepository {
   }
 
   @override
-  Future<Either<Failure, List<PieChartData>>> getDailyPieChartData(String userId, String householdId) async {
+  Future<Either<Failure, List<PieChartData>>> getDailyPieChartData(String userID, String householdID) async {
     try {
-      return Right(await dataSource.getDailyPieChartData(userId, householdId));
+      return Right(await dataSource.getDailyPieChartData(userID, householdID));
     } on ServerException {
       return Left(ServerFailure());
     }

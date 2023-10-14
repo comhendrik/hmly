@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:household_organizer/features/household_task/presentation/bloc/household_task_bloc.dart';
 class CreateHouseholdTaskSheet extends StatefulWidget {
-  final String householdId;
+  final String householdID;
   const CreateHouseholdTaskSheet({
     super.key,
-    required this.householdId
+    required this.householdID
   });
 
 
@@ -45,7 +45,7 @@ class _CreateHouseholdTaskSheetState extends State<CreateHouseholdTaskSheet> {
 
                         padding: const EdgeInsets.all(10.0),
                         child: TaskInputWidget(onTaskAdded: (title, dueTo, pointsWorth) {
-                          createHouseholdTask(widget.householdId, title, pointsWorth, dueTo);
+                          createHouseholdTask(widget.householdID, title, pointsWorth, dueTo);
                         }),
                       )
                     ],
@@ -59,9 +59,9 @@ class _CreateHouseholdTaskSheetState extends State<CreateHouseholdTaskSheet> {
     );
   }
 
-  void createHouseholdTask(String householdId, String title, int pointsWorth, DateTime dueTo) {
+  void createHouseholdTask(String householdID, String title, int pointsWorth, DateTime dueTo) {
     BlocProvider.of<HouseholdTaskBloc>(context)
-        .add(CreateHouseholdTaskEvent(householdId: householdId, title: title, pointsWorth: pointsWorth, dueTo: dueTo));
+        .add(CreateHouseholdTaskEvent(householdID: householdID, title: title, pointsWorth: pointsWorth, dueTo: dueTo));
   }
 
 }

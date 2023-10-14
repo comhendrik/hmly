@@ -7,13 +7,13 @@ import 'widgets.dart';
 
 class TaskWidget extends StatefulWidget {
   final HouseholdTask task;
-  final String householdId;
+  final String householdID;
   final User mainUser;
 
   const TaskWidget({
     super.key,
     required this.task,
-    required this.householdId,
+    required this.householdID,
     required this.mainUser
   });
 
@@ -57,7 +57,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                   EditableTextField(
                     title: widget.task.title,
                     callback: (data) {
-                      updateTask(widget.task, {"title" : data}, widget.householdId);
+                      updateTask(widget.task, {"title" : data}, widget.householdID);
                     },
                     type: EditableTextFieldType.text,
                     style: const TextStyle(
@@ -75,7 +75,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                         callback: (data) {
                           //TODO: Error handling
                           final dueDate = DateTime.parse(data);
-                          updateTask(widget.task, {"due_to" : dueDate.toString()}, widget.householdId);
+                          updateTask(widget.task, {"due_to" : dueDate.toString()}, widget.householdID);
                         },
                         type: EditableTextFieldType.date,
                         style: const TextStyle(
@@ -91,7 +91,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                       EditableTextField(
                         title: widget.task.pointsWorth.toString(),
                         callback: (data) {
-                          updateTask(widget.task, {"points_worth" : int.parse(data)}, widget.householdId);
+                          updateTask(widget.task, {"points_worth" : int.parse(data)}, widget.householdID);
                         },
                         type: EditableTextFieldType.number,
                         style: const TextStyle(
@@ -116,7 +116,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                     ),
 
                     onPressed: () {
-                      toggleIsDoneHouseholdTask(widget.task, widget.householdId, widget.mainUser.id);
+                      toggleIsDoneHouseholdTask(widget.task, widget.householdID, widget.mainUser.id);
                     },
                   ),
                   IconButton(
@@ -140,7 +140,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                           ),
                           TextButton(
                             onPressed: () {
-                              deleteTask(widget.task.id, widget.householdId);
+                              deleteTask(widget.task.id, widget.householdID);
                               Navigator.pop(context, 'Delete');
                             },
                             child: const Text('Delete', style: TextStyle(color: Colors.red),),
@@ -158,18 +158,18 @@ class _TaskWidgetState extends State<TaskWidget> {
     );
   }
 
-  void toggleIsDoneHouseholdTask(HouseholdTask task, String householdId, String userId) {
+  void toggleIsDoneHouseholdTask(HouseholdTask task, String householdID, String userID) {
     BlocProvider.of<HouseholdTaskBloc>(context)
-        .add(ToggleIsDoneHouseholdTaskEvent(task: task, householdId: householdId, userId: userId));
+        .add(ToggleIsDoneHouseholdTaskEvent(task: task, householdID: householdID, userID: userID));
   }
-  void deleteTask(String taskId, String householdId) {
+  void deleteTask(String taskId, String householdID) {
     BlocProvider.of<HouseholdTaskBloc>(context)
-        .add(DeleteHouseholdTaskEvent(taskId: taskId,householdId: householdId));
+        .add(DeleteHouseholdTaskEvent(taskId: taskId,householdID: householdID));
   }
 
-  void updateTask(HouseholdTask task, Map<String, dynamic> updateData, String householdId) {
+  void updateTask(HouseholdTask task, Map<String, dynamic> updateData, String householdID) {
     BlocProvider.of<HouseholdTaskBloc>(context)
-        .add(UpdateHouseholdTaskEvent(task: task, updateData: updateData, householdId: householdId));
+        .add(UpdateHouseholdTaskEvent(task: task, updateData: updateData, householdID: householdID));
   }
 
 }

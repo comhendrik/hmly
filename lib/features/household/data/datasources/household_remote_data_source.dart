@@ -8,8 +8,8 @@ import 'package:pocketbase/pocketbase.dart';
 
 //TODO: Maybe put this household feature into authentication feature
 abstract class HouseholdRemoteDataSource {
-  Future<HouseholdModel> loadHousehold(String householdId);
-  Future<HouseholdModel> updateHouseholdTitle(String householdId, String title);
+  Future<HouseholdModel> loadHousehold(String householdID);
+  Future<HouseholdModel> updateHouseholdTitle(String householdID, String title);
   Future<void> deleteAuthDataFromHousehold(String userID);
 }
 
@@ -23,10 +23,10 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
   });
 
   @override
-  Future<HouseholdModel> loadHousehold(String householdId) async {
+  Future<HouseholdModel> loadHousehold(String householdID) async {
     try {
-      final result = await householdRecordService.getOne(householdId);
-      final users = await userRecordService.getFullList(filter: 'household="$householdId"');
+      final result = await householdRecordService.getOne(householdID);
+      final users = await userRecordService.getFullList(filter: 'household="$householdID"');
       List<User> userList = [];
       for (final user in users) {
         final userResult = await userRecordService.getOne(user.id);
@@ -40,13 +40,13 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
   }
 
   @override
-  Future<HouseholdModel> updateHouseholdTitle(String householdId, String householdTitle) async {
+  Future<HouseholdModel> updateHouseholdTitle(String householdID, String householdTitle) async {
     try {
       final body = <String, dynamic> {
         "title" : householdTitle,
       };
-      final result = await householdRecordService.update(householdId, body: body);
-      final users = await userRecordService.getFullList(filter: 'household="$householdId"');
+      final result = await householdRecordService.update(householdID, body: body);
+      final users = await userRecordService.getFullList(filter: 'household="$householdID"');
       List<User> userList = [];
       for (final user in users) {
         final userResult = await userRecordService.getOne(user.id);

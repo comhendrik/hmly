@@ -3,14 +3,14 @@ import 'package:equatable/equatable.dart';
 class User extends Equatable {
   final String id;
   final String username;
-  final String householdId;
+  final String householdID;
   final String email;
   final String name;
 
   const User({
     required this.id,
     required this.username,
-    required this.householdId,
+    required this.householdID,
     required this.email,
     required this.name
   });
@@ -19,13 +19,13 @@ class User extends Equatable {
     return User(
         id: id,
         username: json['username'],
-        householdId: json['household'],
+        householdID: json['household'],
         email: json['email'],
         name: json['name']
     );
   }
 
   @override
-  List<Object> get props => [id, username, householdId, email, name];
+  List<Object> get props => [id, username, householdID, email, name];
 
 }

@@ -53,7 +53,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         if (authStore.model != null) {
           RecordModel user = authStore.model;
           //TODO: Function for creating user model from json
-          emit(AuthLoaded(authData: User(id: user.id,username: user.data["username"],householdId: user.data["household"],email: user.data["email"], name: user.data["name"])));
+          emit(AuthLoaded(authData: User(id: user.id,username: user.data["username"],householdID: user.data["household"],email: user.data["email"], name: user.data["name"])));
         } else {
           emit(AuthCreate());
         }
@@ -72,17 +72,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       } else if (event is AddAuthDataToHouseholdEvent) {
         emit(AuthLoading());
-        final resultEither = await addAuthDataToHousehold.execute(event.user.id, event.householdId);
+        final resultEither = await addAuthDataToHousehold.execute(event.user.id, event.householdID);
         await resultEither.fold(
                 (failure) async {
                   if (failure.runtimeType == ServerFailure) {
                     emit(const AuthError(errorMsg: 'Server Failure'));
                   } else {
-                    emit(AuthError(errorMsg: 'Household with ${event.householdId} not found'));
+                    emit(AuthError(errorMsg: 'Household with ${event.householdID} not found'));
                   }
             },
                 (_) async {
-                  final newUser = User(id: event.user.id, username: event.user.username, householdId: event.householdId, email: event.user.email, name: event.user.name);
+                  final newUser = User(id: event.user.id, username: event.user.username, householdID: event.householdID, email: event.user.email, name: event.user.name);
                   emit(AuthLoaded(authData: newUser));
             }
         );
@@ -97,8 +97,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                 emit(AuthError(errorMsg: "Household with ${event.householdTitle} can't be created"));
               }
             },
-                (householdId) async {
-              final newUser = User(id: event.user.id, username: event.user.username, householdId: householdId, email: event.user.email, name: event.user.name);
+                (householdID) async {
+              final newUser = User(id: event.user.id, username: event.user.username, householdID: householdID, email: event.user.email, name: event.user.name);
               emit(AuthLoaded(authData: newUser));
             }
         );
@@ -110,7 +110,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               emit(const AuthError(errorMsg: 'ServerFailure'));
             },
                 (_) async {
-              final newUser = User(id: event.user.id, username: event.user.username, householdId: "", email: event.user.email, name: event.user.name);
+              final newUser = User(id: event.user.id, username: event.user.username, householdID: "", email: event.user.email, name: event.user.name);
               emit(AuthLoaded(authData: newUser));
             }
         );

@@ -13,7 +13,7 @@ void main() {
   late MockRecordService mockRecordServiceUser;
   late MockRecordService mockRecordServiceHousehold;
   late HouseholdRemoteDataSourceImpl dataSource;
-  late String householdId;
+  late String householdID;
   late String email;
   late String password;
   
@@ -21,7 +21,7 @@ void main() {
     mockRecordServiceUser = MockRecordService();
     mockRecordServiceHousehold = MockRecordService();
     //Placeholder values
-    householdId = 'id';
+    householdID = 'id';
     email = 'email';
     password = 'password';
     dataSource = HouseholdRemoteDataSourceImpl(userRecordService: mockRecordServiceUser, householdRecordService: mockRecordServiceHousehold, email: email, password: password, householdId: householdId);
