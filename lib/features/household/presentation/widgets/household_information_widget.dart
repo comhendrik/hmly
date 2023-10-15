@@ -107,15 +107,31 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
                     Row(
                       children: [
                         Text(user.name),
-                        Text(user.id),
                         if (user.id != widget.mainUser.id)
                           IconButton(
-                              onPressed: () {
-                                deleteAuthDataFromHousehold(user.id, user.householdID);
-                                setState(() {
-                                  widget.household.users.removeWhere((userToDelete) => userToDelete.id == user.id);
-                                });
-                              },
+                              onPressed: () => showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  title: const Text('Delete Warning'),
+                                  content: const Text('Do you really want to remove this user?'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: ()  => Navigator.pop(context, 'Cancel'),
+                                      child: const Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        deleteAuthDataFromHousehold(user.id, user.householdID);
+                                        setState(() {
+                                          widget.household.users.removeWhere((userToDelete) => userToDelete.id == user.id);
+                                        });
+                                        Navigator.pop(context, 'Remove');
+                                      },
+                                      child: const Text('Remove', style: TextStyle(color: Colors.red),),
+                                    ),
+                                  ],
+                                ),
+                              ),
                               icon: const Icon(Icons.delete)
                           )
                       ],
