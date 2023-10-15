@@ -108,10 +108,13 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
                       children: [
                         Text(user.name),
                         Text(user.id),
-                        if (user.id == widget.mainUser.id)
+                        if (user.id != widget.mainUser.id)
                           IconButton(
                               onPressed: () {
                                 deleteAuthDataFromHousehold(user.id, user.householdID);
+                                setState(() {
+                                  widget.household.users.removeWhere((userToDelete) => userToDelete.id == user.id);
+                                });
                               },
                               icon: const Icon(Icons.delete)
                           )

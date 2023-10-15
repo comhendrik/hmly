@@ -1,7 +1,5 @@
 import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/core/error/exceptions.dart';
-import 'package:household_organizer/core/error/failure.dart';
-import 'package:household_organizer/core/functions.dart';
 import 'package:household_organizer/core/models/user_model.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -67,7 +65,10 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<void> leaveHousehold(User user) async {
     try {
-      deleteUserFromHousehold(userRecordService, user.id);
+      final body = <String, dynamic> {
+        "household" : ""
+      };
+      final _ = await userRecordService.update(user.id, body: body);
     } catch(err) {
       print(err);
       throw ServerException();
@@ -82,7 +83,6 @@ class AuthDataSourceImpl implements AuthDataSource {
       final _ = await userRecordService.authWithPassword(email, password);
       RecordModel user = authStore.model;
       return UserModel.fromJSON(user.data, user.id);
-
     } catch (_) {
       throw ServerException();
     }

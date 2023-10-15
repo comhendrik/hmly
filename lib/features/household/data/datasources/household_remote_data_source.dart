@@ -1,5 +1,4 @@
 import 'package:household_organizer/core/error/exceptions.dart';
-import 'package:household_organizer/core/functions.dart';
 import 'package:household_organizer/features/household/data/models/household_model.dart';
 import 'package:household_organizer/core/models/user_model.dart';
 import 'package:household_organizer/core/entities/user.dart';
@@ -63,12 +62,13 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
   @override
   Future<void> deleteAuthDataFromHousehold(String userID) async {
     try {
-      deleteUserFromHousehold(userRecordService, userID);
+      final body = <String, dynamic> {
+        "household" : ""
+      };
+      final _ = await userRecordService.update(userID, body: body);
     } catch(err) {
       print(err);
       throw ServerException();
     }
   }
-
-
 }
