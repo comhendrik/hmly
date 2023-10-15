@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
 
-class HouseholdInformationCard extends StatefulWidget {
+class HouseholdInformationCardButton {
   final Function() action;
+  final Icon buttonIcon;
+  final String buttonText;
+
+  const HouseholdInformationCardButton({
+    required this.action,
+    required this.buttonIcon,
+    required this.buttonText
+  });
+}
+
+class HouseholdInformationCard extends StatefulWidget {
   final String title;
   final Widget? titleWidget;
   final Widget detailWidget;
-  final Icon buttonIcon;
-  final String buttonText;
+  final HouseholdInformationCardButton? button;
+
   const HouseholdInformationCard({
     super.key,
-    required this.action,
     required this.title,
     required this.titleWidget,
     required this.detailWidget,
-    required this.buttonIcon,
-    required this.buttonText
+    required this.button
   });
 
   @override
@@ -52,13 +61,14 @@ class _HouseholdInformationCardState extends State<HouseholdInformationCard> {
                     widget.titleWidget!,
                 ],
               ),
-              ElevatedButton.icon(
+              if(widget.button != null)
+                ElevatedButton.icon(
                   onPressed: () {
-                    widget.action();
+                    widget.button!.action();
                   },
-                  icon: widget.buttonIcon,
-                  label: Text(widget.buttonText),
-              ),
+                  icon: widget.button!.buttonIcon,
+                  label: Text(widget.button!.buttonText),
+                ),
             ],
           ),
           const SizedBox(height: 16.0),

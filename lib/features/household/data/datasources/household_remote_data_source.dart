@@ -24,14 +24,14 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
   @override
   Future<HouseholdModel> loadHousehold(String householdID) async {
     try {
-      final result = await householdRecordService.getOne(householdID);
+      final result = await householdRecordService.getOne(householdID, expand: 'admin');
       final users = await userRecordService.getFullList(filter: 'household="$householdID"');
       List<User> userList = [];
       for (final user in users) {
         final userResult = await userRecordService.getOne(user.id);
         userList.add(User.fromJSON(userResult.data, userResult.id));
       }
-      return HouseholdModel.fromJSON(result.data, result.id, userList);
+      return HouseholdModel.fromJSON(result.data, result.id, userList, result.expand['admin']!.first.data, result.expand['admin']!.first.id);
     } catch(err) {
       print(err);
       throw ServerException();
@@ -44,14 +44,15 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
       final body = <String, dynamic> {
         "title" : householdTitle,
       };
-      final result = await householdRecordService.update(householdID, body: body);
+      final result = await householdRecordService.update(householdID, body: body, expand: 'admin');
       final users = await userRecordService.getFullList(filter: 'household="$householdID"');
       List<User> userList = [];
       for (final user in users) {
         final userResult = await userRecordService.getOne(user.id);
         userList.add(UserModel.fromJSON(userResult.data, user.id));
       }
-      return HouseholdModel.fromJSON(result.data, result.id, userList);
+
+      return HouseholdModel.fromJSON(result.data, result.id, userList, result.expand['admin']!.first.data, result.expand['admin']!.first.id);
     } catch(err) {
       print(err);
       throw ServerException();

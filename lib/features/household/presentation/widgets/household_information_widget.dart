@@ -41,64 +41,90 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
       child: Column(
         children: [
           HouseholdInformationCard(
-            action: () {
-              if (_formKey.currentState!.validate()) {
-                updateHouseholdTitle(widget.household.id, titleStr);
-                Navigator.pop(context);
-              }
-            },
             title: "Household Title",
-            titleWidget: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text("Current:"),
-                Text(widget.household.title)
-              ],
-            ),
-            detailWidget: TextFormField(
-              controller: titleController,
-              decoration: const InputDecoration(
-                hintText: 'Enter title',
-                prefixIcon: Icon(Icons.home),
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) {
-                titleStr = titleController.text;
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a title';
-                }
-                if (value.length >= 15) {
-                  return 'Must be less than 15 characters.';
-                }
-                return null;
-              },
-            ),
-            buttonIcon: const Icon(Icons.update),
-            buttonText: 'Update',
+            titleWidget:
+            widget.mainUser.id == widget.household.admin.id ?
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text("Current:"),
+                  Text(widget.household.title)
+                ],
+              ) : null ,
+            detailWidget:
+            widget.mainUser.id == widget.household.admin.id ?
+              TextFormField(
+                controller: titleController,
+                decoration: const InputDecoration(
+                  hintText: 'Enter title',
+                  prefixIcon: Icon(Icons.home),
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  titleStr = titleController.text;
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a title';
+                  }
+                  if (value == widget.household.title) {
+                    return "Title can't be the same";
+                  }
+                  if (value.length >= 15) {
+                    return 'Must be less than 15 characters.';
+                  }
+                  return null;
+                },
+              ) : Text(widget.household.title),
+            button:
+            widget.mainUser.id == widget.household.admin.id ?
+              HouseholdInformationCardButton(
+                action: () {
+                  if (_formKey.currentState!.validate()) {
+                    updateHouseholdTitle(widget.household.id, titleStr);
+                    Navigator.pop(context);
+                  }
+                },
+                buttonIcon: const Icon(Icons.update),
+                buttonText: 'Update',
+              ) : null,
           ),
           const SizedBox(height: 10,),
           HouseholdInformationCard(
-              action: () {
-                Clipboard.setData(ClipboardData(text: widget.household.id))
-                  .then((value) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Copied ID: '${widget.household.id}'"))));
-              },
+            title: "Admin",
+            titleWidget: null,
+            detailWidget: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('username: ${widget.household.admin.username}'),
+                Text('ID: ${widget.household.admin.id}'),
+              ],
+            ),
+            button:
+            widget.mainUser.id == widget.household.admin.id ?
+              HouseholdInformationCardButton(
+                action: () {
+                },
+                buttonIcon: const Icon(Icons.admin_panel_settings),
+                buttonText: 'Change Admin',
+              ) : null,
+          ),
+          const SizedBox(height: 10,),
+          HouseholdInformationCard(
               title: "Household Id",
               titleWidget: null,
               detailWidget: Text(widget.household.id),
-              buttonIcon: const Icon(Icons.save),
-              buttonText: 'Copy ID'
+              button: HouseholdInformationCardButton(
+                action: () {
+                  Clipboard.setData(ClipboardData(text: widget.household.id))
+                      .then((value) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Copied ID: '${widget.household.id}'"))));
+                },
+                buttonIcon: const Icon(Icons.save),
+                buttonText: 'Copy ID',
+              ),
           ),
           const SizedBox(height: 10,),
           HouseholdInformationCard(
-              action: () async {
-                await FlutterShare.share(
-                    title: 'Invite Link',
-                    text: "I wanted to invite you to my household. Use this ID '${widget.household.id}' to join my household",
-                    linkUrl: 'https://test.com/${widget.household.id}'
-                );
-              },
               title: "User",
               titleWidget: null,
               detailWidget: Column(
@@ -107,7 +133,7 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
                     Row(
                       children: [
                         Text(user.name),
-                        if (user.id != widget.mainUser.id)
+                        if (user.id != widget.mainUser.id && widget.mainUser.id == widget.household.admin.id)
                           IconButton(
                               onPressed: () => showDialog<String>(
                                 context: context,
@@ -138,8 +164,18 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
                     )
                 ],
               ),
-              buttonIcon: const Icon(Icons.person_add),
-              buttonText: 'Invite User'
+              button: HouseholdInformationCardButton(
+                action: () async {
+                  const host = '127.0.0.1';
+                  await FlutterShare.share(
+                      title: 'Invite Link',
+                      text: "I wanted to invite you to my household. Use this ID '${widget.household.id}' to join my household",
+                      linkUrl: 'https://$host.com/${widget.household.id}'
+                  );
+                },
+                buttonIcon: const Icon(Icons.person_add),
+                buttonText: 'Invite User',
+              ),
           ),
         ],
       )
