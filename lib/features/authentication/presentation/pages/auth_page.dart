@@ -26,7 +26,7 @@ class AuthPage extends StatelessWidget {
           if (state is AuthInitial) {
             BlocProvider.of<AuthBloc>(context)
                 .add(LoadAuthEvent());
-            return const Text("Starting to laod data...");
+            return const Text("Starting to load data...");
           } else if (state is AuthLoading) {
             return Center(
               child: CustomProcessIndicator(reloadAction: () {

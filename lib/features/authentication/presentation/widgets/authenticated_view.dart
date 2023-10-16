@@ -9,7 +9,9 @@ import 'package:household_organizer/features/household_task/presentation/pages/h
 
 class AuthenticatedView extends StatefulWidget {
   final User mainUser;
-  const AuthenticatedView({super.key, required this.mainUser});
+  const AuthenticatedView({
+    super.key, required this.mainUser
+  });
 
 
   @override
@@ -81,7 +83,6 @@ class _AuthenticatedView extends State<AuthenticatedView> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  //TODO: Logout Buttons auf account_view.dart
                   const LogoutButton(),
                   ElevatedButton(onPressed: () {
                     leaveHousehold(widget.mainUser);

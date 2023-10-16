@@ -52,7 +52,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthLoading());
         if (authStore.model != null) {
           RecordModel user = authStore.model;
-          //TODO: Function for creating user model from json
           emit(AuthLoaded(authData: User(id: user.id,username: user.data["username"],householdID: user.data["household"],email: user.data["email"], name: user.data["name"])));
         } else {
           emit(AuthCreate());

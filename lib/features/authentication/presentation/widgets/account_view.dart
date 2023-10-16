@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:household_organizer/core/entities/user.dart';
+import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:household_organizer/features/household/presentation/pages/household_page.dart';
 
 class AccountView extends StatefulWidget {
@@ -21,11 +23,15 @@ class _AccountView extends State<AccountView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const Row(
+            Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.person, weight: 5.0),
-                Text(' Account Information', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+                const Icon(Icons.person, weight: 5.0),
+                const Text(' Account Information', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+                IconButton(onPressed: () {
+                  BlocProvider.of<AuthBloc>(context)
+                      .add(LoadAuthEvent());
+                }, icon: const Icon(Icons.update)),
               ],
             ),
             const SizedBox(height: 10.0),
