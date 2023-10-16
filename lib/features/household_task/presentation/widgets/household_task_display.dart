@@ -13,37 +13,31 @@ class HouseholdTaskDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (allTasks.isNotEmpty) {
-      return Column(
+    return Column(
+      children: [
+        Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                  'Current Tasks',
-                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20)
-              ),
-              CreateHouseholdTaskSheet(householdID: mainUser.householdID,),
-              Controls(householdID: mainUser.householdID,)
-            ],
-
+          const Text(
+              'Current Tasks',
+              style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20)
           ),
-          Column(
-              children: allTasks.map((task){
-                return Container(
-                  child: TaskWidget(task: task, householdID: mainUser.householdID, mainUser: mainUser,),
-                );
-              }).toList()),
+          if (allTasks.isNotEmpty)
+            CreateHouseholdTaskSheet(householdID: mainUser.householdID,),
+          Controls(householdID: mainUser.householdID,)
         ],
-      );
-    } else {
-      return Column(
-        children: [
-          const Text("There is no Task. Create a new one"),
+      ),
+      if (allTasks.isNotEmpty)
+        Column(
+          children: allTasks.map((task){
+            return TaskWidget(task: task, householdID: mainUser.householdID, mainUser: mainUser,);
+        }).toList())
+      else
+        const Text("There is no Task. Create a new one"),
+        if (allTasks.isEmpty)
           CreateHouseholdTaskSheet(householdID: mainUser.householdID,),
-        ],
-      );
-    }
+      ],
+    );
   }
 }
 
