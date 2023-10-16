@@ -1,5 +1,6 @@
 import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/core/widgets/bloc_error_widget.dart';
+import 'package:household_organizer/core/widgets/custom_process_indicator_widget.dart';
 import 'package:household_organizer/features/household_task/presentation/bloc/household_task_bloc.dart';
 import 'package:household_organizer/features/household_task/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,10 @@ class HouseholdTaskPage extends StatelessWidget {
                       .add(GetAllTasksForHouseholdEvent(householdID: mainUser.householdID));
                   return const Text("Data is loading...");
                 } else if (state is HouseholdTaskLoading) {
-                  return const CircularProgressIndicator();
+                  return CustomProcessIndicator(reloadAction: () {
+                    BlocProvider.of<HouseholdTaskBloc>(context)
+                        .add(GetAllTasksForHouseholdEvent(householdID: mainUser.householdID));
+                  });
                 } else if (state is HouseholdTaskLoaded) {
                   return HouseholdTaskDisplay(mainUser: mainUser, allTasks: state.householdTaskList);
                 } else if (state is HouseholdTaskError) {

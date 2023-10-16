@@ -1,4 +1,5 @@
 import 'package:household_organizer/core/widgets/bloc_error_widget.dart';
+import 'package:household_organizer/core/widgets/custom_process_indicator_widget.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:household_organizer/features/authentication/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -25,9 +26,14 @@ class AuthPage extends StatelessWidget {
           if (state is AuthInitial) {
             BlocProvider.of<AuthBloc>(context)
                 .add(LoadAuthEvent());
-            return const Text("Data is loading...");
+            return const Text("Starting to laod data...");
           } else if (state is AuthLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: CustomProcessIndicator(reloadAction: () {
+                BlocProvider.of<AuthBloc>(context)
+                    .add(LoadAuthEvent());
+            }),
+            );
           } else if (state is AuthLoaded) {
             return state.authData.householdID == "" ? AddAuthDataToHouseholdView(user: state.authData) : AuthenticatedView(mainUser: state.authData);
           } else if (state is AuthError) {

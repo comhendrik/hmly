@@ -1,5 +1,6 @@
 import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/core/widgets/bloc_error_widget.dart';
+import 'package:household_organizer/core/widgets/custom_process_indicator_widget.dart';
 import 'package:household_organizer/features/charts/presentation/bloc/chart_bloc.dart';
 import 'package:household_organizer/features/charts/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,14 @@ class ChartPage extends StatelessWidget {
                 .add(GetWeeklyChartDataEvent(userID: mainUser.id, householdID: mainUser.householdID));
             return const Text("Data is loading...");
           } else if (state is ChartLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+                child: CustomProcessIndicator(
+                    reloadAction: () {
+                      BlocProvider.of<ChartBloc>(context)
+                          .add(GetWeeklyChartDataEvent(userID: mainUser.id, householdID: mainUser.householdID));
+                    }
+                ),
+            );
           } else if (state is ChartLoaded) {
             return Column(
               children: [
