@@ -50,6 +50,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   Future<String> createHouseholdAndAddAuthData(String userID, String householdTitle) async {
     final body = <String, dynamic>{
       "title": householdTitle,
+      "admin": userID,
     };
     try {
       final result = await householdRecordService.create(body: body);
