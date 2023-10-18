@@ -42,7 +42,6 @@ class _CreateHouseholdTaskSheetState extends State<CreateHouseholdTaskSheet> {
                     children: <Widget>[
                       const Text("Add Task" , style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                       Padding(
-
                         padding: const EdgeInsets.all(10.0),
                         child: TaskInputWidget(onTaskAdded: (title, dueTo, pointsWorth) {
                           createHouseholdTask(widget.householdID, title, pointsWorth, dueTo);

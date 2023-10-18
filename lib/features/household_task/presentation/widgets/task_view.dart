@@ -8,6 +8,7 @@ class TaskView extends StatelessWidget {
   final List<HouseholdTask> tasks;
   final String householdID;
   final User mainUser;
+
   const TaskView({
     super.key,
     required this.tasks,

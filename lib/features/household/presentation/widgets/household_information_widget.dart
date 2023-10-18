@@ -104,35 +104,39 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
             button:
             widget.mainUser.id == widget.household.admin.id ?
               HouseholdInformationCardButton(
-                action: () => showDialog<String>(
+                action: () => showModalBottomSheet<void>(
+                  isScrollControlled: true,
                   context: context,
-                  builder: (BuildContext context) => AlertDialog(
-                    title: const Text('Warning'),
-                    content: const Text('Select a new user to make him to an admin. But watch! only the new admin can give you admin rights again'),
-                    actions: <Widget>[
-                      for (User user in widget.household.users)
-                        if (user.id != widget.household.admin.id)
-                          ElevatedButton(
-                            onPressed: () {
-                              print("pressed");
-                              setState(() {
-                                userIDFromNewAdmin = user.id;
-                              });
-                            },
-                            child: userIDFromNewAdmin == user.id ? const Text("selected"): Text(user.name),
+                  builder: (BuildContext context) {
+                    var keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+                    return AnimatedPadding(
+                      padding: EdgeInsets.only(bottom: keyboardHeight),
+                      duration: const Duration(milliseconds: 20),
+                      child: SafeArea(
+                        bottom: keyboardHeight <= 0.0,
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              for (User user in widget.household.users)
+                                if (user.id != widget.household.admin.id)
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      print("pressed");
+                                      setState(() {
+                                        userIDFromNewAdmin = user.id;
+                                      });
+                                    },
+                                    child: userIDFromNewAdmin == user.id ? const Text("selected"): Text(user.name),
+                                  ),
+                            ],
                           ),
-                      TextButton(
-                        onPressed: ()  => Navigator.pop(context, 'Cancel'),
-                        child: const Text('Cancel'),
+                        )
                       ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context, 'Change');
-                        },
-                        child: const Text('Change Admin', style: TextStyle(color: Colors.red),),
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
                 buttonIcon: const Icon(Icons.admin_panel_settings),
                 buttonText: 'Change Admin',
