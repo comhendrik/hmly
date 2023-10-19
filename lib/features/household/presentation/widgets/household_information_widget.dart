@@ -117,74 +117,59 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
                   isScrollControlled: true,
                   context: context,
                   builder: (BuildContext context) {
-                    var keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
-                    return AnimatedPadding(
-                      padding: EdgeInsets.only(bottom: keyboardHeight),
-                      duration: const Duration(milliseconds: 20),
-                      child: SafeArea(
-                        bottom: keyboardHeight <= 0.0,
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              ToggleButtons(
-                                isSelected: isSelected,
-                                onPressed: (int index) {
-                                  setState(() {
-                                    for (int buttonIndex = 0; buttonIndex < isSelected.length; buttonIndex++) {
-                                      if (buttonIndex == index) {
-                                        isSelected[buttonIndex] = !isSelected[buttonIndex];
-                                      } else {
-                                        isSelected[buttonIndex] = false;
-                                      }
-                                    }
-                                  });
-                                },
-                                children:  <Widget>[
-                                  for (User user in widget.household.users)
-                                    if (user.id != widget.household.admin.id)
-                                      Text(user.name)
-                                ],
-                              ),
-                              for (User user in widget.household.users)
-                                if (user.id != widget.household.admin.id)
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        userIDFromNewAdmin = user.id;
-                                      });
-                                    },
-                                    child: userIDFromNewAdmin == user.id ? const Text("selected"): Text(user.name),
+                    return StatefulBuilder(
+                        builder: (context, setState) {
+                          var keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+                          return AnimatedPadding(
+                            padding: EdgeInsets.only(bottom: keyboardHeight),
+                            duration: const Duration(milliseconds: 20),
+                            child: SafeArea(
+                                bottom: keyboardHeight <= 0.0,
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      for (User user in widget.household.users)
+                                        if (user.id != widget.household.admin.id)
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                userIDFromNewAdmin = user.id;
+                                              });
+                                            },
+                                            child: userIDFromNewAdmin == user.id ? const Text("selected"): Text(user.name),
+                                          ),
+                                      ElevatedButton(
+                                          onPressed: () => showDialog<String>(
+                                            context: context,
+                                            builder: (BuildContext context) => AlertDialog(
+                                              title: const Text('Warning'),
+                                              content: Text('Do you really want to give the user with the id ${userIDFromNewAdmin} your admin rights? \nYou are not able to get them back on your own.'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: ()  => Navigator.pop(context, 'Cancel'),
+                                                  child: const Text('Cancel'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    print("admin rights will be changed");
+                                                    Navigator.pop(context, 'Change');
+                                                  },
+                                                  child: const Text('Change', style: TextStyle(color: Colors.red),),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          child: const Text("Give the selected user your admin rights")
+                                      )
+                                    ],
                                   ),
-                              ElevatedButton(
-                                  onPressed: () => showDialog<String>(
-                                    context: context,
-                                    builder: (BuildContext context) => AlertDialog(
-                                      title: const Text('Warning'),
-                                      content: Text('Do you really want to give the user with the id ${userIDFromNewAdmin} your admin rights? \nYou are not able to get them back on your own.'),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: ()  => Navigator.pop(context, 'Cancel'),
-                                          child: const Text('Cancel'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            print("admin rights will be changed");
-                                            Navigator.pop(context, 'Change');
-                                          },
-                                          child: const Text('Change', style: TextStyle(color: Colors.red),),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  child: const Text("Give the selected user your admin rights")
-                              )
-                            ],
-                          ),
-                        )
-                      ),
+                                )
+                            ),
+                          );
+                        }
                     );
                   },
                 ),
