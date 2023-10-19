@@ -28,19 +28,11 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
   String titleStr = "";
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String userIDFromNewAdmin = "";
-  List<bool> isSelected = [];
 
   @override
   void initState() {
     titleController.text = widget.household.title;
     super.initState();
-    for (int i = 0; i < widget.household.users.length - 1; i++) {
-      if (i == 0) {
-        isSelected.add(true);
-      } else {
-        isSelected.add(false);
-      }
-    }
 
   }
 
