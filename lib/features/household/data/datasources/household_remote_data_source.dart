@@ -10,6 +10,7 @@ abstract class HouseholdRemoteDataSource {
   Future<HouseholdModel> loadHousehold(String householdID);
   Future<HouseholdModel> updateHouseholdTitle(String householdID, String title);
   Future<void> deleteAuthDataFromHousehold(String userID);
+  Future<HouseholdModel> updateAdmin(String householdID, String userID);
 }
 
 class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
@@ -71,5 +72,27 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
       print(err);
       throw ServerException();
     }
+  }
+
+  @override
+  Future<HouseholdModel> updateAdmin(String householdID, String userID) async {
+    try {
+      final body = <String, dynamic> {
+        "admin" : userID,
+      };
+      final result = await householdRecordService.update(householdID, body: body, expand: 'admin');
+      final users = await userRecordService.getFullList(filter: 'household="$householdID"');
+      List<User> userList = [];
+      for (final user in users) {
+        final userResult = await userRecordService.getOne(user.id);
+        userList.add(UserModel.fromJSON(userResult.data, user.id));
+      }
+
+      return HouseholdModel.fromJSON(result.data, result.id, userList, result.expand['admin']!.first.data, result.expand['admin']!.first.id);
+    } catch(err) {
+      print(err);
+      throw ServerException();
+    }
+
   }
 }

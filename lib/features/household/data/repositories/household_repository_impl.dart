@@ -41,5 +41,14 @@ class HouseholdRepositoryImpl implements HouseholdRepository {
     }
   }
 
+  @override
+  Future<Either<Failure, Household>> updateAdmin(String householdID, String userID) async {
+    try {
+      return Right(await remoteDataSource.updateAdmin(householdID, userID));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
 
 }
