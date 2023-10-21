@@ -20,6 +20,7 @@ import 'package:household_organizer/features/household/data/repositories/househo
 import 'package:household_organizer/features/household/domain/repositories/household_repository.dart';
 import 'package:household_organizer/features/household/domain/usecases/delete_auth_data_from_household.dart';
 import 'package:household_organizer/features/household/domain/usecases/load_household.dart';
+import 'package:household_organizer/features/household/domain/usecases/update_admin.dart';
 import 'package:household_organizer/features/household/domain/usecases/update_household_title.dart';
 import 'package:household_organizer/features/household/presentation/bloc/household_bloc.dart';
 import 'package:household_organizer/features/household_task/data/datasources/household_task_remote_data_source.dart';
@@ -65,7 +66,8 @@ Future<void> init() async {
         () => HouseholdBloc(
           loadHousehold: sl(),
           updateHouseholdTitle: sl(),
-          deleteAuthDataFromHousehold: sl()
+          deleteAuthDataFromHousehold: sl(),
+          updateAdmin: sl()
     ),
   );
 
@@ -102,6 +104,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => LoadHousehold(repository: sl()));
   sl.registerLazySingleton(() => UpdateHouseholdTitle(repository: sl()));
   sl.registerLazySingleton(() => DeleteAuthDataFromHousehold(repository: sl()));
+  sl.registerLazySingleton(() => UpdateAdmin(repository: sl()));
 
   sl.registerLazySingleton(() => AddAuthDataToHousehold(repository: sl()));
   sl.registerLazySingleton(() => CreateHouseholdAndAddAuthData(repository: sl()));

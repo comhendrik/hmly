@@ -80,7 +80,8 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
       final body = <String, dynamic> {
         "admin" : userID,
       };
-      final result = await householdRecordService.update(householdID, body: body, expand: 'admin');
+      final result = await householdRecordService.update(householdID, body: body);
+      final admin = await userRecordService.getOne(userID);
       final users = await userRecordService.getFullList(filter: 'household="$householdID"');
       List<User> userList = [];
       for (final user in users) {
@@ -88,7 +89,7 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
         userList.add(UserModel.fromJSON(userResult.data, user.id));
       }
 
-      return HouseholdModel.fromJSON(result.data, result.id, userList, result.expand['admin']!.first.data, result.expand['admin']!.first.id);
+      return HouseholdModel.fromJSON(result.data, result.id, userList, admin.data, admin.id);
     } catch(err) {
       print(err);
       throw ServerException();

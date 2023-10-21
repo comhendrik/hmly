@@ -146,8 +146,11 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
                                                 ),
                                                 TextButton(
                                                   onPressed: () {
-                                                    print("admin rights will be changed");
-                                                    Navigator.pop(context, 'Change');
+
+                                                   // updateAdmin(userIDFromNewAdmin, widget.household.id);
+                                                    Navigator.pop(widget.context);
+
+                                                    //Normally use this but not needed Navigator.pop(context, 'Change');
                                                   },
                                                   child: const Text('Change', style: TextStyle(color: Colors.red),),
                                                 ),
@@ -250,6 +253,11 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
   void deleteAuthDataFromHousehold(String userID, String householdID) {
     BlocProvider.of<HouseholdBloc>(widget.context)
         .add(DeleteAuthDataFromHouseholdEvent(userID: userID, householdID: householdID));
+  }
+
+  void updateAdmin(String userID, String householdID) {
+    BlocProvider.of<HouseholdBloc>(widget.context)
+        .add(UpdateAdminEvent(userID: householdID, householdID: householdID));
   }
 
 }
