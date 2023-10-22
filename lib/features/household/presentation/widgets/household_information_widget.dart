@@ -146,8 +146,7 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
                                                 ),
                                                 TextButton(
                                                   onPressed: () {
-
-                                                   // updateAdmin(userIDFromNewAdmin, widget.household.id);
+                                                   updateAdmin(widget.household.id, userIDFromNewAdmin);
 
 
                                                     //Pop context of alert
@@ -262,9 +261,9 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
         .add(DeleteAuthDataFromHouseholdEvent(userID: userID, householdID: householdID));
   }
 
-  void updateAdmin(String userID, String householdID) {
+  void updateAdmin(String householdID, String userID) {
     BlocProvider.of<HouseholdBloc>(widget.context)
-        .add(UpdateAdminEvent(userID: householdID, householdID: householdID));
+        .add(UpdateAdminEvent(householdID: householdID, userID: userID));
   }
 
 }

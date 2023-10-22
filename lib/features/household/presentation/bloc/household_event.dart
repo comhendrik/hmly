@@ -37,12 +37,13 @@ class DeleteAuthDataFromHouseholdEvent extends HouseholdEvent {
 }
 
 class UpdateAdminEvent extends HouseholdEvent {
-  final String userID;
   final String householdID;
+  final String userID;
+
 
   const UpdateAdminEvent({
-    required this.userID,
     required this.householdID,
+    required this.userID,
   });
 }
 
