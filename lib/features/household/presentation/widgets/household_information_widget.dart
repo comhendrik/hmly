@@ -28,12 +28,25 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
   String titleStr = "";
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String userIDFromNewAdmin = "";
+  List<bool> isSelected = [];
+  List<User> selectedUser = [];
+  final double heightForSheetSizedBox = 10;
 
   @override
   void initState() {
     titleController.text = widget.household.title;
     super.initState();
 
+
+    //TODO: Besseren Weg finden
+    //init list of tuples for users
+    isSelected = List<bool>.filled(widget.household.users.length - 1 , false, growable: false);
+    for (int i = 0; i < widget.household.users.length; i++) {
+      final iteratedUser = widget.household.users[i];
+      if (iteratedUser.id != widget.household.admin.id) {
+        selectedUser.add(iteratedUser);
+      }
+    }
   }
 
   @override
@@ -123,47 +136,95 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
-                                      for (User user in widget.household.users)
-                                        if (user.id != widget.household.admin.id)
+                                      SizedBox(height: heightForSheetSizedBox,),
+                                      // Row for Headline
+                                      const Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 5.0),
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.admin_panel_settings, weight: 5.0),
+                                            Text(' Change Admin', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(height: heightForSheetSizedBox,),
+                                      ToggleButtons(
+                                        isSelected: isSelected,
+                                        onPressed: (int index) {
+                                          userIDFromNewAdmin = selectedUser[index].id;
+                                          setState(() {
+                                            for (int buttonIndex = 0; buttonIndex < isSelected.length; buttonIndex++) {
+                                              if (buttonIndex == index) {
+                                                isSelected[buttonIndex] =
+                                                !isSelected[buttonIndex];
+                                              } else {
+                                                isSelected[buttonIndex] = false;
+                                              }
+                                            }
+                                          });
+
+                                        },
+                                        children:  <Widget>[
+                                          for (User user in widget.household.users)
+                                            if (user.id != widget.household.admin.id)
+                                              Padding(
+                                                padding: const EdgeInsets.all(10.0),
+                                                child: Text(user.name),
+                                              )
+                                        ],
+                                      ),
+                                      SizedBox(height: heightForSheetSizedBox,),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: [
+                                          ElevatedButton.icon(
+                                              icon: const Icon(Icons.cancel),
+                                              style: ElevatedButton.styleFrom(
+                                                  foregroundColor: Colors.white,
+                                                  backgroundColor: Colors.red,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(15)
+                                                  )
+                                              ),
+
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              label: const Text('Cancel')
+                                          ),
                                           ElevatedButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                userIDFromNewAdmin = user.id;
-                                              });
-                                            },
-                                            child: userIDFromNewAdmin == user.id ? const Text("selected"): Text(user.name),
-                                          ),
-                                      ElevatedButton(
-                                          onPressed: () => showDialog<String>(
-                                            context: context,
-                                            builder: (BuildContext alertContext) => AlertDialog(
-                                              title: const Text('Warning'),
-                                              content: Text('Do you really want to give the user with the id ${userIDFromNewAdmin} your admin rights? \nYou are not able to get them back on your own.'),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  onPressed: ()  => Navigator.pop(alertContext, 'Cancel'),
-                                                  child: const Text('Cancel'),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                   updateAdmin(widget.household.id, userIDFromNewAdmin);
+                                            onPressed: userIDFromNewAdmin == "" ? null : ()  => showDialog<String>(
+                                              context: context,
+                                              builder: (BuildContext alertContext) => AlertDialog(
+                                                title: const Text('Warning'),
+                                                content: Text('Do you really want to give the user with the id $userIDFromNewAdmin your admin rights? \nYou are not able to get them back on your own.'),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: ()  => Navigator.pop(alertContext, 'Cancel'),
+                                                    child: const Text('Cancel'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      updateAdmin(widget.household.id, userIDFromNewAdmin);
 
 
-                                                    //Pop context of alert
-                                                    Navigator.pop(alertContext);
+                                                      //Pop context of alert
+                                                      Navigator.pop(alertContext);
 
-                                                    //Pop context of sheet
-                                                    Navigator.pop(context);
+                                                      //Pop context of sheet
+                                                      Navigator.pop(context);
 
-                                                    //Pop context of HouseholdInformationWidget
-                                                    Navigator.pop(widget.context, 'Change');
-                                                  },
-                                                  child: const Text('Change', style: TextStyle(color: Colors.red),),
-                                                ),
-                                              ],
+                                                      //Pop context of HouseholdInformationWidget
+                                                      Navigator.pop(widget.context, 'Change');
+                                                    },
+                                                    child: const Text('Change', style: TextStyle(color: Colors.red),),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          child: const Text("Give the selected user your admin rights")
+                                            child: const Text("Proceed"),
+                                          )
+                                        ],
                                       )
                                     ],
                                   ),
