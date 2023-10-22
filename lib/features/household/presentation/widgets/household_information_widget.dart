@@ -136,21 +136,28 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
                                       ElevatedButton(
                                           onPressed: () => showDialog<String>(
                                             context: context,
-                                            builder: (BuildContext context) => AlertDialog(
+                                            builder: (BuildContext alertContext) => AlertDialog(
                                               title: const Text('Warning'),
                                               content: Text('Do you really want to give the user with the id ${userIDFromNewAdmin} your admin rights? \nYou are not able to get them back on your own.'),
                                               actions: <Widget>[
                                                 TextButton(
-                                                  onPressed: ()  => Navigator.pop(context, 'Cancel'),
+                                                  onPressed: ()  => Navigator.pop(alertContext, 'Cancel'),
                                                   child: const Text('Cancel'),
                                                 ),
                                                 TextButton(
                                                   onPressed: () {
 
                                                    // updateAdmin(userIDFromNewAdmin, widget.household.id);
-                                                    Navigator.pop(widget.context);
 
-                                                    //Normally use this but not needed Navigator.pop(context, 'Change');
+
+                                                    //Pop context of alert
+                                                    Navigator.pop(alertContext);
+
+                                                    //Pop context of sheet
+                                                    Navigator.pop(context);
+
+                                                    //Pop context of HouseholdInformationWidget
+                                                    Navigator.pop(widget.context, 'Change');
                                                   },
                                                   child: const Text('Change', style: TextStyle(color: Colors.red),),
                                                 ),
