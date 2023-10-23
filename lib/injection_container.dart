@@ -2,6 +2,7 @@ import 'package:household_organizer/features/authentication/data/datasources/aut
 import 'package:household_organizer/features/authentication/data/repositories/auth_repository_impl.dart';
 import 'package:household_organizer/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/add_auth_data_to_household.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/change_user_attributes.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/create_Household_And_Add_Auth_Data.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/sign_up.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/leave_household.dart';
@@ -80,6 +81,7 @@ Future<void> init() async {
           leaveHousehold: sl(),
           loadAuthDataWithOAuth: sl(),
           logout: sl(),
+          changeUserAttributes: sl(),
           authStore: store
         )
   );
@@ -113,6 +115,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => SignUp(repository: sl()));
   sl.registerLazySingleton(() => LoadAuthDataWithOAuth(repository: sl()));
   sl.registerLazySingleton(() => Logout(repository: sl()));
+  sl.registerLazySingleton(() => ChangeUserAttributes(repository: sl()));
 
   sl.registerLazySingleton(() => GetWeeklyBarChartData(repository: sl()));
   sl.registerLazySingleton(() => GetDailyPieChartData(repository: sl()));

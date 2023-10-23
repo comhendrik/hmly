@@ -78,8 +78,20 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
+
+
   @override
   void logout() async {
     dataSource.logout();
+  }
+
+
+  @override
+  Future<Either<Failure, User>> changeUserAttributes(Map<String, dynamic> data, String userID) async {
+    try {
+      return Right(await dataSource.changeUserAttributes(data, userID));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
   }
 }

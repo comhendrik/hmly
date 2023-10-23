@@ -65,6 +65,8 @@ class SignUpAuthEvent extends AuthEvent {
   });
 }
 
+
+
 class LoadAuthDataWithOAuthEvent extends AuthEvent {
 
   const LoadAuthDataWithOAuthEvent();
@@ -75,5 +77,15 @@ class LogoutEvent extends AuthEvent {
 
   const LogoutEvent();
 
+}
+
+class ChangeUserAttributesEvent extends AuthEvent {
+  final Map<String, dynamic> data;
+  final String userID;
+
+  const ChangeUserAttributesEvent({
+    required this.data,
+    required this.userID,
+  });
 }
 

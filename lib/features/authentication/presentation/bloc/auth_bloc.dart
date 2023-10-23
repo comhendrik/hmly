@@ -9,6 +9,7 @@ import 'package:household_organizer/features/authentication/domain/usecases/leav
 import 'package:household_organizer/features/authentication/domain/usecases/login.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/load_auth_data_with_o_auth.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/logout.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/change_user_attributes.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 part 'auth_event.dart';
@@ -22,6 +23,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LeaveHousehold leaveHousehold;
   final LoadAuthDataWithOAuth loadAuthDataWithOAuth;
   final Logout logout;
+  final ChangeUserAttributes changeUserAttributes;
   final AsyncAuthStore authStore;
   AuthBloc({
     required this.login,
@@ -31,6 +33,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.leaveHousehold,
     required this.loadAuthDataWithOAuth,
     required this.logout,
+    required this.changeUserAttributes,
     required this.authStore
   }) : super(AuthInitial()) {
 
@@ -128,6 +131,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthLoading());
         logout.execute();
         emit(AuthCreate());
+      } else if (event is ChangeUserAttributesEvent) {
+        emit(AuthLoading());
+        final resultEither = await changeUserAttributes.execute(event.data, event.userID);
+        await resultEither.fold(
+                (failure) async {
+              emit(const AuthError(errorMsg: "Server Failure"));
+            },
+                (auth) async {
+              emit(AuthLoaded(authData: auth));
+            }
+        );
       }
     });
   }

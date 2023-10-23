@@ -12,6 +12,7 @@ abstract class AuthDataSource {
   Future<UserModel> signUp(String email, String password,String passwordConfirm, String username, String name);
   Future<UserModel> loadAuthDataWithOAuth();
   void logout();
+  Future<UserModel> changeUserAttributes(Map<String, dynamic> data, String userID);
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -139,6 +140,17 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   void logout() async {
     authStore.clear();
+  }
+
+  @override
+  Future<UserModel> changeUserAttributes(Map<String, dynamic> data, String userID) async {
+    try {
+      final result = await userRecordService.update(userID, body: data);
+      return UserModel.fromJSON(result.data, result.id);
+    } catch(err) {
+      print(err);
+      throw ServerException();
+    }
   }
 
   void createWeeklyPoints(String userID) async {

@@ -5,9 +5,9 @@ import 'package:household_organizer/features/authentication/presentation/bloc/au
 import 'package:household_organizer/features/authentication/presentation/widgets/LogoutButton.dart';
 
 class AddAuthDataToHouseholdView extends StatefulWidget {
-  final User user;
+  final User mainUser;
 
-  const AddAuthDataToHouseholdView({super.key, required this.user});
+  const AddAuthDataToHouseholdView({super.key, required this.mainUser});
 
 
   @override
@@ -64,7 +64,7 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
                     child: ElevatedButton.icon(
                         onPressed: () {
                           if (_idFormKey.currentState!.validate()) {
-                            addAuthDataToHousehold(widget.user, householdIDStr);
+                            addAuthDataToHousehold(widget.mainUser, householdIDStr);
                           }
                         },
                         icon: const Icon(Icons.arrow_forward),
@@ -109,7 +109,7 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
                     child: ElevatedButton.icon(
                       onPressed: () {
                         if (_titleFormKey.currentState!.validate()) {
-                          createHouseholdAndAddAuthData(widget.user, householdTitleStr);
+                          createHouseholdAndAddAuthData(widget.mainUser, householdTitleStr);
                         }
                       },
                       icon: const Icon(Icons.arrow_forward),
