@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:household_organizer/features/authentication/presentation/widgets/change_user_attributes_widget.dart';
 import 'package:household_organizer/features/household/presentation/pages/household_page.dart';
 
 class AccountView extends StatefulWidget {
@@ -38,10 +39,18 @@ class _AccountView extends State<AccountView> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                _buildListTile(
-                  leadingIcon: Icons.email,
-                  title: 'Email',
-                  subtitle: widget.mainUser.email,
+                GestureDetector(
+                  onTap: () => showModalBottomSheet<void>(
+                    isScrollControlled: true,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ChangeUserAttributesWidget(type: UserChangeType.email, ancestorContext: context);
+                  }),
+                  child: _buildListTile(
+                    leadingIcon: Icons.email,
+                    title: 'Email',
+                    subtitle: widget.mainUser.email,
+                  ),
                 ),
                 _buildListTile(
                   leadingIcon: Icons.person,

@@ -128,7 +128,7 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                     decoration: const InputDecoration(
                       labelText: 'Username',
                       hintText: 'Enter your username',
-                      prefixIcon: Icon(Icons.person), // Icon for password
+                      prefixIcon: Icon(Icons.person),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -150,7 +150,7 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                     decoration: const InputDecoration(
                       labelText: 'Name',
                       hintText: 'Enter your name',
-                      prefixIcon: Icon(Icons.badge), // Icon for password
+                      prefixIcon: Icon(Icons.badge),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -177,13 +177,7 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                 icon: const Icon(Icons.arrow_forward),
                 label: Text(showLogin ? "Login" : "SignUp")
             ),
-            SignInButton(
-              Buttons.Google,
-              text: "Sign up with Google",
-              onPressed: () {
-                oAuth();
-              },
-            ),
+
             ElevatedButton(
                 onPressed: () {
                   setState(() {
@@ -192,10 +186,14 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                 },
                 child: showLogin ? const Text("No account? Register Now!") : const Text("Already registered? Login!")
             ),
-
-
-            Text("Dev widget:"),
-            const LogoutButton(),
+            const Text("Dev widget"),
+            SignInButton(
+              Buttons.Google,
+              text: "Sign up with Google",
+              onPressed: () {
+                oAuth();
+              },
+            ),
           ],
         ),
       )
