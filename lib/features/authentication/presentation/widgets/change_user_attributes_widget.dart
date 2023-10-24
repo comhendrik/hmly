@@ -20,6 +20,8 @@ class ChangeUserAttributesWidget extends StatefulWidget {
 class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget> {
 
   final TextEditingController textfieldController = TextEditingController();
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController reEnterNewPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -54,7 +56,7 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                             controller: textfieldController,
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
-                              labelText: 'test',
+                              labelText: widget.type.titleString,
                               hintText: 'test',
                               prefixIcon: Icon(widget.type.icon), // Icon for username
                             ),
@@ -65,6 +67,37 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                               print(value);
                             }
                         ),
+                        if (widget.type == UserChangeType.password)
+                          TextFormField(
+                              controller: newPasswordController,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                labelText: 'New password',
+                                hintText: 'test',
+                                prefixIcon: Icon(widget.type.icon), // Icon for username
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                              onChanged: (value) {
+                                print(value);
+                              }
+                          ),
+                          TextFormField(
+                              controller: reEnterNewPasswordController,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                labelText: 're enter new password',
+                                hintText: 'test',
+                                prefixIcon: Icon(widget.type.icon), // Icon for username
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                              onChanged: (value) {
+                                print(value);
+                              }
+                          ),
 
                       ],
                     ),
@@ -122,7 +155,7 @@ extension UserChangeTypeExtenstion on UserChangeType {
       case UserChangeType.username:
         return "Username";
       case UserChangeType. password:
-        return "Password";
+        return "Old Password";
     }
   }
 
