@@ -52,15 +52,31 @@ class _AccountView extends State<AccountView> {
                     subtitle: widget.mainUser.email,
                   ),
                 ),
-                _buildListTile(
-                  leadingIcon: Icons.person,
-                  title: 'Username',
-                  subtitle: widget.mainUser.username,
+                GestureDetector(
+                  onTap: () => showModalBottomSheet<void>(
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ChangeUserAttributesWidget(type: UserChangeType.username, ancestorContext: context);
+                      }),
+                  child: _buildListTile(
+                    leadingIcon: Icons.person,
+                    title: 'Username',
+                    subtitle: widget.mainUser.username,
+                  ),
                 ),
-                _buildListTile(
-                  leadingIcon: Icons.person,
-                  title: 'Full Name',
-                  subtitle: widget.mainUser.name,
+                GestureDetector(
+                  onTap: () => showModalBottomSheet<void>(
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ChangeUserAttributesWidget(type: UserChangeType.name, ancestorContext: context);
+                      }),
+                  child: _buildListTile(
+                    leadingIcon: Icons.person,
+                    title: 'Full Name',
+                    subtitle: widget.mainUser.name,
+                  ),
                 ),
                 _buildListTile(
                   leadingIcon: Icons.confirmation_number,
