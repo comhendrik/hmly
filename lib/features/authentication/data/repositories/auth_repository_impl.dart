@@ -4,6 +4,7 @@ import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/features/authentication/data/datasources/auth_data_source.dart';
 import 'package:household_organizer/features/authentication/domain/repositories/auth_repository.dart';
+import 'package:household_organizer/features/authentication/presentation/widgets/change_user_attributes_widget.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
 
@@ -87,9 +88,9 @@ class AuthRepositoryImpl implements AuthRepository {
 
 
   @override
-  Future<Either<Failure, User>> changeUserAttributes(Map<String, dynamic> data, String userID) async {
+  Future<Either<Failure, User>> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, String userID, UserChangeType type) async {
     try {
-      return Right(await dataSource.changeUserAttributes(data, userID));
+      return Right(await dataSource.changeUserAttributes(input, confirmationPassword, oldPassword, userID, type));
     } on ServerException {
       return Left(ServerFailure());
     }

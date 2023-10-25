@@ -88,7 +88,15 @@ class _AccountView extends State<AccountView> {
                   title: 'ID',
                   subtitle: widget.mainUser.id,
                 ),
-                HouseholdPage(mainUser: widget.mainUser)
+                HouseholdPage(mainUser: widget.mainUser),
+                TextButton(
+                    onPressed: () => showModalBottomSheet<void>(
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ChangeUserAttributesWidget(type: UserChangeType.password, mainUserID: widget.mainUser.id,  ancestorContext: widget.ancestorContext);
+                      }),
+                    child: const Text("Change password"))
               ],
             ),
           ],

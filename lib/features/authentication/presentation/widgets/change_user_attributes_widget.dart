@@ -22,8 +22,8 @@ class ChangeUserAttributesWidget extends StatefulWidget {
 class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget> {
 
   final TextEditingController textfieldController = TextEditingController();
-  final TextEditingController newPasswordController = TextEditingController();
-  final TextEditingController reEnterNewPasswordController = TextEditingController();
+  final TextEditingController confirmationPasswordController = TextEditingController();
+  final TextEditingController oldPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -44,22 +44,20 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                       mainAxisAlignment: MainAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        //Password will be added later
-                        if(widget.type != UserChangeType.password)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                            child: Row(
-                              children: [
-                                Text('Change ${widget.type.titleString}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
-                              ],
-                            ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                          child: Row(
+                            children: [
+                              Text('Change ${widget.type.titleString}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+                            ],
                           ),
+                        ),
                         TextFormField(
                             controller: textfieldController,
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
-                              labelText: widget.type.titleString,
-                              hintText: 'test',
+                              labelText: widget.type.labelText,
+                              hintText: widget.type.hintText,
                               prefixIcon: Icon(widget.type.icon), // Icon for username
                             ),
                             validator: (value) {
@@ -73,11 +71,11 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                         ),
                         if (widget.type == UserChangeType.password)
                           TextFormField(
-                              controller: newPasswordController,
+                              controller: confirmationPasswordController,
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
-                                labelText: 'New password',
-                                hintText: 'test',
+                                labelText: 're enter new password',
+                                hintText: 're enter new password',
                                 prefixIcon: Icon(widget.type.icon), // Icon for username
                               ),
                               validator: (value) {
@@ -88,11 +86,11 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                           ),
                         if (widget.type == UserChangeType.password)
                           TextFormField(
-                              controller: reEnterNewPasswordController,
+                              controller: oldPasswordController,
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
-                                labelText: 're enter new password',
-                                hintText: 'test',
+                                labelText: 'old password',
+                                hintText: 'old password',
                                 prefixIcon: Icon(widget.type.icon), // Icon for username
                               ),
                               validator: (value) {
@@ -104,7 +102,7 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                         ElevatedButton.icon(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              changeAttribute(textfieldController.text, null, null, widget.mainUserID, widget.type);
+                              changeAttribute(textfieldController.text, confirmationPasswordController.text, oldPasswordController.text, widget.mainUserID, widget.type);
                               Navigator.pop(context);
                             }
 
@@ -123,19 +121,8 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
   }
 
   void changeAttribute(String input, String? confirmationPassword, String? oldPassword, String userID, UserChangeType type, ) {
-    Map<String, dynamic> data = {type.stringKey : input};
-    //TODO: Diese sollte in der datasource geklärt werden
-    if (type == UserChangeType.password && confirmationPassword != null && oldPassword != null) {
-      data.addAll({
-        "oldPassword" : oldPassword,
-        "passwordConfirm" : confirmationPassword,
-      });
-    } else {
-      print("error with password reset");
-    }
-
     BlocProvider.of<AuthBloc>(widget.ancestorContext)
-        .add(ChangeUserAttributesEvent(data: data, userID: userID));
+        .add(ChangeUserAttributesEvent(input: input, confirmationPassword: confirmationPassword, oldPassword: oldPassword, userID: userID, type: type));
   }
 }
 
@@ -170,7 +157,33 @@ extension UserChangeTypeExtenstion on UserChangeType {
       case UserChangeType.username:
         return "Username";
       case UserChangeType. password:
-        return "Old Password";
+        return "Password";
+    }
+  }
+
+  String get labelText {
+    switch (this) {
+      case UserChangeType.email:
+        return "New E-Mail";
+      case UserChangeType.name:
+        return "New Name";
+      case UserChangeType.username:
+        return "New Username";
+      case UserChangeType. password:
+        return "New Password";
+    }
+  }
+
+  String get hintText {
+    switch (this) {
+      case UserChangeType.email:
+        return "New E-Mail";
+      case UserChangeType.name:
+        return "New Name";
+      case UserChangeType.username:
+        return "New Username";
+      case UserChangeType. password:
+        return "New Password";
     }
   }
 

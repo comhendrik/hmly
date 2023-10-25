@@ -1,6 +1,7 @@
 import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/core/models/user_model.dart';
+import 'package:household_organizer/features/authentication/presentation/widgets/change_user_attributes_widget.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -12,7 +13,7 @@ abstract class AuthDataSource {
   Future<UserModel> signUp(String email, String password,String passwordConfirm, String username, String name);
   Future<UserModel> loadAuthDataWithOAuth();
   void logout();
-  Future<UserModel> changeUserAttributes(Map<String, dynamic> data, String userID);
+  Future<UserModel> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, String userID, UserChangeType type);
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -143,11 +144,33 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<UserModel> changeUserAttributes(Map<String, dynamic> data, String userID) async {
+  Future<UserModel> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, String userID, UserChangeType type) async {
     try {
-      print(data);
-      final result = await userRecordService.update(userID, body: data);
-      return UserModel.fromJSON(result.data, result.id);
+      Map<String, dynamic> data = {};
+      switch (type) {
+        case UserChangeType.email:
+          //TODO: doesnt work properly, everything works fine, but email is not updated
+          await userRecordService.requestEmailChange("new@example.com");
+          final result = await userRecordService.getOne(userID);
+          return UserModel.fromJSON(result.data, result.id);
+        case UserChangeType.name || UserChangeType.username:
+          data.addAll({type.stringKey : input});
+          final result = await userRecordService.update(userID, body: data);
+          return UserModel.fromJSON(result.data, result.id);
+        case UserChangeType. password:
+          if (confirmationPassword == null || oldPassword == null) throw Exception("No confirmation or old password");
+          data.addAll({
+            type.stringKey : input,
+            "oldPassword" : oldPassword,
+            "passwordConfirm" : confirmationPassword,
+          });
+          final result = await userRecordService.update(userID, body: data);
+          return UserModel.fromJSON(result.data, result.id);
+
+      }
+
+
+
     } catch(err) {
       print(err);
       throw ServerException();

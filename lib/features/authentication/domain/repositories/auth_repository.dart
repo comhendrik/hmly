@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/core/error/failure.dart';
+import 'package:household_organizer/features/authentication/presentation/widgets/change_user_attributes_widget.dart';
 
 abstract class AuthRepository {
   Future<Either<Failure, void>> addAuthDataToHousehold(String userID, String householdID);
@@ -10,5 +11,5 @@ abstract class AuthRepository {
   Future<Either<Failure, User>> signUp(String email, String password, String passwordConfirm, String username, String name);
   Future<Either<Failure, User>> loadAuthDataWithOAuth();
   void logout();
-  Future<Either<Failure, User>> changeUserAttributes(Map<String, dynamic> data, String userID);
+  Future<Either<Failure, User>> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, String userID, UserChangeType type);
 }

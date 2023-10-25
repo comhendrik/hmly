@@ -10,6 +10,7 @@ import 'package:household_organizer/features/authentication/domain/usecases/logi
 import 'package:household_organizer/features/authentication/domain/usecases/load_auth_data_with_o_auth.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/logout.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/change_user_attributes.dart';
+import 'package:household_organizer/features/authentication/presentation/widgets/change_user_attributes_widget.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 part 'auth_event.dart';
@@ -133,7 +134,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthCreate());
       } else if (event is ChangeUserAttributesEvent) {
         emit(AuthLoading());
-        final resultEither = await changeUserAttributes.execute(event.data, event.userID);
+        final resultEither = await changeUserAttributes.execute(event.input, event.confirmationPassword, event.oldPassword, event.userID, event.type);
         await resultEither.fold(
                 (failure) async {
               emit(const AuthError(errorMsg: "Server Failure"));

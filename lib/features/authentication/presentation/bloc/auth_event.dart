@@ -80,12 +80,18 @@ class LogoutEvent extends AuthEvent {
 }
 
 class ChangeUserAttributesEvent extends AuthEvent {
-  final Map<String, dynamic> data;
+  final String input;
+  final String? confirmationPassword;
+  final String? oldPassword;
   final String userID;
+  final UserChangeType type;
 
   const ChangeUserAttributesEvent({
-    required this.data,
+    required this.input,
+    required this.confirmationPassword,
+    required this.oldPassword,
     required this.userID,
+    required this.type,
   });
 }
 
