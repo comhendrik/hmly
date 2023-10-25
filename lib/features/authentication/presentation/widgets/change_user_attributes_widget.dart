@@ -6,11 +6,13 @@ import 'package:household_organizer/features/authentication/presentation/bloc/au
 class ChangeUserAttributesWidget extends StatefulWidget {
   final UserChangeType type;
   final BuildContext ancestorContext;
+  final String mainUserID;
 
   const ChangeUserAttributesWidget({
     super.key,
     required this.type,
-    required this.ancestorContext
+    required this.ancestorContext,
+    required this.mainUserID,
   });
 
   @override
@@ -61,10 +63,12 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                               prefixIcon: Icon(widget.type.icon), // Icon for username
                             ),
                             validator: (value) {
+                              if (value == null || value == "") {
+                                return "Please provide a value";
+                              }
                               return null;
                             },
                             onChanged: (value) {
-                              print(value);
                             }
                         ),
                         if (widget.type == UserChangeType.password)
@@ -80,9 +84,9 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                                 return null;
                               },
                               onChanged: (value) {
-                                print(value);
                               }
                           ),
+                        if (widget.type == UserChangeType.password)
                           TextFormField(
                               controller: reEnterNewPasswordController,
                               keyboardType: TextInputType.emailAddress,
@@ -95,10 +99,19 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                                 return null;
                               },
                               onChanged: (value) {
-                                print(value);
                               }
                           ),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              changeAttribute(textfieldController.text, null, null, widget.mainUserID, widget.type);
+                              Navigator.pop(context);
+                            }
 
+                          },
+                          icon: const Icon(Icons.update),
+                          label: const Text("Update Data")
+                        ),
                       ],
                     ),
                   )
@@ -111,12 +124,14 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
 
   void changeAttribute(String input, String? confirmationPassword, String? oldPassword, String userID, UserChangeType type, ) {
     Map<String, dynamic> data = {type.stringKey : input};
-    //TODO: Password sollte weg
+    //TODO: Diese sollte in der datasource geklärt werden
     if (type == UserChangeType.password && confirmationPassword != null && oldPassword != null) {
       data.addAll({
         "oldPassword" : oldPassword,
         "passwordConfirm" : confirmationPassword,
       });
+    } else {
+      print("error with password reset");
     }
 
     BlocProvider.of<AuthBloc>(widget.ancestorContext)

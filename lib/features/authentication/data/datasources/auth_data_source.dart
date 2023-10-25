@@ -145,6 +145,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<UserModel> changeUserAttributes(Map<String, dynamic> data, String userID) async {
     try {
+      print(data);
       final result = await userRecordService.update(userID, body: data);
       return UserModel.fromJSON(result.data, result.id);
     } catch(err) {

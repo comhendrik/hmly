@@ -48,14 +48,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               const AuthError(errorMsg: 'Server Failure');
             },
             (auth) async {
-              emit(AuthLoaded(authData: auth));
+              emit(AuthLoaded(authData: auth,  startCurrentPageIndex: 0));
             }
         );
       } else if (event is LoadAuthEvent) {
         emit(AuthLoading());
         if (authStore.model != null) {
           RecordModel user = authStore.model;
-          emit(AuthLoaded(authData: User(id: user.id,username: user.data["username"],householdID: user.data["household"],email: user.data["email"], name: user.data["name"])));
+          emit(AuthLoaded(authData: User(id: user.id,username: user.data["username"],householdID: user.data["household"],email: user.data["email"], name: user.data["name"]), startCurrentPageIndex: 0));
         } else {
           emit(AuthCreate());
         }
@@ -69,7 +69,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               emit(const AuthError(errorMsg: 'Username or email is already in use'));
             },
                 (auth) async {
-              emit(AuthLoaded(authData: auth));
+              emit(AuthLoaded(authData: auth,  startCurrentPageIndex: 0));
             }
         );
       } else if (event is AddAuthDataToHouseholdEvent) {
@@ -85,7 +85,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             },
                 (_) async {
                   final newUser = User(id: event.user.id, username: event.user.username, householdID: event.householdID, email: event.user.email, name: event.user.name);
-                  emit(AuthLoaded(authData: newUser));
+                  emit(AuthLoaded(authData: newUser,  startCurrentPageIndex: 0));
             }
         );
       } else if (event is CreateHouseholdAndAddAuthDataEvent) {
@@ -101,7 +101,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             },
                 (householdID) async {
               final newUser = User(id: event.user.id, username: event.user.username, householdID: householdID, email: event.user.email, name: event.user.name);
-              emit(AuthLoaded(authData: newUser));
+              emit(AuthLoaded(authData: newUser, startCurrentPageIndex: 0));
             }
         );
       } else if (event is LeaveHouseholdEvent) {
@@ -113,7 +113,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             },
                 (_) async {
               final newUser = User(id: event.user.id, username: event.user.username, householdID: "", email: event.user.email, name: event.user.name);
-              emit(AuthLoaded(authData: newUser));
+              emit(AuthLoaded(authData: newUser, startCurrentPageIndex: 0));
             }
         );
       } else if (event is LoadAuthDataWithOAuthEvent) {
@@ -124,7 +124,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               emit(AuthError(errorMsg: "Server Failure"));
             },
                 (auth) async {
-              emit(AuthLoaded(authData: auth));
+              emit(AuthLoaded(authData: auth, startCurrentPageIndex: 0));
             }
         );
       } else if (event is LogoutEvent) {
@@ -139,7 +139,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               emit(const AuthError(errorMsg: "Server Failure"));
             },
                 (auth) async {
-              emit(AuthLoaded(authData: auth));
+              emit(AuthLoaded(authData: auth, startCurrentPageIndex: 2));
             }
         );
       }

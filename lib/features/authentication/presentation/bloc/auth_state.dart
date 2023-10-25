@@ -16,7 +16,11 @@ class AuthLoading extends AuthState {
 
 class AuthLoaded extends AuthState {
   final User authData;
-  const AuthLoaded({required this.authData});
+  final int startCurrentPageIndex;
+  const AuthLoaded({
+    required this.authData,
+    required this.startCurrentPageIndex
+  });
 
   @override
   List<Object> get props => [];

@@ -9,8 +9,11 @@ import 'package:household_organizer/features/household_task/presentation/pages/h
 
 class AuthenticatedView extends StatefulWidget {
   final User mainUser;
+  final int startCurrentPageIndex;
   const AuthenticatedView({
-    super.key, required this.mainUser
+    super.key,
+    required this.mainUser,
+    required this.startCurrentPageIndex
   });
 
 
@@ -21,6 +24,14 @@ class AuthenticatedView extends StatefulWidget {
 class _AuthenticatedView extends State<AuthenticatedView> {
 
   int currentPageIndex = 0;
+
+  @override
+  void initState() {
+    //Set start index, is needed because you load the view from different points and sometimes you want to show a specific page and not the first
+    super.initState();
+    currentPageIndex = widget.startCurrentPageIndex;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +90,7 @@ class _AuthenticatedView extends State<AuthenticatedView> {
           alignment: Alignment.center,
           child: Column(
             children: [
-              AccountView(mainUser: widget.mainUser),
+              AccountView(mainUser: widget.mainUser, ancestorContext: context,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

@@ -7,7 +7,12 @@ import 'package:household_organizer/features/household/presentation/pages/househ
 
 class AccountView extends StatefulWidget {
   final User mainUser;
-  const AccountView({super.key, required this.mainUser});
+  final BuildContext ancestorContext;
+  const AccountView({
+    super.key,
+    required this.mainUser,
+    required this.ancestorContext
+  });
 
 
   @override
@@ -44,7 +49,7 @@ class _AccountView extends State<AccountView> {
                     isScrollControlled: true,
                     context: context,
                     builder: (BuildContext context) {
-                      return ChangeUserAttributesWidget(type: UserChangeType.email, ancestorContext: context);
+                      return ChangeUserAttributesWidget(type: UserChangeType.email, mainUserID: widget.mainUser.id,  ancestorContext: widget.ancestorContext);
                   }),
                   child: _buildListTile(
                     leadingIcon: Icons.email,
@@ -57,7 +62,7 @@ class _AccountView extends State<AccountView> {
                       isScrollControlled: true,
                       context: context,
                       builder: (BuildContext context) {
-                        return ChangeUserAttributesWidget(type: UserChangeType.username, ancestorContext: context);
+                        return ChangeUserAttributesWidget(type: UserChangeType.username, mainUserID: widget.mainUser.id, ancestorContext: widget.ancestorContext);
                       }),
                   child: _buildListTile(
                     leadingIcon: Icons.person,
@@ -70,7 +75,7 @@ class _AccountView extends State<AccountView> {
                       isScrollControlled: true,
                       context: context,
                       builder: (BuildContext context) {
-                        return ChangeUserAttributesWidget(type: UserChangeType.name, ancestorContext: context);
+                        return ChangeUserAttributesWidget(type: UserChangeType.name, mainUserID: widget.mainUser.id, ancestorContext: widget.ancestorContext);
                       }),
                   child: _buildListTile(
                     leadingIcon: Icons.person,

@@ -35,7 +35,7 @@ class AuthPage extends StatelessWidget {
             }),
             );
           } else if (state is AuthLoaded) {
-            return state.authData.householdID == "" ? AddAuthDataToHouseholdView(mainUser: state.authData) : AuthenticatedView(mainUser: state.authData);
+            return state.authData.householdID == "" ? AddAuthDataToHouseholdView(mainUser: state.authData) : AuthenticatedView(mainUser: state.authData, startCurrentPageIndex: state.startCurrentPageIndex);
           } else if (state is AuthError) {
             return BlocErrorWidget(errorMsg: state.errorMsg, reloadAction: () {
               BlocProvider.of<AuthBloc>(context)
