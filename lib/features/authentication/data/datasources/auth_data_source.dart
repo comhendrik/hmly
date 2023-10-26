@@ -150,9 +150,7 @@ class AuthDataSourceImpl implements AuthDataSource {
       switch (type) {
         case UserChangeType.email:
           print(input);
-
-          await userRecordService.requestEmailChange("new@test.com");
-
+          await userRecordService.requestEmailChange(input);
           //TODO: Change this one here
           final result = await userRecordService.getOne(userID);
           return UserModel.fromJSON(result.data, result.id);

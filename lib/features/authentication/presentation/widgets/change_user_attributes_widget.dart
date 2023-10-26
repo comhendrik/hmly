@@ -77,7 +77,7 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                               controller: verificationController,
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
-                                labelText: 'Verification',
+                                labelText: 'Verify Token',
                                 hintText: 'your token from email',
                                 prefixIcon: Icon(widget.type.icon), // Icon for username
                               ),
@@ -163,7 +163,7 @@ extension UserChangeTypeExtenstion on UserChangeType {
       case UserChangeType.email:
         return "email";
       case UserChangeType.verifyEmail:
-        return "verify email";
+        return "email";
       case UserChangeType.name:
         return "name";
       case UserChangeType.username:
@@ -178,7 +178,7 @@ extension UserChangeTypeExtenstion on UserChangeType {
       case UserChangeType.email:
         return "E-Mail";
       case UserChangeType.verifyEmail:
-        return "verify email";
+        return "Verify New Email";
       case UserChangeType.name:
         return "Name";
       case UserChangeType.username:
@@ -191,9 +191,9 @@ extension UserChangeTypeExtenstion on UserChangeType {
   String get labelText {
     switch (this) {
       case UserChangeType.email:
-        return "New E-Mail";
+        return "Email";
       case UserChangeType.verifyEmail:
-        return "verify email";
+        return "Password";
       case UserChangeType.name:
         return "New Name";
       case UserChangeType.username:
@@ -208,7 +208,7 @@ extension UserChangeTypeExtenstion on UserChangeType {
       case UserChangeType.email:
         return "New E-Mail";
       case UserChangeType.verifyEmail:
-        return "verify email";
+        return "enter password";
       case UserChangeType.name:
         return "New Name";
       case UserChangeType.username:
@@ -223,7 +223,7 @@ extension UserChangeTypeExtenstion on UserChangeType {
       case UserChangeType.email:
         return Icons.email;
       case UserChangeType.verifyEmail:
-        return Icons.email;
+        return Icons.lock;
       case UserChangeType.name:
         return Icons.badge;
       case UserChangeType.username:
