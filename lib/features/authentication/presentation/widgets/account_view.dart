@@ -49,7 +49,12 @@ class _AccountView extends State<AccountView> {
                     isScrollControlled: true,
                     context: context,
                     builder: (BuildContext context) {
-                      return ChangeUserAttributesWidget(type: UserChangeType.email, mainUserID: widget.mainUser.id,  ancestorContext: widget.ancestorContext);
+                      return Column(
+                        children: [
+                          ChangeUserAttributesWidget(type: UserChangeType.email, mainUserID: widget.mainUser.id,  ancestorContext: widget.ancestorContext),
+                          ChangeUserAttributesWidget(type: UserChangeType.verifyEmail, mainUserID: widget.mainUser.id,  ancestorContext: widget.ancestorContext),
+                        ],
+                      );
                   }),
                   child: _buildListTile(
                     leadingIcon: Icons.email,

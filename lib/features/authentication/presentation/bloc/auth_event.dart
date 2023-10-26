@@ -81,6 +81,7 @@ class LogoutEvent extends AuthEvent {
 
 class ChangeUserAttributesEvent extends AuthEvent {
   final String input;
+  final String? token;
   final String? confirmationPassword;
   final String? oldPassword;
   final String userID;
@@ -88,6 +89,7 @@ class ChangeUserAttributesEvent extends AuthEvent {
 
   const ChangeUserAttributesEvent({
     required this.input,
+    required this.token,
     required this.confirmationPassword,
     required this.oldPassword,
     required this.userID,

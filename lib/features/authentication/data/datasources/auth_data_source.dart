@@ -13,7 +13,7 @@ abstract class AuthDataSource {
   Future<UserModel> signUp(String email, String password,String passwordConfirm, String username, String name);
   Future<UserModel> loadAuthDataWithOAuth();
   void logout();
-  Future<UserModel> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, String userID, UserChangeType type);
+  Future<UserModel> changeUserAttributes(String input, String? token, String? confirmationPassword, String? oldPassword, String userID, UserChangeType type);
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -144,20 +144,28 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<UserModel> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, String userID, UserChangeType type) async {
+  Future<UserModel> changeUserAttributes(String input, String? token, String? confirmationPassword, String? oldPassword, String userID, UserChangeType type) async {
     try {
       Map<String, dynamic> data = {};
       switch (type) {
         case UserChangeType.email:
-          //TODO: doesnt work properly, everything works fine, but email is not updated
-          await userRecordService.requestEmailChange("new@example.com");
+          print(input);
+
+          await userRecordService.requestEmailChange("new@test.com");
+
+          //TODO: Change this one here
+          final result = await userRecordService.getOne(userID);
+          return UserModel.fromJSON(result.data, result.id);
+        case UserChangeType.verifyEmail:
+          if (token == null) throw Exception("No email token");
+          await userRecordService.confirmEmailChange(token, input);
           final result = await userRecordService.getOne(userID);
           return UserModel.fromJSON(result.data, result.id);
         case UserChangeType.name || UserChangeType.username:
           data.addAll({type.stringKey : input});
           final result = await userRecordService.update(userID, body: data);
           return UserModel.fromJSON(result.data, result.id);
-        case UserChangeType. password:
+        case UserChangeType.password:
           if (confirmationPassword == null || oldPassword == null) throw Exception("No confirmation or old password");
           data.addAll({
             type.stringKey : input,

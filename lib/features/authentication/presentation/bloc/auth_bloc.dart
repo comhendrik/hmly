@@ -134,7 +134,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthCreate());
       } else if (event is ChangeUserAttributesEvent) {
         emit(AuthLoading());
-        final resultEither = await changeUserAttributes.execute(event.input, event.confirmationPassword, event.oldPassword, event.userID, event.type);
+        final resultEither = await changeUserAttributes.execute(event.input, event.token, event.confirmationPassword, event.oldPassword, event.userID, event.type);
         await resultEither.fold(
                 (failure) async {
               emit(const AuthError(errorMsg: "Server Failure"));

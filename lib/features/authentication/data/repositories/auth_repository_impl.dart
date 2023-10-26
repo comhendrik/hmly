@@ -88,9 +88,9 @@ class AuthRepositoryImpl implements AuthRepository {
 
 
   @override
-  Future<Either<Failure, User>> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, String userID, UserChangeType type) async {
+  Future<Either<Failure, User>> changeUserAttributes(String input, String? token, String? confirmationPassword, String? oldPassword, String userID, UserChangeType type) async {
     try {
-      return Right(await dataSource.changeUserAttributes(input, confirmationPassword, oldPassword, userID, type));
+      return Right(await dataSource.changeUserAttributes(input, token, confirmationPassword, oldPassword, userID, type));
     } on ServerException {
       return Left(ServerFailure());
     }
