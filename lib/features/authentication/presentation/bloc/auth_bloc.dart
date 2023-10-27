@@ -10,6 +10,7 @@ import 'package:household_organizer/features/authentication/domain/usecases/logi
 import 'package:household_organizer/features/authentication/domain/usecases/load_auth_data_with_o_auth.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/logout.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/change_user_attributes.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/request_new_password.dart';
 import 'package:household_organizer/features/authentication/presentation/widgets/change_user_attributes_widget.dart';
 import 'package:pocketbase/pocketbase.dart';
 
@@ -25,6 +26,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoadAuthDataWithOAuth loadAuthDataWithOAuth;
   final Logout logout;
   final ChangeUserAttributes changeUserAttributes;
+  final RequestNewPassword requestNewPassword;
   final AsyncAuthStore authStore;
   AuthBloc({
     required this.login,
@@ -35,6 +37,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.loadAuthDataWithOAuth,
     required this.logout,
     required this.changeUserAttributes,
+    required this.requestNewPassword,
     required this.authStore
   }) : super(AuthInitial()) {
 
@@ -155,6 +158,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               }
           );
         }
+      } else if (event is RequestNewPasswordEvent) {
+        await requestNewPassword.execute(event.userEmail);
       }
     });
   }

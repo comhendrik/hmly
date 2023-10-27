@@ -190,7 +190,7 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                        builder: (context) => ForgetPasswordWidget(ancestorContext: context)
+                        builder: (newContext) => ForgetPasswordWidget(ancestorContext: context)
                     ),
                   );
                 },

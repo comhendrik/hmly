@@ -97,3 +97,11 @@ class ChangeUserAttributesEvent extends AuthEvent {
   });
 }
 
+class RequestNewPasswordEvent extends AuthEvent {
+  final String userEmail;
+
+  const RequestNewPasswordEvent({
+    required this.userEmail
+  });
+}
+

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
 
 
 class ForgetPasswordWidget extends StatefulWidget {
@@ -95,7 +97,8 @@ class _AuthenticationWidget extends State<ForgetPasswordWidget> {
     );
   }
 
-  void requestPasswordReset(String email) {
-    print(email);
+  void requestPasswordReset(String userEmail) {
+    BlocProvider.of<AuthBloc>(widget.ancestorContext)
+        .add(RequestNewPasswordEvent(userEmail: userEmail));
   }
 }
