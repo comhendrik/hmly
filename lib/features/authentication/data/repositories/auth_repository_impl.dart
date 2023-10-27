@@ -95,4 +95,9 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(ServerFailure());
     }
   }
+
+  @override
+  Future<void> requestNewPassword(String userEmail) async {
+    await dataSource.requestNewPassword(userEmail);
+  }
 }

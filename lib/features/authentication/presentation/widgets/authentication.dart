@@ -196,14 +196,18 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                 },
                 child: const Text("Forget Password")
             ),
-            const Text("Dev widget"),
-            SignInButton(
-              Buttons.Google,
-              text: "Sign up with Google",
-              onPressed: () {
-                oAuth();
-              },
-            ),
+
+
+//TODO: Maket it possible to use oauth, but dont use it in first release
+//            SignInButton(
+//              Buttons.Google,
+//              text: "Sign up with Google",
+//              onPressed: () {
+//                oAuth();
+//              },
+//            ),
+
+
           ],
         ),
       )

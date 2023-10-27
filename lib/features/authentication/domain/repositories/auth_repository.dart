@@ -12,4 +12,5 @@ abstract class AuthRepository {
   Future<Either<Failure, User>> loadAuthDataWithOAuth();
   void logout();
   Future<Either<Failure, User>> changeUserAttributes(String input, String? token, String? confirmationPassword, String? oldPassword, String userID, UserChangeType type);
+  Future<void> requestNewPassword(String userEmail);
 }
