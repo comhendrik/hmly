@@ -88,20 +88,10 @@ class _AuthenticatedView extends State<AuthenticatedView> {
         ),
         Container(
           alignment: Alignment.center,
-          child: Column(
+          child: ListView(
+            padding: const EdgeInsets.all(20),
             children: [
-              AccountView(mainUser: widget.mainUser, ancestorContext: context,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const LogoutButton(),
-                  ElevatedButton(onPressed: () {
-                    leaveHousehold(widget.mainUser);
-                  },
-                      child: const Text("Change household")
-                  )
-                ],
-              )
+              AccountView(mainUser: widget.mainUser, ancestorContext: context)
             ],
           ),
         ),

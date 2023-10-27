@@ -23,91 +23,113 @@ class _AccountView extends State<AccountView> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.person, weight: 5.0),
+            const Text(' Account Information', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+            IconButton(onPressed: () {
+              BlocProvider.of<AuthBloc>(context)
+                  .add(LoadAuthEvent());
+            }, icon: const Icon(Icons.update)),
+          ],
+        ),
+        const SizedBox(height: 10.0),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.person, weight: 5.0),
-                const Text(' Account Information', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
-                IconButton(onPressed: () {
-                  BlocProvider.of<AuthBloc>(context)
-                      .add(LoadAuthEvent());
-                }, icon: const Icon(Icons.update)),
-              ],
-            ),
-            const SizedBox(height: 10.0),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () => showModalBottomSheet<void>(
-                    isScrollControlled: true,
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Wrap(
-                        children: [
-                          ChangeUserAttributesWidget(type: UserChangeType.email, mainUserID: widget.mainUser.id,  ancestorContext: widget.ancestorContext),
-                          ChangeUserAttributesWidget(type: UserChangeType.verifyEmail, mainUserID: widget.mainUser.id,  ancestorContext: widget.ancestorContext),
-                        ],
-                      );
+            GestureDetector(
+              onTap: () => showModalBottomSheet<void>(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Wrap(
+                      children: [
+                        ChangeUserAttributesWidget(type: UserChangeType.email, mainUserID: widget.mainUser.id,  ancestorContext: widget.ancestorContext),
+                        ChangeUserAttributesWidget(type: UserChangeType.verifyEmail, mainUserID: widget.mainUser.id,  ancestorContext: widget.ancestorContext),
+                      ],
+                    );
                   }),
-                  child: _buildListTile(
-                    leadingIcon: Icons.email,
-                    title: 'Email',
-                    subtitle: widget.mainUser.email,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () => showModalBottomSheet<void>(
-                      isScrollControlled: true,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return ChangeUserAttributesWidget(type: UserChangeType.username, mainUserID: widget.mainUser.id, ancestorContext: widget.ancestorContext);
-                      }),
-                  child: _buildListTile(
-                    leadingIcon: Icons.person,
-                    title: 'Username',
-                    subtitle: widget.mainUser.username,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () => showModalBottomSheet<void>(
-                      isScrollControlled: true,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return ChangeUserAttributesWidget(type: UserChangeType.name, mainUserID: widget.mainUser.id, ancestorContext: widget.ancestorContext);
-                      }),
-                  child: _buildListTile(
-                    leadingIcon: Icons.person,
-                    title: 'Full Name',
-                    subtitle: widget.mainUser.name,
-                  ),
-                ),
-                _buildListTile(
-                  leadingIcon: Icons.confirmation_number,
-                  title: 'ID',
-                  subtitle: widget.mainUser.id,
-                ),
-                HouseholdPage(mainUser: widget.mainUser),
-                TextButton(
-                    onPressed: () => showModalBottomSheet<void>(
-                      isScrollControlled: true,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return ChangeUserAttributesWidget(type: UserChangeType.password, mainUserID: widget.mainUser.id,  ancestorContext: widget.ancestorContext);
-                      }),
-                    child: const Text("Change password"))
-              ],
+              child: _buildListTile(
+                leadingIcon: Icons.email,
+                title: 'Email',
+                subtitle: widget.mainUser.email,
+              ),
+            ),
+            GestureDetector(
+              onTap: () => showModalBottomSheet<void>(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ChangeUserAttributesWidget(type: UserChangeType.username, mainUserID: widget.mainUser.id, ancestorContext: widget.ancestorContext);
+                  }),
+              child: _buildListTile(
+                leadingIcon: Icons.person,
+                title: 'Username',
+                subtitle: widget.mainUser.username,
+              ),
+            ),
+            GestureDetector(
+              onTap: () => showModalBottomSheet<void>(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ChangeUserAttributesWidget(type: UserChangeType.name, mainUserID: widget.mainUser.id, ancestorContext: widget.ancestorContext);
+                  }),
+              child: _buildListTile(
+                leadingIcon: Icons.person,
+                title: 'Full Name',
+                subtitle: widget.mainUser.name,
+              ),
+            ),
+            _buildListTile(
+              leadingIcon: Icons.confirmation_number,
+              title: 'ID',
+              subtitle: widget.mainUser.id,
+            ),
+            HouseholdPage(mainUser: widget.mainUser),
+            GestureDetector(
+              onTap: () => showModalBottomSheet<void>(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ChangeUserAttributesWidget(type: UserChangeType.password, mainUserID: widget.mainUser.id,  ancestorContext: widget.ancestorContext);
+                  }),
+              child: _buildListTile(
+                leadingIcon: Icons.lock,
+                title: 'Password',
+                subtitle: "Change Password",
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                leaveHousehold(widget.mainUser);
+              },
+              child: _buildListTile(
+                leadingIcon: Icons.house,
+                title: 'Leave Household',
+                subtitle: "Click to leave Household",
+              ),
+            ),
+            GestureDetector(
+              onTap: (){
+                logout();
+              },
+              child: _buildListTile(
+                leadingIcon: Icons.arrow_back,
+                title: 'Logout',
+                subtitle: "Click to logout",
+              ),
             ),
           ],
         ),
-      ),
+      ],
     );
+
+
   }
 
   Widget _buildListTile({
@@ -163,5 +185,15 @@ class _AccountView extends State<AccountView> {
         )
       ),
     );
+  }
+
+  void leaveHousehold(User user) {
+    BlocProvider.of<AuthBloc>(widget.ancestorContext)
+        .add(LeaveHouseholdEvent(user: user));
+  }
+
+  void logout() {
+    BlocProvider.of<AuthBloc>(widget.ancestorContext)
+        .add(LogoutEvent());
   }
 }
