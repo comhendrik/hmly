@@ -14,6 +14,7 @@ abstract class AuthDataSource {
   Future<UserModel> loadAuthDataWithOAuth();
   void logout();
   Future<UserModel> changeUserAttributes(String input, String? token, String? confirmationPassword, String? oldPassword, String userID, UserChangeType type);
+  Future<void> requestNewPassword(String userEmail);
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -149,21 +150,27 @@ class AuthDataSourceImpl implements AuthDataSource {
       Map<String, dynamic> data = {};
       switch (type) {
         case UserChangeType.email:
-          print(input);
+          await userRecordService.authWithPassword('Hendrik', '12345678');
           await userRecordService.requestEmailChange(input);
+
           //TODO: Change this one here
           final result = await userRecordService.getOne(userID);
           return UserModel.fromJSON(result.data, result.id);
         case UserChangeType.verifyEmail:
+
           if (token == null) throw Exception("No email token");
           await userRecordService.confirmEmailChange(token, input);
           final result = await userRecordService.getOne(userID);
           return UserModel.fromJSON(result.data, result.id);
+
         case UserChangeType.name || UserChangeType.username:
+
           data.addAll({type.stringKey : input});
           final result = await userRecordService.update(userID, body: data);
           return UserModel.fromJSON(result.data, result.id);
+
         case UserChangeType.password:
+
           if (confirmationPassword == null || oldPassword == null) throw Exception("No confirmation or old password");
           data.addAll({
             type.stringKey : input,
@@ -181,6 +188,11 @@ class AuthDataSourceImpl implements AuthDataSource {
       print(err);
       throw ServerException();
     }
+  }
+
+  @override
+  Future<void> requestNewPassword(String userEmail) async {
+    userRecordService.requestPasswordReset(userEmail);
   }
 
   void createWeeklyPoints(String userID) async {

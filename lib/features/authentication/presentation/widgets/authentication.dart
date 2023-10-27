@@ -186,6 +186,16 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                 },
                 child: showLogin ? const Text("No account? Register Now!") : const Text("Already registered? Login!")
             ),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => ForgetPasswordWidget(ancestorContext: context)
+                    ),
+                  );
+                },
+                child: const Text("Forget Password")
+            ),
             const Text("Dev widget"),
             SignInButton(
               Buttons.Google,

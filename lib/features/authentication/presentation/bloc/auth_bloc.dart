@@ -133,16 +133,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         logout.execute();
         emit(AuthCreate());
       } else if (event is ChangeUserAttributesEvent) {
-        emit(AuthLoading());
-        final resultEither = await changeUserAttributes.execute(event.input, event.token, event.confirmationPassword, event.oldPassword, event.userID, event.type);
-        await resultEither.fold(
-                (failure) async {
-              emit(const AuthError(errorMsg: "Server Failure"));
-            },
-                (auth) async {
-              emit(AuthLoaded(authData: auth, startCurrentPageIndex: 2));
-            }
-        );
+        if (event.type != UserChangeType.email) {
+          emit(AuthLoading());
+          final resultEither = await changeUserAttributes.execute(event.input, event.token, event.confirmationPassword, event.oldPassword, event.userID, event.type);
+          await resultEither.fold(
+                  (failure) async {
+                emit(const AuthError(errorMsg: "Server Failure"));
+              },
+                  (auth) async {
+                emit(AuthLoaded(authData: auth, startCurrentPageIndex: 2));
+              }
+          );
+        } else {
+          final resultEither = await changeUserAttributes.execute(event.input, event.token, event.confirmationPassword, event.oldPassword, event.userID, event.type);
+          await resultEither.fold(
+              (failure) async {
+                emit(const AuthError(errorMsg: "Server Failure"));
+              },
+              (auth) async {
+                emit(AuthLoaded(authData: auth, startCurrentPageIndex: 2));
+              }
+          );
+        }
       }
     });
   }

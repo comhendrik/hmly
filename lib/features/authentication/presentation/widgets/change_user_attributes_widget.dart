@@ -51,10 +51,25 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                           padding: const EdgeInsets.symmetric(horizontal: 5.0),
                           child: Row(
                             children: [
-                              Text('Change ${widget.type.titleString}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+                              Text(widget.type.titleString, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
                             ],
                           ),
                         ),
+                        if (widget.type == UserChangeType.password)
+                          TextFormField(
+                              controller: oldPasswordController,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                labelText: 'old password',
+                                hintText: 'old password',
+                                prefixIcon: Icon(widget.type.icon), // Icon for username
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                              onChanged: (value) {
+                              }
+                          ),
                         TextFormField(
                             controller: textfieldController,
                             keyboardType: TextInputType.emailAddress,
@@ -72,21 +87,6 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                             onChanged: (value) {
                             }
                         ),
-                        if (widget.type == UserChangeType.verifyEmail)
-                          TextFormField(
-                              controller: verificationController,
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: InputDecoration(
-                                labelText: 'Verify Token',
-                                hintText: 'your token from email',
-                                prefixIcon: Icon(widget.type.icon), // Icon for username
-                              ),
-                              validator: (value) {
-                                return null;
-                              },
-                              onChanged: (value) {
-                              }
-                          ),
                         if (widget.type == UserChangeType.password)
                           TextFormField(
                               controller: confirmationPasswordController,
@@ -102,13 +102,13 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                               onChanged: (value) {
                               }
                           ),
-                        if (widget.type == UserChangeType.password)
+                        if (widget.type == UserChangeType.verifyEmail)
                           TextFormField(
-                              controller: oldPasswordController,
+                              controller: verificationController,
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
-                                labelText: 'old password',
-                                hintText: 'old password',
+                                labelText: 'Verify Token',
+                                hintText: 'your token from email',
                                 prefixIcon: Icon(widget.type.icon), // Icon for username
                               ),
                               validator: (value) {
@@ -121,12 +121,14 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               changeAttribute(textfieldController.text, verificationController.text, confirmationPasswordController.text, oldPasswordController.text, widget.mainUserID, widget.type);
-                              Navigator.pop(context);
+                              if (widget.type != UserChangeType.email) {
+                                Navigator.pop(context);
+                              }
                             }
 
                           },
                           icon: const Icon(Icons.update),
-                          label: const Text("Update Data")
+                          label: Text(widget.type.buttonText)
                         ),
                       ],
                     ),
@@ -176,15 +178,15 @@ extension UserChangeTypeExtenstion on UserChangeType {
   String get titleString {
     switch (this) {
       case UserChangeType.email:
-        return "E-Mail";
+        return "Change E-Mail";
       case UserChangeType.verifyEmail:
         return "Verify New Email";
       case UserChangeType.name:
-        return "Name";
+        return "Change Name";
       case UserChangeType.username:
-        return "Username";
+        return "Change Username";
       case UserChangeType. password:
-        return "Password";
+        return "Change Password";
     }
   }
 
@@ -215,6 +217,21 @@ extension UserChangeTypeExtenstion on UserChangeType {
         return "New Username";
       case UserChangeType. password:
         return "New Password";
+    }
+  }
+
+  String get buttonText {
+    switch (this) {
+      case UserChangeType.email:
+        return "Request E-Mail Change";
+      case UserChangeType.verifyEmail:
+        return "Verify new E-Mail";
+      case UserChangeType.name:
+        return "Update Name";
+      case UserChangeType.username:
+        return "Update Username";
+      case UserChangeType. password:
+        return "Update Password";
     }
   }
 
