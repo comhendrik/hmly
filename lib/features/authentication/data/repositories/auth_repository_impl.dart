@@ -20,8 +20,6 @@ class AuthRepositoryImpl implements AuthRepository {
       return Right(await dataSource.addAuthDataToHousehold(userID, householdID));
     } on ServerException catch (e) {
       return Left(Failure(data: e.response, type: FailureType.server));
-    } on NotFoundException catch (e) {
-      return Left(Failure(data: e.response, type: FailureType.notFound));
     } on UnknownException catch (e) {
       return Left(Failure(data: e.response, type: FailureType.unknown));
     }

@@ -33,13 +33,6 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   @override
   Future<void> addAuthDataToHousehold(String userID, String householdID) async {
-    try {
-      final _ =  await householdRecordService.getOne(householdID);
-    } on ClientException catch(err) {
-      throw NotFoundException(response: err.response);
-    } catch (_) {
-      throw UnknownException();
-    }
     final body = <String, dynamic>{
       "household": householdID,
     };
