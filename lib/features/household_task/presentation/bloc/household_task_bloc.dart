@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/features/household_task/domain/entities/household_task.dart';
 import 'package:household_organizer/features/household_task/domain/usecases/create_household_task.dart';
 import 'package:household_organizer/features/household_task/domain/usecases/toggle_is_done_household_task.dart';
@@ -33,7 +34,7 @@ class HouseholdTaskBloc extends Bloc<HouseholdTaskEvent, HouseholdTaskState> {
         final resultEither = await getTasks.execute(event.householdID);
         resultEither.fold(
             (failure) async {
-              emit(const HouseholdTaskError(errorMsg: 'Server Failure'));
+              emit(HouseholdTaskError(failure: failure));
             },
             (tasks) {
               emit(HouseholdTaskLoaded(householdTaskList: tasks));
@@ -48,13 +49,13 @@ class HouseholdTaskBloc extends Bloc<HouseholdTaskEvent, HouseholdTaskState> {
         final resultEither = await createTask.execute(event.householdID, event.title, event.pointsWorth, event.dueTo);
         await resultEither.fold(
                 (failure) async {
-              emit(const HouseholdTaskError(errorMsg: 'Server Failure'));
+                  emit(HouseholdTaskError(failure: failure));
             },
                 (task) async {
               final resultEitherTasks = await getTasks.execute(event.householdID);
               await resultEitherTasks.fold(
                       (failure) async {
-                    emit(const HouseholdTaskError(errorMsg: 'Server Failure'));
+                        emit(HouseholdTaskError(failure: failure));
                   },
                       (tasks) async {
                     emit(HouseholdTaskLoaded(householdTaskList: tasks));
@@ -71,13 +72,13 @@ class HouseholdTaskBloc extends Bloc<HouseholdTaskEvent, HouseholdTaskState> {
         final resultEither = await toggleIsDoneHouseholdTask.execute(event.task, event.userID);
         await resultEither.fold(
           (failure) async {
-            emit(const HouseholdTaskError(errorMsg: 'Server Failure'));
+            emit(HouseholdTaskError(failure: failure));
           },
           (_) async {
             final resultEitherTasks = await getTasks.execute(event.householdID);
             await resultEitherTasks.fold(
                     (failure) async {
-                  emit(const HouseholdTaskError(errorMsg: 'Server Failure'));
+                      emit(HouseholdTaskError(failure: failure));
                 },
                     (tasks) async {
                   emit(HouseholdTaskLoaded(householdTaskList: tasks));
@@ -94,13 +95,13 @@ class HouseholdTaskBloc extends Bloc<HouseholdTaskEvent, HouseholdTaskState> {
         final resultEither = await deleteTask.execute(event.taskId);
         await resultEither.fold(
                 (failure) async {
-              emit(const HouseholdTaskError(errorMsg: 'Server Failure'));
+                  emit(HouseholdTaskError(failure: failure));
             },
                 (_) async {
               final resultEitherTasks = await getTasks.execute(event.householdID);
               await resultEitherTasks.fold(
                       (failure) async {
-                    emit(const HouseholdTaskError(errorMsg: 'Server Failure'));
+                        emit(HouseholdTaskError(failure: failure));
                   },
                       (tasks) async {
                     emit(HouseholdTaskLoaded(householdTaskList: tasks));
@@ -116,13 +117,13 @@ class HouseholdTaskBloc extends Bloc<HouseholdTaskEvent, HouseholdTaskState> {
         final resultEither = await updateTask.execute(event.task, event.updateData);
         await resultEither.fold(
           (failure) async {
-            emit(const HouseholdTaskError(errorMsg: 'Server Failure while updating Task'));
+            emit(HouseholdTaskError(failure: failure));
           },
           (_) async {
             final resultEitherTasks = await getTasks.execute(event.householdID);
             await resultEitherTasks.fold(
               (failure) async {
-                emit(const HouseholdTaskError(errorMsg: 'Server Failure while reloading all Tasks'));
+                emit(HouseholdTaskError(failure: failure));
               },
               (tasks) async {
                 emit(HouseholdTaskLoaded(householdTaskList: tasks));

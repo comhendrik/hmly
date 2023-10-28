@@ -19,7 +19,7 @@ class HouseholdRepositoryImpl implements HouseholdRepository {
     try {
       return Right(await remoteDataSource.loadHousehold(householdID));
     } on ServerException {
-      return Left(ServerFailure());
+      return const Left(Failure(msg: "ServerFailure", type: FailureType.server));
     }
   }
 
@@ -28,7 +28,7 @@ class HouseholdRepositoryImpl implements HouseholdRepository {
     try {
       return Right(await remoteDataSource.updateHouseholdTitle(householdID, householdTitle));
     } on ServerException {
-      return Left(ServerFailure());
+      return const Left(Failure(msg: "ServerFailure", type: FailureType.server));
     }
   }
 
@@ -37,7 +37,7 @@ class HouseholdRepositoryImpl implements HouseholdRepository {
     try {
       return Right(await remoteDataSource.deleteAuthDataFromHousehold(userID));
     } on ServerException {
-      return Left(ServerFailure());
+      return const Left(Failure(msg: "ServerFailure", type: FailureType.server));
     }
   }
 
@@ -46,7 +46,7 @@ class HouseholdRepositoryImpl implements HouseholdRepository {
     try {
       return Right(await remoteDataSource.updateAdmin(householdID, userID));
     } on ServerException {
-      return Left(ServerFailure());
+      return const Left(Failure(msg: "ServerFailure", type: FailureType.server));
     }
   }
 

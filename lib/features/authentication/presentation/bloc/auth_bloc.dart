@@ -49,7 +49,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final resultEither = await login.execute(event.email, event.password);
         await resultEither.fold(
             (failure) async {
-              const AuthError(errorMsg: 'Server Failure');
+              emit(AuthError(failure: failure));
             },
             (auth) async {
               emit(AuthLoaded(authData: auth,  startCurrentPageIndex: 0));
@@ -70,7 +70,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await resultEither.fold(
                 (failure) async {
                   //TODO: Maybe use dynamic error messages, because username that is already in use is not the only failure, for example email, idea: check error message from datasource for email and username and provide a suiting errormsg
-              emit(const AuthError(errorMsg: 'Username or email is already in use'));
+              //emit(const AuthError(errorMsg: 'Username or email is already in use'));
+                  emit(AuthError(failure: failure));
             },
                 (auth) async {
               emit(AuthLoaded(authData: auth,  startCurrentPageIndex: 0));
@@ -81,10 +82,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final resultEither = await addAuthDataToHousehold.execute(event.user.id, event.householdID);
         await resultEither.fold(
                 (failure) async {
-                  if (failure.runtimeType == ServerFailure) {
-                    emit(const AuthError(errorMsg: 'Server Failure'));
+                  if (failure.type == FailureType.server) {
+                    emit(AuthError(failure: failure));
                   } else {
-                    emit(AuthError(errorMsg: 'Household with ${event.householdID} not found'));
+                    //emit(AuthError(errorMsg: 'Household with ${event.householdID} not found'));
+                    emit(AuthError(failure: failure));
                   }
             },
                 (_) async {
@@ -97,10 +99,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final resultEither = await createHouseholdAndAddAuthData.execute(event.user.id, event.householdTitle);
         await resultEither.fold(
                 (failure) async {
-              if (failure.runtimeType == ServerFailure) {
-                emit(const AuthError(errorMsg: 'Server Failure'));
+              if (failure.type == FailureType.server) {
+                emit(AuthError(failure: failure));
               } else {
-                emit(AuthError(errorMsg: "Household with ${event.householdTitle} can't be created"));
+               // emit(AuthError(errorMsg: "Household with ${event.householdTitle} can't be created"));
+                emit(AuthError(failure: failure));
               }
             },
                 (householdID) async {
@@ -113,7 +116,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final resultEither = await leaveHousehold.execute(event.user);
         await resultEither.fold(
                 (failure) async {
-              emit(const AuthError(errorMsg: 'ServerFailure'));
+                  emit(AuthError(failure: failure));
             },
                 (_) async {
               final newUser = User(id: event.user.id, username: event.user.username, householdID: "", email: event.user.email, name: event.user.name);
@@ -125,7 +128,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final resultEither = await loadAuthDataWithOAuth.execute();
         await resultEither.fold(
                 (failure) async {
-              emit(AuthError(errorMsg: "Server Failure"));
+                  emit(AuthError(failure: failure));
             },
                 (auth) async {
               emit(AuthLoaded(authData: auth, startCurrentPageIndex: 0));
@@ -141,7 +144,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           final resultEither = await changeUserAttributes.execute(event.input, event.token, event.confirmationPassword, event.oldPassword, event.userID, event.type);
           await resultEither.fold(
                   (failure) async {
-                emit(const AuthError(errorMsg: "Server Failure"));
+                    emit(AuthError(failure: failure));
               },
                   (auth) async {
                 emit(AuthLoaded(authData: auth, startCurrentPageIndex: 2));
@@ -151,7 +154,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           final resultEither = await changeUserAttributes.execute(event.input, event.token, event.confirmationPassword, event.oldPassword, event.userID, event.type);
           await resultEither.fold(
               (failure) async {
-                emit(const AuthError(errorMsg: "Server Failure"));
+                emit(AuthError(failure: failure));
               },
               (auth) async {
                 emit(AuthLoaded(authData: auth, startCurrentPageIndex: 2));

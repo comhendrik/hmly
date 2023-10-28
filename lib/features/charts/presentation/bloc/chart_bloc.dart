@@ -1,6 +1,7 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/features/charts/domain/entities/bar_chart_data.dart';
 import 'package:household_organizer/features/charts/domain/entities/pie_chart_data.dart';
 import 'package:household_organizer/features/charts/domain/usecases/get_weekly_bar_chart_data.dart';
@@ -23,13 +24,13 @@ class ChartBloc extends Bloc<ChartEvent, ChartState> {
         final barChartResultEither = await getWeeklyBarChartData.execute(event.userID, event.householdID);
         await barChartResultEither.fold(
           (failure) async {
-            emit(const ChartError(errorMsg: 'Server Failure'));
+            emit(ChartError(failure: failure));
           },
           (barChartList) async {
             final pieChartResultEither = await getDailyPieChartData.execute(event.userID, event.householdID);
             await pieChartResultEither.fold(
                 (failure) async {
-                  emit(const ChartError(errorMsg: 'Server Failure'));
+                  emit(ChartError(failure: failure));
                 },
                 (pieChartList) async {
                   emit(ChartLoaded(barChartDataList: barChartList, pieChartDataList: pieChartList));

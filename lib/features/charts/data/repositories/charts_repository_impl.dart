@@ -29,7 +29,7 @@ class ChartsRepositoryImpl implements ChartsRepository {
 
       return Right(weeklyBarChartData);
     } on ServerException {
-      return Left(ServerFailure());
+      return const Left(Failure(msg: "ServerFailure", type: FailureType.server));
     }
   }
 
@@ -38,7 +38,7 @@ class ChartsRepositoryImpl implements ChartsRepository {
     try {
       return Right(await dataSource.getDailyPieChartData(userID, householdID));
     } on ServerException {
-      return Left(ServerFailure());
+      return const Left(Failure(msg: "ServerFailure", type: FailureType.server));
     }
   }
 }

@@ -24,8 +24,10 @@ class ChartLoaded extends ChartState {
 }
 
 class ChartError extends ChartState {
-  final String errorMsg;
-  const ChartError({required this.errorMsg});
+  final Failure failure;
+  const ChartError({
+    required this.failure
+  });
 
   @override
   List<Object> get props => [];

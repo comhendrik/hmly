@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/features/household/domain/usecases/load_household.dart';
 import 'package:household_organizer/features/household/domain/usecases/update_household_title.dart';
 import 'package:household_organizer/features/household/domain/usecases/delete_auth_data_from_household.dart';
@@ -27,7 +28,7 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
         final resultEither = await loadHousehold.execute(event.householdID);
         resultEither.fold(
                 (failure) async {
-              emit(const HouseholdError(errorMsg: 'Server Failure'));
+                  emit(HouseholdError(failure: failure));
             },
                 (household) {
               emit(HouseholdLoaded(household: household));
@@ -38,7 +39,7 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
         final resultEither = await updateHouseholdTitle.execute(event.householdID, event.householdTitle);
         resultEither.fold(
                 (failure) async {
-              emit(const HouseholdError(errorMsg: 'Server Failure'));
+                  emit(HouseholdError(failure: failure));
             },
                 (household) {
               emit(HouseholdLoaded(household: household));
@@ -49,7 +50,7 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
         final resultEither = await deleteAuthDataFromHousehold.execute(event.userID);
         resultEither.fold(
                 (failure) async {
-              emit(const HouseholdError(errorMsg: 'Server Failure'));
+                  emit(HouseholdError(failure: failure));
             },
                 (_) {
                   add(LoadHouseholdEvent(householdID: event.householdID));
@@ -60,7 +61,7 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
         final resultEither = await updateAdmin.execute(event.householdID, event.userID);
         resultEither.fold(
                 (failure) async {
-              emit(const HouseholdError(errorMsg: 'Server Failure'));
+                  emit(HouseholdError(failure: failure));
             },
                 (household) {
               emit(HouseholdLoaded(household: household));

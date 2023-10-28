@@ -19,9 +19,9 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       return Right(await dataSource.addAuthDataToHousehold(userID, householdID));
     } on ServerException {
-      return Left(ServerFailure());
+      return  Left(Failure(msg: "ServerFailure", type: FailureType.server));
     } on NotFoundException {
-      return Left(NotFoundFailure());
+      return  Left(Failure(msg: "ServerFailure", type: FailureType.notFound));
     }
   }
 
@@ -30,9 +30,9 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       return Right(await dataSource.createHouseholdAndAddAuthData(userID, householdTitle));
     } on ServerException {
-      return Left(ServerFailure());
+      return  Left(Failure(msg: "ServerFailure", type: FailureType.server));
     } on NotFoundException {
-      return Left(NotFoundFailure());
+      return  Left(Failure(msg: "ServerFailure", type: FailureType.notFound));
     }
   }
 
@@ -43,7 +43,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       return Right(await dataSource.leaveHousehold(user));
     } on ServerException {
-      return Left(ServerFailure());
+      return  Left(Failure(msg: "ServerFailure", type: FailureType.server));
     }
   }
 
@@ -55,7 +55,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       return Right(await dataSource.login(email, password));
     } on ServerException {
-      return Left(ServerFailure());
+      return  Left(Failure(msg: "ServerFailure", type: FailureType.server));
     }
   }
 
@@ -64,7 +64,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       return Right(await dataSource.signUp(email, password, passwordConfirm, username, name));
     } on ServerException {
-      return Left(ServerFailure());
+      return  Left(Failure(msg: "ServerFailure", type: FailureType.server));
     }
   }
 
@@ -73,9 +73,9 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       return Right(await dataSource.loadAuthDataWithOAuth());
     } on CacheException {
-      return Left(CacheFailure());
+      return  Left(Failure(msg: "ServerFailure", type: FailureType.cache));
     } on ServerException {
-      return Left(ServerFailure());
+      return  Left(Failure(msg: "ServerFailure", type: FailureType.server));
     }
   }
 
@@ -92,7 +92,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       return Right(await dataSource.changeUserAttributes(input, token, confirmationPassword, oldPassword, userID, type));
     } on ServerException {
-      return Left(ServerFailure());
+      return const Left(Failure(msg: "ServerFailure", type: FailureType.server));
     }
   }
 

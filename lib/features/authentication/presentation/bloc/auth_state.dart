@@ -32,8 +32,10 @@ class AuthCreate extends AuthState {
 }
 
 class AuthError extends AuthState {
-  final String errorMsg;
-  const AuthError({required this.errorMsg});
+  final Failure failure;
+  const AuthError({
+    required this.failure
+  });
 
   @override
   List<Object> get props => [];

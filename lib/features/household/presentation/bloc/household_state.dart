@@ -24,8 +24,10 @@ class HouseholdLoaded extends HouseholdState {
 }
 
 class HouseholdError extends HouseholdState {
-  final String errorMsg;
-  const HouseholdError({required this.errorMsg});
+  final Failure failure;
+  const HouseholdError({
+    required this.failure
+  });
 
   @override
   List<Object> get props => [];

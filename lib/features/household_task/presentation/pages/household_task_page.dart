@@ -40,7 +40,7 @@ class HouseholdTaskPage extends StatelessWidget {
                 } else if (state is HouseholdTaskLoaded) {
                   return HouseholdTaskDisplay(mainUser: mainUser, allTasks: state.householdTaskList);
                 } else if (state is HouseholdTaskError) {
-                  return BlocErrorWidget(errorMsg: state.errorMsg, reloadAction: () {
+                  return BlocErrorWidget(failure: state.failure, reloadAction: () {
                     BlocProvider.of<HouseholdTaskBloc>(context)
                         .add(GetAllTasksForHouseholdEvent(householdID: mainUser.householdID));
                   });

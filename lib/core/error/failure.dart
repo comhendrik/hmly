@@ -1,12 +1,33 @@
 import 'package:equatable/equatable.dart';
 
-abstract class Failure extends Equatable {
+class Failure extends Equatable {
+  final String msg;
+  final FailureType type;
+
+  const Failure({
+    required this.msg,
+    required this.type,
+  });
+
   @override
-  List<Object> get props => [];
+  List<Object> get props => [msg];
 }
 
-//General Failure
-class ServerFailure extends Failure {}
-class CacheFailure extends Failure {}
-class OnlineFailure extends Failure {}
-class NotFoundFailure extends Failure {}
+enum FailureType {
+  server,
+  cache,
+  notFound
+}
+
+extension FailureTypeExtension on FailureType {
+  String get title {
+    switch (this) {
+      case FailureType.server:
+        return "Server Failure";
+      case FailureType.cache:
+        return "Cache Failure";
+      case FailureType.notFound:
+        return "Not Found Failure";
+    }
+  }
+}

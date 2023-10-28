@@ -41,7 +41,7 @@ class HouseholdPage extends StatelessWidget {
               } else if (state is HouseholdLoaded) {
                 return HouseholdWidget(household: state.household, mainUser: mainUser,context: context,);
               } else if (state is HouseholdError) {
-                return BlocErrorWidget(errorMsg: state.errorMsg, reloadAction: () {
+                return BlocErrorWidget(failure: state.failure, reloadAction: () {
                   BlocProvider.of<HouseholdBloc>(context)
                       .add(LoadHouseholdEvent(householdID: mainUser.householdID));
                 });

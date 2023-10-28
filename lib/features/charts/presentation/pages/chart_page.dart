@@ -99,7 +99,7 @@ class ChartPage extends StatelessWidget {
               ],
             );
           } else if (state is ChartError) {
-            return BlocErrorWidget(errorMsg: state.errorMsg, reloadAction: () {
+            return BlocErrorWidget(failure: state.failure, reloadAction: () {
               BlocProvider.of<ChartBloc>(context)
                   .add(GetWeeklyChartDataEvent(userID: mainUser.id, householdID: mainUser.householdID));
             });
