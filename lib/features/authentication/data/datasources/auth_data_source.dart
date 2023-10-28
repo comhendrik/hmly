@@ -35,17 +35,20 @@ class AuthDataSourceImpl implements AuthDataSource {
   Future<void> addAuthDataToHousehold(String userID, String householdID) async {
     try {
       final _ =  await householdRecordService.getOne(householdID);
-    } catch(err) {
-      throw NotFoundException();
+    } on ClientException catch(err) {
+      throw NotFoundException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
     }
     final body = <String, dynamic>{
       "household": householdID,
     };
     try {
       final _ = await userRecordService.update(userID, body: body);
-    } catch(err) {
-      print(err);
-      throw ServerException();
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
     }
   }
 
@@ -59,9 +62,10 @@ class AuthDataSourceImpl implements AuthDataSource {
       final result = await householdRecordService.create(body: body);
       await addAuthDataToHousehold(userID, result.id);
       return result.id;
-    } catch(err) {
-      print(err);
-      throw ServerException();
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
     }
 
   }
@@ -73,9 +77,10 @@ class AuthDataSourceImpl implements AuthDataSource {
         "household" : ""
       };
       final _ = await userRecordService.update(user.id, body: body);
-    } catch(err) {
-      print(err);
-      throw ServerException();
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
     }
   }
 
@@ -87,8 +92,10 @@ class AuthDataSourceImpl implements AuthDataSource {
       final _ = await userRecordService.authWithPassword(email, password);
       RecordModel user = authStore.model;
       return UserModel.fromJSON(user.data, user.id);
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
     } catch (_) {
-      throw ServerException();
+      throw UnknownException();
     }
   }
 
@@ -107,9 +114,10 @@ class AuthDataSourceImpl implements AuthDataSource {
       createWeeklyPoints(record.id);
       login(email, password);
       return UserModel.fromJSON(record.data, record.id);
-    } catch(err) {
-      print(err);
-      throw ServerException();
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
     }
   }
 
@@ -133,9 +141,10 @@ class AuthDataSourceImpl implements AuthDataSource {
       //createWeeklyPoints(user.id);
       return UserModel.fromJSON(user.data, user.id);
 
-    } catch (err) {
-      print(err);
-      throw ServerException();
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
     }
   }
 
@@ -179,14 +188,11 @@ class AuthDataSourceImpl implements AuthDataSource {
           });
           final result = await userRecordService.update(userID, body: data);
           return UserModel.fromJSON(result.data, result.id);
-
       }
-
-
-
-    } catch(err) {
-      print(err);
-      throw ServerException();
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
     }
   }
 

@@ -1,22 +1,23 @@
 import 'package:equatable/equatable.dart';
 
 class Failure extends Equatable {
-  final String msg;
+  final Map<String, dynamic> data;
   final FailureType type;
 
   const Failure({
-    required this.msg,
+    required this.data,
     required this.type,
   });
 
   @override
-  List<Object> get props => [msg];
+  List<Object> get props => [data, type];
 }
 
 enum FailureType {
   server,
   cache,
-  notFound
+  notFound,
+  unknown
 }
 
 extension FailureTypeExtension on FailureType {
@@ -28,6 +29,8 @@ extension FailureTypeExtension on FailureType {
         return "Cache Failure";
       case FailureType.notFound:
         return "Not Found Failure";
+      case FailureType.unknown:
+        return "Unknown Failure";
     }
   }
 }

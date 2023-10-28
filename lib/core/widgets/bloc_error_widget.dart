@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/core/error/failure.dart';
 
 class BlocErrorWidget extends StatelessWidget {
@@ -18,7 +19,8 @@ class BlocErrorWidget extends StatelessWidget {
       child: Column(
         children: [
           Text(failure.type.title),
-          Text(failure.msg),
+          Text(failure.data['code'].toString()),
+          Text(failure.data['message']),
           ElevatedButton(onPressed: () {
             reloadAction();
           }, child: const Text("Try again"))

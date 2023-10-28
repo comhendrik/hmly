@@ -18,8 +18,10 @@ class HouseholdRepositoryImpl implements HouseholdRepository {
   Future<Either<Failure, Household>> loadHousehold(String householdID) async {
     try {
       return Right(await remoteDataSource.loadHousehold(householdID));
-    } on ServerException {
-      return const Left(Failure(msg: "ServerFailure", type: FailureType.server));
+    } on ServerException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.server));
+    } on UnknownException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.unknown));
     }
   }
 
@@ -27,8 +29,10 @@ class HouseholdRepositoryImpl implements HouseholdRepository {
   Future<Either<Failure, Household>> updateHouseholdTitle(String householdID, String householdTitle) async {
     try {
       return Right(await remoteDataSource.updateHouseholdTitle(householdID, householdTitle));
-    } on ServerException {
-      return const Left(Failure(msg: "ServerFailure", type: FailureType.server));
+    } on ServerException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.server));
+    } on UnknownException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.unknown));
     }
   }
 
@@ -36,8 +40,10 @@ class HouseholdRepositoryImpl implements HouseholdRepository {
   Future<Either<Failure, void>> deleteAuthDataFromHousehold(String userID) async {
     try {
       return Right(await remoteDataSource.deleteAuthDataFromHousehold(userID));
-    } on ServerException {
-      return const Left(Failure(msg: "ServerFailure", type: FailureType.server));
+    } on ServerException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.server));
+    } on UnknownException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.unknown));
     }
   }
 
@@ -45,8 +51,10 @@ class HouseholdRepositoryImpl implements HouseholdRepository {
   Future<Either<Failure, Household>> updateAdmin(String householdID, String userID) async {
     try {
       return Right(await remoteDataSource.updateAdmin(householdID, userID));
-    } on ServerException {
-      return const Left(Failure(msg: "ServerFailure", type: FailureType.server));
+    } on ServerException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.server));
+    } on UnknownException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.unknown));
     }
   }
 

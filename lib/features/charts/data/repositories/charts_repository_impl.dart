@@ -28,8 +28,10 @@ class ChartsRepositoryImpl implements ChartsRepository {
       }
 
       return Right(weeklyBarChartData);
-    } on ServerException {
-      return const Left(Failure(msg: "ServerFailure", type: FailureType.server));
+    } on ServerException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.server));
+    } on UnknownException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.unknown));
     }
   }
 
@@ -37,8 +39,10 @@ class ChartsRepositoryImpl implements ChartsRepository {
   Future<Either<Failure, List<PieChartData>>> getDailyPieChartData(String userID, String householdID) async {
     try {
       return Right(await dataSource.getDailyPieChartData(userID, householdID));
-    } on ServerException {
-      return const Left(Failure(msg: "ServerFailure", type: FailureType.server));
+    } on ServerException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.server));
+    } on UnknownException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.unknown));
     }
   }
 }

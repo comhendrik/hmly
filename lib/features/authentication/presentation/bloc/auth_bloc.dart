@@ -82,12 +82,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final resultEither = await addAuthDataToHousehold.execute(event.user.id, event.householdID);
         await resultEither.fold(
                 (failure) async {
-                  if (failure.type == FailureType.server) {
-                    emit(AuthError(failure: failure));
-                  } else {
-                    //emit(AuthError(errorMsg: 'Household with ${event.householdID} not found'));
-                    emit(AuthError(failure: failure));
-                  }
+                  AuthError(failure: failure);
             },
                 (_) async {
                   final newUser = User(id: event.user.id, username: event.user.username, householdID: event.householdID, email: event.user.email, name: event.user.name);
@@ -99,12 +94,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final resultEither = await createHouseholdAndAddAuthData.execute(event.user.id, event.householdTitle);
         await resultEither.fold(
                 (failure) async {
-              if (failure.type == FailureType.server) {
-                emit(AuthError(failure: failure));
-              } else {
-               // emit(AuthError(errorMsg: "Household with ${event.householdTitle} can't be created"));
-                emit(AuthError(failure: failure));
-              }
+                  AuthError(failure: failure);
             },
                 (householdID) async {
               final newUser = User(id: event.user.id, username: event.user.username, householdID: householdID, email: event.user.email, name: event.user.name);

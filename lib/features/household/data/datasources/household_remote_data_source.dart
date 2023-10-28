@@ -33,9 +33,10 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
         userList.add(User.fromJSON(userResult.data, userResult.id));
       }
       return HouseholdModel.fromJSON(result.data, result.id, userList, result.expand['admin']!.first.data, result.expand['admin']!.first.id);
-    } catch(err) {
-      print(err);
-      throw ServerException();
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
     }
   }
 
@@ -54,9 +55,10 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
       }
 
       return HouseholdModel.fromJSON(result.data, result.id, userList, result.expand['admin']!.first.data, result.expand['admin']!.first.id);
-    } catch(err) {
-      print(err);
-      throw ServerException();
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
     }
 
   }
@@ -68,9 +70,10 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
         "household" : ""
       };
       final _ = await userRecordService.update(userID, body: body);
-    } catch(err) {
-      print(err);
-      throw ServerException();
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
     }
   }
 
@@ -90,10 +93,10 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
       }
 
       return HouseholdModel.fromJSON(result.data, result.id, userList, admin.data, admin.id);
-    } catch(err) {
-      print(err);
-      throw ServerException();
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
     }
-
   }
 }

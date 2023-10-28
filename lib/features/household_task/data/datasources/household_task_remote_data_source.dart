@@ -1,9 +1,9 @@
-import 'package:dartz/dartz.dart';
 import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/features/household_task/data/models/household_task_model.dart';
 import 'package:household_organizer/features/household_task/domain/entities/household_task.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:household_organizer/core/entities/user.dart';
+
+
 abstract class HouseholdTaskRemoteDataSource {
   Future<List<HouseholdTask>> getAllTaskForHousehold(String householdID);
   Future<HouseholdTask> createHouseholdTask(String householdID, String title, int pointsWorth, String dueTo);
@@ -33,9 +33,10 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
         householdTaskModelList.add(HouseholdTaskModel.fromJSON(task.data, task.id));
       }
       return householdTaskModelList;
-    } catch(err) {
-      print(err);
-      throw ServerException();
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
     }
 
   }
@@ -51,9 +52,10 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
     try {
       final record = await taskRecordService.create(body: body);
       return HouseholdTaskModel.fromJSON(record.data, record.id);
-    } catch(err) {
-      print(err);
-      throw ServerException();
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
     }
 
   }
@@ -64,7 +66,7 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
       "isDone": !task.isDone
     };
     try {
-      final record = await taskRecordService.update(task.id, body: taskBody);
+      final _ = await taskRecordService.update(task.id, body: taskBody);
       String operator = '+';
 
       //task.isDone is static which is why this will be executed, when you undo the task
@@ -76,10 +78,11 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
       };
       int currentDayOfWeek = DateTime.now().weekday;
       final pointToUpdate = await pointRecordService.getFirstListItem('day_number=$currentDayOfWeek && user="$userID"');
-      final _ = await pointRecordService.update(pointToUpdate.id, body: pointBody);
-    } catch(err) {
-      print(err);
-      throw ServerException();
+      final result = await pointRecordService.update(pointToUpdate.id, body: pointBody);
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
     }
 
   }
@@ -87,10 +90,11 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
   @override
   Future<void> deleteHouseholdTask(String taskId) async {
     try {
-      final record = await taskRecordService.delete(taskId);
-    } catch(err) {
-      print(err);
-      throw ServerException();
+      final _ = await taskRecordService.delete(taskId);
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
     }
 
   }
@@ -99,9 +103,10 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
   Future<void> updateHouseholdTask(HouseholdTask task, Map<String, dynamic> updateData) async {
     try {
       final _ = await taskRecordService.update(task.id, body: updateData);
-    } catch(err) {
-      print(err);
-      throw ServerException();
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
     }
 
   }

@@ -18,10 +18,12 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, void>> addAuthDataToHousehold(String userID, String householdID) async {
     try {
       return Right(await dataSource.addAuthDataToHousehold(userID, householdID));
-    } on ServerException {
-      return  Left(Failure(msg: "ServerFailure", type: FailureType.server));
-    } on NotFoundException {
-      return  Left(Failure(msg: "ServerFailure", type: FailureType.notFound));
+    } on ServerException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.server));
+    } on NotFoundException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.notFound));
+    } on UnknownException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.unknown));
     }
   }
 
@@ -29,10 +31,12 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, String>> createHouseholdAndAddAuthData(String userID, String householdTitle) async {
     try {
       return Right(await dataSource.createHouseholdAndAddAuthData(userID, householdTitle));
-    } on ServerException {
-      return  Left(Failure(msg: "ServerFailure", type: FailureType.server));
-    } on NotFoundException {
-      return  Left(Failure(msg: "ServerFailure", type: FailureType.notFound));
+    } on ServerException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.server));
+    } on NotFoundException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.notFound));
+    } on UnknownException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.unknown));
     }
   }
 
@@ -42,8 +46,10 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, void>> leaveHousehold(User user) async {
     try {
       return Right(await dataSource.leaveHousehold(user));
-    } on ServerException {
-      return  Left(Failure(msg: "ServerFailure", type: FailureType.server));
+    } on ServerException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.server));
+    } on UnknownException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.unknown));
     }
   }
 
@@ -54,8 +60,10 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, User>> login(String email, String password) async {
     try {
       return Right(await dataSource.login(email, password));
-    } on ServerException {
-      return  Left(Failure(msg: "ServerFailure", type: FailureType.server));
+    } on ServerException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.server));
+    } on UnknownException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.unknown));
     }
   }
 
@@ -63,8 +71,10 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, User>> signUp(String email, String password, String passwordConfirm, String username, String name) async {
     try {
       return Right(await dataSource.signUp(email, password, passwordConfirm, username, name));
-    } on ServerException {
-      return  Left(Failure(msg: "ServerFailure", type: FailureType.server));
+    } on ServerException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.server));
+    } on UnknownException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.unknown));
     }
   }
 
@@ -72,10 +82,10 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, User>> loadAuthDataWithOAuth() async {
     try {
       return Right(await dataSource.loadAuthDataWithOAuth());
-    } on CacheException {
-      return  Left(Failure(msg: "ServerFailure", type: FailureType.cache));
-    } on ServerException {
-      return  Left(Failure(msg: "ServerFailure", type: FailureType.server));
+    } on ServerException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.server));
+    } on UnknownException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.unknown));
     }
   }
 
@@ -91,8 +101,10 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, User>> changeUserAttributes(String input, String? token, String? confirmationPassword, String? oldPassword, String userID, UserChangeType type) async {
     try {
       return Right(await dataSource.changeUserAttributes(input, token, confirmationPassword, oldPassword, userID, type));
-    } on ServerException {
-      return const Left(Failure(msg: "ServerFailure", type: FailureType.server));
+    } on ServerException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.server));
+    } on UnknownException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.unknown));
     }
   }
 

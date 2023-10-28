@@ -32,9 +32,10 @@ class ChartsDataSourceImpl implements ChartsDataSource {
         barCharDataModelList.add(BarChartDataModel.fromJSON(day.data, day.id));
       }
       return barCharDataModelList;
-    } catch(err) {
-      print(err);
-      throw ServerException();
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
     }
 
   }
@@ -50,9 +51,10 @@ class ChartsDataSourceImpl implements ChartsDataSource {
         pieChartDataModelList.add(PieChartDataModel.fromJSON(userPieChartData.data, userPieChartData.id, userID, user.data['name']));
       }
       return pieChartDataModelList;
-    } catch(err) {
-      print(err);
-      throw ServerException();
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
     }
 
   }
