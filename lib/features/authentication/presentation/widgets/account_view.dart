@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:household_organizer/core/entities/user.dart';
+import 'package:household_organizer/core/widgets/feauture_widget_blueprint.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:household_organizer/features/authentication/presentation/widgets/change_user_attributes_widget.dart';
 import 'package:household_organizer/features/household/presentation/pages/household_page.dart';
@@ -23,24 +24,15 @@ class _AccountView extends State<AccountView> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Row(
-          mainAxisSize: MainAxisSize.min,
+    return FeatureWidgetBlueprint(
+        title: "Account Information",
+        titleIcon: Icons.person,
+        reloadAction: () {
+          BlocProvider.of<AuthBloc>(context)
+              .add(LoadAuthEvent());
+        },
+        widget: Column(
           children: [
-            const Icon(Icons.person, weight: 5.0),
-            const Text(' Account Information', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
-            IconButton(onPressed: () {
-              BlocProvider.of<AuthBloc>(context)
-                  .add(LoadAuthEvent());
-            }, icon: const Icon(Icons.update)),
-          ],
-        ),
-        const SizedBox(height: 10.0),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
             GestureDetector(
               onTap: () => showModalBottomSheet<void>(
                   isScrollControlled: true,
@@ -90,7 +82,6 @@ class _AccountView extends State<AccountView> {
               title: 'ID',
               subtitle: widget.mainUser.id,
             ),
-            HouseholdPage(mainUser: widget.mainUser),
             GestureDetector(
               onTap: () => showModalBottomSheet<void>(
                   isScrollControlled: true,
@@ -125,11 +116,8 @@ class _AccountView extends State<AccountView> {
               ),
             ),
           ],
-        ),
-      ],
+        )
     );
-
-
   }
 
   Widget _buildListTile({

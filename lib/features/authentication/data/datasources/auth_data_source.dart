@@ -2,6 +2,7 @@ import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/core/models/user_model.dart';
 import 'package:household_organizer/features/authentication/presentation/widgets/change_user_attributes_widget.dart';
+import 'package:household_organizer/features/household/domain/entities/household.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -77,8 +78,6 @@ class AuthDataSourceImpl implements AuthDataSource {
     }
   }
 
-
-
   @override
   Future<UserModel> login(String email, String password) async {
     try {
@@ -87,7 +86,7 @@ class AuthDataSourceImpl implements AuthDataSource {
       return UserModel.fromJSON(user.data, user.id);
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
-    } catch (_) {
+    } catch (err) {
       throw UnknownException();
     }
   }

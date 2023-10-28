@@ -1,6 +1,7 @@
 import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/core/widgets/bloc_error_widget.dart';
 import 'package:household_organizer/core/widgets/custom_process_indicator_widget.dart';
+import 'package:household_organizer/core/widgets/feauture_widget_blueprint.dart';
 import 'package:household_organizer/features/household_task/presentation/bloc/household_task_bloc.dart';
 import 'package:household_organizer/features/household_task/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -33,12 +34,22 @@ class HouseholdTaskPage extends StatelessWidget {
                       .add(GetAllTasksForHouseholdEvent(householdID: mainUser.householdID));
                   return const Text("Data is loading...");
                 } else if (state is HouseholdTaskLoading) {
-                  return CustomProcessIndicator(reloadAction: () {
-                    BlocProvider.of<HouseholdTaskBloc>(context)
-                        .add(GetAllTasksForHouseholdEvent(householdID: mainUser.householdID));
-                  });
+                  return CustomProcessIndicator(
+                    reloadAction: () {
+                      BlocProvider.of<HouseholdTaskBloc>(context)
+                          .add(GetAllTasksForHouseholdEvent(householdID: mainUser.householdID));
+                    }, msg: state.msg,
+                  );
                 } else if (state is HouseholdTaskLoaded) {
-                  return HouseholdTaskDisplay(mainUser: mainUser, allTasks: state.householdTaskList);
+                  return FeatureWidgetBlueprint(
+                      title: "Curren Tasks",
+                      titleIcon: Icons.task,
+                      reloadAction: () {
+                        BlocProvider.of<HouseholdTaskBloc>(context)
+                            .add(GetAllTasksForHouseholdEvent(householdID: mainUser.householdID));
+                      },
+                      widget: HouseholdTaskDisplay(mainUser: mainUser, allTasks: state.householdTaskList)
+                  );
                 } else if (state is HouseholdTaskError) {
                   return BlocErrorWidget(failure: state.failure, reloadAction: () {
                     BlocProvider.of<HouseholdTaskBloc>(context)

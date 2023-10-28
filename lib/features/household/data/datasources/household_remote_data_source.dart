@@ -2,6 +2,7 @@ import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/features/household/data/models/household_model.dart';
 import 'package:household_organizer/core/models/user_model.dart';
 import 'package:household_organizer/core/entities/user.dart';
+import 'package:household_organizer/features/household/domain/entities/household.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 
@@ -9,7 +10,7 @@ import 'package:pocketbase/pocketbase.dart';
 abstract class HouseholdRemoteDataSource {
   Future<HouseholdModel> loadHousehold(String householdID);
   Future<HouseholdModel> updateHouseholdTitle(String householdID, String title);
-  Future<void> deleteAuthDataFromHousehold(String userID);
+  Future<void> deleteAuthDataFromHousehold(String userID, Household household);
   Future<HouseholdModel> updateAdmin(String householdID, String userID);
 }
 
@@ -35,7 +36,7 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
       return HouseholdModel.fromJSON(result.data, result.id, userList, result.expand['admin']!.first.data, result.expand['admin']!.first.id);
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
-    } catch (_) {
+    } catch (err) {
       throw UnknownException();
     }
   }
@@ -64,7 +65,10 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
   }
 
   @override
-  Future<void> deleteAuthDataFromHousehold(String userID) async {
+  Future<void> deleteAuthDataFromHousehold(String userID, Household household) async {
+    if (userID == household.admin.id) {
+      throw UnknownException();
+    }
     try {
       final body = <String, dynamic> {
         "household" : ""

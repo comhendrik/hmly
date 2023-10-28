@@ -24,7 +24,7 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
     on<HouseholdEvent>((event, emit) async {
       emit(HouseholdInitial());
       if (event is LoadHouseholdEvent)  {
-        emit(HouseholdLoading());
+        emit(HouseholdLoading(msg: event.msg));
         final resultEither = await loadHousehold.execute(event.householdID);
         resultEither.fold(
                 (failure) async {
@@ -35,7 +35,7 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
             }
         );
       } else if (event is UpdateHouseholdTitleEvent) {
-        emit(HouseholdLoading());
+        emit(HouseholdLoading(msg: event.msg));
         final resultEither = await updateHouseholdTitle.execute(event.householdID, event.householdTitle);
         resultEither.fold(
                 (failure) async {
@@ -46,18 +46,18 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
             }
         );
       } else if (event is DeleteAuthDataFromHouseholdEvent) {
-        emit(HouseholdLoading());
-        final resultEither = await deleteAuthDataFromHousehold.execute(event.userID);
+        emit(HouseholdLoading(msg: event.msg));
+        final resultEither = await deleteAuthDataFromHousehold.execute(event.userID, event.household);
         resultEither.fold(
                 (failure) async {
                   emit(HouseholdError(failure: failure));
             },
                 (_) {
-                  add(LoadHouseholdEvent(householdID: event.householdID));
+                  add(LoadHouseholdEvent(householdID: event.household.id));
             }
         );
       } else if (event is UpdateAdminEvent) {
-        emit(HouseholdLoading());
+        emit(HouseholdLoading(msg: event.msg));
         final resultEither = await updateAdmin.execute(event.householdID, event.userID);
         resultEither.fold(
                 (failure) async {

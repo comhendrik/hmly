@@ -22,41 +22,18 @@ class HouseholdDetailView extends StatefulWidget {
 class _HouseholdDetailViewState extends State<HouseholdDetailView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        primary: false,
-        resizeToAvoidBottomInset: true,
-        body: SafeArea(
-          bottom: false,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: const Icon(Icons.arrow_back, weight: 30.0)
-                      ),
-                      const Icon(Icons.house, weight: 5.0),
-                      const Text(' Household', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      HouseholdInformationWidget(context: widget.context, household: widget.household, mainUser: widget.mainUser,),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        )
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        const Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.house, weight: 5.0),
+            const Text(' Household', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+          ],
+        ),
+        HouseholdInformationWidget(context: widget.context, household: widget.household, mainUser: widget.mainUser,),
+      ],
     );
   }
 }

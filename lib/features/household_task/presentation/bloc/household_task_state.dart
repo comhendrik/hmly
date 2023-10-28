@@ -10,6 +10,12 @@ class HouseholdTaskInitial extends HouseholdTaskState {
 }
 
 class HouseholdTaskLoading extends HouseholdTaskState {
+  final String msg;
+
+  const HouseholdTaskLoading({
+    required this.msg,
+  });
+
   @override
   List<Object> get props => [];
 }

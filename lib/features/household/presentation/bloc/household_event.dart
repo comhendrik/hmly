@@ -10,6 +10,7 @@ abstract class HouseholdEvent extends Equatable {
 
 class LoadHouseholdEvent extends HouseholdEvent {
   final String householdID;
+  final String msg = "Household is Loaded";
 
   const LoadHouseholdEvent({
     required this.householdID,
@@ -19,6 +20,7 @@ class LoadHouseholdEvent extends HouseholdEvent {
 class UpdateHouseholdTitleEvent extends HouseholdEvent {
   final String householdID;
   final String householdTitle;
+  final String msg = "Household Title is updated";
 
   const UpdateHouseholdTitleEvent({
     required this.householdID,
@@ -28,17 +30,19 @@ class UpdateHouseholdTitleEvent extends HouseholdEvent {
 
 class DeleteAuthDataFromHouseholdEvent extends HouseholdEvent {
   final String userID;
-  final String householdID;
+  final Household household;
+  final String msg = "User is getting deleted";
 
   const DeleteAuthDataFromHouseholdEvent({
     required this.userID,
-    required this.householdID,
+    required this.household,
   });
 }
 
 class UpdateAdminEvent extends HouseholdEvent {
   final String householdID;
   final String userID;
+  final String msg = "Admin is getting updated";
 
 
   const UpdateAdminEvent({

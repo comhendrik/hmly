@@ -10,6 +10,11 @@ class AuthInitial extends AuthState {
 }
 
 class AuthLoading extends AuthState {
+  final String msg;
+
+  const AuthLoading({
+    required this.msg
+  });
   @override
   List<Object> get props => [];
 }

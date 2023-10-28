@@ -10,6 +10,7 @@ abstract class ChartEvent extends Equatable {
 class GetWeeklyChartDataEvent extends ChartEvent {
   final String userID;
   final String householdID;
+  final String msg = "Weekly Data is fetched";
 
   const GetWeeklyChartDataEvent({
     required this.userID, required this.householdID

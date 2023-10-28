@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class CustomProcessIndicator extends StatelessWidget {
-  final Function() reloadAction;
 
+  final Function() reloadAction;
+  final String msg;
 
   const CustomProcessIndicator({
     super.key,
-    required this.reloadAction
+    required this.reloadAction,
+    required this.msg
   });
 
   @override
@@ -15,6 +17,7 @@ class CustomProcessIndicator extends StatelessWidget {
       child: Column(
         children: [
           const CircularProgressIndicator(),
+          Text(msg),
           ElevatedButton.icon(
             onPressed: () {
               reloadAction();

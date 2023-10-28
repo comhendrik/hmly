@@ -9,6 +9,7 @@ abstract class HouseholdTaskEvent extends Equatable {
 
 class GetAllTasksForHouseholdEvent extends HouseholdTaskEvent {
   final String householdID;
+  final String msg = "Fetch all Tasks";
 
   const GetAllTasksForHouseholdEvent({
     required this.householdID,
@@ -20,6 +21,7 @@ class CreateHouseholdTaskEvent extends HouseholdTaskEvent {
   final String title;
   final int pointsWorth;
   final DateTime dueTo;
+  final String msg = "Create new Tasks";
 
   const CreateHouseholdTaskEvent({
     required this.householdID,
@@ -33,6 +35,7 @@ class ToggleIsDoneHouseholdTaskEvent extends HouseholdTaskEvent {
   final HouseholdTask task;
   final String householdID;
   final String userID;
+  final String msg = "Changing state of Task";
 
   const ToggleIsDoneHouseholdTaskEvent({
     required this.task,
@@ -44,6 +47,7 @@ class ToggleIsDoneHouseholdTaskEvent extends HouseholdTaskEvent {
 class DeleteHouseholdTaskEvent extends HouseholdTaskEvent {
   final String taskId;
   final String householdID;
+  final String msg = "Deleting Task";
 
   const DeleteHouseholdTaskEvent({
     required this.taskId,
@@ -55,6 +59,7 @@ class UpdateHouseholdTaskEvent extends HouseholdTaskEvent {
   final HouseholdTask task;
   final Map<String, dynamic> updateData;
   final String householdID;
+  final String msg = "Updating Task";
 
   const UpdateHouseholdTaskEvent({
     required this.task,

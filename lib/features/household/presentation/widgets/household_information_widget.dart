@@ -97,7 +97,6 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
                 action: () {
                   if (_formKey.currentState!.validate()) {
                     updateHouseholdTitle(widget.household.id, titleStr);
-                    Navigator.pop(context);
                   }
                 },
                 buttonIcon: const Icon(Icons.update),
@@ -213,9 +212,6 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
 
                                                       //Pop context of sheet
                                                       Navigator.pop(context);
-
-                                                      //Pop context of HouseholdInformationWidget
-                                                      Navigator.pop(widget.context, 'Change');
                                                     },
                                                     child: const Text('Change', style: TextStyle(color: Colors.red),),
                                                   ),
@@ -277,10 +273,7 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
                                     ),
                                     TextButton(
                                       onPressed: () {
-                                        deleteAuthDataFromHousehold(user.id, user.householdID);
-                                        setState(() {
-                                          widget.household.users.removeWhere((userToDelete) => userToDelete.id == user.id);
-                                        });
+                                        deleteAuthDataFromHousehold(user.id, widget.household);
                                         Navigator.pop(context, 'Remove');
                                       },
                                       child: const Text('Remove', style: TextStyle(color: Colors.red),),
@@ -317,9 +310,9 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
         .add(UpdateHouseholdTitleEvent(householdID: householdID, householdTitle: householdTitle));
   }
 
-  void deleteAuthDataFromHousehold(String userID, String householdID) {
+  void deleteAuthDataFromHousehold(String userID, Household household) {
     BlocProvider.of<HouseholdBloc>(widget.context)
-        .add(DeleteAuthDataFromHouseholdEvent(userID: userID, householdID: householdID));
+        .add(DeleteAuthDataFromHouseholdEvent(userID: userID, household: household));
   }
 
   void updateAdmin(String householdID, String userID) {

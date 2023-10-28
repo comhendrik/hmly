@@ -20,7 +20,7 @@ class ChartBloc extends Bloc<ChartEvent, ChartState> {
     on<ChartEvent>((event, emit) async {
       emit(ChartInitial());
       if (event is GetWeeklyChartDataEvent)  {
-        emit(ChartLoading());
+        emit(ChartLoading(msg: event.msg));
         final barChartResultEither = await getWeeklyBarChartData.execute(event.userID, event.householdID);
         await barChartResultEither.fold(
           (failure) async {

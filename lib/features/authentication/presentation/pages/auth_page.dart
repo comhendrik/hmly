@@ -29,10 +29,13 @@ class AuthPage extends StatelessWidget {
             return const Text("Starting to load data...");
           } else if (state is AuthLoading) {
             return Center(
-              child: CustomProcessIndicator(reloadAction: () {
-                BlocProvider.of<AuthBloc>(context)
-                    .add(LoadAuthEvent());
-            }),
+              child:
+              CustomProcessIndicator(
+                  reloadAction: () {
+                    BlocProvider.of<AuthBloc>(context)
+                        .add(LoadAuthEvent());
+                  }, msg: state.msg,
+              ),
             );
           } else if (state is AuthLoaded) {
             return state.authData.householdID == "" ? AddAuthDataToHouseholdView(mainUser: state.authData) : AuthenticatedView(mainUser: state.authData, startCurrentPageIndex: state.startCurrentPageIndex);

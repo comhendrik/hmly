@@ -5,6 +5,7 @@ import 'package:household_organizer/features/authentication/presentation/bloc/au
 import 'package:household_organizer/features/authentication/presentation/widgets/LogoutButton.dart';
 import 'package:household_organizer/features/authentication/presentation/widgets/account_view.dart';
 import 'package:household_organizer/features/charts/presentation/pages/chart_page.dart';
+import 'package:household_organizer/features/household/presentation/pages/household_page.dart';
 import 'package:household_organizer/features/household_task/presentation/pages/household_task_page.dart';
 
 class AuthenticatedView extends StatefulWidget {
@@ -60,6 +61,11 @@ class _AuthenticatedView extends State<AuthenticatedView> {
             icon: Icon(Icons.person_outline),
             label: 'Account',
           ),
+          NavigationDestination(
+            selectedIcon: Icon(Icons.house),
+            icon: Icon(Icons.house_outlined),
+            label: 'Household',
+          ),
         ],
       ),
       body: <Widget>[
@@ -92,6 +98,15 @@ class _AuthenticatedView extends State<AuthenticatedView> {
             padding: const EdgeInsets.all(20),
             children: [
               AccountView(mainUser: widget.mainUser, ancestorContext: context)
+            ],
+          ),
+        ),
+        Container(
+          alignment: Alignment.center,
+          child: ListView(
+            padding: const EdgeInsets.all(20),
+            children: [
+              HouseholdPage(mainUser: widget.mainUser)
             ],
           ),
         ),

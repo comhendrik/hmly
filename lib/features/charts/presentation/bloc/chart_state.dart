@@ -10,8 +10,11 @@ class ChartInitial extends ChartState {
 }
 
 class ChartLoading extends ChartState {
+  final String msg;
+
+  const ChartLoading({required this.msg});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [msg];
 }
 
 class ChartLoaded extends ChartState {

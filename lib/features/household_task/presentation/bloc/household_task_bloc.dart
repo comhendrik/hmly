@@ -30,7 +30,7 @@ class HouseholdTaskBloc extends Bloc<HouseholdTaskEvent, HouseholdTaskState> {
       if (event is GetAllTasksForHouseholdEvent)  {
 
 
-        emit(HouseholdTaskLoading());
+        emit(HouseholdTaskLoading(msg: event.msg));
         final resultEither = await getTasks.execute(event.householdID);
         resultEither.fold(
             (failure) async {
@@ -45,7 +45,7 @@ class HouseholdTaskBloc extends Bloc<HouseholdTaskEvent, HouseholdTaskState> {
       } else if (event is CreateHouseholdTaskEvent) {
 
 
-        emit(HouseholdTaskLoading());
+        emit(HouseholdTaskLoading(msg: event.msg));
         final resultEither = await createTask.execute(event.householdID, event.title, event.pointsWorth, event.dueTo);
         await resultEither.fold(
                 (failure) async {
@@ -68,7 +68,7 @@ class HouseholdTaskBloc extends Bloc<HouseholdTaskEvent, HouseholdTaskState> {
       } else if (event is ToggleIsDoneHouseholdTaskEvent) {
 
 
-        emit(HouseholdTaskLoading());
+        emit(HouseholdTaskLoading(msg: event.msg));
         final resultEither = await toggleIsDoneHouseholdTask.execute(event.task, event.userID);
         await resultEither.fold(
           (failure) async {
@@ -91,7 +91,7 @@ class HouseholdTaskBloc extends Bloc<HouseholdTaskEvent, HouseholdTaskState> {
       } else if (event is DeleteHouseholdTaskEvent) {
 
 
-        emit(HouseholdTaskLoading());
+        emit(HouseholdTaskLoading(msg: event.msg));
         final resultEither = await deleteTask.execute(event.taskId);
         await resultEither.fold(
                 (failure) async {
@@ -113,7 +113,7 @@ class HouseholdTaskBloc extends Bloc<HouseholdTaskEvent, HouseholdTaskState> {
       } else if (event is UpdateHouseholdTaskEvent) {
 
 
-        emit(HouseholdTaskLoading());
+        emit(HouseholdTaskLoading(msg: event.msg));
         final resultEither = await updateTask.execute(event.task, event.updateData);
         await resultEither.fold(
           (failure) async {
@@ -131,8 +131,6 @@ class HouseholdTaskBloc extends Bloc<HouseholdTaskEvent, HouseholdTaskState> {
             );
           }
         );
-
-
       }
     });
   }

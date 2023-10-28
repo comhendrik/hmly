@@ -45,7 +45,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEvent>((event, emit) async {
       emit(AuthInitial());
       if (event is LoginAuthEvent)  {
-        emit(AuthLoading());
+        emit(AuthLoading(msg: event.msg));
         final resultEither = await login.execute(event.email, event.password);
         await resultEither.fold(
             (failure) async {
@@ -56,7 +56,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             }
         );
       } else if (event is LoadAuthEvent) {
-        emit(AuthLoading());
+        emit(AuthLoading(msg: event.msg));
         if (authStore.model != null) {
           RecordModel user = authStore.model;
           emit(AuthLoaded(authData: User(id: user.id,username: user.data["username"],householdID: user.data["household"],email: user.data["email"], name: user.data["name"]), startCurrentPageIndex: 0));
@@ -65,7 +65,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
 
       } else if (event is SignUpAuthEvent) {
-        emit(AuthLoading());
+        emit(AuthLoading(msg: event.msg));
         final resultEither = await createAuthDataOnServer.execute(event.email, event.password, event.passwordConfirm, event.username, event.name);
         await resultEither.fold(
                 (failure) async {
@@ -78,7 +78,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             }
         );
       } else if (event is AddAuthDataToHouseholdEvent) {
-        emit(AuthLoading());
+        emit(AuthLoading(msg: event.msg));
         final resultEither = await addAuthDataToHousehold.execute(event.user.id, event.householdID);
         await resultEither.fold(
                 (failure) async {
@@ -90,7 +90,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             }
         );
       } else if (event is CreateHouseholdAndAddAuthDataEvent) {
-        emit(AuthLoading());
+        emit(AuthLoading(msg: event.msg));
         final resultEither = await createHouseholdAndAddAuthData.execute(event.user.id, event.householdTitle);
         await resultEither.fold(
                 (failure) async {
@@ -102,7 +102,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             }
         );
       } else if (event is LeaveHouseholdEvent) {
-        emit(AuthLoading());
+        emit(AuthLoading(msg: event.msg));
         final resultEither = await leaveHousehold.execute(event.user);
         await resultEither.fold(
                 (failure) async {
@@ -114,7 +114,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             }
         );
       } else if (event is LoadAuthDataWithOAuthEvent) {
-        emit(AuthLoading());
+        emit(AuthLoading(msg: event.msg));
         final resultEither = await loadAuthDataWithOAuth.execute();
         await resultEither.fold(
                 (failure) async {
@@ -125,12 +125,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             }
         );
       } else if (event is LogoutEvent) {
-        emit(AuthLoading());
+        emit(AuthLoading(msg: event.msg));
         logout.execute();
         emit(AuthCreate());
       } else if (event is ChangeUserAttributesEvent) {
         if (event.type != UserChangeType.email) {
-          emit(AuthLoading());
+          emit(AuthLoading(msg: event.msg));
           final resultEither = await changeUserAttributes.execute(event.input, event.token, event.confirmationPassword, event.oldPassword, event.userID, event.type);
           await resultEither.fold(
                   (failure) async {
@@ -152,7 +152,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           );
         }
       } else if (event is RequestNewPasswordEvent) {
+        emit(AuthLoading(msg: event.msg));
         await requestNewPassword.execute(event.userEmail);
+        emit(AuthCreate());
       }
     });
   }

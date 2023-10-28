@@ -11,6 +11,12 @@ class HouseholdInitial extends HouseholdState {
 }
 
 class HouseholdLoading extends HouseholdState {
+  final String msg;
+
+  const HouseholdLoading({
+    required this.msg
+  });
+
   @override
   List<Object> get props => [];
 }
