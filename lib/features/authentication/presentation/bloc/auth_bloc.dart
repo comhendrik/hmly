@@ -82,7 +82,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final resultEither = await addAuthDataToHousehold.execute(event.user.id, event.householdID);
         await resultEither.fold(
                 (failure) async {
-                  AuthError(failure: failure);
+                  emit(AuthError(failure: failure));
             },
                 (_) async {
                   final newUser = User(id: event.user.id, username: event.user.username, householdID: event.householdID, email: event.user.email, name: event.user.name);
