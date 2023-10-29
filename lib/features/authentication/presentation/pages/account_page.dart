@@ -17,10 +17,10 @@ class AccountPage extends StatefulWidget {
 
 
   @override
-  State<AccountPage> createState() => _AccountView();
+  State<AccountPage> createState() => _AccountPage();
 }
 
-class _AccountView extends State<AccountPage> {
+class _AccountPage extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,10 @@ class _AccountView extends State<AccountPage> {
         widget: Column(
           children: [
             GestureDetector(
-              onTap: () => showModalBottomSheet<void>(
+              onTap: () {
+                /*
+                //TODO: This needs to be added when updating email works completely, Main issue UI of updating
+                showModalBottomSheet<void>(
                   isScrollControlled: true,
                   context: context,
                   builder: (BuildContext context) {
@@ -44,7 +47,9 @@ class _AccountView extends State<AccountPage> {
                         ChangeUserAttributesWidget(type: UserChangeType.verifyEmail, mainUserID: widget.mainUser.id,  ancestorContext: widget.ancestorContext),
                       ],
                     );
-                  }),
+                  });
+                 */
+              },
               child: _buildListTile(
                 leadingIcon: Icons.email,
                 title: 'Email',

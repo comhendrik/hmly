@@ -65,10 +65,14 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                                 prefixIcon: Icon(widget.type.icon), // Icon for username
                               ),
                               validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your password';
+                                }
+                                if (value.length < 8) {
+                                  return 'Use at least 8 characters for your password';
+                                }
                                 return null;
                               },
-                              onChanged: (value) {
-                              }
                           ),
                         TextFormField(
                             controller: textfieldController,
@@ -82,10 +86,29 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                               if (value == null || value == "") {
                                 return "Please provide a value";
                               }
+                              switch (widget.type) {
+                                case UserChangeType.email:
+                                  if (!value.contains('@') || !value.contains('.') || value.contains('@.')) {
+                                    return 'No valid email';
+                                  }
+                                case UserChangeType.verifyEmail:
+                                  if (value.length < 8) {
+                                    return 'Use at least 8 characters for your password';
+                                  }
+                                case UserChangeType.name:
+                                  //Nothing needed
+                                case UserChangeType.username:
+                                  if (value.contains(" ")) {
+                                    return 'Must be in a valid format';
+                                  }
+                                case UserChangeType. password:
+                                  if (value.length < 8) {
+                                    return 'Use at least 8 characters for your password';
+                                  }
+                              }
+
                               return null;
                             },
-                            onChanged: (value) {
-                            }
                         ),
                         if (widget.type == UserChangeType.password)
                           TextFormField(
@@ -97,9 +120,13 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                                 prefixIcon: Icon(widget.type.icon), // Icon for username
                               ),
                               validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please re-enter your password';
+                                }
+                                if (value != textfieldController.text) {
+                                  return 'The passwords arent matching';
+                                }
                                 return null;
-                              },
-                              onChanged: (value) {
                               }
                           ),
                         if (widget.type == UserChangeType.verifyEmail)
@@ -112,10 +139,11 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                                 prefixIcon: Icon(widget.type.icon), // Icon for username
                               ),
                               validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter the token';
+                                }
                                 return null;
                               },
-                              onChanged: (value) {
-                              }
                           ),
                         ElevatedButton.icon(
                           onPressed: () {

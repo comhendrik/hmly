@@ -4,9 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:household_organizer/features/household/domain/entities/household.dart';
+import 'package:household_organizer/features/household/domain/repositories/household_repository.dart';
 import 'package:household_organizer/features/household/presentation/bloc/household_bloc.dart';
 import '../widgets/widget.dart';
 import 'package:flutter_share/flutter_share.dart';
+import 'package:household_organizer/features/household/domain/usecases/delete_household.dart';
 
 class HouseholdMainPage extends StatefulWidget {
   final BuildContext context;
@@ -325,9 +327,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                       if(widget.household.users.length == 1)
                         TextButton(
                           onPressed: () {
-                            if (widget.mainUser.id != widget.household.admin.id) {
-                              leaveHousehold(widget.mainUser);
-                            } else if (widget.household.users.length == 1) {
+                            if (widget.mainUser.id != widget.household.admin.id || widget.household.users.length == 1) {
                               leaveHousehold(widget.mainUser);
                             }
                             Navigator.pop(context, 'Leave');
@@ -353,6 +353,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
   void deleteAuthDataFromHousehold(String userID, Household household) {
     BlocProvider.of<HouseholdBloc>(widget.context)
       .add(DeleteAuthDataFromHouseholdEvent(userID: userID, household: household));
+
   }
 
   void updateAdmin(String householdID, String userID) {

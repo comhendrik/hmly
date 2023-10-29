@@ -58,5 +58,16 @@ class HouseholdRepositoryImpl implements HouseholdRepository {
     }
   }
 
+  @override
+  Future<Either<Failure, void>> deleteHousehold(String householdID) async {
+    try {
+      return Right(await remoteDataSource.deleteHousehold(householdID));
+    } on ServerException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.server));
+    } on UnknownException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.unknown));
+    }
+  }
+
 
 }

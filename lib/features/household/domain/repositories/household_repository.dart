@@ -8,4 +8,5 @@ abstract class HouseholdRepository {
   Future<Either<Failure, Household>> updateHouseholdTitle(String householdID, String title);
   Future<Either<Failure, void>> deleteAuthDataFromHousehold(String userID, Household household);
   Future<Either<Failure, Household>> updateAdmin(String householdID, String userID);
+  Future<Either<Failure, void>> deleteHousehold(String householdID);
 }

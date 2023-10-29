@@ -12,6 +12,7 @@ abstract class HouseholdRemoteDataSource {
   Future<HouseholdModel> updateHouseholdTitle(String householdID, String title);
   Future<void> deleteAuthDataFromHousehold(String userID, Household household);
   Future<HouseholdModel> updateAdmin(String householdID, String userID);
+  Future<void> deleteHousehold(String householdID);
 }
 
 class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
@@ -66,6 +67,7 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
 
   @override
   Future<void> deleteAuthDataFromHousehold(String userID, Household household) async {
+    //TODO: Maybe delete this code
     if (userID == household.admin.id) {
       throw UnknownException();
     }
@@ -97,6 +99,17 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
       }
 
       return HouseholdModel.fromJSON(result.data, result.id, userList, admin.data, admin.id);
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
+    }
+  }
+
+  @override
+  Future<void> deleteHousehold(String householdID) async {
+    try {
+      final _ = await householdRecordService.delete(householdID);
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
     } catch (_) {

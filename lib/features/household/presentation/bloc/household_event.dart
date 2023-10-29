@@ -31,7 +31,7 @@ class UpdateHouseholdTitleEvent extends HouseholdEvent {
 class DeleteAuthDataFromHouseholdEvent extends HouseholdEvent {
   final String userID;
   final Household household;
-  final String msg = "User is getting deleted";
+  final String msg = "User is getting deleted from household";
 
   const DeleteAuthDataFromHouseholdEvent({
     required this.userID,
