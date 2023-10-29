@@ -3,6 +3,7 @@ import 'package:household_organizer/core/widgets/bloc_error_widget.dart';
 import 'package:household_organizer/core/widgets/custom_process_indicator_widget.dart';
 import 'package:household_organizer/core/widgets/feauture_widget_blueprint.dart';
 import 'package:household_organizer/features/charts/presentation/bloc/chart_bloc.dart';
+import 'package:household_organizer/features/charts/presentation/pages/chart_main_page.dart';
 import 'package:household_organizer/features/charts/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,52 +49,15 @@ class ChartPage extends StatelessWidget {
                   BlocProvider.of<ChartBloc>(context)
                       .add(GetWeeklyChartDataEvent(userID: mainUser.id, householdID: mainUser.householdID));
                 },
-                widget: Column(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0)
-                      ),
-                      child: Card(
-                          elevation: 0.125,
-                          // No elevation for the Card; we'll use the shadow from the Container
-                          child: Row(
-                            children: [
-                              Container(
-                                  margin: const EdgeInsets.all(10),
-                                  padding: const EdgeInsets.only(left: 25.0,top: 15.0,right: 25.0,bottom: 15.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.blueGrey,
-                                    borderRadius: BorderRadius.circular(16.0), // Adjust the radius as needed
-                                  ),
-                                  child: Text(
-                                    "${state.barChartDataList.last.value}",
-
-                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0,),
-                                  )
-                              ),
-                              const Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Points reached today', style: TextStyle(fontWeight: FontWeight.bold),),
-                                ],
-                              ),
-                            ],
-                          )
-                      ),
-                    ),
-
-                    BarChart(data: state.barChartDataList),
-                    HouseholdPieChart(data: state.pieChartDataList),
-                    ReminderButton(dailyPoints: state.barChartDataList.last.value,),
-                  ],
-                )
+                widget: ChartMainPage(barChartData: state.barChartDataList, pieChartData: state.pieChartDataList)
             );
           } else if (state is ChartError) {
+
             return BlocErrorWidget(failure: state.failure, reloadAction: () {
               BlocProvider.of<ChartBloc>(context)
                   .add(GetWeeklyChartDataEvent(userID: mainUser.id, householdID: mainUser.householdID));
             });
+
           } else {
             return const Text("...");
           }

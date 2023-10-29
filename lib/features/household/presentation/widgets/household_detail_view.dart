@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/features/household/domain/entities/household.dart';
-import 'package:household_organizer/features/household/presentation/widgets/household_information_widget.dart';
+import 'package:household_organizer/features/household/presentation/pages/household_main_page.dart';
 
 class HouseholdDetailView extends StatefulWidget {
   final Household household;
@@ -32,7 +32,7 @@ class _HouseholdDetailViewState extends State<HouseholdDetailView> {
             const Text(' Household', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
           ],
         ),
-        HouseholdInformationWidget(context: widget.context, household: widget.household, mainUser: widget.mainUser,),
+        HouseholdMainPage(context: widget.context, household: widget.household, mainUser: widget.mainUser,),
       ],
     );
   }

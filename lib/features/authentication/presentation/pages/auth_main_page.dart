@@ -1,17 +1,14 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:household_organizer/core/entities/user.dart';
-import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
-import 'package:household_organizer/features/authentication/presentation/widgets/LogoutButton.dart';
-import 'package:household_organizer/features/authentication/presentation/widgets/account_view.dart';
+import 'package:household_organizer/features/authentication/presentation/pages/account_page.dart';
 import 'package:household_organizer/features/charts/presentation/pages/chart_page.dart';
 import 'package:household_organizer/features/household/presentation/pages/household_page.dart';
 import 'package:household_organizer/features/household_task/presentation/pages/household_task_page.dart';
 
-class AuthenticatedView extends StatefulWidget {
+class AuthMainPage extends StatefulWidget {
   final User mainUser;
   final int startCurrentPageIndex;
-  const AuthenticatedView({
+  const AuthMainPage({
     super.key,
     required this.mainUser,
     required this.startCurrentPageIndex
@@ -19,10 +16,10 @@ class AuthenticatedView extends StatefulWidget {
 
 
   @override
-  State<AuthenticatedView> createState() => _AuthenticatedView();
+  State<AuthMainPage> createState() => _AuthenticatedView();
 }
 
-class _AuthenticatedView extends State<AuthenticatedView> {
+class _AuthenticatedView extends State<AuthMainPage> {
 
   int currentPageIndex = 0;
 
@@ -69,54 +66,26 @@ class _AuthenticatedView extends State<AuthenticatedView> {
         ],
       ),
       body: <Widget>[
-        Container(
-          alignment: Alignment.center,
-          child: ListView(
-            padding: const EdgeInsets.all(20),
-            children: [
-              Text(
-                "Welcome back ${widget.mainUser.name}",
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-              ),
-              HouseholdTaskPage(mainUser: widget.mainUser)
-
-            ],
-          ),
-        ),
-        Container(
-          alignment: Alignment.center,
-          child: ListView(
-            padding: const EdgeInsets.all(20),
-            children: [
-              ChartPage(mainUser: widget.mainUser),
-            ],
-          ),
-        ),
-        Container(
-          alignment: Alignment.center,
-          child: ListView(
-            padding: const EdgeInsets.all(20),
-            children: [
-              AccountView(mainUser: widget.mainUser, ancestorContext: context)
-            ],
-          ),
-        ),
-        Container(
-          alignment: Alignment.center,
-          child: ListView(
-            padding: const EdgeInsets.all(20),
-            children: [
-              HouseholdPage(mainUser: widget.mainUser)
-            ],
-          ),
-        ),
+        _buildNavigationDestination(widget: HouseholdTaskPage(mainUser: widget.mainUser)),
+        _buildNavigationDestination(widget: ChartPage(mainUser: widget.mainUser)),
+        _buildNavigationDestination(widget: AccountPage(mainUser: widget.mainUser, ancestorContext: context)),
+        _buildNavigationDestination(widget: HouseholdPage(mainUser: widget.mainUser))
       ][currentPageIndex],
     );
-
   }
 
-  void leaveHousehold(User user) {
-    BlocProvider.of<AuthBloc>(context)
-        .add(LeaveHouseholdEvent(user: user));
+  Widget _buildNavigationDestination({
+    required Widget widget,
+  }) {
+    return Container(
+      alignment: Alignment.center,
+      child: ListView(
+        padding: const EdgeInsets.all(20),
+        children: [
+          widget
+        ],
+      ),
+    );
   }
+
 }

@@ -26,7 +26,6 @@ class HouseholdTaskPage extends StatelessWidget {
       child: Center(
         child: Column(
           children: <Widget>[
-
             BlocBuilder<HouseholdTaskBloc, HouseholdTaskState>(
               builder: (context, state) {
                 if (state is HouseholdTaskInitial) {
@@ -42,13 +41,14 @@ class HouseholdTaskPage extends StatelessWidget {
                   );
                 } else if (state is HouseholdTaskLoaded) {
                   return FeatureWidgetBlueprint(
-                      title: "Curren Tasks",
-                      titleIcon: Icons.task,
-                      reloadAction: () {
-                        BlocProvider.of<HouseholdTaskBloc>(context)
-                            .add(GetAllTasksForHouseholdEvent(householdID: mainUser.householdID));
-                      },
-                      widget: HouseholdTaskDisplay(mainUser: mainUser, allTasks: state.householdTaskList)
+                    title: "Current Tasks",
+                    titleIcon: Icons.task,
+                    reloadAction: () {
+                      BlocProvider.of<HouseholdTaskBloc>(context)
+                          .add(GetAllTasksForHouseholdEvent(householdID: mainUser.householdID));
+                    },
+                    widget: HouseholdTaskMainPage(mainUser: mainUser, allTasks: state.householdTaskList),
+                    extraWidget: CreateHouseholdTaskSheet(householdID: mainUser.householdID),
                   );
                 } else if (state is HouseholdTaskError) {
                   return BlocErrorWidget(failure: state.failure, reloadAction: () {

@@ -6,7 +6,7 @@ import 'package:household_organizer/features/household/presentation/bloc/househo
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:household_organizer/features/household/presentation/widgets/household_detail_view.dart';
-import 'package:household_organizer/features/household/presentation/widgets/household_information_widget.dart';
+import 'package:household_organizer/features/household/presentation/pages/household_main_page.dart';
 
 import '../../../../injection_container.dart';
 
@@ -48,7 +48,7 @@ class HouseholdPage extends StatelessWidget {
                       BlocProvider.of<HouseholdBloc>(context)
                           .add(LoadHouseholdEvent(householdID: mainUser.householdID));
                     },
-                    widget: HouseholdInformationWidget(context: context, household: state.household, mainUser: mainUser,),
+                    widget: HouseholdMainPage(context: context, household: state.household, mainUser: mainUser,),
                 );
               } else if (state is HouseholdError) {
                 return BlocErrorWidget(failure: state.failure, reloadAction: () {

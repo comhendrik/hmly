@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:household_organizer/core/entities/user.dart';
+import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:household_organizer/features/household/domain/entities/household.dart';
 import 'package:household_organizer/features/household/presentation/bloc/household_bloc.dart';
-import 'widget.dart';
+import '../widgets/widget.dart';
 import 'package:flutter_share/flutter_share.dart';
 
-class HouseholdInformationWidget extends StatefulWidget {
+class HouseholdMainPage extends StatefulWidget {
   final BuildContext context;
   final Household household;
   final User mainUser;
-  const HouseholdInformationWidget({
+  const HouseholdMainPage({
     super.key,
     required this.context,
     required this.household,
@@ -19,10 +20,10 @@ class HouseholdInformationWidget extends StatefulWidget {
   });
 
   @override
-  State<HouseholdInformationWidget> createState() => _HouseholdInformationWidgetState();
+  State<HouseholdMainPage> createState() => _HouseholdMainPageState();
 }
 
-class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget> {
+class _HouseholdMainPageState extends State<HouseholdMainPage> {
 
   final titleController = TextEditingController();
   String titleStr = "";
@@ -289,6 +290,7 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
               ),
               button: HouseholdInformationCardButton(
                 action: () async {
+                  //TODO: Create real link
                   const host = '127.0.0.1';
                   await FlutterShare.share(
                       title: 'Invite Link',
@@ -300,6 +302,44 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
                 buttonText: 'Invite User',
               ),
           ),
+          const SizedBox(height: 10,),
+          HouseholdInformationCard(
+              title: "Household",
+              titleWidget: null,
+              detailWidget: const Text("Click to leave household"),
+              button: HouseholdInformationCardButton(
+                action: () => showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: Text(widget.mainUser.id == widget.household.admin.id ? 'Admin Warning' : 'Warning'),
+                    content: Text(
+                        widget.mainUser.id == widget.household.admin.id ?
+                        'You can only leave the household as an admin, when u are the only user in this household' :
+                        'When pressing okay, you will leave the household'
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: ()  => Navigator.pop(context, 'Cancel'),
+                        child: const Text('Cancel'),
+                      ),
+                      if(widget.household.users.length == 1)
+                        TextButton(
+                          onPressed: () {
+                            if (widget.mainUser.id != widget.household.admin.id) {
+                              leaveHousehold(widget.mainUser);
+                            } else if (widget.household.users.length == 1) {
+                              leaveHousehold(widget.mainUser);
+                            }
+                            Navigator.pop(context, 'Leave');
+                          },
+                          child: const Text('Leave', style: TextStyle(color: Colors.red),),
+                        ),
+                    ],
+                  ),
+                ),
+                buttonIcon: const Icon(Icons.arrow_back),
+                buttonText: 'Leave Household',
+              ))
         ],
       )
     );
@@ -312,12 +352,17 @@ class _HouseholdInformationWidgetState extends State<HouseholdInformationWidget>
 
   void deleteAuthDataFromHousehold(String userID, Household household) {
     BlocProvider.of<HouseholdBloc>(widget.context)
-        .add(DeleteAuthDataFromHouseholdEvent(userID: userID, household: household));
+      .add(DeleteAuthDataFromHouseholdEvent(userID: userID, household: household));
   }
 
   void updateAdmin(String householdID, String userID) {
     BlocProvider.of<HouseholdBloc>(widget.context)
         .add(UpdateAdminEvent(householdID: householdID, userID: userID));
+  }
+
+  void leaveHousehold(User user) {
+    BlocProvider.of<AuthBloc>(widget.context)
+        .add(LeaveHouseholdEvent(user: user));
   }
 
 }

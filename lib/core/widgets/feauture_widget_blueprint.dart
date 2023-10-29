@@ -6,13 +6,15 @@ class FeatureWidgetBlueprint extends StatefulWidget {
   final IconData titleIcon;
   final Function() reloadAction;
   final Widget widget;
+  final Widget? extraWidget;
 
   const FeatureWidgetBlueprint({
     super.key,
     required this.title,
     required this.titleIcon,
     required this.reloadAction,
-    required this.widget
+    required this.widget,
+    this.extraWidget
   });
 
   @override
@@ -26,14 +28,18 @@ class _FeatureWidgetBlueprintState extends State<FeatureWidgetBlueprint> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Row(
-          mainAxisSize: MainAxisSize.min,
           children: [
             Icon(widget.titleIcon, weight: 5.0),
             Text(' ${widget.title}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
-            IconButton(onPressed: widget.reloadAction, icon: const Icon(Icons.update))
+            const Spacer(),
+            if (widget.extraWidget != null)
+              widget.extraWidget!,
+            IconButton(onPressed: widget.reloadAction, icon: const Icon(Icons.update)),
+
           ],
         ),
         widget.widget,
+
       ],
     );
   }

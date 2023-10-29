@@ -6,10 +6,10 @@ import 'package:household_organizer/features/authentication/presentation/bloc/au
 import 'package:household_organizer/features/authentication/presentation/widgets/change_user_attributes_widget.dart';
 import 'package:household_organizer/features/household/presentation/pages/household_page.dart';
 
-class AccountView extends StatefulWidget {
+class AccountPage extends StatefulWidget {
   final User mainUser;
   final BuildContext ancestorContext;
-  const AccountView({
+  const AccountPage({
     super.key,
     required this.mainUser,
     required this.ancestorContext
@@ -17,10 +17,10 @@ class AccountView extends StatefulWidget {
 
 
   @override
-  State<AccountView> createState() => _AccountView();
+  State<AccountPage> createState() => _AccountView();
 }
 
-class _AccountView extends State<AccountView> {
+class _AccountView extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -96,16 +96,6 @@ class _AccountView extends State<AccountView> {
               ),
             ),
             GestureDetector(
-              onTap: () {
-                leaveHousehold(widget.mainUser);
-              },
-              child: _buildListTile(
-                leadingIcon: Icons.house,
-                title: 'Leave Household',
-                subtitle: "Click to leave Household",
-              ),
-            ),
-            GestureDetector(
               onTap: (){
                 logout();
               },
@@ -162,7 +152,7 @@ class _AccountView extends State<AccountView> {
               ],
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Icon(
                 trailingIcon,
                 color: Colors.black, // Change the icon color as needed
@@ -174,14 +164,8 @@ class _AccountView extends State<AccountView> {
       ),
     );
   }
-
-  void leaveHousehold(User user) {
-    BlocProvider.of<AuthBloc>(widget.ancestorContext)
-        .add(LeaveHouseholdEvent(user: user));
-  }
-
   void logout() {
     BlocProvider.of<AuthBloc>(widget.ancestorContext)
-        .add(LogoutEvent());
+        .add(const LogoutEvent());
   }
 }

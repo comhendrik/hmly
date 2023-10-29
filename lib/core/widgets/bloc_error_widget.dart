@@ -20,37 +20,37 @@ class BlocErrorWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Icon(
+          const Icon(
             Icons.error, // Error icon
             size: 64,
             color: Colors.red,
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text(
             failure.type.title,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             'Error Code: ${failure.data['code'].toString()}',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             failure.data['message'],
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
             ),
           ),
-          SizedBox(height: 24),
+          const SizedBox(height: 24),
           ElevatedButton(
             onPressed: reloadAction,
-            child: Row(
+            child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Icon(Icons.refresh), // Retry icon
@@ -62,18 +62,6 @@ class BlocErrorWidget extends StatelessWidget {
               ],
             ),
           ),
-        ],
-      ),
-    );
-    return Center(
-      child: Column(
-        children: [
-          Text(failure.type.title),
-          Text(failure.data['code'].toString()),
-          Text(failure.data['message']),
-          ElevatedButton(onPressed: () {
-            reloadAction();
-          }, child: const Text("Try again"))
         ],
       ),
     );
