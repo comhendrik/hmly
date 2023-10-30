@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomProcessIndicator extends StatefulWidget {
@@ -48,7 +49,7 @@ class _CustomProcessIndicatorState extends State<CustomProcessIndicator> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          const CircularProgressIndicator(),
+          const CupertinoActivityIndicator(),
           const SizedBox(height: 16),
           Text(
             widget.msg,

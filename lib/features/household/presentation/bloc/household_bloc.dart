@@ -5,6 +5,7 @@ import 'package:household_organizer/features/household/domain/usecases/load_hous
 import 'package:household_organizer/features/household/domain/usecases/update_household_title.dart';
 import 'package:household_organizer/features/household/domain/usecases/delete_auth_data_from_household.dart';
 import 'package:household_organizer/features/household/domain/usecases/update_admin.dart';
+import 'package:household_organizer/features/household/domain/usecases/delete_household.dart';
 import 'package:household_organizer/features/household/domain/entities/household.dart';
 
 part 'household_event.dart';
@@ -15,11 +16,13 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
   final UpdateHouseholdTitle updateHouseholdTitle;
   final DeleteAuthDataFromHousehold deleteAuthDataFromHousehold;
   final UpdateAdmin updateAdmin;
+  final DeleteHousehold deleteHousehold;
   HouseholdBloc({
     required this.loadHousehold,
     required this.updateHouseholdTitle,
     required this.deleteAuthDataFromHousehold,
-    required this.updateAdmin
+    required this.updateAdmin,
+    required this.deleteHousehold
   }) : super(HouseholdInitial()) {
     on<HouseholdEvent>((event, emit) async {
       emit(HouseholdInitial());
@@ -67,6 +70,8 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
               emit(HouseholdLoaded(household: household));
             }
         );
+      } else if (event is DeleteHouseholdEvent) {
+        await deleteHousehold.execute(event.householdID);
       }
     });
   }

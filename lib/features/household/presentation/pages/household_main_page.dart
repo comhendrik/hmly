@@ -329,6 +329,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                           onPressed: () {
                             if (widget.mainUser.id != widget.household.admin.id || widget.household.users.length == 1) {
                               leaveHousehold(widget.mainUser);
+                              deleteHousehold(widget.household.id);
                             }
                             Navigator.pop(context, 'Leave');
                           },
@@ -364,6 +365,11 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
   void leaveHousehold(User user) {
     BlocProvider.of<AuthBloc>(widget.context)
         .add(LeaveHouseholdEvent(user: user));
+  }
+
+  void deleteHousehold(String householdID) {
+    BlocProvider.of<HouseholdBloc>(widget.context)
+        .add(DeleteHouseholdEvent(householdID: householdID));
   }
 
 }

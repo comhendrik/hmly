@@ -51,3 +51,11 @@ class UpdateAdminEvent extends HouseholdEvent {
   });
 }
 
+class DeleteHouseholdEvent extends HouseholdEvent {
+  final String householdID;
+
+  const DeleteHouseholdEvent({
+    required this.householdID,
+  });
+}
+
