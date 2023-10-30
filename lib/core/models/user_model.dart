@@ -8,22 +8,25 @@ class UserModel extends User {
     required String householdID,
     required String email,
     required String name,
+    required bool verified
   }) : super (
     id: id,
     username: username,
     householdID: householdID,
     email: email,
-    name: name
+    name: name,
+    verified: verified
   );
 
 
   factory UserModel.fromJSON(Map<String, dynamic> json, String id) {
     return UserModel(
-        id: id,
-        username: json['username'],
-        householdID: json['household'],
-        email: json['email'],
-        name: json['name']
+      id: id,
+      username: json['username'],
+      householdID: json['household'],
+      email: json['email'],
+      name: json['name'],
+      verified: json['verified']
     );
   }
 

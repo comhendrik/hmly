@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 abstract class AuthDataSource {
   Future<void> addAuthDataToHousehold(String userID, String householdID);
+  //TODO: Maybe use it HouseholdBloc
   Future<String> createHouseholdAndAddAuthData(String userID, String householdTitle);
   Future<void> leaveHousehold(User user);
   Future<UserModel> login(String email, String password);
@@ -17,6 +18,7 @@ abstract class AuthDataSource {
   Future<UserModel> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, User user, UserChangeType type);
   Future<void> requestNewPassword(String userEmail);
   Future<void> requestEmailChange(String newEmail, User user);
+  Future<void> requestVerification(String email);
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -188,6 +190,11 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<void> requestEmailChange(String newEmail, User user) async {
     await userRecordService.requestEmailChange(newEmail);
+  }
+
+  @override
+  Future<void> requestVerification(String email) async {
+    await userRecordService.requestVerification(email);
   }
 
   void createWeeklyPoints(String userID) async {

@@ -1,6 +1,7 @@
 import 'package:household_organizer/core/widgets/bloc_error_widget.dart';
 import 'package:household_organizer/core/widgets/custom_process_indicator_widget.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:household_organizer/features/authentication/presentation/widgets/verify_widget.dart';
 import 'package:household_organizer/features/authentication/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,7 +39,7 @@ class AuthPage extends StatelessWidget {
               ),
             );
           } else if (state is AuthLoaded) {
-            return state.authData.householdID == "" ? AddAuthDataToHouseholdView(mainUser: state.authData) : AuthMainPage(mainUser: state.authData, startCurrentPageIndex: state.startCurrentPageIndex);
+            return !state.authData.verified ? const VerifyWidget() : state.authData.householdID == "" ? AddAuthDataToHouseholdView(mainUser: state.authData) : AuthMainPage(mainUser: state.authData, startCurrentPageIndex: state.startCurrentPageIndex);
           } else if (state is AuthError) {
             return BlocErrorWidget(failure: state.failure, reloadAction: () {
               BlocProvider.of<AuthBloc>(context)
