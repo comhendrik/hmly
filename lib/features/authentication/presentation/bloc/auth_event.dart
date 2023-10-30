@@ -91,9 +91,7 @@ class LogoutEvent extends AuthEvent {
 }
 
 class ChangeUserAttributesEvent extends AuthEvent {
-  //TODO: Neuer usecase und damit event, für das anfragen einer email änderung
   final String input;
-  final String? token;
   final String? confirmationPassword;
   final String? oldPassword;
   final User user;
@@ -102,7 +100,6 @@ class ChangeUserAttributesEvent extends AuthEvent {
 
   const ChangeUserAttributesEvent({
     required this.input,
-    required this.token,
     required this.confirmationPassword,
     required this.oldPassword,
     required this.user,
@@ -116,6 +113,18 @@ class RequestNewPasswordEvent extends AuthEvent {
 
   const RequestNewPasswordEvent({
     required this.userEmail
+  });
+}
+
+class RequestEmailChangeEvent extends AuthEvent {
+  final String newEmail;
+  final User user;
+  final String msg = "E-mail change is going to be requested";
+
+  const RequestEmailChangeEvent({
+    required this.newEmail,
+    required this.user,
+
   });
 }
 

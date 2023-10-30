@@ -9,7 +9,7 @@ class ChangeUserAttributes {
 
   ChangeUserAttributes({required this.repository});
 
-  Future<Either<Failure, User>> execute(String input, String? token, String? confirmationPassword, String? oldPassword, User user, UserChangeType type) async {
-    return await repository.changeUserAttributes(input, token, confirmationPassword, oldPassword, user, type);
+  Future<Either<Failure, User>> execute(String input, String? confirmationPassword, String? oldPassword, User user, UserChangeType type) async {
+    return await repository.changeUserAttributes(input, confirmationPassword, oldPassword, user, type);
   }
 }

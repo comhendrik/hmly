@@ -4,6 +4,7 @@ import 'package:household_organizer/features/authentication/domain/repositories/
 import 'package:household_organizer/features/authentication/domain/usecases/add_auth_data_to_household.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/change_user_attributes.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/create_Household_And_Add_Auth_Data.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/request_email_change.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/request_new_password.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/sign_up.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/leave_household.dart';
@@ -45,8 +46,6 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
 
-
-  //TODO: Maybe register store in getit instance
   final prefs = await SharedPreferences.getInstance();
   final store = AsyncAuthStore(
     save:    (String data) async => prefs.setString('pb_auth', data),
@@ -86,6 +85,7 @@ Future<void> init() async {
           logout: sl(),
           changeUserAttributes: sl(),
           requestNewPassword: sl(),
+          requestEmailChange: sl(),
           authStore: store
         )
   );
@@ -122,6 +122,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => Logout(repository: sl()));
   sl.registerLazySingleton(() => ChangeUserAttributes(repository: sl()));
   sl.registerLazySingleton(() => RequestNewPassword(repository: sl()));
+  sl.registerLazySingleton(() => RequestEmailChange(repository: sl()));
 
   sl.registerLazySingleton(() => GetWeeklyBarChartData(repository: sl()));
   sl.registerLazySingleton(() => GetDailyPieChartData(repository: sl()));

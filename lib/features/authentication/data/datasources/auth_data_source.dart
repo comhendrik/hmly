@@ -14,8 +14,9 @@ abstract class AuthDataSource {
   Future<UserModel> signUp(String email, String password,String passwordConfirm, String username, String name);
   Future<UserModel> loadAuthDataWithOAuth();
   void logout();
-  Future<UserModel> changeUserAttributes(String input, String? token, String? confirmationPassword, String? oldPassword, User user, UserChangeType type);
+  Future<UserModel> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, User user, UserChangeType type);
   Future<void> requestNewPassword(String userEmail);
+  Future<void> requestEmailChange(String newEmail, User user);
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -124,12 +125,12 @@ class AuthDataSourceImpl implements AuthDataSource {
           (url) async {
         // or use something like flutter_custom_tabs to make the transitions between native and web content more seamless
         await launchUrl(url);
-        //TODO: When cancelling it shows a loading view
+        //TODO: When cancelling it shows a loading view /Later Release
 
       });
       RecordModel user = authStore.model;
 
-      //TODO: Point creation is needed but only when signing user in with oauth
+      //TODO: Point creation is needed but only when signing user in with oauth /Later Release
       //createWeeklyPoints(user.id);
       return UserModel.fromJSON(user.data, user.id);
 
@@ -146,25 +147,14 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<UserModel> changeUserAttributes(String input, String? token, String? confirmationPassword, String? oldPassword, User user, UserChangeType type) async {
+  Future<UserModel> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, User user, UserChangeType type) async {
     try {
       Map<String, dynamic> data = {};
       switch (type) {
         case UserChangeType.email:
 
-          if (token == null)  throw Exception("No password");
-          await userRecordService.authWithPassword(user.username, token);
-          await userRecordService.requestEmailChange(input);
-
-          //TODO: Change this one here
-          final result = await userRecordService.getOne(user.id);
-          return UserModel.fromJSON(result.data, result.id);
-        case UserChangeType.verifyEmail:
-
-          if (token == null) throw Exception("No email token");
-          await userRecordService.confirmEmailChange(token, input);
-          final result = await userRecordService.getOne(user.id);
-          return UserModel.fromJSON(result.data, result.id);
+          //TODO: Implement custom exception
+          throw Exception("Type email shouldn't be used in this context!!");
 
         case UserChangeType.name || UserChangeType.username:
 
@@ -193,6 +183,11 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<void> requestNewPassword(String userEmail) async {
     userRecordService.requestPasswordReset(userEmail);
+  }
+
+  @override
+  Future<void> requestEmailChange(String newEmail, User user) async {
+    await userRecordService.requestEmailChange(newEmail);
   }
 
   void createWeeklyPoints(String userID) async {

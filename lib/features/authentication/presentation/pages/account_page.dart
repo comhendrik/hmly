@@ -34,20 +34,13 @@ class _AccountPage extends State<AccountPage> {
         widget: Column(
           children: [
             GestureDetector(
-              onTap: () {
-                showModalBottomSheet<void>(
+              onTap: () => showModalBottomSheet<void>(
                   isScrollControlled: true,
                   context: context,
                   builder: (BuildContext context) {
-                    return Wrap(
-                      children: [
-                        ChangeUserAttributesWidget(type: UserChangeType.email, mainUser: widget.mainUser,  ancestorContext: widget.ancestorContext),
-                        ChangeUserAttributesWidget(type: UserChangeType.verifyEmail, mainUser: widget.mainUser,  ancestorContext: widget.ancestorContext),
-                      ],
-                    );
-                  });
-
-              },
+                    return ChangeUserAttributesWidget(type: UserChangeType.email, mainUser: widget.mainUser,  ancestorContext: widget.ancestorContext);
+                }
+              ),
               child: _buildListTile(
                 leadingIcon: Icons.email,
                 title: 'Email',

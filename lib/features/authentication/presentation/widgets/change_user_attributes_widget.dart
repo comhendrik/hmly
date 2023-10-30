@@ -23,12 +23,20 @@ class ChangeUserAttributesWidget extends StatefulWidget {
 class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget> {
 
 
-  //TODO: Maybe some of them only need to be init when using right type: like the password ones
   final TextEditingController textfieldController = TextEditingController();
-  final TextEditingController confirmationPasswordController = TextEditingController();
-  final TextEditingController oldPasswordController = TextEditingController();
-  final TextEditingController verificationController = TextEditingController();
+  TextEditingController? confirmationPasswordController;
+  TextEditingController? oldPasswordController;
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.type == UserChangeType.password) {
+      confirmationPasswordController = TextEditingController();
+      oldPasswordController = TextEditingController();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,12 +102,8 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                                   if (!value.contains('@') || !value.contains('.') || value.contains('@.')) {
                                     return 'No valid email';
                                   }
-                                case UserChangeType.verifyEmail:
-                                  if (value.length < 8) {
-                                    return 'Use at least 8 characters for your password';
-                                  }
                                 case UserChangeType.name:
-                                //Nothing needed
+                                  return null;
                                 case UserChangeType.username:
                                   if (value.contains(" ")) {
                                     return 'Must be in a valid format';
@@ -132,53 +136,23 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                                   return null;
                                 }
                             ),
-                          if (widget.type == UserChangeType.verifyEmail)
-                            TextFormField(
-                              controller: verificationController,
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: InputDecoration(
-                                labelText: 'Verify Token',
-                                hintText: 'your token from email',
-                                prefixIcon: Icon(widget.type.icon), // Icon for username
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter the token';
-                                }
-                                return null;
-                              },
-                            ),
-
-                          if (widget.type == UserChangeType.email)
-                            TextFormField(
-                              obscureText: true,
-                              controller: verificationController,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                labelText: 'password',
-                                hintText: 'enter password',
-                                prefixIcon: Icon(widget.type.icon), // Icon for username
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please provide a value';
-                                }
-                                if (value.length < 8) {
-                                  return 'Use at least 8 characters for your password';
-                                }
-                                return null;
-                              },
-                            ),
-                          ElevatedButton.icon(
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  changeAttribute(textfieldController.text, verificationController.text, confirmationPasswordController.text, oldPasswordController.text, widget.mainUser, widget.type);
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: ElevatedButton.icon(
+                                onPressed: () {
+                                  if (!_formKey.currentState!.validate()) return;
+                                  if (widget.type == UserChangeType.email) {
+                                    requestEmailChange(textfieldController.text, widget.mainUser);
+                                    Navigator.pop(context);
+                                    return;
+                                  }
+                                  changeAttribute(textfieldController.text, confirmationPasswordController!.text, oldPasswordController!.text, widget.mainUser, widget.type);
                                   Navigator.pop(context);
-                                }
-                              },
-                              icon: const Icon(Icons.update),
-                              label: Text(widget.type.buttonText)
-                          ),
+                                },
+                                icon: const Icon(Icons.update),
+                                label: Text(widget.type.buttonText)
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -190,19 +164,19 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
     );
   }
 
-  void changeAttribute(String input, String? token, String? confirmationPassword, String? oldPassword, User user, UserChangeType type, ) {
+  void changeAttribute(String input, String? confirmationPassword, String? oldPassword, User user, UserChangeType type, ) {
     BlocProvider.of<AuthBloc>(widget.ancestorContext)
-        .add(ChangeUserAttributesEvent(input: input, token: token, confirmationPassword: confirmationPassword, oldPassword: oldPassword, user: user, type: type));
+        .add(ChangeUserAttributesEvent(input: input, confirmationPassword: confirmationPassword, oldPassword: oldPassword, user: user, type: type));
   }
 
-  void requestEmailChange(String newEmail) {
-    print(newEmail);
+  void requestEmailChange(String newEmail, User user) {
+    BlocProvider.of<AuthBloc>(widget.ancestorContext)
+        .add(RequestEmailChangeEvent(newEmail: newEmail, user: user));
   }
 }
 
 enum UserChangeType {
   email,
-  verifyEmail,
   name,
   username,
   password
@@ -213,8 +187,6 @@ extension UserChangeTypeExtenstion on UserChangeType {
   String get stringKey {
     switch (this) {
       case UserChangeType.email:
-        return "email";
-      case UserChangeType.verifyEmail:
         return "email";
       case UserChangeType.name:
         return "name";
@@ -229,8 +201,6 @@ extension UserChangeTypeExtenstion on UserChangeType {
     switch (this) {
       case UserChangeType.email:
         return "Change E-Mail";
-      case UserChangeType.verifyEmail:
-        return "Verify New Email";
       case UserChangeType.name:
         return "Change Name";
       case UserChangeType.username:
@@ -244,8 +214,6 @@ extension UserChangeTypeExtenstion on UserChangeType {
     switch (this) {
       case UserChangeType.email:
         return "Email";
-      case UserChangeType.verifyEmail:
-        return "Password";
       case UserChangeType.name:
         return "New Name";
       case UserChangeType.username:
@@ -259,8 +227,6 @@ extension UserChangeTypeExtenstion on UserChangeType {
     switch (this) {
       case UserChangeType.email:
         return "New E-Mail";
-      case UserChangeType.verifyEmail:
-        return "enter password";
       case UserChangeType.name:
         return "New Name";
       case UserChangeType.username:
@@ -274,8 +240,6 @@ extension UserChangeTypeExtenstion on UserChangeType {
     switch (this) {
       case UserChangeType.email:
         return "Request E-Mail Change";
-      case UserChangeType.verifyEmail:
-        return "Verify new E-Mail";
       case UserChangeType.name:
         return "Update Name";
       case UserChangeType.username:
@@ -289,8 +253,6 @@ extension UserChangeTypeExtenstion on UserChangeType {
     switch (this) {
       case UserChangeType.email:
         return Icons.email;
-      case UserChangeType.verifyEmail:
-        return Icons.lock;
       case UserChangeType.name:
         return Icons.badge;
       case UserChangeType.username:

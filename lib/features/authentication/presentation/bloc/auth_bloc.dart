@@ -11,6 +11,7 @@ import 'package:household_organizer/features/authentication/domain/usecases/load
 import 'package:household_organizer/features/authentication/domain/usecases/logout.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/change_user_attributes.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/request_new_password.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/request_email_change.dart';
 import 'package:household_organizer/features/authentication/presentation/widgets/change_user_attributes_widget.dart';
 import 'package:pocketbase/pocketbase.dart';
 
@@ -27,8 +28,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final Logout logout;
   final ChangeUserAttributes changeUserAttributes;
   final RequestNewPassword requestNewPassword;
+  final RequestEmailChange requestEmailChange;
   final AsyncAuthStore authStore;
+
   AuthBloc({
+
     required this.login,
     required this.createAuthDataOnServer,
     required this.addAuthDataToHousehold,
@@ -38,7 +42,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.logout,
     required this.changeUserAttributes,
     required this.requestNewPassword,
+    required this.requestEmailChange,
     required this.authStore
+
   }) : super(AuthInitial()) {
 
     on<AuthEvent>((event, emit) async {
@@ -127,7 +133,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthCreate());
       } else if (event is ChangeUserAttributesEvent) {
         emit(AuthLoading(msg: event.msg));
-        final resultEither = await changeUserAttributes.execute(event.input, event.token, event.confirmationPassword, event.oldPassword, event.user, event.type);
+        final resultEither = await changeUserAttributes.execute(event.input, event.confirmationPassword, event.oldPassword, event.user, event.type);
         await resultEither.fold(
                 (failure) async {
               emit(AuthError(failure: failure));
@@ -143,8 +149,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       } else if (event is RequestNewPasswordEvent) {
         emit(AuthLoading(msg: event.msg));
-        await requestNewPassword.execute(event.userEmail);
-        emit(AuthCreate());
+        final resultEither = await requestNewPassword.execute(event.userEmail);
+        await resultEither.fold(
+                (failure) async {
+              emit(AuthError(failure: failure));
+            },
+                (_) async {
+                  emit(AuthCreate());
+            }
+        );
+      } else if (event is RequestEmailChangeEvent) {
+        emit(AuthLoading(msg: event.msg));
+        final resultEither = await requestEmailChange.execute(event.newEmail, event.user);
+        await resultEither.fold(
+                (failure) async {
+              emit(AuthError(failure: failure));
+            },
+                (_) async {
+                  logout.execute();
+              emit(AuthCreate());
+            }
+        );
       }
     });
   }
