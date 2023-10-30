@@ -34,47 +34,40 @@ class _HouseholdInformationCardState extends State<HouseholdInformationCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(8.0),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(widget.title, style: const TextStyle(fontWeight: FontWeight.bold),),
-                  if (widget.titleWidget != null)
-                    widget.titleWidget!,
-                ],
-              ),
-              if(widget.button != null)
-                ElevatedButton.icon(
-                  onPressed: () {
-                    widget.button!.action();
-                  },
-                  icon: widget.button!.buttonIcon,
-                  label: Text(widget.button!.buttonText),
+      child: Card(
+        elevation: 0.125,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(widget.title, style: const TextStyle(fontWeight: FontWeight.bold),),
+                    if (widget.titleWidget != null)
+                      widget.titleWidget!,
+                  ],
                 ),
-            ],
-          ),
-          const SizedBox(height: 16.0),
-          widget.detailWidget,
-        ],
-      ),
+                if(widget.button != null)
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      widget.button!.action();
+                    },
+                    icon: widget.button!.buttonIcon,
+                    label: Text(widget.button!.buttonText),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 16.0),
+            widget.detailWidget,
+          ],
+        ),
+      )
     );
 
   }

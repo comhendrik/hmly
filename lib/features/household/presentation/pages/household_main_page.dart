@@ -4,11 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:household_organizer/features/household/domain/entities/household.dart';
-import 'package:household_organizer/features/household/domain/repositories/household_repository.dart';
 import 'package:household_organizer/features/household/presentation/bloc/household_bloc.dart';
 import '../widgets/widget.dart';
 import 'package:flutter_share/flutter_share.dart';
-import 'package:household_organizer/features/household/domain/usecases/delete_household.dart';
 
 class HouseholdMainPage extends StatefulWidget {
   final BuildContext context;
@@ -104,7 +102,6 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                 buttonText: 'Update',
               ) : null,
           ),
-          const SizedBox(height: 10,),
           HouseholdInformationCard(
             title: "Admin",
             titleWidget: null,
@@ -236,7 +233,6 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                 buttonText: 'Change Admin',
               ) : null,
           ),
-          const SizedBox(height: 10,),
           HouseholdInformationCard(
               title: "Household Id",
               titleWidget: null,
@@ -250,7 +246,6 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                 buttonText: 'Copy ID',
               ),
           ),
-          const SizedBox(height: 10,),
           HouseholdInformationCard(
               title: "User",
               titleWidget: null,
@@ -302,7 +297,6 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                 buttonText: 'Invite User',
               ),
           ),
-          const SizedBox(height: 10,),
           HouseholdInformationCard(
               title: "Household",
               titleWidget: null,
@@ -337,7 +331,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                   ),
                 ),
                 buttonIcon: const Icon(Icons.arrow_back),
-                buttonText: 'Leave Household',
+                buttonText: 'Leave',
               ))
         ],
       )

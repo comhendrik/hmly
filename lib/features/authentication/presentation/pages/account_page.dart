@@ -25,7 +25,7 @@ class _AccountPage extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return FeatureWidgetBlueprint(
-        title: "Account Information",
+        title: "Account",
         titleIcon: Icons.person,
         reloadAction: () {
           BlocProvider.of<AuthBloc>(context)
@@ -118,7 +118,6 @@ class _AccountPage extends State<AccountPage> {
       ),
       child: Card(
         elevation: 0.125,
-        // No elevation for the Card; we'll use the shadow from the Container
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
