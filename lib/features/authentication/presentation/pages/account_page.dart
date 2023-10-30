@@ -35,7 +35,7 @@ class _AccountPage extends State<AccountPage> {
           children: [
             GestureDetector(
               onTap: () {
-                /*
+
                 //TODO: This needs to be added when updating email works completely, Main issue UI of updating
                 showModalBottomSheet<void>(
                   isScrollControlled: true,
@@ -43,12 +43,12 @@ class _AccountPage extends State<AccountPage> {
                   builder: (BuildContext context) {
                     return Wrap(
                       children: [
-                        ChangeUserAttributesWidget(type: UserChangeType.email, mainUserID: widget.mainUser.id,  ancestorContext: widget.ancestorContext),
-                        ChangeUserAttributesWidget(type: UserChangeType.verifyEmail, mainUserID: widget.mainUser.id,  ancestorContext: widget.ancestorContext),
+                        ChangeUserAttributesWidget(type: UserChangeType.email, mainUser: widget.mainUser,  ancestorContext: widget.ancestorContext),
+                        ChangeUserAttributesWidget(type: UserChangeType.verifyEmail, mainUser: widget.mainUser,  ancestorContext: widget.ancestorContext),
                       ],
                     );
                   });
-                 */
+
               },
               child: _buildListTile(
                 leadingIcon: Icons.email,
@@ -61,7 +61,7 @@ class _AccountPage extends State<AccountPage> {
                   isScrollControlled: true,
                   context: context,
                   builder: (BuildContext context) {
-                    return ChangeUserAttributesWidget(type: UserChangeType.username, mainUserID: widget.mainUser.id, ancestorContext: widget.ancestorContext);
+                    return ChangeUserAttributesWidget(type: UserChangeType.username, mainUser: widget.mainUser, ancestorContext: widget.ancestorContext);
                   }),
               child: _buildListTile(
                 leadingIcon: Icons.person,
@@ -74,7 +74,7 @@ class _AccountPage extends State<AccountPage> {
                   isScrollControlled: true,
                   context: context,
                   builder: (BuildContext context) {
-                    return ChangeUserAttributesWidget(type: UserChangeType.name, mainUserID: widget.mainUser.id, ancestorContext: widget.ancestorContext);
+                    return ChangeUserAttributesWidget(type: UserChangeType.name, mainUser: widget.mainUser, ancestorContext: widget.ancestorContext);
                   }),
               child: _buildListTile(
                 leadingIcon: Icons.person,
@@ -92,7 +92,7 @@ class _AccountPage extends State<AccountPage> {
                   isScrollControlled: true,
                   context: context,
                   builder: (BuildContext context) {
-                    return ChangeUserAttributesWidget(type: UserChangeType.password, mainUserID: widget.mainUser.id,  ancestorContext: widget.ancestorContext);
+                    return ChangeUserAttributesWidget(type: UserChangeType.password, mainUser: widget.mainUser,  ancestorContext: widget.ancestorContext);
                   }),
               child: _buildListTile(
                 leadingIcon: Icons.lock,

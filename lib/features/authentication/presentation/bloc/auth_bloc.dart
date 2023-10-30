@@ -59,7 +59,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthLoading(msg: event.msg));
         if (authStore.model != null) {
           RecordModel user = authStore.model;
-          emit(AuthLoaded(authData: User(id: user.id,username: user.data["username"],householdID: user.data["household"],email: user.data["email"], name: user.data["name"]), startCurrentPageIndex: 0));
+          emit(AuthLoaded(authData: User(id: user.id,username: user.data["username"],householdID: user.data["household"],email: user.data["email"], name: user.data["name"]), startCurrentPageIndex: 2));
         } else {
           emit(AuthCreate());
         }
@@ -69,8 +69,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final resultEither = await createAuthDataOnServer.execute(event.email, event.password, event.passwordConfirm, event.username, event.name);
         await resultEither.fold(
                 (failure) async {
-                  //TODO: Maybe use dynamic error messages, because username that is already in use is not the only failure, for example email, idea: check error message from datasource for email and username and provide a suiting errormsg
-              //emit(const AuthError(errorMsg: 'Username or email is already in use'));
                   emit(AuthError(failure: failure));
             },
                 (auth) async {
@@ -129,28 +127,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         logout.execute();
         emit(AuthCreate());
       } else if (event is ChangeUserAttributesEvent) {
-        if (event.type != UserChangeType.email) {
-          emit(AuthLoading(msg: event.msg));
-          final resultEither = await changeUserAttributes.execute(event.input, event.token, event.confirmationPassword, event.oldPassword, event.userID, event.type);
-          await resultEither.fold(
-                  (failure) async {
-                    emit(AuthError(failure: failure));
-              },
-                  (auth) async {
-                emit(AuthLoaded(authData: auth, startCurrentPageIndex: 2));
-              }
-          );
-        } else {
-          final resultEither = await changeUserAttributes.execute(event.input, event.token, event.confirmationPassword, event.oldPassword, event.userID, event.type);
-          await resultEither.fold(
-              (failure) async {
-                emit(AuthError(failure: failure));
-              },
-              (auth) async {
-                emit(AuthLoaded(authData: auth, startCurrentPageIndex: 2));
-              }
-          );
-        }
+        emit(AuthLoading(msg: event.msg));
+        final resultEither = await changeUserAttributes.execute(event.input, event.token, event.confirmationPassword, event.oldPassword, event.user, event.type);
+        await resultEither.fold(
+                (failure) async {
+              emit(AuthError(failure: failure));
+            },
+                (auth) async {
+                  if (event.type == UserChangeType.email) {
+                    logout.execute();
+                    emit(AuthCreate());
+                    return;
+                  }
+              emit(AuthLoaded(authData: auth, startCurrentPageIndex: 2));
+            }
+        );
       } else if (event is RequestNewPasswordEvent) {
         emit(AuthLoading(msg: event.msg));
         await requestNewPassword.execute(event.userEmail);

@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
 
 
 class ChangeUserAttributesWidget extends StatefulWidget {
   final UserChangeType type;
   final BuildContext ancestorContext;
-  final String mainUserID;
+  final User mainUser;
 
   const ChangeUserAttributesWidget({
     super.key,
     required this.type,
     required this.ancestorContext,
-    required this.mainUserID,
+    required this.mainUser,
   });
 
   @override
@@ -147,15 +148,33 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                                 return null;
                               },
                             ),
+
+                          if (widget.type == UserChangeType.email)
+                            TextFormField(
+                              obscureText: true,
+                              controller: verificationController,
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                labelText: 'password',
+                                hintText: 'enter password',
+                                prefixIcon: Icon(widget.type.icon), // Icon for username
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please provide a value';
+                                }
+                                if (value.length < 8) {
+                                  return 'Use at least 8 characters for your password';
+                                }
+                                return null;
+                              },
+                            ),
                           ElevatedButton.icon(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
-                                  changeAttribute(textfieldController.text, verificationController.text, confirmationPasswordController.text, oldPasswordController.text, widget.mainUserID, widget.type);
-                                  if (widget.type != UserChangeType.email) {
-                                    Navigator.pop(context);
-                                  }
+                                  changeAttribute(textfieldController.text, verificationController.text, confirmationPasswordController.text, oldPasswordController.text, widget.mainUser, widget.type);
+                                  Navigator.pop(context);
                                 }
-
                               },
                               icon: const Icon(Icons.update),
                               label: Text(widget.type.buttonText)
@@ -171,9 +190,9 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
     );
   }
 
-  void changeAttribute(String input, String? token, String? confirmationPassword, String? oldPassword, String userID, UserChangeType type, ) {
+  void changeAttribute(String input, String? token, String? confirmationPassword, String? oldPassword, User user, UserChangeType type, ) {
     BlocProvider.of<AuthBloc>(widget.ancestorContext)
-        .add(ChangeUserAttributesEvent(input: input, token: token, confirmationPassword: confirmationPassword, oldPassword: oldPassword, userID: userID, type: type));
+        .add(ChangeUserAttributesEvent(input: input, token: token, confirmationPassword: confirmationPassword, oldPassword: oldPassword, user: user, type: type));
   }
 
   void requestEmailChange(String newEmail) {

@@ -91,11 +91,12 @@ class LogoutEvent extends AuthEvent {
 }
 
 class ChangeUserAttributesEvent extends AuthEvent {
+  //TODO: Neuer usecase und damit event, für das anfragen einer email änderung
   final String input;
   final String? token;
   final String? confirmationPassword;
   final String? oldPassword;
-  final String userID;
+  final User user;
   final UserChangeType type;
   final String msg = "Attribute of user is changed";
 
@@ -104,7 +105,7 @@ class ChangeUserAttributesEvent extends AuthEvent {
     required this.token,
     required this.confirmationPassword,
     required this.oldPassword,
-    required this.userID,
+    required this.user,
     required this.type,
   });
 }

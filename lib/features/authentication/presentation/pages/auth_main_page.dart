@@ -16,10 +16,10 @@ class AuthMainPage extends StatefulWidget {
 
 
   @override
-  State<AuthMainPage> createState() => _AuthenticatedView();
+  State<AuthMainPage> createState() => _AuthMainPage();
 }
 
-class _AuthenticatedView extends State<AuthMainPage> {
+class _AuthMainPage extends State<AuthMainPage> {
 
   int currentPageIndex = 0;
 

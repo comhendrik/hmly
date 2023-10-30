@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_signin_button/button_list.dart';
-import 'package:flutter_signin_button/button_view.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'widgets.dart';
 
@@ -18,7 +17,6 @@ class AuthenticationWidget extends StatefulWidget {
   State<AuthenticationWidget> createState() => _AuthenticationWidget();
 }
 
-//TODO: put sign up and login in one widget and add error handling
 
 class _AuthenticationWidget extends State<AuthenticationWidget> {
   bool showLogin = true;

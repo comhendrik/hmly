@@ -14,7 +14,7 @@ abstract class AuthDataSource {
   Future<UserModel> signUp(String email, String password,String passwordConfirm, String username, String name);
   Future<UserModel> loadAuthDataWithOAuth();
   void logout();
-  Future<UserModel> changeUserAttributes(String input, String? token, String? confirmationPassword, String? oldPassword, String userID, UserChangeType type);
+  Future<UserModel> changeUserAttributes(String input, String? token, String? confirmationPassword, String? oldPassword, User user, UserChangeType type);
   Future<void> requestNewPassword(String userEmail);
 }
 
@@ -146,28 +146,30 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<UserModel> changeUserAttributes(String input, String? token, String? confirmationPassword, String? oldPassword, String userID, UserChangeType type) async {
+  Future<UserModel> changeUserAttributes(String input, String? token, String? confirmationPassword, String? oldPassword, User user, UserChangeType type) async {
     try {
       Map<String, dynamic> data = {};
       switch (type) {
         case UserChangeType.email:
-          await userRecordService.authWithPassword('Hendrik', '12345678');
+
+          if (token == null)  throw Exception("No password");
+          await userRecordService.authWithPassword(user.username, token);
           await userRecordService.requestEmailChange(input);
 
           //TODO: Change this one here
-          final result = await userRecordService.getOne(userID);
+          final result = await userRecordService.getOne(user.id);
           return UserModel.fromJSON(result.data, result.id);
         case UserChangeType.verifyEmail:
 
           if (token == null) throw Exception("No email token");
           await userRecordService.confirmEmailChange(token, input);
-          final result = await userRecordService.getOne(userID);
+          final result = await userRecordService.getOne(user.id);
           return UserModel.fromJSON(result.data, result.id);
 
         case UserChangeType.name || UserChangeType.username:
 
           data.addAll({type.stringKey : input});
-          final result = await userRecordService.update(userID, body: data);
+          final result = await userRecordService.update(user.id, body: data);
           return UserModel.fromJSON(result.data, result.id);
 
         case UserChangeType.password:
@@ -178,7 +180,7 @@ class AuthDataSourceImpl implements AuthDataSource {
             "oldPassword" : oldPassword,
             "passwordConfirm" : confirmationPassword,
           });
-          final result = await userRecordService.update(userID, body: data);
+          final result = await userRecordService.update(user.id, body: data);
           return UserModel.fromJSON(result.data, result.id);
       }
     } on ClientException catch(err) {

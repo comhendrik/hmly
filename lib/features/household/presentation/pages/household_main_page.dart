@@ -316,7 +316,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                     title: Text(widget.mainUser.id == widget.household.admin.id ? 'Admin Warning' : 'Warning'),
                     content: Text(
                         widget.mainUser.id == widget.household.admin.id ?
-                        'You can only leave the household as an admin, when u are the only user in this household' :
+                        (widget.household.users.length == 1 ? 'When u leave the household as an admin. The household will be deleted!' : 'You can only leave the household as an admin, when u are the only user in this household') :
                         'When pressing okay, you will leave the household'
                     ),
                     actions: <Widget>[
