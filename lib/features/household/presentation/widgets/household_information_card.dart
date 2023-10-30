@@ -39,34 +39,37 @@ class _HouseholdInformationCardState extends State<HouseholdInformationCard> {
       ),
       child: Card(
         elevation: 0.125,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(widget.title, style: const TextStyle(fontWeight: FontWeight.bold),),
-                    if (widget.titleWidget != null)
-                      widget.titleWidget!,
-                  ],
-                ),
-                if(widget.button != null)
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      widget.button!.action();
-                    },
-                    icon: widget.button!.buttonIcon,
-                    label: Text(widget.button!.buttonText),
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(widget.title, style: const TextStyle(fontWeight: FontWeight.bold),),
+                      if (widget.titleWidget != null)
+                        widget.titleWidget!,
+                    ],
                   ),
-              ],
-            ),
-            const SizedBox(height: 16.0),
-            widget.detailWidget,
-          ],
-        ),
+                  if(widget.button != null)
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        widget.button!.action();
+                      },
+                      icon: widget.button!.buttonIcon,
+                      label: Text(widget.button!.buttonText),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 16.0),
+              widget.detailWidget,
+            ],
+          ),
+        )
       )
     );
 
