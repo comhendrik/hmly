@@ -14,6 +14,7 @@ import 'package:household_organizer/features/authentication/domain/usecases/requ
 import 'package:household_organizer/features/authentication/domain/usecases/request_email_change.dart';
 import 'package:household_organizer/features/authentication/presentation/widgets/change_user_attributes_widget.dart';
 import 'package:pocketbase/pocketbase.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -61,6 +62,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             }
         );
       } else if (event is LoadAuthEvent) {
+        bool connection = await InternetConnectionChecker().hasConnection;
+        if (!connection) {
+          emit(AuthNoConnection());
+          return;
+        }
         emit(AuthLoading(msg: event.msg));
         if (authStore.model != null) {
           RecordModel user = authStore.model;

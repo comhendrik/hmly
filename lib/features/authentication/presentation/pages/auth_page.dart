@@ -46,6 +46,8 @@ class AuthPage extends StatelessWidget {
             });
           } else if (state is AuthCreate){
             return const AuthenticationWidget();
+          } else if (state is AuthNoConnection) {
+            return const Text("No connection");
           } else {
             return const Text("...");
           }

@@ -48,6 +48,7 @@ dependencies:
   url_launcher: ^6.1.14
   flutter_signin_button: ^2.0.0
   shared_preferences: ^2.2.2
+  internet_connection_checker: ^1.0.0+1
 
 dev_dependencies:
   flutter_test:

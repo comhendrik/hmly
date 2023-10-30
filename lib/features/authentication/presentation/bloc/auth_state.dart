@@ -16,7 +16,7 @@ class AuthLoading extends AuthState {
     required this.msg
   });
   @override
-  List<Object> get props => [];
+  List<Object> get props => [msg];
 }
 
 class AuthLoaded extends AuthState {
@@ -28,7 +28,7 @@ class AuthLoaded extends AuthState {
   });
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [authData, startCurrentPageIndex];
 }
 
 class AuthCreate extends AuthState {
@@ -42,6 +42,11 @@ class AuthError extends AuthState {
     required this.failure
   });
 
+  @override
+  List<Object> get props => [failure];
+}
+
+class AuthNoConnection extends AuthState {
   @override
   List<Object> get props => [];
 }
