@@ -17,7 +17,6 @@ class ForgetPasswordWidget extends StatefulWidget {
   State<ForgetPasswordWidget> createState() => _AuthenticationWidget();
 }
 
-//TODO: put sign up and login in one widget and add error handling
 
 class _AuthenticationWidget extends State<ForgetPasswordWidget> {
   final emailController = TextEditingController();

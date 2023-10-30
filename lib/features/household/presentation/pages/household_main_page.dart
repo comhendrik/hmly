@@ -40,8 +40,6 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
     titleController.text = widget.household.title;
     super.initState();
 
-
-    //TODO: Besseren Weg finden
     //init list of tuples for users
     isSelected = List<bool>.filled(widget.household.users.length - 1 , false, growable: false);
     for (int i = 0; i < widget.household.users.length; i++) {

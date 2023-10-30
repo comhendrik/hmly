@@ -35,8 +35,6 @@ class _AccountPage extends State<AccountPage> {
           children: [
             GestureDetector(
               onTap: () {
-
-                //TODO: This needs to be added when updating email works completely, Main issue UI of updating
                 showModalBottomSheet<void>(
                   isScrollControlled: true,
                   context: context,

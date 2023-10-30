@@ -41,7 +41,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.authStore
   }) : super(AuthInitial()) {
 
-    //TODO: Bug when creating new data on server and on device when username is already in use
     on<AuthEvent>((event, emit) async {
       emit(AuthInitial());
       if (event is LoginAuthEvent)  {

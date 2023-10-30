@@ -6,7 +6,6 @@ import 'package:household_organizer/features/household/domain/entities/household
 import 'package:pocketbase/pocketbase.dart';
 
 
-//TODO: Maybe put this household feature into authentication feature
 abstract class HouseholdRemoteDataSource {
   Future<HouseholdModel> loadHousehold(String householdID);
   Future<HouseholdModel> updateHouseholdTitle(String householdID, String title);
@@ -67,10 +66,7 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
 
   @override
   Future<void> deleteAuthDataFromHousehold(String userID, Household household) async {
-    //TODO: Maybe delete this code
-    if (userID == household.admin.id) {
-      throw UnknownException();
-    }
+
     try {
       final body = <String, dynamic> {
         "household" : ""
