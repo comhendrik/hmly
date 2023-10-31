@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'widgets.dart';
 
 class VerifyWidget extends StatefulWidget {
   final User mainUser;
@@ -92,6 +93,7 @@ class _VerifyWidgetState extends State<VerifyWidget> {
               ],
             ),
           ),
+          UserInformation(mainUser: widget.mainUser)
         ],
       ),
     );

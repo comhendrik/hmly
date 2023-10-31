@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'widgets.dart';
 
 class AddAuthDataToHouseholdView extends StatefulWidget {
   final User mainUser;
@@ -53,13 +54,14 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
                         if (value == null || value.length != 15) {
                           return 'The length must be exactly 15.';
                         }
+                        return '';
                       },
                       onChanged: (value) {
                         householdIDStr = value;
                       }
                   ),
                   Padding(
-                    padding: EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: ElevatedButton.icon(
                         onPressed: () {
                           if (_idFormKey.currentState!.validate()) {
@@ -98,6 +100,7 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
                         if (value.length >= 15) {
                           return 'Must be less than 15 characters';
                         }
+                        return '';
                       },
                       onChanged: (value) {
                         householdTitleStr = value;
@@ -120,7 +123,8 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
             ),
           ),
         ),
-        ElevatedButton(onPressed: logout, child: const Text("Logout"))
+        ElevatedButton(onPressed: logout, child: const Text("Logout")),
+        UserInformation(mainUser: widget.mainUser),
       ],
     );
   }
