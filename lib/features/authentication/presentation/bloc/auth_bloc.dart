@@ -4,6 +4,8 @@ import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/add_auth_data_to_household.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/create_Household_And_Add_Auth_Data.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/refresh_auth_data.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/request_verification.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/sign_up.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/leave_household.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/login.dart';
@@ -30,6 +32,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final ChangeUserAttributes changeUserAttributes;
   final RequestNewPassword requestNewPassword;
   final RequestEmailChange requestEmailChange;
+  final RequestVerification requestVerification;
+  final RefreshAuthData refreshAuthData;
   final AsyncAuthStore authStore;
 
   AuthBloc({
@@ -44,6 +48,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.changeUserAttributes,
     required this.requestNewPassword,
     required this.requestEmailChange,
+    required this.requestVerification,
+    required this.refreshAuthData,
     required this.authStore
 
   }) : super(AuthInitial()) {
@@ -68,8 +74,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           return;
         }
         emit(AuthLoading(msg: event.msg));
-        //TODO: Reload auth store model from server
+
         if (authStore.model != null) {
+          await refreshAuthData.execute();
           RecordModel user = authStore.model;
           emit(AuthLoaded(authData: User(id: user.id,username: user.data["username"],householdID: user.data["household"],email: user.data["email"], name: user.data["name"], verified: user.data["verified"]), startCurrentPageIndex: 2));
         } else {
@@ -174,8 +181,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             },
                 (_) async {
                   logout.execute();
-              emit(AuthCreate());
+                  emit(AuthCreate());
             }
+        );
+      } else if (event is RequestVerificationEvent) {
+        emit(AuthLoading(msg: event.msg));
+        final resultEither = await requestVerification.execute(event.user.email);
+        await resultEither.fold(
+          (failure) async {
+            emit(AuthError(failure: failure));
+          },
+          (_) async {
+            emit(AuthLoaded(authData: event.user, startCurrentPageIndex: 0));
+          }
         );
       }
     });

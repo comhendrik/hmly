@@ -4,8 +4,10 @@ import 'package:household_organizer/features/authentication/domain/repositories/
 import 'package:household_organizer/features/authentication/domain/usecases/add_auth_data_to_household.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/change_user_attributes.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/create_Household_And_Add_Auth_Data.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/refresh_auth_data.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/request_email_change.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/request_new_password.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/request_verification.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/sign_up.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/leave_household.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/login.dart';
@@ -86,6 +88,8 @@ Future<void> init() async {
           changeUserAttributes: sl(),
           requestNewPassword: sl(),
           requestEmailChange: sl(),
+          requestVerification: sl(),
+          refreshAuthData: sl(),
           authStore: store
         )
   );
@@ -123,6 +127,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => ChangeUserAttributes(repository: sl()));
   sl.registerLazySingleton(() => RequestNewPassword(repository: sl()));
   sl.registerLazySingleton(() => RequestEmailChange(repository: sl()));
+  sl.registerLazySingleton(() => RequestVerification(repository: sl()));
+  sl.registerLazySingleton(() => RefreshAuthData(repository: sl()));
 
   sl.registerLazySingleton(() => GetWeeklyBarChartData(repository: sl()));
   sl.registerLazySingleton(() => GetDailyPieChartData(repository: sl()));

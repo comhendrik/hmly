@@ -19,6 +19,7 @@ abstract class AuthDataSource {
   Future<void> requestNewPassword(String userEmail);
   Future<void> requestEmailChange(String newEmail, User user);
   Future<void> requestVerification(String email);
+  Future<void> refreshAuthData();
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -195,6 +196,11 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<void> requestVerification(String email) async {
     await userRecordService.requestVerification(email);
+  }
+
+  @override
+  Future<void> refreshAuthData() async {
+    await userRecordService.authRefresh();
   }
 
   void createWeeklyPoints(String userID) async {

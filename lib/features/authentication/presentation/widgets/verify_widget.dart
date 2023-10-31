@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:household_organizer/core/entities/user.dart';
+import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
 
 class VerifyWidget extends StatefulWidget {
-  const VerifyWidget({super.key});
+  final User mainUser;
+
+  const VerifyWidget({
+    super.key,
+    required this.mainUser
+  });
 
   @override
   State<VerifyWidget> createState() => _VerifyWidgetState();
@@ -30,7 +38,7 @@ class _VerifyWidgetState extends State<VerifyWidget> {
           ),
           const SizedBox(height: 8),
           const Text(
-            'Please click the button below to request an verification email. After validating please log in again',
+            'Please click the button below to request an verification email. After validating, reload application or click on retry',
             style: TextStyle(
               fontSize: 18,
             ),
@@ -38,7 +46,7 @@ class _VerifyWidgetState extends State<VerifyWidget> {
           const SizedBox(height: 24),
           ElevatedButton(
             onPressed: () {
-              print("verify button");
+              requestVerification(widget.mainUser);
             },
             child: const Row(
               mainAxisSize: MainAxisSize.min,
@@ -52,8 +60,55 @@ class _VerifyWidgetState extends State<VerifyWidget> {
               ],
             ),
           ),
+          ElevatedButton(
+            onPressed: () {
+              retry();
+            },
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Icon(Icons.refresh), // Retry icon
+                SizedBox(width: 8),
+                Text(
+                  'Try again',
+                  style: TextStyle(fontSize: 18),
+                ),
+              ],
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              logout();
+            },
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Icon(Icons.arrow_back), // Retry icon
+                SizedBox(width: 8),
+                Text(
+                  'Logout',
+                  style: TextStyle(fontSize: 18),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
+  }
+
+  void requestVerification(User user) {
+    BlocProvider.of<AuthBloc>(context)
+        .add(RequestVerificationEvent(user: user));
+  }
+
+  void retry() {
+    BlocProvider.of<AuthBloc>(context)
+        .add(LoadAuthEvent());
+  }
+
+  void logout() {
+    BlocProvider.of<AuthBloc>(context)
+        .add(const LogoutEvent());
   }
 }

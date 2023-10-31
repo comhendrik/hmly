@@ -2,7 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
-import 'package:household_organizer/features/authentication/presentation/widgets/LogoutButton.dart';
 
 class AddAuthDataToHouseholdView extends StatefulWidget {
   final User mainUser;
@@ -121,7 +120,7 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
             ),
           ),
         ),
-        const LogoutButton(),
+        ElevatedButton(onPressed: logout, child: const Text("Logout"))
       ],
     );
   }
@@ -134,5 +133,10 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
   void createHouseholdAndAddAuthData(User user, String householdTitle) {
     BlocProvider.of<AuthBloc>(context)
         .add(CreateHouseholdAndAddAuthDataEvent(user: user, householdTitle: householdTitle));
+  }
+
+  void logout() {
+    BlocProvider.of<AuthBloc>(context)
+        .add(const LogoutEvent());
   }
 }

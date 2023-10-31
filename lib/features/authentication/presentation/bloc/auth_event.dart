@@ -53,7 +53,7 @@ class LoginAuthEvent extends AuthEvent {
 }
 
 class LoadAuthEvent extends AuthEvent {
-  final String msg = "User is logged in";
+  final String msg = "Loading User data";
 }
 
 class SignUpAuthEvent extends AuthEvent {
@@ -125,6 +125,15 @@ class RequestEmailChangeEvent extends AuthEvent {
     required this.newEmail,
     required this.user,
 
+  });
+}
+
+class RequestVerificationEvent extends AuthEvent {
+  final User user;
+  final String msg = "Verification is going to be requested";
+
+  const RequestVerificationEvent({
+    required this.user
   });
 }
 

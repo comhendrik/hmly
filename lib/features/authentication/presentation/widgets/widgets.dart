@@ -1,5 +1,4 @@
 export 'authentication.dart';
-export 'LogoutButton.dart';
 export '../pages/account_page.dart';
 export 'add_auth_data_to_household.dart';
 export '../pages/auth_main_page.dart';

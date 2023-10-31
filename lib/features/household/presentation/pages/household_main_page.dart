@@ -316,12 +316,14 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                         onPressed: ()  => Navigator.pop(context, 'Cancel'),
                         child: const Text('Cancel'),
                       ),
-                      if(widget.household.users.length == 1)
+                      if (widget.household.admin.id != widget.mainUser.id || widget.household.users.length == 1)
                         TextButton(
                           onPressed: () {
-                            if (widget.mainUser.id != widget.household.admin.id || widget.household.users.length == 1) {
+                            if (widget.mainUser.id == widget.household.admin.id || widget.household.users.length == 1) {
                               leaveHousehold(widget.mainUser);
                               deleteHousehold(widget.household.id);
+                            } else {
+                              leaveHousehold(widget.mainUser);
                             }
                             Navigator.pop(context, 'Leave');
                           },

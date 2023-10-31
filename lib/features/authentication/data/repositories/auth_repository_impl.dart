@@ -127,4 +127,26 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(Failure(data: e.response, type: FailureType.unknown));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> requestVerification(String email) async {
+    try {
+      return Right(await dataSource.requestVerification(email));
+    } on ServerException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.server));
+    } on UnknownException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.unknown));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> refreshAuthData() async {
+    try {
+      return Right(await dataSource.refreshAuthData());
+    } on ServerException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.server));
+    } on UnknownException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.unknown));
+    }
+  }
 }
