@@ -54,7 +54,6 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
                         if (value == null || value.length != 15) {
                           return 'The length must be exactly 15.';
                         }
-                        return '';
                       },
                       onChanged: (value) {
                         householdIDStr = value;
@@ -100,7 +99,6 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
                         if (value.length >= 15) {
                           return 'Must be less than 15 characters';
                         }
-                        return '';
                       },
                       onChanged: (value) {
                         householdTitleStr = value;

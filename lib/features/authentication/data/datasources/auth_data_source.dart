@@ -86,6 +86,11 @@ class AuthDataSourceImpl implements AuthDataSource {
     try {
       final _ = await userRecordService.authWithPassword(email, password);
       RecordModel user = authStore.model;
+      userRecordService.subscribe(user.id, (e) {
+        if (e.record?.data['household'] == '') {
+          logout();
+        }
+      });
       return UserModel.fromJSON(user.data, user.id);
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
