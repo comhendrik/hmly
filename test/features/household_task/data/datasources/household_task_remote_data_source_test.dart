@@ -10,19 +10,14 @@ class MockRecordService extends Mock implements RecordService {}
 void main() {
   late MockRecordService mockRecordServiceUser;
   late MockRecordService mockRecordServiceTask;
+  late MockRecordService mockRecordServicePoints;
   late HouseholdTaskRemoteDataSourceImpl dataSource;
-  late String fhouseholdId;
-  late String email;
-  late String password;
   
   setUpAll(() {
     mockRecordServiceUser = MockRecordService();
     mockRecordServiceTask = MockRecordService();
-    //Placeholder values
-    householdId = 'id';
-    email = 'email';
-    password = 'password';
-    dataSource = HouseholdTaskRemoteDataSourceImpl(userRecordService: mockRecordServiceUser, taskRecordService: mockRecordServiceTask, email: email, password: password, householdId: householdId);
+    mockRecordServicePoints = MockRecordService();
+    dataSource = HouseholdTaskRemoteDataSourceImpl(userRecordService: mockRecordServiceUser, taskRecordService: mockRecordServiceTask, pointRecordService: mockRecordServicePoints)
   });
   
   group('getAllTasksForHousehold', () {

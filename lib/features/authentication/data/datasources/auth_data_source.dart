@@ -2,7 +2,6 @@ import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/core/models/user_model.dart';
 import 'package:household_organizer/features/authentication/presentation/widgets/change_user_attributes_widget.dart';
-import 'package:household_organizer/features/household/domain/entities/household.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -14,7 +13,7 @@ abstract class AuthDataSource {
   Future<UserModel> login(String email, String password);
   Future<UserModel> signUp(String email, String password,String passwordConfirm, String username, String name);
   Future<UserModel> loadAuthDataWithOAuth();
-  void logout();
+  Future<void> logout();
   Future<UserModel> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, User user, UserChangeType type);
   Future<void> requestNewPassword(String userEmail);
   Future<void> requestEmailChange(String newEmail, User user);
@@ -145,8 +144,14 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  void logout() async {
-    authStore.clear();
+  Future<void> logout() async {
+    try {
+      authStore.clear();
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
+    }
   }
 
   @override

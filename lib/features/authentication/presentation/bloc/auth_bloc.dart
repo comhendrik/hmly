@@ -68,11 +68,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             }
         );
       } else if (event is LoadAuthEvent) {
+        /*
         bool connection = await InternetConnectionChecker().hasConnection;
         if (!connection) {
           emit(AuthNoConnection());
           return;
         }
+         */
         emit(AuthLoading(msg: event.msg));
 
         if (authStore.model != null) {
@@ -143,7 +145,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       } else if (event is LogoutEvent) {
         emit(AuthLoading(msg: event.msg));
-        logout.execute();
+        final resultEither = await logout.execute();
+        await resultEither.fold(
+                (failure) async {
+              emit(AuthError(failure: failure));
+            },
+                (_) async {
+              emit(AuthCreate());
+            }
+        );
         emit(AuthCreate());
       } else if (event is ChangeUserAttributesEvent) {
         emit(AuthLoading(msg: event.msg));

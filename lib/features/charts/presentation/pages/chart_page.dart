@@ -4,7 +4,6 @@ import 'package:household_organizer/core/widgets/custom_process_indicator_widget
 import 'package:household_organizer/core/widgets/feauture_widget_blueprint.dart';
 import 'package:household_organizer/features/charts/presentation/bloc/chart_bloc.dart';
 import 'package:household_organizer/features/charts/presentation/pages/chart_main_page.dart';
-import 'package:household_organizer/features/charts/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,42 +28,30 @@ class ChartPage extends StatelessWidget {
       child: BlocBuilder<ChartBloc, ChartState>(
         builder: (context, state) {
           if (state is ChartInitial) {
-            BlocProvider.of<ChartBloc>(context)
-                .add(GetWeeklyChartDataEvent(userID: mainUser.id, householdID: mainUser.householdID));
-            return const Text("Data is loading...");
+            loadingFunction(context, mainUser);
+            return const Text("Charts initialise...");
           } else if (state is ChartLoading) {
-            return Center(
-                child: CustomProcessIndicator(
-                    reloadAction: () {
-                      BlocProvider.of<ChartBloc>(context)
-                          .add(GetWeeklyChartDataEvent(userID: mainUser.id, householdID: mainUser.householdID));
-                    }, msg: state.msg,
-                ),
-            );
+            return CustomProcessIndicator(reloadAction: () => loadingFunction(context, mainUser), msg: state.msg);
           } else if (state is ChartLoaded) {
             return FeatureWidgetBlueprint(
                 title: "Statistics",
                 titleIcon: Icons.insert_chart,
-                reloadAction: () {
-                  BlocProvider.of<ChartBloc>(context)
-                      .add(GetWeeklyChartDataEvent(userID: mainUser.id, householdID: mainUser.householdID));
-                },
+                reloadAction: () => loadingFunction(context, mainUser),
                 widget: ChartMainPage(barChartData: state.barChartDataList, pieChartData: state.pieChartDataList)
             );
           } else if (state is ChartError) {
-
-            return BlocErrorWidget(failure: state.failure, reloadAction: () {
-              BlocProvider.of<ChartBloc>(context)
-                  .add(GetWeeklyChartDataEvent(userID: mainUser.id, householdID: mainUser.householdID));
-            });
-
+            return BlocErrorWidget(failure: state.failure, reloadAction: () => loadingFunction(context, mainUser));
           } else {
-            return const Text("...");
+            return const Text("Please contact support when this occurs");
           }
         },
       ),
     );
+  }
 
+  void loadingFunction(BuildContext bContext, User mainUser) {
+    BlocProvider.of<ChartBloc>(bContext)
+        .add(GetWeeklyChartDataEvent(userID: mainUser.id, householdID: mainUser.householdID));
   }
 
 

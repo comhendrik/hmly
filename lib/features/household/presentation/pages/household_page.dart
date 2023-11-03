@@ -24,44 +24,33 @@ class HouseholdPage extends StatelessWidget {
   BlocProvider<HouseholdBloc> buildBody(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<HouseholdBloc>(),
-      child: Column(
-        children: <Widget>[
-          BlocBuilder<HouseholdBloc, HouseholdState>(
-            builder: (context, state) {
-              if (state is HouseholdInitial) {
-                BlocProvider.of<HouseholdBloc>(context)
-                    .add(LoadHouseholdEvent(householdID: mainUser.householdID));
-                return Text("No data loaded for household id: '${mainUser.householdID}'");
-              } else if (state is HouseholdLoading) {
-                return CustomProcessIndicator(
-                    reloadAction: () {
-                      BlocProvider.of<HouseholdBloc>(context)
-                          .add(LoadHouseholdEvent(householdID: mainUser.householdID));
-                    }, msg: state.msg,
-                );
-              } else if (state is HouseholdLoaded) {
-                return FeatureWidgetBlueprint(
-                    title: "Household",
-                    titleIcon: Icons.house,
-                    reloadAction: () {
-                      BlocProvider.of<HouseholdBloc>(context)
-                          .add(LoadHouseholdEvent(householdID: mainUser.householdID));
-                    },
-                    widget: HouseholdMainPage(context: context, household: state.household, mainUser: mainUser,),
-                );
-              } else if (state is HouseholdError) {
-                return BlocErrorWidget(failure: state.failure, reloadAction: () {
-                  BlocProvider.of<HouseholdBloc>(context)
-                      .add(LoadHouseholdEvent(householdID: mainUser.householdID));
-                });
-              } else {
-                return const Text("...");
-              }
-            },
-          ),
-        ],
+      child: BlocBuilder<HouseholdBloc, HouseholdState>(
+        builder: (context, state) {
+          if (state is HouseholdInitial) {
+            loadingFunction(context, mainUser.householdID);
+            return Text("Household'${mainUser.householdID}' initialise");
+          } else if (state is HouseholdLoading) {
+            return CustomProcessIndicator(reloadAction: () => loadingFunction(context, mainUser.householdID), msg: state.msg);
+          } else if (state is HouseholdLoaded) {
+            return FeatureWidgetBlueprint(
+              title: "Household",
+              titleIcon: Icons.house,
+              reloadAction: () => loadingFunction(context, mainUser.householdID),
+              widget: HouseholdMainPage(context: context, household: state.household, mainUser: mainUser,),
+            );
+          } else if (state is HouseholdError) {
+            return BlocErrorWidget(failure: state.failure, reloadAction: () => loadingFunction(context, mainUser.householdID));
+          } else {
+            return const Text("Please contact support when this occurs");
+          }
+        },
       ),
     );
+  }
+
+  void loadingFunction(BuildContext bContext, String householdID) {
+    BlocProvider.of<HouseholdBloc>(bContext)
+        .add(LoadHouseholdEvent(householdID: householdID));
   }
 }
 

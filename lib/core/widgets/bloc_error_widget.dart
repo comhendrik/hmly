@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/core/error/failure.dart';
 
 class BlocErrorWidget extends StatelessWidget {
+
   final Failure failure;
   final Function() reloadAction;
-
 
   const BlocErrorWidget({
     super.key,
@@ -49,7 +48,9 @@ class BlocErrorWidget extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           ElevatedButton(
-            onPressed: reloadAction,
+            onPressed: () {
+              reloadAction;
+            },
             child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[

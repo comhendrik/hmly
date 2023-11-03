@@ -1,6 +1,7 @@
 import 'package:household_organizer/core/widgets/bloc_error_widget.dart';
 import 'package:household_organizer/core/widgets/custom_process_indicator_widget.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:household_organizer/features/authentication/presentation/pages/auth_main_page.dart';
 import 'package:household_organizer/features/authentication/presentation/widgets/verify_widget.dart';
 import 'package:household_organizer/features/authentication/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -25,36 +26,29 @@ class AuthPage extends StatelessWidget {
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           if (state is AuthInitial) {
-            BlocProvider.of<AuthBloc>(context)
-                .add(LoadAuthEvent());
-            return const Text("Starting to load data...");
+            loadingFunction(context);
+            return const Text("Authentication initialise...");
           } else if (state is AuthLoading) {
-            return Center(
-              child:
-              CustomProcessIndicator(
-                  reloadAction: () {
-                    BlocProvider.of<AuthBloc>(context)
-                        .add(LoadAuthEvent());
-                  }, msg: state.msg,
-              ),
-            );
+            return CustomProcessIndicator(reloadAction: () => loadingFunction(context), msg: state.msg);
           } else if (state is AuthLoaded) {
             return !state.authData.verified ? VerifyWidget(mainUser: state.authData) : state.authData.householdID == "" ? AddAuthDataToHouseholdView(mainUser: state.authData) : AuthMainPage(mainUser: state.authData, startCurrentPageIndex: state.startCurrentPageIndex);
           } else if (state is AuthError) {
-            return BlocErrorWidget(failure: state.failure, reloadAction: () {
-              BlocProvider.of<AuthBloc>(context)
-                  .add(LoadAuthEvent());
-            });
+            return BlocErrorWidget(failure: state.failure, reloadAction: () =>  loadingFunction(context),);
           } else if (state is AuthCreate){
             return const AuthenticationWidget();
           } else if (state is AuthNoConnection) {
             return const Text("No connection");
           } else {
-            return const Text("...");
+            return const Text("Please contact support when this occurs");
           }
         },
       ),
     );
+  }
+
+  void loadingFunction(BuildContext bContext) {
+    BlocProvider.of<AuthBloc>(bContext)
+        .add(LoadAuthEvent());
   }
 }
 

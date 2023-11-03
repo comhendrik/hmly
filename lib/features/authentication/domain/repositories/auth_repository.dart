@@ -10,8 +10,7 @@ abstract class AuthRepository {
   Future<Either<Failure, User>> login(String email, String password);
   Future<Either<Failure, User>> signUp(String email, String password, String passwordConfirm, String username, String name);
   Future<Either<Failure, User>> loadAuthDataWithOAuth();
-  //TODO: Logout mit failure verbessern
-  void logout();
+  Future<Either<Failure, void>> logout();
   Future<Either<Failure, User>> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, User user, UserChangeType type);
   Future<Either<Failure, void>> requestNewPassword(String userEmail);
   Future<Either<Failure, void>> requestEmailChange(String newEmail, User user);

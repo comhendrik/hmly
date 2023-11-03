@@ -90,8 +90,14 @@ class AuthRepositoryImpl implements AuthRepository {
 
 
   @override
-  void logout() async {
-    dataSource.logout();
+  Future<Either<Failure, void>> logout() async {
+    try {
+      return Right(await dataSource.logout());
+    } on ServerException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.server));
+    } on UnknownException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.unknown));
+    }
   }
 
 

@@ -42,6 +42,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:get_it/get_it.dart';
 import 'package:pocketbase/pocketbase.dart';
+
 final sl = GetIt.instance;
 
 
@@ -54,9 +55,11 @@ Future<void> init() async {
     initial: prefs.getString('pb_auth'),
   );
 
-  final pb = PocketBase('https://household-organizer.hop.sh', authStore: store);
+  final pb = PocketBase('http://127.0.0.1:8090', authStore: store);
+
   //! Features -
   // Bloc
+
   sl.registerFactory(
         () => HouseholdTaskBloc(
           getTasks: sl(),
@@ -66,6 +69,7 @@ Future<void> init() async {
           deleteTask: sl(),
     ),
   );
+
   sl.registerFactory(
         () => HouseholdBloc(
           loadHousehold: sl(),
