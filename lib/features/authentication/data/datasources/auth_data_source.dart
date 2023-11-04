@@ -4,10 +4,10 @@ import 'package:household_organizer/core/models/user_model.dart';
 import 'package:household_organizer/features/authentication/presentation/widgets/change_user_attributes_widget.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:async';
 
 abstract class AuthDataSource {
   Future<void> addAuthDataToHousehold(String userID, String householdID);
-  //TODO: Maybe use it HouseholdBloc
   Future<String> createHouseholdAndAddAuthData(String userID, String householdTitle);
   Future<void> leaveHousehold(User user);
   Future<UserModel> login(String email, String password);
@@ -19,6 +19,7 @@ abstract class AuthDataSource {
   Future<void> requestEmailChange(String newEmail, User user);
   Future<void> requestVerification(String email);
   Future<void> refreshAuthData();
+  Future<bool> waitForChanges(String userID);
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -86,11 +87,6 @@ class AuthDataSourceImpl implements AuthDataSource {
     try {
       final _ = await userRecordService.authWithPassword(email, password);
       RecordModel user = authStore.model;
-      userRecordService.subscribe(user.id, (e) {
-        if (e.record?.data['household'] == '') {
-          logout();
-        }
-      });
       return UserModel.fromJSON(user.data, user.id);
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
@@ -166,7 +162,6 @@ class AuthDataSourceImpl implements AuthDataSource {
       switch (type) {
         case UserChangeType.email:
 
-          //TODO: Implement custom exception
           throw Exception("Type email shouldn't be used in this context!!");
 
         case UserChangeType.name || UserChangeType.username:
@@ -211,6 +206,15 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<void> refreshAuthData() async {
     await userRecordService.authRefresh();
+  }
+
+  @override
+  Future<bool> waitForChanges(String userID) async {
+    final result = await userRecordService.subscribe(userID, (e) {
+      if (e.record?.data['household'] == '') {
+        return true;
+      }
+    });
   }
 
   void createWeeklyPoints(String userID) async {

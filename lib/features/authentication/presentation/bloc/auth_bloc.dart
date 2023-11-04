@@ -78,9 +78,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthLoading(msg: event.msg));
 
         if (authStore.model != null) {
-          await refreshAuthData.execute();
-          RecordModel user = authStore.model;
-          emit(AuthLoaded(authData: User(id: user.id,username: user.data["username"],householdID: user.data["household"],email: user.data["email"], name: user.data["name"], verified: user.data["verified"]), startCurrentPageIndex: 2));
+          final resultEither = await refreshAuthData.execute();
+          await resultEither.fold(
+                  (failure) async {
+                emit(AuthError(failure: failure));
+              },
+                  (auth) async {
+                    RecordModel user = authStore.model;
+                    emit(AuthLoaded(authData: User(id: user.id,username: user.data["username"],householdID: user.data["household"],email: user.data["email"], name: user.data["name"], verified: user.data["verified"]), startCurrentPageIndex: 2));
+              }
+          );
         } else {
           emit(AuthCreate());
         }
