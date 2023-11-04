@@ -4,6 +4,7 @@ import 'package:household_organizer/features/authentication/presentation/pages/a
 import 'package:household_organizer/features/charts/presentation/pages/chart_page.dart';
 import 'package:household_organizer/features/household/presentation/pages/household_page.dart';
 import 'package:household_organizer/features/household_task/presentation/pages/household_task_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AuthMainPage extends StatefulWidget {
   final User mainUser;
@@ -42,26 +43,26 @@ class _AuthMainPage extends State<AuthMainPage> {
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         indicatorColor: Colors.white,
         selectedIndex: currentPageIndex,
-        destinations: const <Widget>[
+        destinations: <Widget>[
           NavigationDestination(
-            selectedIcon: Icon(Icons.task),
-            icon: Icon(Icons.task_outlined),
-            label: 'Tasks',
+            selectedIcon: const Icon(Icons.task),
+            icon: const Icon(Icons.task_outlined),
+            label: AppLocalizations.of(context)!.tasksTitle,
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.insert_chart),
-            icon: Icon(Icons.insert_chart_outlined),
-            label: 'Statistics',
+            selectedIcon: const Icon(Icons.insert_chart),
+            icon: const Icon(Icons.insert_chart_outlined),
+            label: AppLocalizations.of(context)!.chartsTitle,
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.person),
-            icon: Icon(Icons.person_outline),
-            label: 'Account',
+            selectedIcon: const Icon(Icons.person),
+            icon: const Icon(Icons.person_outline),
+            label: AppLocalizations.of(context)!.accountInformation,
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.house),
-            icon: Icon(Icons.house_outlined),
-            label: 'Household',
+            selectedIcon: const Icon(Icons.house),
+            icon: const Icon(Icons.house_outlined),
+            label: AppLocalizations.of(context)!.institutionTitle,
           ),
         ],
       ),

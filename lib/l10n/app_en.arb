@@ -1,0 +1,18 @@
+{
+    "accountInformation": "Account",
+        "@accountInformation": {
+            "description": "Title for account_page"
+        },
+    "institutionTitle": "Household",
+        "@institutionTitle": {
+          "description": "Title for the institution, in my case household."
+        },
+    "chartsTitle": "Statistics",
+        "@chartsTitle": {
+          "description": "Title for charts_page"
+        },
+    "tasksTitle": "Tasks",
+            "@tasksTitle": {
+              "description": "Title for household_task_page"
+            }
+}

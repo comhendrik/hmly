@@ -4,6 +4,8 @@ import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/core/widgets/feauture_widget_blueprint.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:household_organizer/features/authentication/presentation/widgets/change_user_attributes_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:household_organizer/features/household/presentation/pages/household_page.dart';
 
 class AccountPage extends StatefulWidget {
@@ -25,7 +27,7 @@ class _AccountPage extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return FeatureWidgetBlueprint(
-        title: "Account",
+        title: AppLocalizations.of(context)!.accountInformation,
         titleIcon: Icons.person,
         reloadAction: () {
           BlocProvider.of<AuthBloc>(context)

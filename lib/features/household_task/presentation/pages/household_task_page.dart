@@ -4,6 +4,7 @@ import 'package:household_organizer/core/widgets/custom_process_indicator_widget
 import 'package:household_organizer/core/widgets/feauture_widget_blueprint.dart';
 import 'package:household_organizer/features/household_task/presentation/bloc/household_task_bloc.dart';
 import 'package:household_organizer/features/household_task/presentation/widgets/widgets.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,7 +33,7 @@ class HouseholdTaskPage extends StatelessWidget {
             return CustomProcessIndicator(reloadAction: () => loadingFunction(context, mainUser.householdID), msg: state.msg);
           } else if (state is HouseholdTaskLoaded) {
             return FeatureWidgetBlueprint(
-              title: "Current Tasks",
+              title: AppLocalizations.of(context)!.tasksTitle,
               titleIcon: Icons.task,
               reloadAction: () => loadingFunction(context, mainUser.householdID),
               widget: HouseholdTaskMainPage(mainUser: mainUser, allTasks: state.householdTaskList),

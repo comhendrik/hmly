@@ -5,6 +5,7 @@ import 'package:household_organizer/core/widgets/feauture_widget_blueprint.dart'
 import 'package:household_organizer/features/household/presentation/bloc/household_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:household_organizer/features/household/presentation/pages/household_main_page.dart';
 
 import '../../../../injection_container.dart';
@@ -33,7 +34,7 @@ class HouseholdPage extends StatelessWidget {
             return CustomProcessIndicator(reloadAction: () => loadingFunction(context, mainUser.householdID), msg: state.msg);
           } else if (state is HouseholdLoaded) {
             return FeatureWidgetBlueprint(
-              title: "Household",
+              title: AppLocalizations.of(context)!.institutionTitle,
               titleIcon: Icons.house,
               reloadAction: () => loadingFunction(context, mainUser.householdID),
               widget: HouseholdMainPage(context: context, household: state.household, mainUser: mainUser,),

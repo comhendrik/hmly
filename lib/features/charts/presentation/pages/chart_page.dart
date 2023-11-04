@@ -5,6 +5,7 @@ import 'package:household_organizer/core/widgets/feauture_widget_blueprint.dart'
 import 'package:household_organizer/features/charts/presentation/bloc/chart_bloc.dart';
 import 'package:household_organizer/features/charts/presentation/pages/chart_main_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 
@@ -34,7 +35,7 @@ class ChartPage extends StatelessWidget {
             return CustomProcessIndicator(reloadAction: () => loadingFunction(context, mainUser), msg: state.msg);
           } else if (state is ChartLoaded) {
             return FeatureWidgetBlueprint(
-                title: "Statistics",
+                title: AppLocalizations.of(context)!.chartsTitle,
                 titleIcon: Icons.insert_chart,
                 reloadAction: () => loadingFunction(context, mainUser),
                 widget: ChartMainPage(barChartData: state.barChartDataList, pieChartData: state.pieChartDataList)
