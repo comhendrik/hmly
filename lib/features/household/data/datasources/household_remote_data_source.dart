@@ -82,11 +82,15 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
   @override
   Future<HouseholdModel> updateAdmin(String householdID, String userID) async {
     try {
+      final admin = await userRecordService.getOne(userID);
+      if (admin.data['household'] == '') {
+        //TODO: CustomException
+        throw Exception("User is already not in household");
+      }
       final body = <String, dynamic> {
         "admin" : userID,
       };
       final result = await householdRecordService.update(householdID, body: body);
-      final admin = await userRecordService.getOne(userID);
       final users = await userRecordService.getFullList(filter: 'household="$householdID"');
       List<User> userList = [];
       for (final user in users) {

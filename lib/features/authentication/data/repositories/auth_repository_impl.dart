@@ -155,4 +155,5 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(Failure(data: e.response, type: FailureType.unknown));
     }
   }
+
 }

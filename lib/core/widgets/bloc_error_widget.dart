@@ -48,9 +48,7 @@ class BlocErrorWidget extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           ElevatedButton(
-            onPressed: () {
-              reloadAction;
-            },
+            onPressed: reloadAction,
             child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[

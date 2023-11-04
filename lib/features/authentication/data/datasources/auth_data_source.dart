@@ -19,7 +19,6 @@ abstract class AuthDataSource {
   Future<void> requestEmailChange(String newEmail, User user);
   Future<void> requestVerification(String email);
   Future<void> refreshAuthData();
-  Future<bool> waitForChanges(String userID);
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -190,7 +189,7 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   @override
   Future<void> requestNewPassword(String userEmail) async {
-    userRecordService.requestPasswordReset(userEmail);
+    await userRecordService.requestPasswordReset(userEmail);
   }
 
   @override
@@ -208,14 +207,6 @@ class AuthDataSourceImpl implements AuthDataSource {
     await userRecordService.authRefresh();
   }
 
-  @override
-  Future<bool> waitForChanges(String userID) async {
-    final result = await userRecordService.subscribe(userID, (e) {
-      if (e.record?.data['household'] == '') {
-        return true;
-      }
-    });
-  }
 
   void createWeeklyPoints(String userID) async {
     final dayList = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
