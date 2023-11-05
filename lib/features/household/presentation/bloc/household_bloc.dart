@@ -50,7 +50,7 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
         );
       } else if (event is DeleteAuthDataFromHouseholdEvent) {
         emit(HouseholdLoading(msg: event.msg));
-        final resultEither = await deleteAuthDataFromHousehold.execute(event.userID, event.household);
+        final resultEither = await deleteAuthDataFromHousehold.execute(event.userID,);
         resultEither.fold(
                 (failure) async {
                   emit(HouseholdError(failure: failure));

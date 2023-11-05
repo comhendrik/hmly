@@ -8,7 +8,7 @@ class DeleteAuthDataFromHousehold {
 
   DeleteAuthDataFromHousehold({required this.repository});
 
-  Future<Either<Failure, void>> execute(String userID, Household household) async {
-    return await repository.deleteAuthDataFromHousehold(userID, household);
+  Future<Either<Failure, void>> execute(String userID) async {
+    return await repository.deleteAuthDataFromHousehold(userID);
   }
 }

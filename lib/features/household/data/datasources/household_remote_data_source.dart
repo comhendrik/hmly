@@ -2,14 +2,13 @@ import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/features/household/data/models/household_model.dart';
 import 'package:household_organizer/core/models/user_model.dart';
 import 'package:household_organizer/core/entities/user.dart';
-import 'package:household_organizer/features/household/domain/entities/household.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 
 abstract class HouseholdRemoteDataSource {
   Future<HouseholdModel> loadHousehold(String householdID);
   Future<HouseholdModel> updateHouseholdTitle(String householdID, String title);
-  Future<void> deleteAuthDataFromHousehold(String userID, Household household);
+  Future<void> deleteAuthDataFromHousehold(String userID);
   Future<HouseholdModel> updateAdmin(String householdID, String userID);
   Future<void> deleteHousehold(String householdID);
 }
@@ -30,8 +29,7 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
       final users = await userRecordService.getFullList(filter: 'household="$householdID"');
       List<User> userList = [];
       for (final user in users) {
-        final userResult = await userRecordService.getOne(user.id);
-        userList.add(User.fromJSON(userResult.data, userResult.id));
+        userList.add(User.fromJSON(user.data, user.id));
       }
       return HouseholdModel.fromJSON(result.data, result.id, userList, result.expand['admin']!.first.data, result.expand['admin']!.first.id);
     } on ClientException catch(err) {
@@ -48,11 +46,11 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
         "title" : householdTitle,
       };
       final result = await householdRecordService.update(householdID, body: body, expand: 'admin');
+      //TODO: Maybe no new call of users, because data is already there
       final users = await userRecordService.getFullList(filter: 'household="$householdID"');
       List<User> userList = [];
       for (final user in users) {
-        final userResult = await userRecordService.getOne(user.id);
-        userList.add(UserModel.fromJSON(userResult.data, user.id));
+        userList.add(UserModel.fromJSON(user.data, user.id));
       }
 
       return HouseholdModel.fromJSON(result.data, result.id, userList, result.expand['admin']!.first.data, result.expand['admin']!.first.id);
@@ -65,7 +63,7 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
   }
 
   @override
-  Future<void> deleteAuthDataFromHousehold(String userID, Household household) async {
+  Future<void> deleteAuthDataFromHousehold(String userID) async {
 
     try {
       final body = <String, dynamic> {
