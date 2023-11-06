@@ -309,6 +309,102 @@ void main() {
 
   group('updateAdmin', () {
 
+    const String householdID = "householdID";
+
+    const String userID = "userID";
+
+    final tupdatedHouseholdRecordModel = RecordModel(
+      id: "jpjp0avrs60d0sl",
+      data: {
+        "id":"jpjp0avrs60d0sl",
+        "created":"2023-10-17 17:41:26.595Z",
+        "updated":"2023-11-04 13:00:56.240Z",
+        "collectionId":"gvartmnoybe3m81",
+        "collectionName":"household",
+        "expand": {"admin":
+        { "id":"wsjo0uutd3jgb67",
+          "created":"2023-10-18 16:34:44.858Z",
+          "updated":"2023-11-04 13:06:45.145Z",
+          "collectionId":"_pb_users_auth_",
+          "collectionName":"users",
+          "expand":{},
+          "avatar":"",
+          "email":"hendrik3@test.com",
+          "emailVisibility":true,
+          "household":"jpjp0avrs60d0sl",
+          "name":"Test",
+          "username":"Mara",
+          "verified":true
+        }
+        },
+        "admin":"wsjo0uutd3jgb67",
+        "title": "title"
+      },
+      expand: {"admin":
+        [RecordModel(
+            id: "wsjo0uutd3jgb67",
+            data: {
+              "id":"wsjo0uutd3jgb67",
+              "created":"2023-10-18 16:34:44.858Z",
+              "updated":"2023-11-04 13:06:45.145Z",
+              "collectionId":"_pb_users_auth_",
+              "collectionName":"users",
+              "expand":{},
+              "avatar":"",
+              "email":"hendrik3@test.com",
+              "emailVisibility":true,
+              "household":"jpjp0avrs60d0sl",
+              "name":"Test",
+              "username":"username",
+              "verified":true
+            },
+          )
+        ]
+      },
+    );
+
+    final body = <String, dynamic> {
+      "admin" : userID,
+    };
+
+
+    final tUserRecordModel = RecordModel(
+      id: "wsjo0uutd3jgb67",
+      data: {
+        "id":"wsjo0uutd3jgb67",
+        "created":"2023-10-18 16:34:44.858Z",
+        "updated":"2023-11-04 13:06:45.145Z",
+        "collectionId":"_pb_users_auth_",
+        "collectionName":"users",
+        "expand":{},
+        "avatar":"",
+        "email":"hendrik3@test.com",
+        "emailVisibility":true,
+        "household":"jpjp0avrs60d0sl",
+        "name":"Test",
+        "username":"username",
+        "verified":true
+      },
+    );
+
+    final List<UserModel> tUsers = [UserModel.fromJSON(tUserRecordModel.data, tUserRecordModel.id)];
+
+    final tupdatedHouseholdModel = HouseholdModel.fromJSON(tupdatedHouseholdRecordModel.data, tupdatedHouseholdRecordModel.id, tUsers, tupdatedHouseholdRecordModel.expand['admin']!.first.data, tupdatedHouseholdRecordModel.expand['admin']!.first.id);
+
+    test('should return void when call is successful', () async {
+
+      when(() => mockUserRecordService.getOne(userID)).thenAnswer((_) async => tUserRecordModel);
+
+      when(() => mockHouseholdRecordService.update(householdID, body: body)).thenAnswer((_) async => tupdatedHouseholdRecordModel);
+
+      when(() => mockUserRecordService.getFullList(filter: 'household="$householdID"')).thenAnswer((_) async => [tUserRecordModel]);
+
+      final result = await dataSource.updateAdmin(householdID, userID);
+
+      expect(result, tupdatedHouseholdModel);
+
+    });
+
   });
 
   group('deleteHousehold', () {

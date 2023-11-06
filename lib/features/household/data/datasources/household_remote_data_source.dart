@@ -92,8 +92,7 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
       final users = await userRecordService.getFullList(filter: 'household="$householdID"');
       List<User> userList = [];
       for (final user in users) {
-        final userResult = await userRecordService.getOne(user.id);
-        userList.add(UserModel.fromJSON(userResult.data, user.id));
+        userList.add(UserModel.fromJSON(user.data, user.id));
       }
 
       return HouseholdModel.fromJSON(result.data, result.id, userList, admin.data, admin.id);
