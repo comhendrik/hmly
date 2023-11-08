@@ -391,7 +391,7 @@ void main() {
 
     final tupdatedHouseholdModel = HouseholdModel.fromJSON(tupdatedHouseholdRecordModel.data, tupdatedHouseholdRecordModel.id, tUsers, tupdatedHouseholdRecordModel.expand['admin']!.first.data, tupdatedHouseholdRecordModel.expand['admin']!.first.id);
 
-    test('should return void when call is successful', () async {
+    test('should return data when call is successful', () async {
 
       when(() => mockUserRecordService.getOne(userID)).thenAnswer((_) async => tUserRecordModel);
 
@@ -402,6 +402,14 @@ void main() {
       final result = await dataSource.updateAdmin(householdID, userID);
 
       expect(result, tupdatedHouseholdModel);
+
+    });
+
+    test('should return server exception when update call is unsuccessful', () async {
+
+      when(() => mockUserRecordService.getOne(userID)).thenThrow(ClientException());
+
+      expect(dataSource.updateAdmin(householdID, userID), throwsA(const TypeMatcher<ServerException>()));
 
     });
 
