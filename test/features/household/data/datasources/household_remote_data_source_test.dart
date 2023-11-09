@@ -405,10 +405,19 @@ void main() {
 
     });
 
-    test('should return server exception when update call is unsuccessful', () async {
+    test('should return server exception when getting current admin data is unsuccessful', () async {
 
       when(() => mockUserRecordService.getOne(userID)).thenThrow(ClientException());
 
+      expect(dataSource.updateAdmin(householdID, userID), throwsA(const TypeMatcher<ServerException>()));
+
+    });
+
+    test('should return server exception when update admin call is unsuccessful', () async {
+
+      when(() => mockUserRecordService.getOne(userID)).thenAnswer((_) async => tUserRecordModel);
+
+      when(() => mockHouseholdRecordService.update(householdID, body: body)).thenThrow(ClientException());
       expect(dataSource.updateAdmin(householdID, userID), throwsA(const TypeMatcher<ServerException>()));
 
     });
