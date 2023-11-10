@@ -6,6 +6,7 @@ import 'package:household_organizer/core/models/user_model.dart';
 import 'package:household_organizer/core/entities/user.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:pocketbase/pocketbase.dart';
+import '../../../../test_data.dart';
 
 class MockRecordService extends Mock implements RecordService {}
 
@@ -23,80 +24,6 @@ void main() {
   });
   
   group('loadHousehold', () {
-
-
-    final tHouseholdRecordModel = RecordModel(
-      id: "jpjp0avrs60d0sl",
-      data: {
-        "id":"jpjp0avrs60d0sl",
-        "created":"2023-10-17 17:41:26.595Z",
-        "updated":"2023-11-04 13:00:56.240Z",
-        "collectionId":"gvartmnoybe3m81",
-        "collectionName":"household",
-        "expand": {"admin":
-          { "id":"wsjo0uutd3jgb67",
-            "created":"2023-10-18 16:34:44.858Z",
-            "updated":"2023-11-04 13:06:45.145Z",
-            "collectionId":"_pb_users_auth_",
-            "collectionName":"users",
-            "expand":{},
-            "avatar":"",
-            "email":"hendrik3@test.com",
-            "emailVisibility":true,
-            "household":"jpjp0avrs60d0sl",
-            "name":"Test",
-            "username":"Mara",
-            "verified":true
-          }
-        },
-        "admin":"wsjo0uutd3jgb67",
-        "title":"Test "
-      },
-      expand: {"admin": [RecordModel(
-          id: "wsjo0uutd3jgb67",
-          data: {
-            "id":"wsjo0uutd3jgb67",
-            "created":"2023-10-18 16:34:44.858Z",
-            "updated":"2023-11-04 13:06:45.145Z",
-            "collectionId":"_pb_users_auth_",
-            "collectionName":"users",
-            "expand":{},
-            "avatar":"",
-            "email":"hendrik3@test.com",
-            "emailVisibility":true,
-            "household":"jpjp0avrs60d0sl",
-            "name":"Test",
-            "username":"username",
-            "verified":true
-            },
-          )
-        ]
-      },
-    );
-
-    final tUserRecordModel = RecordModel(
-      id: "wsjo0uutd3jgb67",
-      data: {
-        "id":"wsjo0uutd3jgb67",
-        "created":"2023-10-18 16:34:44.858Z",
-        "updated":"2023-11-04 13:06:45.145Z",
-        "collectionId":"_pb_users_auth_",
-        "collectionName":"users",
-        "expand":{},
-        "avatar":"",
-        "email":"hendrik3@test.com",
-        "emailVisibility":true,
-        "household":"jpjp0avrs60d0sl",
-        "name":"Test",
-        "username":"username",
-        "verified":true
-      },
-    );
-
-    final List<User> tUsers = [User.fromJSON(tUserRecordModel.data, tUserRecordModel.id)];
-
-
-    final tHouseholdModel = HouseholdModel.fromJSON(tHouseholdRecordModel.data, tHouseholdRecordModel.id, tUsers, tHouseholdRecordModel.expand['admin']!.first.data, tHouseholdRecordModel.expand['admin']!.first.id);
 
     test('should return data when call is successful', () async {
 
@@ -190,28 +117,6 @@ void main() {
       },
     );
 
-    final tUserRecordModel = RecordModel(
-      id: "wsjo0uutd3jgb67",
-      data: {
-        "id":"wsjo0uutd3jgb67",
-        "created":"2023-10-18 16:34:44.858Z",
-        "updated":"2023-11-04 13:06:45.145Z",
-        "collectionId":"_pb_users_auth_",
-        "collectionName":"users",
-        "expand":{},
-        "avatar":"",
-        "email":"hendrik3@test.com",
-        "emailVisibility":true,
-        "household":"jpjp0avrs60d0sl",
-        "name":"Test",
-        "username":"username",
-        "verified":true
-      },
-    );
-
-    final List<User> tUsers = [UserModel.fromJSON(tUserRecordModel.data, tUserRecordModel.id)];
-
-
     final tupdatedHouseholdModel = HouseholdModel.fromJSON(tupdatedHouseholdRecordModel.data, tupdatedHouseholdRecordModel.id, tUsers, tupdatedHouseholdRecordModel.expand['admin']!.first.data, tupdatedHouseholdRecordModel.expand['admin']!.first.id);
 
     test('should return data when call is successful', () async {
@@ -297,12 +202,6 @@ void main() {
 
 
     });
-
-
-
-
-
-
 
   });
 
@@ -418,6 +317,19 @@ void main() {
       when(() => mockUserRecordService.getOne(userID)).thenAnswer((_) async => tUserRecordModel);
 
       when(() => mockHouseholdRecordService.update(householdID, body: body)).thenThrow(ClientException());
+      
+      expect(dataSource.updateAdmin(householdID, userID), throwsA(const TypeMatcher<ServerException>()));
+
+    });
+
+    test('should return server exception when fetching list of users is unsuccessful', () async {
+
+      when(() => mockUserRecordService.getOne(userID)).thenAnswer((_) async => tUserRecordModel);
+
+      when(() => mockHouseholdRecordService.update(householdID, body: body)).thenAnswer((_) async => tupdatedHouseholdRecordModel);
+
+      when(() => mockUserRecordService.getFullList(filter: 'household="$householdID"')).thenThrow(ClientException());
+
       expect(dataSource.updateAdmin(householdID, userID), throwsA(const TypeMatcher<ServerException>()));
 
     });

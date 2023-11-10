@@ -3,15 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/features/household/data/datasources/household_remote_data_source.dart';
-import 'package:household_organizer/features/household/data/models/household_model.dart';
-import 'package:household_organizer/core/models/user_model.dart';
 import 'package:household_organizer/features/household/data/repositories/household_repository_impl.dart';
-import 'package:household_organizer/features/household/domain/entities/household.dart';
-import 'package:household_organizer/core/entities/user.dart';
-import 'package:household_organizer/features/household_task/data/datasources/household_task_remote_data_source.dart';
-import 'package:household_organizer/features/household_task/data/models/household_task_model.dart';
-import 'package:household_organizer/features/household_task/domain/entities/household_task.dart';
 import 'package:mocktail/mocktail.dart';
+import '../../../../test_data.dart';
 
 class MockHouseholdRemoteDataSource extends Mock implements HouseholdRemoteDataSource {}
 
@@ -25,32 +19,160 @@ void main() {
     repository = HouseholdRepositoryImpl(remoteDataSource: remoteDataSource);
   });
 
-  group('getAllTasksForHousehold', () {
+  group('loadHousehold', () {
 
-    const tUser = UserModel(id: "id", username: "username123", householdId: "id", email: "test@example.com", name: "test");
-
-    final List<User> tUsers = [tUser];
-
-
-    final tHouseholdModel = HouseholdModel(id: 'id', title: 'title', users: tUsers, minWeeklyPoints: 123);
-    final Household tHousehold = tHouseholdModel;
     test('should return data, when call is successful', () async {
 
 
-      when(() => remoteDataSource.loadHousehold()).thenAnswer((_) async => tHouseholdModel);
+      when(() => remoteDataSource.loadHousehold("householdID")).thenAnswer((_) async => tHouseholdModel);
 
-      final result = await repository.loadHousehold();
+      final result = await repository.loadHousehold("householdID");
 
       expect(result, equals(Right(tHousehold)));
 
     });
-    test('should return failure, when call is unsuccessful', () async {
-      when(() => remoteDataSource.loadHousehold()).thenThrow(ServerException());
+    test('should return failure of type FailureType.server , when call is unsuccessful', () async {
+      when(() => remoteDataSource.loadHousehold("householdID")).thenThrow(ServerException(response: tFailureTypeServerResponseStructure));
 
-      final result = await repository.loadHousehold();
+      final result = await repository.loadHousehold("householdID");
 
-      expect(result, equals(Left(ServerFailure())));
+      expect(result, equals(Left(Failure(data: tFailureTypeServerResponseStructure, type: FailureType.server))));
+
+    });
+
+    test('should return failure of type FailureType.unknown , when call is unsuccessful', () async {
+      when(() => remoteDataSource.loadHousehold("householdID")).thenThrow(UnknownException());
+
+      final result = await repository.loadHousehold("householdID");
+
+      expect(result, equals(Left(Failure(data: tFailureTypeUnknownResponseStructure, type: FailureType.unknown))));
 
     });
   });
+
+  group('updateHouseholdTitle', () {
+
+    test('should return data, when call is successful', () async {
+
+
+      when(() => remoteDataSource.updateHouseholdTitle("householdID", "householdTitle")).thenAnswer((_) async => tHouseholdModel);
+
+      final result = await repository.updateHouseholdTitle("householdID", "householdTitle");
+
+      expect(result, equals(Right(tHousehold)));
+
+    });
+    test('should return failure of type FailureType.server , when call is unsuccessful', () async {
+      when(() => remoteDataSource.updateHouseholdTitle("householdID", "householdTitle")).thenThrow(ServerException(response: tFailureTypeServerResponseStructure));
+
+      final result = await repository.updateHouseholdTitle("householdID", "householdTitle");
+
+      expect(result, equals(Left(Failure(data: tFailureTypeServerResponseStructure, type: FailureType.server))));
+
+    });
+
+    test('should return failure of type FailureType.unknown , when call is unsuccessful', () async {
+      when(() => remoteDataSource.updateHouseholdTitle("householdID", "householdTitle")).thenThrow(UnknownException());
+
+      final result = await repository.updateHouseholdTitle("householdID", "householdTitle");
+
+      expect(result, equals(Left(Failure(data: tFailureTypeUnknownResponseStructure, type: FailureType.unknown))));
+
+    });
+  });
+
+  group('deleteAuthDataFromHousehold', () {
+
+    test('should return void, when call is successful', () async {
+
+
+      when(() => remoteDataSource.deleteAuthDataFromHousehold("userID")).thenAnswer((_) async => ());
+
+      final result = await repository.deleteAuthDataFromHousehold("userID");
+
+      expect(result, equals(const Right( () )));
+
+    });
+    test('should return failure of type FailureType.server , when call is unsuccessful', () async {
+      when(() => remoteDataSource.deleteAuthDataFromHousehold("userID")).thenThrow(ServerException(response: tFailureTypeServerResponseStructure));
+
+      final result = await repository.deleteAuthDataFromHousehold("userID");
+
+      expect(result, equals(Left(Failure(data: tFailureTypeServerResponseStructure, type: FailureType.server))));
+
+    });
+
+    test('should return failure of type FailureType.unknown , when call is unsuccessful', () async {
+      when(() => remoteDataSource.deleteAuthDataFromHousehold("userID")).thenThrow(UnknownException());
+
+      final result = await repository.deleteAuthDataFromHousehold("userID");
+
+      expect(result, equals(Left(Failure(data: tFailureTypeUnknownResponseStructure, type: FailureType.unknown))));
+
+    });
+  });
+
+  group('updateAdmin', () {
+
+    test('should return data, when call is successful', () async {
+
+
+      when(() => remoteDataSource.updateAdmin("householdID", "userID")).thenAnswer((_) async => tHouseholdModel);
+
+      final result = await repository.updateAdmin("householdID", "userID");
+
+      expect(result, equals(Right(tHousehold)));
+
+    });
+    test('should return failure of type FailureType.server , when call is unsuccessful', () async {
+      when(() => remoteDataSource.updateAdmin("householdID", "userID")).thenThrow(ServerException(response: tFailureTypeServerResponseStructure));
+
+      final result = await repository.updateAdmin("householdID", "userID");
+
+      expect(result, equals(Left(Failure(data: tFailureTypeServerResponseStructure, type: FailureType.server))));
+
+    });
+
+    test('should return failure of type FailureType.unknown , when call is unsuccessful', () async {
+      when(() => remoteDataSource.updateAdmin("householdID", "userID")).thenThrow(UnknownException());
+
+      final result = await repository.updateAdmin("householdID", "userID");
+
+      expect(result, equals(Left(Failure(data: tFailureTypeUnknownResponseStructure, type: FailureType.unknown))));
+
+    });
+  });
+
+  group('loadHousehold', () {
+
+    test('should return void, when call is successful', () async {
+
+
+      when(() => remoteDataSource.deleteHousehold("householdID")).thenAnswer((_) async => ());
+
+      final result = await repository.deleteHousehold("householdID");
+
+      expect(result, equals(const Right( () )));
+
+    });
+    test('should return failure of type FailureType.server , when call is unsuccessful', () async {
+      when(() => remoteDataSource.deleteHousehold("householdID")).thenThrow(ServerException(response: tFailureTypeServerResponseStructure));
+
+      final result = await repository.deleteHousehold("householdID");
+
+      expect(result, equals(Left(Failure(data: tFailureTypeServerResponseStructure, type: FailureType.server))));
+
+    });
+
+    test('should return failure of type FailureType.unknown , when call is unsuccessful', () async {
+      when(() => remoteDataSource.deleteHousehold("householdID")).thenThrow(UnknownException());
+
+      final result = await repository.deleteHousehold("householdID");
+
+      expect(result, equals(Left(Failure(data: tFailureTypeUnknownResponseStructure, type: FailureType.unknown))));
+
+    });
+  });
+
+
 }
