@@ -2,23 +2,47 @@ import 'package:dartz/dartz.dart';
 import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/features/household/domain/entities/household.dart';
 import 'package:household_organizer/core/entities/user.dart';
+import 'package:household_organizer/features/household/domain/usecases/delete_auth_data_from_household.dart';
+import 'package:household_organizer/features/household/domain/usecases/delete_household.dart';
 import 'package:household_organizer/features/household/domain/usecases/load_household.dart';
+import 'package:household_organizer/features/household/domain/usecases/update_admin.dart';
+import 'package:household_organizer/features/household/domain/usecases/update_household_title.dart';
 import 'package:household_organizer/features/household/presentation/bloc/household_bloc.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class MockLoadHousehold extends Mock implements LoadHousehold {}
+class MockUpdateHouseholdTitle extends Mock implements UpdateHouseholdTitle {}
+class MockDeleteAuthDataFromHousehold extends Mock implements DeleteAuthDataFromHousehold {}
+class MockUpdateAdmin extends Mock implements UpdateAdmin {}
+class MockDeleteHousehold extends Mock implements DeleteHousehold {}
+
 
 void main() {
-  late MockLoadHousehold usecase;
+  late MockLoadHousehold loadHousehold;
+  late MockUpdateHouseholdTitle updateHouseholdTitle;
+  late MockDeleteAuthDataFromHousehold deleteAuthDataFromHousehold;
+  late MockUpdateAdmin updateAdmin;
+  late MockDeleteHousehold deleteHousehold;
   late HouseholdBloc bloc;
 
   setUpAll(() {
-    usecase = MockLoadHousehold();
-    bloc = HouseholdBloc(loadHousehold: usecase);
+    loadHousehold = MockLoadHousehold();
+    updateHouseholdTitle = MockUpdateHouseholdTitle();
+    deleteAuthDataFromHousehold = MockDeleteAuthDataFromHousehold();
+    updateAdmin = MockUpdateAdmin();
+    deleteHousehold = MockDeleteHousehold();
+
+    bloc = HouseholdBloc(
+        loadHousehold: loadHousehold,
+        updateHouseholdTitle: updateHouseholdTitle,
+        deleteAuthDataFromHousehold: deleteAuthDataFromHousehold,
+        updateAdmin: updateAdmin,
+        deleteHousehold: deleteHousehold
+    );
   });
 
-  group('getAllTasksForHousehold', () {
+  group('loadHousehold', () {
 
     const tUser = User(id: "id", username: "username123", householdId: "id", email: "test@example.com", name: "test");
 
