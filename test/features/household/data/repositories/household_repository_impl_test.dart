@@ -143,7 +143,7 @@ void main() {
     });
   });
 
-  group('loadHousehold', () {
+  group('deleteHousehold', () {
 
     test('should return void, when call is successful', () async {
 
