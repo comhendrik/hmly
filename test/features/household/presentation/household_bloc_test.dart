@@ -1,7 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:household_organizer/core/error/failure.dart';
-import 'package:household_organizer/features/household/domain/entities/household.dart';
-import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/features/household/domain/usecases/delete_auth_data_from_household.dart';
 import 'package:household_organizer/features/household/domain/usecases/delete_household.dart';
 import 'package:household_organizer/features/household/domain/usecases/load_household.dart';
@@ -10,6 +7,7 @@ import 'package:household_organizer/features/household/domain/usecases/update_ho
 import 'package:household_organizer/features/household/presentation/bloc/household_bloc.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:flutter_test/flutter_test.dart';
+import '../../../test_data.dart';
 
 class MockLoadHousehold extends Mock implements LoadHousehold {}
 class MockUpdateHouseholdTitle extends Mock implements UpdateHouseholdTitle {}
@@ -44,65 +42,71 @@ void main() {
 
   group('loadHousehold', () {
 
-    const tUser = User(id: "id", username: "username123", householdId: "id", email: "test@example.com", name: "test");
+    test('should get data from loadHousehold Usecase', () async {
+          when(() => loadHousehold.execute("householdID")).thenAnswer((_) async => Right(tHousehold));
 
-    final tUsers = [tUser];
+          bloc.add(const LoadHouseholdEvent(householdID: "householdID"));
 
-    final tHousehold = Household(id: 'id', title: 'title', users: tUsers, minWeeklyPoints: 123);
+          await untilCalled(() => loadHousehold.execute("householdID"));
 
-    test(
-        'should get data from getNews use case',
-            () async {
-          when(() => usecase.execute()).thenAnswer((_) async => Right(tHousehold));
-
-          bloc.add(LoadHouseholdEvent());
-
-          await untilCalled(() => usecase.execute());
-
-          verify(() => usecase.execute());
+          verify(() => loadHousehold.execute("householdID"));
 
 
         }
     );
 
-    test(
-        'should emit [Initial(), Loading(), Loaded()] when the server request is succesful',
-            () async {
+    test('should emit [Initial(), Loading(), Loaded()] when the server request is succesful', () async {
 
-          when(() => usecase.execute()).thenAnswer((_) async => Right(tHousehold));
+          when(() => loadHousehold.execute("householdID")).thenAnswer((_) async => Right(tHousehold));
 
 
           expectLater(bloc.stream, emitsInOrder(
               [
                 HouseholdInitial(),
-                HouseholdLoading(),
+                const HouseholdLoading(msg: "msg"),
                 HouseholdLoaded(household: tHousehold)
               ]
           ));
 
-          bloc.add(LoadHouseholdEvent());
+          bloc.add(const LoadHouseholdEvent(householdID: "householdID"));
 
         }
     );
 
-    test(
-        'should emit [Initial(), Loading(), Error()] when the request is unsuccessful',
-            () async {
+    test('should emit [Initial(), Loading(), Error()] when the request is unsuccessful because of server failure', () async {
 
-          when(() => usecase.execute()).thenAnswer((_) async => Left(ServerFailure()));
+          when(() => loadHousehold.execute("householdID")).thenAnswer((_) async => Left(tServerFailure));
 
 
           expectLater(bloc.stream, emitsInOrder(
               [
                 HouseholdInitial(),
-                HouseholdLoading(),
-                const HouseholdError(errorMsg: 'Server Failure')
+                const HouseholdLoading(msg: "msg"),
+                HouseholdError(failure: tServerFailure)
               ]
           ));
 
-          bloc.add(LoadHouseholdEvent());
+          bloc.add(const LoadHouseholdEvent(householdID: "householdID"));
 
         }
+    );
+
+    test('should emit [Initial(), Loading(), Error()] when the request is unsuccessful because of unknown issues', () async {
+
+      when(() => loadHousehold.execute("householdID")).thenAnswer((_) async => Left(tUnknownFailure));
+
+
+      expectLater(bloc.stream, emitsInOrder(
+          [
+            HouseholdInitial(),
+            const HouseholdLoading(msg: "msg"),
+            HouseholdError(failure: tUnknownFailure)
+          ]
+      ));
+
+      bloc.add(const LoadHouseholdEvent(householdID: "householdID"));
+
+    }
     );
   });
 }

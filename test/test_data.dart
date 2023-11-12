@@ -1,3 +1,4 @@
+import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/features/household/domain/entities/household.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:household_organizer/core/models/user_model.dart';
@@ -90,3 +91,7 @@ final tFailureTypeUnknownResponseStructure = {
   //This structure is not the real structure from the server
   "message" : "The Failure is based on some unknown error. Please explain your failure in detail and send it to our support.",
 };
+
+final Failure tServerFailure = Failure(data: tFailureTypeServerResponseStructure, type: FailureType.server);
+
+final Failure tUnknownFailure = Failure(data: tFailureTypeUnknownResponseStructure, type: FailureType.unknown);
