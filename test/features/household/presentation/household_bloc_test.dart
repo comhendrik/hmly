@@ -16,6 +16,7 @@ class MockUpdateAdmin extends Mock implements UpdateAdmin {}
 class MockDeleteHousehold extends Mock implements DeleteHousehold {}
 
 
+
 void main() {
   late MockLoadHousehold loadHousehold;
   late MockUpdateHouseholdTitle updateHouseholdTitle;
@@ -177,6 +178,76 @@ void main() {
       ));
 
       bloc.add(const UpdateHouseholdTitleEvent(householdID: "householdID", householdTitle: "householdTitle"));
+
+    }
+    );
+  });
+
+  group('deleteAuthDataFromHousehold', () {
+
+    test('should get void from deleteAuthDataFromHousehold Usecase', () async {
+
+      when(() => deleteAuthDataFromHousehold.execute("userID")).thenAnswer((_) async => Right( () ));
+
+      bloc.add(DeleteAuthDataFromHouseholdEvent(userID: "userID", household: tHousehold));
+
+      final result = await deleteAuthDataFromHousehold.execute("userID");
+
+      expect(result, const Right( () ));
+
+      verify(() => deleteAuthDataFromHousehold.execute("userID"));
+
+
+    }
+    );
+
+    test('should emit [Initial(), Loading(),] when the server request is succesful', () async {
+
+
+      expectLater(bloc.stream, emitsInOrder(
+          [
+            HouseholdInitial(),
+            const HouseholdLoading(msg: "msg"),
+          ]
+      ));
+
+      bloc.add(DeleteAuthDataFromHouseholdEvent(userID: "userID", household: tHousehold));
+
+    }
+    );
+
+    test('should emit [Initial(), Loading(), Error()] when the request is unsuccessful because of server failure', () async {
+
+      when(() => deleteAuthDataFromHousehold.execute("userID")).thenAnswer((_) async => Left(tServerFailure));
+
+
+      expectLater(bloc.stream, emitsInOrder(
+          [
+            HouseholdInitial(),
+            const HouseholdLoading(msg: "msg"),
+            HouseholdError(failure: tServerFailure)
+          ]
+      ));
+
+      bloc.add(DeleteAuthDataFromHouseholdEvent(userID: "userID", household: tHousehold));
+
+    }
+    );
+
+    test('should emit [Initial(), Loading(), Error()] when the request is unsuccessful because of unknown issues', () async {
+
+      when(() => deleteAuthDataFromHousehold.execute("userID")).thenAnswer((_) async => Left(tUnknownFailure));
+
+
+      expectLater(bloc.stream, emitsInOrder(
+          [
+            HouseholdInitial(),
+            const HouseholdLoading(msg: "msg"),
+            HouseholdError(failure: tUnknownFailure)
+          ]
+      ));
+
+      bloc.add(DeleteAuthDataFromHouseholdEvent(userID: "userID", household: tHousehold));
 
     }
     );
