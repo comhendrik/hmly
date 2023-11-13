@@ -254,4 +254,90 @@ void main() {
   });
 
 
+  group('updateAdmin', () {
+
+    test('should get data from updateAdmin Usecase', () async {
+      when(() => updateAdmin.execute("householdID", "userID")).thenAnswer((_) async => Right(tHousehold));
+
+      bloc.add(const UpdateAdminEvent(householdID: "householdID", userID: "userID"));
+
+      final result = await updateAdmin.execute("householdID", "userID");
+
+      expect(result, Right(tHousehold));
+
+      verify(() => updateAdmin.execute("householdID", "userID"));
+
+
+    }
+    );
+
+    test('should emit [Initial(), Loading(), Loaded()] when the server request is succesful', () async {
+
+      when(() => updateAdmin.execute("householdID", "userID")).thenAnswer((_) async => Right(tHousehold));
+
+
+      expectLater(bloc.stream, emitsInOrder(
+          [
+            HouseholdInitial(),
+            const HouseholdLoading(msg: "msg"),
+            HouseholdLoaded(household: tHousehold)
+          ]
+      ));
+
+      bloc.add(const UpdateAdminEvent(householdID: "householdID", userID: "userID"));
+    }
+    );
+
+    test('should emit [Initial(), Loading(), Error()] when the request is unsuccessful because of server failure', () async {
+
+      when(() => updateAdmin.execute("householdID", "userID")).thenAnswer((_) async => Left(tServerFailure));
+
+
+      expectLater(bloc.stream, emitsInOrder(
+          [
+            HouseholdInitial(),
+            const HouseholdLoading(msg: "msg"),
+            HouseholdError(failure: tServerFailure)
+          ]
+      ));
+
+      bloc.add(const UpdateAdminEvent(householdID: "householdID", userID: "userID"));
+
+    }
+    );
+
+    test('should emit [Initial(), Loading(), Error()] when the request is unsuccessful because of unknown issues', () async {
+
+      when(() => loadHousehold.execute("householdID")).thenAnswer((_) async => Left(tUnknownFailure));
+
+
+      expectLater(bloc.stream, emitsInOrder(
+          [
+            HouseholdInitial(),
+            const HouseholdLoading(msg: "msg"),
+            HouseholdError(failure: tUnknownFailure)
+          ]
+      ));
+
+      bloc.add(const UpdateAdminEvent(householdID: "householdID", userID: "userID"));
+
+    }
+    );
+  });
+
+  group('deleteHousehold', () {
+
+    test('should execute deleteHousehold Usecase', () async {
+
+      when(() => deleteHousehold.execute("householdID")).thenAnswer((_) async => const Right( () ));
+
+      bloc.add(const DeleteHouseholdEvent(householdID: "householdID"));
+
+      verify(() => deleteHousehold.execute("householdID"));
+
+
+    }
+    );
+  });
+
 }
