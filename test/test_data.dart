@@ -76,6 +76,8 @@ final tUserRecordModel = RecordModel(
 
 final List<User> tUsers = [User.fromJSON(tUserRecordModel.data, tUserRecordModel.id)];
 
+final List<UserModel> tUserModels = [UserModel.fromJSON(tUserRecordModel.data, tUserRecordModel.id)];
+
 
 final tHouseholdModel = HouseholdModel.fromJSON(tHouseholdRecordModel.data, tHouseholdRecordModel.id, tUsers, tHouseholdRecordModel.expand['admin']!.first.data, tHouseholdRecordModel.expand['admin']!.first.id);
 

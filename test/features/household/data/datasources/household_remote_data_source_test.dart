@@ -3,7 +3,6 @@ import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/features/household/data/datasources/household_remote_data_source.dart';
 import 'package:household_organizer/features/household/data/models/household_model.dart';
 import 'package:household_organizer/core/models/user_model.dart';
-import 'package:household_organizer/core/entities/user.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:pocketbase/pocketbase.dart';
 import '../../../../test_data.dart';
@@ -117,7 +116,7 @@ void main() {
       },
     );
 
-    final tupdatedHouseholdModel = HouseholdModel.fromJSON(tupdatedHouseholdRecordModel.data, tupdatedHouseholdRecordModel.id, tUsers, tupdatedHouseholdRecordModel.expand['admin']!.first.data, tupdatedHouseholdRecordModel.expand['admin']!.first.id);
+    final tupdatedHouseholdModel = HouseholdModel.fromJSON(tupdatedHouseholdRecordModel.data, tupdatedHouseholdRecordModel.id, tUserModels, tupdatedHouseholdRecordModel.expand['admin']!.first.data, tupdatedHouseholdRecordModel.expand['admin']!.first.id);
 
     test('should return data when call is successful', () async {
 

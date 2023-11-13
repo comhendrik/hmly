@@ -47,7 +47,9 @@ void main() {
 
           bloc.add(const LoadHouseholdEvent(householdID: "householdID"));
 
-          await untilCalled(() => loadHousehold.execute("householdID"));
+          final result = await loadHousehold.execute("householdID");
+
+          expect(result, Right(tHousehold));
 
           verify(() => loadHousehold.execute("householdID"));
 
@@ -109,4 +111,76 @@ void main() {
     }
     );
   });
+
+  group('updateHouseholdTitle', () {
+
+    test('should get data from loadHousehold Usecase', () async {
+      when(() => updateHouseholdTitle.execute("householdID", "householdTitle")).thenAnswer((_) async => Right(tHousehold));
+
+      bloc.add(const UpdateHouseholdTitleEvent(householdID: "householdID", householdTitle: "householdTitle"));
+
+      final result = await updateHouseholdTitle.execute("householdID", "householdTitle");
+
+      expect(result, Right(tHousehold));
+
+
+    }
+    );
+
+    test('should emit [Initial(), Loading(), Loaded()] when the server request is succesful', () async {
+
+      when(() => updateHouseholdTitle.execute("householdID", "householdTitle")).thenAnswer((_) async => Right(tHousehold));
+
+
+      expectLater(bloc.stream, emitsInOrder(
+          [
+            HouseholdInitial(),
+            const HouseholdLoading(msg: "msg"),
+            HouseholdLoaded(household: tHousehold)
+          ]
+      ));
+
+      bloc.add(const UpdateHouseholdTitleEvent(householdID: "householdID", householdTitle: "householdTitle"));
+
+    }
+    );
+
+    test('should emit [Initial(), Loading(), Error()] when the request is unsuccessful because of server failure', () async {
+
+      when(() => updateHouseholdTitle.execute("householdID", "householdTitle")).thenAnswer((_) async => Left(tServerFailure));
+
+
+      expectLater(bloc.stream, emitsInOrder(
+          [
+            HouseholdInitial(),
+            const HouseholdLoading(msg: "msg"),
+            HouseholdError(failure: tServerFailure)
+          ]
+      ));
+
+      bloc.add(const UpdateHouseholdTitleEvent(householdID: "householdID", householdTitle: "householdTitle"));
+
+    }
+    );
+
+    test('should emit [Initial(), Loading(), Error()] when the request is unsuccessful because of unknown issues', () async {
+
+      when(() => updateHouseholdTitle.execute("householdID", "householdTitle")).thenAnswer((_) async => Left(tUnknownFailure));
+
+
+      expectLater(bloc.stream, emitsInOrder(
+          [
+            HouseholdInitial(),
+            const HouseholdLoading(msg: "msg"),
+            HouseholdError(failure: tUnknownFailure)
+          ]
+      ));
+
+      bloc.add(const UpdateHouseholdTitleEvent(householdID: "householdID", householdTitle: "householdTitle"));
+
+    }
+    );
+  });
+
+
 }
