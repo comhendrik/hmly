@@ -19,6 +19,7 @@ abstract class AuthDataSource {
   Future<void> requestEmailChange(String newEmail, User user);
   Future<void> requestVerification(String email);
   Future<void> refreshAuthData();
+  Future<void> deleteUser(User user);
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -205,6 +206,21 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<void> refreshAuthData() async {
     await userRecordService.authRefresh();
+  }
+
+  @override
+  Future<void> deleteUser(User user) async {
+    try {
+      final weeklyPointsList = await pointsRecordService.getFullList(filter: 'user="${user.id}"');
+      for (RecordModel point in weeklyPointsList) {
+        await pointsRecordService.delete(point.id);
+      }
+      userRecordService.delete(user.id);
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
+    }
   }
 
 

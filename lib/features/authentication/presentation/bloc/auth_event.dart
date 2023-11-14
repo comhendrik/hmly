@@ -137,3 +137,12 @@ class RequestVerificationEvent extends AuthEvent {
   });
 }
 
+class DeleteUserEvent extends AuthEvent {
+  final User user;
+  final String msg = "User is going to be deleted";
+
+  const DeleteUserEvent({
+    required this.user
+  });
+}
+

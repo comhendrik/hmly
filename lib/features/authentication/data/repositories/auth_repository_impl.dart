@@ -156,4 +156,15 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
+  @override
+  Future<Either<Failure, void>> deleteUser(User user) async {
+    try {
+      return Right(await dataSource.deleteUser(user));
+    } on ServerException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.server));
+    } on UnknownException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.unknown));
+    }
+  }
+
 }

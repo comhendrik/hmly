@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:household_organizer/main.dart';
 import 'widgets.dart';
 
 class AddAuthDataToHouseholdView extends StatefulWidget {
@@ -124,6 +125,28 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
           ),
         ),
         ElevatedButton(onPressed: logout, child: const Text("Logout")),
+        ElevatedButton(
+            onPressed: () => showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: const Text("Warning"),
+              content: const Text("Do you really want to delete your user?"),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: ()  => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, 'Delete');
+                    deleteUser(widget.mainUser);
+                  },
+                  child: const Text('Delete', style: TextStyle(color: Colors.red),),
+                  ),
+              ],
+            )),
+            child: const Text("Delete User")
+        ),
         UserInformation(mainUser: widget.mainUser),
       ],
     );
@@ -142,5 +165,10 @@ class _AddAuthDataToHouseholdView extends State<AddAuthDataToHouseholdView> {
   void logout() {
     BlocProvider.of<AuthBloc>(context)
         .add(const LogoutEvent());
+  }
+
+  void deleteUser(User user) {
+    BlocProvider.of<AuthBloc>(context)
+        .add(DeleteUserEvent(user: user));
   }
 }

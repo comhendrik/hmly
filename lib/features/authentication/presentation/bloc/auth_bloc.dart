@@ -4,6 +4,7 @@ import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/core/error/failure.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/add_auth_data_to_household.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/create_Household_And_Add_Auth_Data.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/delete_user.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/refresh_auth_data.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/request_verification.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/sign_up.dart';
@@ -34,6 +35,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final RequestEmailChange requestEmailChange;
   final RequestVerification requestVerification;
   final RefreshAuthData refreshAuthData;
+  final DeleteUser deleteUser;
   final AsyncAuthStore authStore;
 
   AuthBloc({
@@ -50,6 +52,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.requestEmailChange,
     required this.requestVerification,
     required this.refreshAuthData,
+    required this.deleteUser,
     required this.authStore
 
   }) : super(AuthInitial()) {
@@ -212,6 +215,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             emit(AuthLoaded(authData: event.user, startCurrentPageIndex: 0));
           }
         );
+      } else if (event is DeleteUserEvent) {
+        emit(AuthLoading(msg: event.msg));
+        final logoutResultEither = await logout.execute();
+        await logoutResultEither.fold(
+          (failure) async {
+
+            emit(AuthError(failure: failure));
+          },
+          (success) async {
+            final resultEither = await deleteUser.execute(event.user);
+            await resultEither.fold(
+                    (failure) async {
+                  emit(AuthError(failure: failure));
+                },
+                    (_) async {
+                  emit(AuthCreate());
+                }
+            );
+          }
+        );
+
       }
     });
   }
