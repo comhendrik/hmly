@@ -146,7 +146,7 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                                     Navigator.pop(context);
                                     return;
                                   }
-                                  changeAttribute(textfieldController.text, confirmationPasswordController!.text, oldPasswordController!.text, widget.mainUser, widget.type);
+                                  changeAttribute(textfieldController.text, confirmationPasswordController?.text, oldPasswordController?.text, widget.mainUser, widget.type);
                                   Navigator.pop(context);
                                 },
                                 icon: const Icon(Icons.update),

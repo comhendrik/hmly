@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:household_organizer/core/entities/user.dart';
+import 'package:household_organizer/core/widgets/build_navigation_destination.dart';
 import 'package:household_organizer/features/authentication/presentation/pages/account_page.dart';
 import 'package:household_organizer/features/charts/presentation/pages/chart_page.dart';
 import 'package:household_organizer/features/household/presentation/pages/household_page.dart';
@@ -67,26 +68,13 @@ class _AuthMainPage extends State<AuthMainPage> {
         ],
       ),
       body: <Widget>[
-        _buildNavigationDestination(widget: HouseholdTaskPage(mainUser: widget.mainUser)),
-        _buildNavigationDestination(widget: ChartPage(mainUser: widget.mainUser)),
-        _buildNavigationDestination(widget: AccountPage(mainUser: widget.mainUser, ancestorContext: context)),
-        _buildNavigationDestination(widget: HouseholdPage(mainUser: widget.mainUser))
+        buildNavigationDestination(widget: HouseholdTaskPage(mainUser: widget.mainUser)),
+        buildNavigationDestination(widget: ChartPage(mainUser: widget.mainUser)),
+        buildNavigationDestination(widget: AccountPage(mainUser: widget.mainUser, ancestorContext: context)),
+        buildNavigationDestination(widget: HouseholdPage(mainUser: widget.mainUser))
       ][currentPageIndex],
     );
   }
 
-  Widget _buildNavigationDestination({
-    required Widget widget,
-  }) {
-    return Container(
-      alignment: Alignment.center,
-      child: ListView(
-        padding: const EdgeInsets.all(20),
-        children: [
-          widget
-        ],
-      ),
-    );
-  }
 
 }

@@ -103,6 +103,34 @@ class _AccountPage extends State<AccountPage> {
                 subtitle: "Click to logout",
               ),
             ),
+            GestureDetector(
+              onTap: () => showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: const Text("Warning"),
+                  content: Text(widget.mainUser.householdID == "" ? "Do you really want to delete your user. You can't undo that" : "Please leave the household to delete your user"),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: ()  => Navigator.pop(context, 'Cancel'),
+                      child: const Text('Cancel'),
+                    ),
+                    if (widget.mainUser.householdID == "")
+                      TextButton(
+                        onPressed: () {
+                          deleteUser(widget.mainUser);
+                          Navigator.pop(context, 'Delete');
+                        },
+                        child: const Text('Delete', style: TextStyle(color: Colors.red),),
+                      ),
+                  ],
+                ),
+              ), child: _buildListTile(
+                leadingIcon: Icons.delete_forever,
+                title: 'Delete',
+                subtitle: "Click to delete all User Data",
+
+              ),
+            ),
           ],
         )
     );
@@ -164,5 +192,10 @@ class _AccountPage extends State<AccountPage> {
   void logout() {
     BlocProvider.of<AuthBloc>(widget.ancestorContext)
         .add(const LogoutEvent());
+  }
+
+  void deleteUser(User user) {
+    BlocProvider.of<AuthBloc>(widget.ancestorContext)
+        .add(DeleteUserEvent(user: user));
   }
 }

@@ -188,6 +188,7 @@ class AuthDataSourceImpl implements AuthDataSource {
     }
   }
 
+  //TODO: Add exception handling
   @override
   Future<void> requestNewPassword(String userEmail) async {
     await userRecordService.requestPasswordReset(userEmail);
@@ -205,7 +206,13 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   @override
   Future<void> refreshAuthData() async {
-    await userRecordService.authRefresh();
+    try {
+      await userRecordService.authRefresh();
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
+    }
   }
 
   @override
