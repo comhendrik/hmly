@@ -4,7 +4,7 @@ class FeatureWidgetBlueprint extends StatefulWidget {
 
   final String title;
   final IconData titleIcon;
-  final Function() reloadAction;
+  final Function()? reloadAction;
   final Widget widget;
   final Widget? extraWidget;
 
@@ -34,7 +34,8 @@ class _FeatureWidgetBlueprintState extends State<FeatureWidgetBlueprint> {
             const Spacer(),
             if (widget.extraWidget != null)
               widget.extraWidget!,
-            IconButton(onPressed: widget.reloadAction, icon: const Icon(Icons.update)),
+            if(widget.reloadAction != null)
+              IconButton(onPressed: widget.reloadAction, icon: const Icon(Icons.update)),
 
           ],
         ),

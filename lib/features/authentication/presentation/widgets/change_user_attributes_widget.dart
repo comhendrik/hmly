@@ -68,6 +68,7 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                           ),
                           if (widget.type == UserChangeType.password)
                             TextFormField(
+                              obscureText: true,
                               controller: oldPasswordController,
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
@@ -86,6 +87,7 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                               },
                             ),
                           TextFormField(
+                            obscureText: widget.type == UserChangeType.password,
                             controller: textfieldController,
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
@@ -119,22 +121,23 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                           ),
                           if (widget.type == UserChangeType.password)
                             TextFormField(
-                                controller: confirmationPasswordController,
-                                keyboardType: TextInputType.emailAddress,
-                                decoration: InputDecoration(
-                                  labelText: 're enter new password',
-                                  hintText: 're enter new password',
-                                  prefixIcon: Icon(widget.type.icon), // Icon for username
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please re-enter your password';
-                                  }
-                                  if (value != textfieldController.text) {
-                                    return 'The passwords arent matching';
-                                  }
-                                  return null;
+                              obscureText: true,
+                              controller: confirmationPasswordController,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                labelText: 're enter new password',
+                                hintText: 're enter new password',
+                                prefixIcon: Icon(widget.type.icon), // Icon for username
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please re-enter your password';
                                 }
+                                if (value != textfieldController.text) {
+                                  return 'The passwords arent matching';
+                                }
+                                return null;
+                              }
                             ),
                           Padding(
                             padding: const EdgeInsets.all(5.0),
@@ -261,5 +264,6 @@ extension UserChangeTypeExtenstion on UserChangeType {
         return Icons.lock;
     }
   }
+
 
 }

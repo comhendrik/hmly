@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/core/widgets/build_navigation_destination.dart';
 import 'package:household_organizer/features/authentication/presentation/pages/account_page.dart';
-import 'package:household_organizer/features/authentication/presentation/widgets/add_auth_data_to_household.dart';
+import 'package:household_organizer/features/authentication/presentation/pages/add_auth_data_to_household_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AuthMainPageWithoutHousehold extends StatefulWidget {
@@ -46,7 +46,7 @@ class _AuthMainPageWithoutHouseholdState extends State<AuthMainPageWithoutHouseh
         ],
       ),
       body: <Widget>[
-        buildNavigationDestination(widget: AddAuthDataToHouseholdView(mainUser: widget.mainUser)),
+        buildNavigationDestination(widget: AddAuthDataToHouseholdPage(mainUser: widget.mainUser)),
         buildNavigationDestination(widget: AccountPage(mainUser: widget.mainUser, ancestorContext: context)),
       ][currentPageIndex],
     );

@@ -30,8 +30,8 @@ class _VerifyWidgetState extends State<VerifyWidget> {
             color: Colors.red,
           ),
           const SizedBox(height: 16),
-          const Text(
-            "You are not verified",
+          Text(
+            "The user ${widget.mainUser.email} is not verified.",
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -93,7 +93,39 @@ class _VerifyWidgetState extends State<VerifyWidget> {
               ],
             ),
           ),
-          UserInformation(mainUser: widget.mainUser)
+          ElevatedButton(
+            onPressed: () => showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                title: const Text("Warning"),
+                content: const Text("You really want to delete your user?"),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: ()  => Navigator.pop(context, 'Cancel'),
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      deleteUser(widget.mainUser);
+                      Navigator.pop(context, 'Delete');
+                    },
+                    child: const Text('Delete', style: TextStyle(color: Colors.red),),
+                  ),
+                ],
+              ),
+            ),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Icon(Icons.delete_forever), // Retry icon
+                SizedBox(width: 8),
+                Text(
+                  'Delete User',
+                  style: TextStyle(fontSize: 18),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -112,5 +144,10 @@ class _VerifyWidgetState extends State<VerifyWidget> {
   void logout() {
     BlocProvider.of<AuthBloc>(context)
         .add(const LogoutEvent());
+  }
+
+  void deleteUser(User user) {
+    BlocProvider.of<AuthBloc>(context)
+        .add(DeleteUserEvent(user: user));
   }
 }

@@ -1,0 +1,139 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:household_organizer/core/entities/user.dart';
+import 'package:household_organizer/core/widgets/feauture_widget_blueprint.dart';
+import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:household_organizer/main.dart';
+import '../widgets/widgets.dart';
+
+class AddAuthDataToHouseholdPage extends StatefulWidget {
+  final User mainUser;
+
+  const AddAuthDataToHouseholdPage({super.key, required this.mainUser});
+
+
+  @override
+  State<AddAuthDataToHouseholdPage> createState() => _AddAuthDataToHouseholdPage();
+}
+
+class _AddAuthDataToHouseholdPage extends State<AddAuthDataToHouseholdPage> {
+
+  final householdIDController = TextEditingController();
+  final householdTitleController = TextEditingController();
+  String householdIDStr = '';
+  String householdTitleStr = '';
+  final _idFormKey = GlobalKey<FormState>();
+  final _titleFormKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return FeatureWidgetBlueprint(
+        title: "Add user to household",
+        titleIcon: Icons.house,
+        reloadAction: null,
+        widget: Column(
+          children: [
+            Form(
+              key: _idFormKey,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Center(
+                  child: Column(
+                    children: [
+                      const Text('Join an existing one:'),
+                      TextFormField(
+                          controller: householdIDController,
+                          keyboardType: TextInputType.text,
+                          decoration: const InputDecoration(
+                            labelText: 'Household Id',
+                            hintText: 'Enter an ID from an household',
+                            prefixIcon: Icon(Icons.person), // Icon for username
+                          ),
+                          validator: (value) {
+                            if (value == null || value.length != 15) {
+                              return 'The length must be exactly 15.';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            householdIDStr = value;
+                          }
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: ElevatedButton.icon(
+                            onPressed: () {
+                              if (_idFormKey.currentState!.validate()) {
+                                addAuthDataToHousehold(widget.mainUser, householdIDStr);
+                              }
+                            },
+                            icon: const Icon(Icons.arrow_forward),
+                            label: const Text("Add")
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Form(
+              key: _titleFormKey,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Center(
+                  child: Column(
+                    children: [
+                      const Text('Or create a new one'),
+                      TextFormField(
+                          controller: householdTitleController,
+                          keyboardType: TextInputType.text,
+                          decoration: const InputDecoration(
+                            labelText: 'Household Title',
+                            hintText: 'Enter a ID from an household',
+                            prefixIcon: Icon(Icons.person), // Icon for username
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please provide a title';
+                            }
+                            if (value.length >= 15) {
+                              return 'Must be less than 15 characters';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            householdTitleStr = value;
+                          }
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            if (_titleFormKey.currentState!.validate()) {
+                              createHouseholdAndAddAuthData(widget.mainUser, householdTitleStr);
+                            }
+                          },
+                          icon: const Icon(Icons.arrow_forward),
+                          label: const Text("Create"),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        )
+    );
+  }
+
+  void addAuthDataToHousehold(User user, String householdID) {
+    BlocProvider.of<AuthBloc>(context)
+        .add(AddAuthDataToHouseholdEvent(user: user, householdID: householdID));
+  }
+
+  void createHouseholdAndAddAuthData(User user, String householdTitle) {
+    BlocProvider.of<AuthBloc>(context)
+        .add(CreateHouseholdAndAddAuthDataEvent(user: user, householdTitle: householdTitle));
+  }
+}
