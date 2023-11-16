@@ -32,7 +32,7 @@ class _VerifyWidgetState extends State<VerifyWidget> {
           const SizedBox(height: 16),
           Text(
             "The user ${widget.mainUser.email} is not verified.",
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),

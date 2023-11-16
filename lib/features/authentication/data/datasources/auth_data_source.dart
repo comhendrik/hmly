@@ -188,20 +188,39 @@ class AuthDataSourceImpl implements AuthDataSource {
     }
   }
 
-  //TODO: Add exception handling
   @override
   Future<void> requestNewPassword(String userEmail) async {
-    await userRecordService.requestPasswordReset(userEmail);
+
+    try {
+      await userRecordService.requestPasswordReset(userEmail);
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
+    }
   }
 
   @override
   Future<void> requestEmailChange(String newEmail, User user) async {
-    await userRecordService.requestEmailChange(newEmail);
+    try {
+      await userRecordService.requestEmailChange(newEmail);
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
+    }
+
   }
 
   @override
   Future<void> requestVerification(String email) async {
-    await userRecordService.requestVerification(email);
+    try {
+      await userRecordService.requestVerification(email);
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
+    }
   }
 
   @override
