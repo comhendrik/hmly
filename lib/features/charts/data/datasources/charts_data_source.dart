@@ -1,11 +1,8 @@
 import 'package:household_organizer/core/error/exceptions.dart';
 import 'package:household_organizer/features/charts/data/models/bar_chart_data_model.dart';
 import 'package:household_organizer/features/charts/data/models/pie_chart_data_model.dart';
-import 'package:household_organizer/features/charts/domain/entities/bar_chart_data.dart';
-import 'package:household_organizer/features/household_task/data/models/household_task_model.dart';
-import 'package:household_organizer/features/household_task/domain/entities/household_task.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:household_organizer/core/entities/user.dart';
+
 abstract class ChartsDataSource {
   Future<List<BarChartDataModel>> getWeeklyBarChartData(String userID);
   Future<List<PieChartDataModel>> getDailyPieChartData(String userID, String householdID);

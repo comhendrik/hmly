@@ -1,18 +1,130 @@
 {
-    "accountInformation": "Account",
-        "@accountInformation": {
-            "description": "Title for account_page"
-        },
-    "institutionTitle": "Household",
-        "@institutionTitle": {
-          "description": "Title for the institution, in my case household."
-        },
-    "chartsTitle": "Statistics",
-        "@chartsTitle": {
-          "description": "Title for charts_page"
-        },
-    "tasksTitle": "Tasks",
-            "@tasksTitle": {
-              "description": "Title for household_task_page"
-            }
+  "accountInformation": "Account",
+      "@accountInformation": {
+          "description": "Title for account_page"
+      },
+  "institutionTitle": "Household",
+      "@institutionTitle": {
+        "description": "Title for the institution, in my case household."
+      },
+  "chartsTitle": "Statistics",
+      "@chartsTitle": {
+        "description": "Title for charts_page"
+      },
+  "tasksTitle": "Tasks",
+          "@tasksTitle": {
+            "description": "Title for household_task_page"
+          },
+  "authPageInit": "Authentication initialise...",
+    "@authPageInit": {
+      "description": "Text for initialising Auth Page"
+    },
+  "supportErrorMessage": "Please contact support when this occurs",
+    "@supportErrorMessage": {
+      "description": "String to display, when no state of an bloc is shown"
+    },
+  "noConnection": "No Connection. Please check your Connectivity",
+    "@noConnection": {
+      "description": "String to display, when there is no internet connection"
+    },
+  "email": "E-Mail",
+    "@email": {
+      "description": "String E-Mail"
+    },
+  "username": "Username",
+  "@username": {
+    "description": "String Username"
+  },
+  "fullName": "Full Name",
+    "@fullName": {
+      "description": "String Full Name"
+    },
+  "shortIdentifier": "ID",
+    "@shortIdentifier": {
+      "description": "Display short form of Identifier"
+    },
+  "password": "Password",
+    "@password": {
+      "description": "String Password"
+    },
+  "changePassword": "Change Password",
+    "@changePassword": {
+      "description": "String Change Password"
+    },
+  "logout": "Logout",
+    "@logout": {
+      "description": "String Logout"
+    },
+  "logoutSubtitle": "Click to logout",
+    "@logoutSubtitle": {
+      "description": "String CLick to logout"
+    },
+  "warning": "Warning",
+    "@warning": {
+      "description": "String Warning"
+    },
+  "deleteUserAlert" : "Do you really want to delete your user. You can't undo that",
+    "@deleteUserAlert": {
+      "description": "Alert Warning asked when user is about to be deleted"
+    },
+  "deleteUserInformation" : "Please leave the household to delete your user",
+    "@deleteUserInformation": {
+      "description": "Information when user is about to be delete, but is still in institution"
+    },
+  "cancel" : "Cancel",
+    "@cancel": {
+      "description": "String Cancel"
+    },
+  "delete" : "Delete",
+    "@delete": {
+      "description": "String Delete"
+    },
+  "deleteUserSubtitle" : "Click to delete all User Data",
+    "@deleteUserSubtitle": {
+      "description": "Subtitle for deleting user button"
+    },
+  "joinInstitution" : "Join an existing Household",
+    "@joinInstitution": {
+      "description": "String Join an existing Household"
+    },
+  "institutionIdentifier" : "Household ID",
+    "@institutionIdentifier": {
+      "description": "String Household ID"
+    },
+  "institutionIdentifierHint" : "Enter an ID from an Household",
+    "@institutionIdentifierHint": {
+      "description": "Hint for Textfield when you need to enter institution ID"
+    },
+  "identifierValidatorMessage" : "The length must be exactly 15.",
+    "@identifierValidatorMessage": {
+      "description": "Hint when entering ID"
+    },
+  "join" : "Join",
+    "@join": {
+      "description": "String join"
+    },
+  "createInstitution" : "Or create a new one",
+    "@createInstitution": {
+      "description": "String Or create a new one"
+    },
+  "institutionTitleField" : "Household Title",
+    "@institutionTitleField": {
+      "description": "String Household Title"
+    },
+  "institutionTitleHint" : "Enter a Title for an Household",
+    "@institutionTitleHint": {
+      "description": "Hint for Textfield when you need to enter an institution Title"
+    },
+  "validatorMessageNull" : "Please provide a value",
+    "@ValidatorMessageNull": {
+      "description": "Hint when entering something and text of controller is null"
+    },
+  "titleValidatorMessageLength" : "Must be less than 15 characters",
+    "@titleValidatorMessageLength": {
+      "description": "Hint when entering Title and it is to long"
+    },
+  "create" : "Create",
+    "@create": {
+      "description": "String Create"
+    }
 }

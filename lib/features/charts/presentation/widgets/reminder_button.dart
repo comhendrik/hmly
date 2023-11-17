@@ -4,7 +4,8 @@ import 'package:flutter_share/flutter_share.dart';
 class ReminderButton extends StatelessWidget {
   final int dailyPoints;
 
-  ReminderButton({
+  const ReminderButton({
+    super.key,
     required this.dailyPoints
   });
   @override
@@ -31,7 +32,7 @@ class ReminderButton extends StatelessWidget {
   Future<void> shareLink(int dailyPoints) async {
     await FlutterShare.share(
       title: 'Task Reminder',
-      text: 'I just wanted to remind you of doing your tasks, I already got ${dailyPoints} today',
+      text: 'I just wanted to remind you of doing your tasks, I already got $dailyPoints today',
       linkUrl: 'https://test.com'
     );
   }

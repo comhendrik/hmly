@@ -78,7 +78,7 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
       };
       int currentDayOfWeek = DateTime.now().weekday;
       final pointToUpdate = await pointRecordService.getFirstListItem('day_number=$currentDayOfWeek && user="$userID"');
-      final result = await pointRecordService.update(pointToUpdate.id, body: pointBody);
+      await pointRecordService.update(pointToUpdate.id, body: pointBody);
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
     } catch (_) {

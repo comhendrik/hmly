@@ -3,7 +3,7 @@ import 'package:household_organizer/features/authentication/data/repositories/au
 import 'package:household_organizer/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/add_auth_data_to_household.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/change_user_attributes.dart';
-import 'package:household_organizer/features/authentication/domain/usecases/create_Household_And_Add_Auth_Data.dart';
+import 'package:household_organizer/features/authentication/domain/usecases/create_household_and_add_auth_data.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/delete_user.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/refresh_auth_data.dart';
 import 'package:household_organizer/features/authentication/domain/usecases/request_email_change.dart';

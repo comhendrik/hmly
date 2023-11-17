@@ -7,6 +7,7 @@ import 'package:household_organizer/features/authentication/presentation/widgets
 import 'package:household_organizer/features/authentication/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 import '../../../../injection_container.dart';
@@ -28,7 +29,7 @@ class AuthPage extends StatelessWidget {
         builder: (context, state) {
           if (state is AuthInitial) {
             loadingFunction(context);
-            return const Text("Authentication initialise...");
+            return Text(AppLocalizations.of(context)!.authPageInit);
           } else if (state is AuthLoading) {
             return CustomProcessIndicator(reloadAction: () => loadingFunction(context), msg: state.msg);
           } else if (state is AuthLoaded) {
@@ -38,9 +39,9 @@ class AuthPage extends StatelessWidget {
           } else if (state is AuthCreate){
             return const AuthenticationWidget();
           } else if (state is AuthNoConnection) {
-            return const Text("No connection");
+            return Text(AppLocalizations.of(context)!.noConnection);
           } else {
-            return const Text("Please contact support when this occurs");
+            return Text(AppLocalizations.of(context)!.supportErrorMessage);
           }
         },
       ),

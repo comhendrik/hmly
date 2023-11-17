@@ -4,7 +4,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 class BarChart extends StatefulWidget {
   final List<BarChartData> data;
-  BarChart({Key? key, required this.data}) : super(key: key);
+  const BarChart({Key? key, required this.data}) : super(key: key);
 
   @override
   BarChartState createState() => BarChartState();

@@ -120,7 +120,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<UserModel> loadAuthDataWithOAuth() async {
     try {
-      final authData = await userRecordService.authWithOAuth2(
+      final _ = await userRecordService.authWithOAuth2(
           'google',
           createData:  {
             "name" : "google",

@@ -6,8 +6,6 @@ import 'package:household_organizer/features/authentication/presentation/bloc/au
 import 'package:household_organizer/features/authentication/presentation/widgets/change_user_attributes_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:household_organizer/features/household/presentation/pages/household_page.dart';
-
 class AccountPage extends StatefulWidget {
   final User mainUser;
   final BuildContext ancestorContext;
@@ -45,7 +43,7 @@ class _AccountPage extends State<AccountPage> {
               ),
               child: _buildListTile(
                 leadingIcon: Icons.email,
-                title: 'Email',
+                title: AppLocalizations.of(context)!.email,
                 subtitle: widget.mainUser.email,
               ),
             ),
@@ -58,7 +56,7 @@ class _AccountPage extends State<AccountPage> {
                   }),
               child: _buildListTile(
                 leadingIcon: Icons.person,
-                title: 'Username',
+                title: AppLocalizations.of(context)!.username,
                 subtitle: widget.mainUser.username,
               ),
             ),
@@ -71,13 +69,13 @@ class _AccountPage extends State<AccountPage> {
                   }),
               child: _buildListTile(
                 leadingIcon: Icons.person,
-                title: 'Full Name',
+                title: AppLocalizations.of(context)!.fullName,
                 subtitle: widget.mainUser.name,
               ),
             ),
             _buildListTile(
               leadingIcon: Icons.confirmation_number,
-              title: 'ID',
+              title: AppLocalizations.of(context)!.shortIdentifier,
               subtitle: widget.mainUser.id,
             ),
             GestureDetector(
@@ -89,8 +87,8 @@ class _AccountPage extends State<AccountPage> {
                   }),
               child: _buildListTile(
                 leadingIcon: Icons.lock,
-                title: 'Password',
-                subtitle: "Change Password",
+                title: AppLocalizations.of(context)!.password,
+                subtitle: AppLocalizations.of(context)!.changePassword,
               ),
             ),
             GestureDetector(
@@ -99,20 +97,20 @@ class _AccountPage extends State<AccountPage> {
               },
               child: _buildListTile(
                 leadingIcon: Icons.arrow_back,
-                title: 'Logout',
-                subtitle: "Click to logout",
+                title: AppLocalizations.of(context)!.logout,
+                subtitle: AppLocalizations.of(context)!.logoutSubtitle,
               ),
             ),
             GestureDetector(
               onTap: () => showDialog<String>(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
-                  title: const Text("Warning"),
-                  content: Text(widget.mainUser.householdID == "" ? "Do you really want to delete your user. You can't undo that" : "Please leave the household to delete your user"),
+                  title: Text(AppLocalizations.of(context)!.warning),
+                  content: Text(widget.mainUser.householdID == "" ? AppLocalizations.of(context)!.deleteUserAlert : AppLocalizations.of(context)!.deleteUserInformation),
                   actions: <Widget>[
                     TextButton(
                       onPressed: ()  => Navigator.pop(context, 'Cancel'),
-                      child: const Text('Cancel'),
+                      child: Text(AppLocalizations.of(context)!.cancel),
                     ),
                     if (widget.mainUser.householdID == "")
                       TextButton(
@@ -120,14 +118,14 @@ class _AccountPage extends State<AccountPage> {
                           deleteUser(widget.mainUser);
                           Navigator.pop(context, 'Delete');
                         },
-                        child: const Text('Delete', style: TextStyle(color: Colors.red),),
+                        child: Text(AppLocalizations.of(context)!.delete, style: TextStyle(color: Colors.red),),
                       ),
                   ],
                 ),
               ), child: _buildListTile(
                 leadingIcon: Icons.delete_forever,
-                title: 'Delete',
-                subtitle: "Click to delete all User Data",
+                title: AppLocalizations.of(context)!.delete,
+                subtitle: AppLocalizations.of(context)!.deleteUserSubtitle,
 
               ),
             ),

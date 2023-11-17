@@ -5,17 +5,6 @@ import 'package:household_organizer/features/household/domain/entities/household
 import 'package:pocketbase/pocketbase.dart';
 
 void main() {
-  final tHouseholdModelJSON =  {
-    "id": "RECORD_ID",
-    "collectionId": "gvartmnoybe3m81",
-    "collectionName": "household",
-    "created": "2022-01-01 01:00:00.123Z",
-    "updated": "2022-01-01 23:59:59.456Z",
-    "title": "test",
-    "users": [
-      "RELATION_RECORD_ID"
-    ],
-  };
 
   const tUserModel = UserModel(
       id: "id",

@@ -18,7 +18,7 @@ void main() {
   });
 
   test('should get valid object when call is successful', () async {
-    when(() => repository.deleteHousehold("householdID")).thenAnswer((_) async =>  Right( () ));
+    when(() => repository.deleteHousehold("householdID")).thenAnswer((_) async =>  const Right( () ));
 
     final result = await usecase.execute("householdID");
 

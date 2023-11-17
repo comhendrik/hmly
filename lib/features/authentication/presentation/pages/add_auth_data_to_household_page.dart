@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:household_organizer/core/entities/user.dart';
 import 'package:household_organizer/core/widgets/feauture_widget_blueprint.dart';
 import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
-import 'package:household_organizer/main.dart';
-import '../widgets/widgets.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddAuthDataToHouseholdPage extends StatefulWidget {
   final User mainUser;
@@ -28,7 +28,7 @@ class _AddAuthDataToHouseholdPage extends State<AddAuthDataToHouseholdPage> {
   @override
   Widget build(BuildContext context) {
     return FeatureWidgetBlueprint(
-        title: "Add user to household",
+        title: AppLocalizations.of(context)!.institutionTitle,
         titleIcon: Icons.house,
         reloadAction: null,
         widget: Column(
@@ -40,18 +40,23 @@ class _AddAuthDataToHouseholdPage extends State<AddAuthDataToHouseholdPage> {
                 child: Center(
                   child: Column(
                     children: [
-                      const Text('Join an existing one:'),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(AppLocalizations.of(context)!.joinInstitution),
+                        ],
+                      ),
                       TextFormField(
                           controller: householdIDController,
                           keyboardType: TextInputType.text,
-                          decoration: const InputDecoration(
-                            labelText: 'Household Id',
-                            hintText: 'Enter an ID from an household',
-                            prefixIcon: Icon(Icons.person), // Icon for username
+                          decoration: InputDecoration(
+                            labelText: AppLocalizations.of(context)!.institutionIdentifier,
+                            hintText: AppLocalizations.of(context)!.institutionIdentifierHint,
+                            prefixIcon: const Icon(Icons.person), // Icon for username
                           ),
                           validator: (value) {
                             if (value == null || value.length != 15) {
-                              return 'The length must be exactly 15.';
+                              return AppLocalizations.of(context)!.identifierValidatorMessage;
                             }
                             return null;
                           },
@@ -68,7 +73,7 @@ class _AddAuthDataToHouseholdPage extends State<AddAuthDataToHouseholdPage> {
                               }
                             },
                             icon: const Icon(Icons.arrow_forward),
-                            label: const Text("Add")
+                            label: Text(AppLocalizations.of(context)!.join)
                         ),
                       ),
                     ],
@@ -83,21 +88,26 @@ class _AddAuthDataToHouseholdPage extends State<AddAuthDataToHouseholdPage> {
                 child: Center(
                   child: Column(
                     children: [
-                      const Text('Or create a new one'),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                           Text(AppLocalizations.of(context)!.createInstitution),
+                        ],
+                      ),
                       TextFormField(
                           controller: householdTitleController,
                           keyboardType: TextInputType.text,
-                          decoration: const InputDecoration(
-                            labelText: 'Household Title',
-                            hintText: 'Enter a ID from an household',
-                            prefixIcon: Icon(Icons.person), // Icon for username
+                          decoration: InputDecoration(
+                            labelText: AppLocalizations.of(context)!.institutionTitleField,
+                            hintText: AppLocalizations.of(context)!.institutionTitleHint,
+                            prefixIcon: const Icon(Icons.person), // Icon for username
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please provide a title';
+                              return AppLocalizations.of(context)!.validatorMessageNull;
                             }
                             if (value.length >= 15) {
-                              return 'Must be less than 15 characters';
+                              return AppLocalizations.of(context)!.titleValidatorMessageLength;
                             }
                             return null;
                           },
@@ -114,7 +124,7 @@ class _AddAuthDataToHouseholdPage extends State<AddAuthDataToHouseholdPage> {
                             }
                           },
                           icon: const Icon(Icons.arrow_forward),
-                          label: const Text("Create"),
+                          label: Text(AppLocalizations.of(context)!.create),
                         ),
                       )
                     ],

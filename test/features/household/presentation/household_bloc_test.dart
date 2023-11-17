@@ -187,7 +187,7 @@ void main() {
 
     test('should get void from deleteAuthDataFromHousehold Usecase', () async {
 
-      when(() => deleteAuthDataFromHousehold.execute("userID")).thenAnswer((_) async => Right( () ));
+      when(() => deleteAuthDataFromHousehold.execute("userID")).thenAnswer((_) async => const Right( () ));
 
       bloc.add(DeleteAuthDataFromHouseholdEvent(userID: "userID", household: tHousehold));
 
