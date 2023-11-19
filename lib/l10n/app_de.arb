@@ -30,5 +30,6 @@
     "institutionTitleHint" : "Gebe einen Titel für einen Haushalt ein",
     "validatorMessageNull" : "Bitte gebe einen Wert ein",
     "titleValidatorMessageLength" : "Muss kürzer sein als 15 Zeichen",
-    "create" : "Erstelle"
+    "create" : "Erstelle",
+    "admin" : "Administrator"
 }

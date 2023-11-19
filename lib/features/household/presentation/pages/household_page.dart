@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:household_organizer/features/household/presentation/pages/household_main_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../injection_container.dart';
 
@@ -42,7 +43,7 @@ class HouseholdPage extends StatelessWidget {
           } else if (state is HouseholdError) {
             return BlocErrorWidget(failure: state.failure, reloadAction: () => loadingFunction(context, mainUser.householdID));
           } else {
-            return const Text("Please contact support when this occurs");
+            return Text(AppLocalizations.of(context)!.supportErrorMessage);
           }
         },
       ),

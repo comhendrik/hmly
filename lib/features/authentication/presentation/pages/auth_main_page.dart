@@ -50,11 +50,13 @@ class _AuthMainPage extends State<AuthMainPage> {
             icon: const Icon(Icons.task_outlined),
             label: AppLocalizations.of(context)!.tasksTitle,
           ),
+          /*
           NavigationDestination(
             selectedIcon: const Icon(Icons.insert_chart),
             icon: const Icon(Icons.insert_chart_outlined),
             label: AppLocalizations.of(context)!.chartsTitle,
           ),
+           */
           NavigationDestination(
             selectedIcon: const Icon(Icons.person),
             icon: const Icon(Icons.person_outline),
@@ -69,7 +71,9 @@ class _AuthMainPage extends State<AuthMainPage> {
       ),
       body: <Widget>[
         buildNavigationDestination(widget: HouseholdTaskPage(mainUser: widget.mainUser)),
+        /*
         buildNavigationDestination(widget: ChartPage(mainUser: widget.mainUser)),
+         */
         buildNavigationDestination(widget: AccountPage(mainUser: widget.mainUser, ancestorContext: context)),
         buildNavigationDestination(widget: HouseholdPage(mainUser: widget.mainUser))
       ][currentPageIndex],

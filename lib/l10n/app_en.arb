@@ -126,5 +126,9 @@
   "create" : "Create",
     "@create": {
       "description": "String Create"
+    },
+  "admin" : "Admin",
+    "@admin" : {
+      "description" : "String Admin"
     }
 }

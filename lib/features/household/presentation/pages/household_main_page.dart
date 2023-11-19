@@ -7,6 +7,7 @@ import 'package:household_organizer/features/household/domain/entities/household
 import 'package:household_organizer/features/household/presentation/bloc/household_bloc.dart';
 import '../widgets/widget.dart';
 import 'package:flutter_share/flutter_share.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HouseholdMainPage extends StatefulWidget {
   final BuildContext context;
@@ -79,13 +80,13 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a title';
+                    return AppLocalizations.of(context)!.validatorMessageNull;
                   }
                   if (value == widget.household.title) {
                     return "Title can't be the same";
                   }
                   if (value.length >= 15) {
-                    return 'Must be less than 15 characters.';
+                    return AppLocalizations.of(context)!.titleValidatorMessageLength;
                   }
                   return null;
                 },
@@ -103,13 +104,13 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
               ) : null,
           ),
           HouseholdInformationCard(
-            title: "Admin",
+            title: AppLocalizations.of(context)!.admin,
             titleWidget: null,
             detailWidget: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('username: ${widget.household.admin.username}'),
-                Text('ID: ${widget.household.admin.id}'),
+                Text('${AppLocalizations.of(context)!.username}: ${widget.household.admin.username}'),
+                Text('${AppLocalizations.of(context)!.shortIdentifier}: ${widget.household.admin.id}'),
               ],
             ),
             button:
