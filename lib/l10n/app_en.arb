@@ -123,6 +123,10 @@
     "@titleValidatorMessageLength": {
       "description": "Hint when entering Title and it is to long"
     },
+  "validatorMessageSame" : "Can't be the same",
+  "@validatorMessageSame": {
+    "description": "Hint when entering something and its the same then something different"
+  },
   "create" : "Create",
     "@create": {
       "description": "String Create"
@@ -130,5 +134,51 @@
   "admin" : "Admin",
     "@admin" : {
       "description" : "String Admin"
+    },
+  "update" : "Update",
+    "@update" : {
+      "description" : "String Update"
+    },
+  "title" : "Title",
+    "@title" : {
+      "description" : "String Title"
+    },
+  "current" : "Current",
+    "@current" : {
+      "description" : "String Current"
+    },
+  "changeAdmin" : "Change Admin",
+    "@changeAdmin" : {
+      "description" : "String Change Admin"
+    },
+  "change" : "Change",
+    "@change" : {
+      "description" : "String Change"
+    },
+  "proceed" : "Proceed",
+    "@proceed" : {
+      "description" : "String Proceed"
+    },
+  "changeAdminWarningMessage": "Do you really want to give the user with the id {userIDFromNewAdmin} your admin rights? \nYou are not able to get them back on your own.",
+    "@hello": {
+      "description": "A Warning Message When user is about to be changed",
+      "placeholders": {
+        "userName": {
+          "type": "String",
+          "example": "Bob"
+        }
+      }
+    },
+  "copyIdentifier" : "Copy ID",
+    "@copyIdentifier" : {
+      "description" : "String Copy ID"
+    },
+  "user" : "User",
+    "@user" : {
+      "description" : "String User"
+    },
+  "removingUserWarning" : "Do you really want to remove this user?",
+    "@removingUserWarning" : {
+      "description" : "Warning when user is about to be removed from institution"
     }
 }

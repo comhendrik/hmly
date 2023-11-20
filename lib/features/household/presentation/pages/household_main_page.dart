@@ -39,7 +39,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
     titleController.text = widget.household.title;
     super.initState();
 
-    //init list of tuples for users
+    //init list of tuples for users, this for getting the picker when wanting to change admin, initialized
     isSelected = List<bool>.filled(widget.household.users.length - 1 , false, growable: false);
     for (int i = 0; i < widget.household.users.length; i++) {
       final iteratedUser = widget.household.users[i];
@@ -56,13 +56,13 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
       child: Column(
         children: [
           HouseholdInformationCard(
-            title: "Household Title",
+            title: AppLocalizations.of(context)!.title,
             titleWidget:
             widget.mainUser.id == widget.household.admin.id ?
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Current:"),
+                  Text(AppLocalizations.of(context)!.current),
                   Text(widget.household.title)
                 ],
               ) : null ,
@@ -70,10 +70,10 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
             widget.mainUser.id == widget.household.admin.id ?
               TextFormField(
                 controller: titleController,
-                decoration: const InputDecoration(
-                  hintText: 'Enter title',
-                  prefixIcon: Icon(Icons.home),
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context)!.institutionTitleHint,
+                  prefixIcon: const Icon(Icons.home),
+                  border: const OutlineInputBorder(),
                 ),
                 onChanged: (value) {
                   titleStr = titleController.text;
@@ -83,7 +83,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                     return AppLocalizations.of(context)!.validatorMessageNull;
                   }
                   if (value == widget.household.title) {
-                    return "Title can't be the same";
+                    return AppLocalizations.of(context)!.validatorMessageSame;
                   }
                   if (value.length >= 15) {
                     return AppLocalizations.of(context)!.titleValidatorMessageLength;
@@ -100,7 +100,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                   }
                 },
                 buttonIcon: const Icon(Icons.update),
-                buttonText: 'Update',
+                buttonText: AppLocalizations.of(context)!.update,
               ) : null,
           ),
           HouseholdInformationCard(
@@ -136,12 +136,12 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                                     children: <Widget>[
                                       SizedBox(height: heightForSheetSizedBox,),
                                       // Row for Headline
-                                      const Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 5.0),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
                                         child: Row(
                                           children: [
-                                            Icon(Icons.admin_panel_settings, weight: 5.0),
-                                            Text(' Change Admin', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+                                            const Icon(Icons.admin_panel_settings, weight: 5.0),
+                                            Text(AppLocalizations.of(context)!.changeAdmin, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
                                           ],
                                         ),
                                       ),
@@ -188,18 +188,18 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                                               onPressed: () {
                                                 Navigator.pop(context);
                                               },
-                                              label: const Text('Cancel')
+                                              label: Text(AppLocalizations.of(context)!.cancel)
                                           ),
                                           ElevatedButton(
                                             onPressed: userIDFromNewAdmin == "" ? null : ()  => showDialog<String>(
                                               context: context,
                                               builder: (BuildContext alertContext) => AlertDialog(
-                                                title: const Text('Warning'),
-                                                content: Text('Do you really want to give the user with the id $userIDFromNewAdmin your admin rights? \nYou are not able to get them back on your own.'),
+                                                title: Text(AppLocalizations.of(context)!.warning),
+                                                content: Text(AppLocalizations.of(context)!.changeAdminWarningMessage(userIDFromNewAdmin)),
                                                 actions: <Widget>[
                                                   TextButton(
                                                     onPressed: ()  => Navigator.pop(alertContext, 'Cancel'),
-                                                    child: const Text('Cancel'),
+                                                    child: Text(AppLocalizations.of(context)!.cancel),
                                                   ),
                                                   TextButton(
                                                     onPressed: () {
@@ -212,12 +212,12 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                                                       //Pop context of sheet
                                                       Navigator.pop(context);
                                                     },
-                                                    child: const Text('Change', style: TextStyle(color: Colors.red),),
+                                                    child: Text(AppLocalizations.of(context)!.change, style: const TextStyle(color: Colors.red),),
                                                   ),
                                                 ],
                                               ),
                                             ),
-                                            child: const Text("Proceed"),
+                                            child: Text(AppLocalizations.of(context)!.proceed),
                                           )
                                         ],
                                       )
@@ -231,11 +231,11 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                   },
                 ),
                 buttonIcon: const Icon(Icons.admin_panel_settings),
-                buttonText: 'Change Admin',
+                buttonText: AppLocalizations.of(context)!.changeAdmin,
               ) : null,
           ),
           HouseholdInformationCard(
-              title: "Household Id",
+              title: AppLocalizations.of(context)!.institutionIdentifier,
               titleWidget: null,
               detailWidget: Text(widget.household.id),
               button: HouseholdInformationCardButton(
@@ -244,11 +244,11 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                       .then((value) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Copied ID: '${widget.household.id}'"))));
                 },
                 buttonIcon: const Icon(Icons.save),
-                buttonText: 'Copy ID',
+                buttonText: AppLocalizations.of(context)!.copyIdentifier,
               ),
           ),
           HouseholdInformationCard(
-              title: "User",
+              title: AppLocalizations.of(context)!.user,
               titleWidget: null,
               detailWidget: Column(
                 children: [
@@ -261,12 +261,12 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                               onPressed: () => showDialog<String>(
                                 context: context,
                                 builder: (BuildContext context) => AlertDialog(
-                                  title: const Text('Delete Warning'),
+                                  title: Text(AppLocalizations.of(context)!.warning),
                                   content: const Text('Do you really want to remove this user?'),
                                   actions: <Widget>[
                                     TextButton(
                                       onPressed: ()  => Navigator.pop(context, 'Cancel'),
-                                      child: const Text('Cancel'),
+                                      child: Text(AppLocalizations.of(context)!.cancel),
                                     ),
                                     TextButton(
                                       onPressed: () {
@@ -299,7 +299,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
               ),
           ),
           HouseholdInformationCard(
-              title: "Household",
+              title: AppLocalizations.of(context)!.institutionTitle,
               titleWidget: null,
               detailWidget: const Text("Click to leave household"),
               button: HouseholdInformationCardButton(
@@ -315,7 +315,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                     actions: <Widget>[
                       TextButton(
                         onPressed: ()  => Navigator.pop(context, 'Cancel'),
-                        child: const Text('Cancel'),
+                        child: Text(AppLocalizations.of(context)!.cancel),
                       ),
                       if (widget.household.admin.id != widget.mainUser.id || widget.household.users.length == 1)
                         TextButton(

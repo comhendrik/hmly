@@ -31,5 +31,17 @@
     "validatorMessageNull" : "Bitte gebe einen Wert ein",
     "titleValidatorMessageLength" : "Muss kürzer sein als 15 Zeichen",
     "create" : "Erstelle",
-    "admin" : "Administrator"
+    "admin" : "Administrator",
+    "udpate" : "Aktualisieren",
+    "title" : "Titel",
+    "validatorMessageSame" : "Es kann nicht gleich sein",
+    "current" : "Aktuell",
+    "changeAdmin" : "Ändern",
+    "change" : "Ändern",
+    "proceed" : "Fortfahren",
+    "changeAdminWarningMessage" : "Möchtest du wirklich dem Nutzer mit der ID {userIDFromNewAdmin} deine Administratorrechte geben? \nDu kannst dir diese nicht selbst wiedergeben",
+    "copyIdentifier" : "ID kopieren",
+    "user" : "Nutzer",
+    "removingUserWarning" : "Möchtest du diesen Nutzer wirklich entfernen"
+
 }
