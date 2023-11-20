@@ -7,6 +7,7 @@ import 'package:household_organizer/features/household_task/presentation/widgets
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../injection_container.dart';
 
@@ -34,7 +35,7 @@ class HouseholdTaskPage extends StatelessWidget {
           } else if (state is HouseholdTaskLoaded) {
             return FeatureWidgetBlueprint(
               title: AppLocalizations.of(context)!.tasksTitle,
-              titleIcon: Icons.task,
+              titleIcon: null,
               reloadAction: () => loadingFunction(context, mainUser.householdID),
               widget: HouseholdTaskMainPage(mainUser: mainUser, allTasks: state.householdTaskList),
               extraWidget: CreateHouseholdTaskSheet(householdID: mainUser.householdID),

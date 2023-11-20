@@ -52,6 +52,7 @@ dependencies:
   intl: any
   flutter_localizations:
     sdk: flutter
+  flutter_svg: ^2.0.9
 
 dev_dependencies:
   flutter_test:
@@ -75,6 +76,8 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   generate: true
+  assets:
+    - assets/hmly-high-resolution-logo-transparent.svg
 
   # To add assets to your application, add an assets section, like this:
   # assets:
