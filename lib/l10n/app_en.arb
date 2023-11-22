@@ -180,5 +180,13 @@
   "removingUserWarning" : "Do you really want to remove this user?",
     "@removingUserWarning" : {
       "description" : "Warning when user is about to be removed from institution"
+    },
+  "allowedUserIdentifiers" : "Allowed User ID's",
+    "@allowedUserIdentifiers" : {
+      "description" : "String Allowed User ID's"
+    },
+  "identifier" : "ID",
+    "@identifier" : {
+      "description" : "String ID"
     }
 }

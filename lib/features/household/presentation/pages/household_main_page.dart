@@ -284,19 +284,28 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                     )
                 ],
               ),
-              button: HouseholdInformationCardButton(
-                action: () async {
-                  //TODO: Create real link
-                  const host = '127.0.0.1';
-                  await FlutterShare.share(
-                      title: 'Invite Link',
-                      text: "I wanted to invite you to my household. Use this ID '${widget.household.id}' to join my household",
-                      linkUrl: 'https://$host.com/${widget.household.id}'
-                  );
-                },
-                buttonIcon: const Icon(Icons.person_add),
-                buttonText: 'Invite User',
-              ),
+              button: null
+          ),
+          HouseholdInformationCard(
+            title: AppLocalizations.of(context)!.allowedUserIdentifiers,
+            titleWidget: null,
+            detailWidget: Wrap(
+              children: [
+                for (String id in widget.household.allowedUsers)
+                  if (id != widget.household.admin.id)
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text(id),
+                    ),
+              ],
+            ),
+            button: HouseholdInformationCardButton(
+              action: () {
+                //TODO: Action to add ID. On the other side you need to check ID when user is trying to add himself to an institution
+              },
+              buttonIcon: const Icon(Icons.add),
+              buttonText: AppLocalizations.of(context)!.identifier,
+            ),
           ),
           HouseholdInformationCard(
               title: AppLocalizations.of(context)!.institutionTitle,

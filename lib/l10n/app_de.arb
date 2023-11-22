@@ -42,6 +42,8 @@
     "changeAdminWarningMessage" : "Möchtest du wirklich dem Nutzer mit der ID {userIDFromNewAdmin} deine Administratorrechte geben? \nDu kannst dir diese nicht selbst wiedergeben",
     "copyIdentifier" : "ID kopieren",
     "user" : "Nutzer",
-    "removingUserWarning" : "Möchtest du diesen Nutzer wirklich entfernen"
+    "removingUserWarning" : "Möchtest du diesen Nutzer wirklich entfernen?",
+    "allowedUserIdentifiers" : "Erlaubte Nutzer ID's",
+    "identifier" : "ID"
 
 }

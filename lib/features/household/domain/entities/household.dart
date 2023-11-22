@@ -6,15 +6,17 @@ class Household extends Equatable {
   final String title;
   final List<User> users;
   final User admin;
+  final List<String> allowedUsers;
 
   const Household({
     required this.id,
     required this.title,
     required this.users,
     required this.admin,
+    required this.allowedUsers
   });
 
   @override
-  List<Object> get props => [id, title, users, admin];
+  List<Object> get props => [id, title, users, admin, allowedUsers];
 
 }

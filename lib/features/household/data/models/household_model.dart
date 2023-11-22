@@ -8,11 +8,13 @@ class HouseholdModel extends Household {
     required String title,
     required List<User> users,
     required User admin,
+    required List<String> allowedUsers
   }) : super (
     id: id,
     title: title,
     users: users,
-    admin: admin
+    admin: admin,
+    allowedUsers: allowedUsers
   );
 
 
@@ -21,7 +23,8 @@ class HouseholdModel extends Household {
       id: id,
       title: json['title'],
       users: users,
-      admin: User.fromJSON(admin, adminID)
+      admin: User.fromJSON(admin, adminID),
+      allowedUsers: [...json["allowed_users"]] //casts List<dynamic> into List<String
     );
   }
 
