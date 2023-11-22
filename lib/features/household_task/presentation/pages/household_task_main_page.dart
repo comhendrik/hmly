@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:household_organizer/core/entities/user.dart';
-import 'package:household_organizer/features/household_task/domain/entities/household_task.dart';
+import 'package:hmly/core/entities/user.dart';
+import 'package:hmly/features/household_task/domain/entities/household_task.dart';
 import '../widgets/widgets.dart';
 
 class HouseholdTaskMainPage extends StatelessWidget {

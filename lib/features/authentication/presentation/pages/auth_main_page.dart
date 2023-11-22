@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:household_organizer/core/entities/user.dart';
-import 'package:household_organizer/core/widgets/build_navigation_destination.dart';
-import 'package:household_organizer/features/authentication/presentation/pages/account_page.dart';
-import 'package:household_organizer/features/charts/presentation/pages/chart_page.dart';
-import 'package:household_organizer/features/household/presentation/pages/household_page.dart';
-import 'package:household_organizer/features/household_task/presentation/pages/household_task_page.dart';
+import 'package:hmly/core/entities/user.dart';
+import 'package:hmly/core/widgets/build_navigation_destination.dart';
+import 'package:hmly/features/authentication/presentation/pages/account_page.dart';
+import 'package:hmly/features/household/presentation/pages/household_page.dart';
+import 'package:hmly/features/household_task/presentation/pages/household_task_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AuthMainPage extends StatefulWidget {

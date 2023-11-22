@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:household_organizer/core/error/failure.dart';
-import 'package:household_organizer/features/household/domain/usecases/load_household.dart';
-import 'package:household_organizer/features/household/domain/usecases/update_household_title.dart';
-import 'package:household_organizer/features/household/domain/usecases/delete_auth_data_from_household.dart';
-import 'package:household_organizer/features/household/domain/usecases/update_admin.dart';
-import 'package:household_organizer/features/household/domain/usecases/delete_household.dart';
-import 'package:household_organizer/features/household/domain/entities/household.dart';
+import 'package:hmly/core/error/failure.dart';
+import 'package:hmly/features/household/domain/usecases/load_household.dart';
+import 'package:hmly/features/household/domain/usecases/update_household_title.dart';
+import 'package:hmly/features/household/domain/usecases/delete_auth_data_from_household.dart';
+import 'package:hmly/features/household/domain/usecases/update_admin.dart';
+import 'package:hmly/features/household/domain/usecases/delete_household.dart';
+import 'package:hmly/features/household/domain/entities/household.dart';
 
 part 'household_event.dart';
 part 'household_state.dart';

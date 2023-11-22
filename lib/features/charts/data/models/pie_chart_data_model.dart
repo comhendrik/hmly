@@ -1,4 +1,4 @@
-import 'package:household_organizer/features/charts/domain/entities/pie_chart_data.dart';
+import 'package:hmly/features/charts/domain/entities/pie_chart_data.dart';
 
 class PieChartDataModel extends PieChartData {
 

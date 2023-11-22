@@ -1,6 +1,6 @@
-import 'package:household_organizer/core/error/exceptions.dart';
-import 'package:household_organizer/features/household_task/data/models/household_task_model.dart';
-import 'package:household_organizer/features/household_task/domain/entities/household_task.dart';
+import 'package:hmly/core/error/exceptions.dart';
+import 'package:hmly/features/household_task/data/models/household_task_model.dart';
+import 'package:hmly/features/household_task/domain/entities/household_task.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 

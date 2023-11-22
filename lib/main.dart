@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:household_organizer/features/authentication/presentation/pages/auth_page.dart';
+import 'package:hmly/features/authentication/presentation/pages/auth_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'injection_container.dart' as di;
 

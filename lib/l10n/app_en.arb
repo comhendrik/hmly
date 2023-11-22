@@ -124,9 +124,9 @@
       "description": "Hint when entering Title and it is to long"
     },
   "validatorMessageSame" : "Can't be the same",
-  "@validatorMessageSame": {
-    "description": "Hint when entering something and its the same then something different"
-  },
+    "@validatorMessageSame": {
+      "description": "Hint when entering something and its the same then something different"
+    },
   "create" : "Create",
     "@create": {
       "description": "String Create"

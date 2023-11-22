@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:household_organizer/core/entities/user.dart';
-import 'package:household_organizer/core/error/failure.dart';
-import 'package:household_organizer/features/authentication/domain/repositories/auth_repository.dart';
-import 'package:household_organizer/features/authentication/presentation/widgets/change_user_attributes_widget.dart';
+import 'package:hmly/core/entities/user.dart';
+import 'package:hmly/core/error/failure.dart';
+import 'package:hmly/features/authentication/domain/repositories/auth_repository.dart';
+import 'package:hmly/features/authentication/presentation/widgets/change_user_attributes_widget.dart';
 
 class ChangeUserAttributes {
   final AuthRepository repository;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:hmly/features/authentication/presentation/bloc/auth_bloc.dart';
 
 
 class ForgetPasswordWidget extends StatefulWidget {

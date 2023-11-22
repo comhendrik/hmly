@@ -1,6 +1,6 @@
-import 'package:household_organizer/core/error/exceptions.dart';
-import 'package:household_organizer/features/charts/data/models/bar_chart_data_model.dart';
-import 'package:household_organizer/features/charts/data/models/pie_chart_data_model.dart';
+import 'package:hmly/core/error/exceptions.dart';
+import 'package:hmly/features/charts/data/models/bar_chart_data_model.dart';
+import 'package:hmly/features/charts/data/models/pie_chart_data_model.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 abstract class ChartsDataSource {

@@ -1,4 +1,4 @@
-import 'package:household_organizer/core/entities/user.dart';
+import 'package:hmly/core/entities/user.dart';
 
 class UserModel extends User {
 

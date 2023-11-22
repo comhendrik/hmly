@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:household_organizer/core/error/failure.dart';
-import 'package:household_organizer/features/authentication/domain/repositories/auth_repository.dart';
+import 'package:hmly/core/error/failure.dart';
+import 'package:hmly/features/authentication/domain/repositories/auth_repository.dart';
 
 class CreateHouseholdAndAddAuthData {
   final AuthRepository repository;

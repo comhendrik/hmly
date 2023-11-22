@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:household_organizer/core/error/exceptions.dart';
-import 'package:household_organizer/core/error/failure.dart';
-import 'package:household_organizer/features/household/data/datasources/household_remote_data_source.dart';
-import 'package:household_organizer/features/household/domain/entities/household.dart';
-import 'package:household_organizer/features/household/domain/repositories/household_repository.dart';
+import 'package:hmly/core/error/exceptions.dart';
+import 'package:hmly/core/error/failure.dart';
+import 'package:hmly/features/household/data/datasources/household_remote_data_source.dart';
+import 'package:hmly/features/household/domain/entities/household.dart';
+import 'package:hmly/features/household/domain/repositories/household_repository.dart';
 
 class HouseholdRepositoryImpl implements HouseholdRepository {
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 
 class FeatureWidgetBlueprint extends StatefulWidget {
 
@@ -31,13 +31,9 @@ class _FeatureWidgetBlueprintState extends State<FeatureWidgetBlueprint> {
         Row(
           children: [
             if (widget.titleIcon == null)
-              SvgPicture.asset(
-                'assets/hmly-high-resolution-logo-transparent.svg',
-                semanticsLabel: 'Logo',
-                height: 200,
-                width: 100,
-              ),
-            Icon(widget.titleIcon, weight: 5.0),
+              Image.asset('assets/png/logo-black.png', height: 75, width: 75,),
+            if (widget.titleIcon != null)
+              Icon(widget.titleIcon, weight: 5.0),
             Text(' ${widget.title}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
             const Spacer(),
             if (widget.extraWidget != null)

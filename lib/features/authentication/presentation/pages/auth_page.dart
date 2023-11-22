@@ -1,10 +1,10 @@
-import 'package:household_organizer/core/widgets/bloc_error_widget.dart';
-import 'package:household_organizer/core/widgets/custom_process_indicator_widget.dart';
-import 'package:household_organizer/features/authentication/presentation/bloc/auth_bloc.dart';
-import 'package:household_organizer/features/authentication/presentation/pages/auth_main_page.dart';
-import 'package:household_organizer/features/authentication/presentation/pages/auth_main_page_without_household.dart';
-import 'package:household_organizer/features/authentication/presentation/widgets/verify_widget.dart';
-import 'package:household_organizer/features/authentication/presentation/widgets/widgets.dart';
+import 'package:hmly/core/widgets/bloc_error_widget.dart';
+import 'package:hmly/core/widgets/custom_process_indicator_widget.dart';
+import 'package:hmly/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:hmly/features/authentication/presentation/pages/auth_main_page.dart';
+import 'package:hmly/features/authentication/presentation/pages/auth_main_page_without_household.dart';
+import 'package:hmly/features/authentication/presentation/widgets/verify_widget.dart';
+import 'package:hmly/features/authentication/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

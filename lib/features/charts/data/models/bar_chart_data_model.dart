@@ -1,4 +1,4 @@
-import 'package:household_organizer/features/charts/domain/entities/bar_chart_data.dart';
+import 'package:hmly/features/charts/domain/entities/bar_chart_data.dart';
 
 class BarChartDataModel extends BarChartData {
 

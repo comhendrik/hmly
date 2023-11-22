@@ -1,4 +1,4 @@
-import 'package:household_organizer/features/household_task/domain/entities/household_task.dart';
+import 'package:hmly/features/household_task/domain/entities/household_task.dart';
 
 class HouseholdTaskModel extends HouseholdTask {
 

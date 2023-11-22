@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:household_organizer/features/charts/domain/entities/bar_chart_data.dart';
-import 'package:household_organizer/features/charts/domain/entities/pie_chart_data.dart';
-import 'package:household_organizer/features/charts/presentation/widgets/bar_chart.dart';
-import 'package:household_organizer/features/charts/presentation/widgets/pie_chart.dart';
-import 'package:household_organizer/features/charts/presentation/widgets/reminder_button.dart';
+import 'package:hmly/features/charts/domain/entities/bar_chart_data.dart';
+import 'package:hmly/features/charts/domain/entities/pie_chart_data.dart';
+import 'package:hmly/features/charts/presentation/widgets/bar_chart.dart';
+import 'package:hmly/features/charts/presentation/widgets/pie_chart.dart';
+import 'package:hmly/features/charts/presentation/widgets/reminder_button.dart';
 
 class ChartMainPage extends StatefulWidget {
 

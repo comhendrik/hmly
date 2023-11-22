@@ -1,4 +1,4 @@
-name: household_organizer
+name: hmly
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -53,6 +53,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.0.9
+  flutter_svg_provider: ^1.0.6
 
 dev_dependencies:
   flutter_test:
@@ -77,7 +78,9 @@ flutter:
   uses-material-design: true
   generate: true
   assets:
-    - assets/hmly-high-resolution-logo-transparent.svg
+    - assets/svg/logo-no-background.svg
+    - assets/svg/logo-black.svg
+    - assets/png/logo-black.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

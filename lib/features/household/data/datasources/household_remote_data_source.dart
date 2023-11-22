@@ -1,7 +1,7 @@
-import 'package:household_organizer/core/error/exceptions.dart';
-import 'package:household_organizer/features/household/data/models/household_model.dart';
-import 'package:household_organizer/core/models/user_model.dart';
-import 'package:household_organizer/core/entities/user.dart';
+import 'package:hmly/core/error/exceptions.dart';
+import 'package:hmly/features/household/data/models/household_model.dart';
+import 'package:hmly/core/models/user_model.dart';
+import 'package:hmly/core/entities/user.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 

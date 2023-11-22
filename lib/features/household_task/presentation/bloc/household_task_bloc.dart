@@ -1,12 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:household_organizer/core/error/failure.dart';
-import 'package:household_organizer/features/household_task/domain/entities/household_task.dart';
-import 'package:household_organizer/features/household_task/domain/usecases/create_household_task.dart';
-import 'package:household_organizer/features/household_task/domain/usecases/toggle_is_done_household_task.dart';
+import 'package:hmly/core/error/failure.dart';
+import 'package:hmly/features/household_task/domain/entities/household_task.dart';
+import 'package:hmly/features/household_task/domain/usecases/create_household_task.dart';
+import 'package:hmly/features/household_task/domain/usecases/toggle_is_done_household_task.dart';
 import '../../domain/usecases/get_all_tasks_for_household.dart';
-import 'package:household_organizer/features/household_task/domain/usecases/update_household_task.dart';
-import 'package:household_organizer/features/household_task/domain/usecases/delete_household_task.dart';
+import 'package:hmly/features/household_task/domain/usecases/update_household_task.dart';
+import 'package:hmly/features/household_task/domain/usecases/delete_household_task.dart';
 
 part 'household_task_event.dart';
 part 'household_task_state.dart';

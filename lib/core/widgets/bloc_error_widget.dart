@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:household_organizer/core/error/failure.dart';
+import 'package:hmly/core/error/failure.dart';
 
 class BlocErrorWidget extends StatelessWidget {
 

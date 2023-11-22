@@ -1,12 +1,12 @@
-import 'package:household_organizer/core/entities/user.dart';
-import 'package:household_organizer/core/widgets/bloc_error_widget.dart';
-import 'package:household_organizer/core/widgets/custom_process_indicator_widget.dart';
-import 'package:household_organizer/core/widgets/feauture_widget_blueprint.dart';
-import 'package:household_organizer/features/household/presentation/bloc/household_bloc.dart';
+import 'package:hmly/core/entities/user.dart';
+import 'package:hmly/core/widgets/bloc_error_widget.dart';
+import 'package:hmly/core/widgets/custom_process_indicator_widget.dart';
+import 'package:hmly/core/widgets/feauture_widget_blueprint.dart';
+import 'package:hmly/features/household/presentation/bloc/household_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:household_organizer/features/household/presentation/pages/household_main_page.dart';
+import 'package:hmly/features/household/presentation/pages/household_main_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../injection_container.dart';
