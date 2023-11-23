@@ -44,17 +44,19 @@ class AuthDataSourceImpl implements AuthDataSource {
     try {
       final household = await householdRecordService.getOne(householdID);
       bool isAllowed = false;
-      for(String id in household.data["allowed_users"]) {
+      for (String id in household.data["allowed_users"]) {
         if (id == userID) {
           isAllowed = true;
         }
       }
       if (!isAllowed) {
-        throw UnknownException();
+        throw KnownException("You are ID is not allowed in this institution, please contact the admin.");
       }
       final _ = await userRecordService.update(userID, body: body);
-    } on ClientException catch(err) {
+    } on ClientException catch (err) {
       throw ServerException(response: err.response);
+    } on KnownException catch (err){
+      throw KnownException(err.response["message"]);
     } catch (_) {
       throw UnknownException();
     }

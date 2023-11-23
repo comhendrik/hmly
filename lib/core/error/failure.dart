@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 class Failure extends Equatable {
@@ -17,7 +18,8 @@ enum FailureType {
   server,
   cache,
   notFound,
-  unknown
+  unknown,
+  known
 }
 
 extension FailureTypeExtension on FailureType {
@@ -31,6 +33,8 @@ extension FailureTypeExtension on FailureType {
         return "Not Found Failure";
       case FailureType.unknown:
         return "Unknown Failure";
+      case FailureType.known:
+        return "Known Failure";
     }
   }
 }

@@ -21,3 +21,11 @@ class UnknownException implements Exception {
     "message" : "The Failure is based on some unknown error. Please explain your failure in detail and send it to our support."
   };
 }
+
+class KnownException implements Exception {
+
+  Map<String, dynamic> response;
+
+  KnownException(String msg) : response = { "message" : msg };
+
+}

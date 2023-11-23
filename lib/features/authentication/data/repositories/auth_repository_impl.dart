@@ -22,6 +22,8 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(Failure(data: e.response, type: FailureType.server));
     } on UnknownException catch (e) {
       return Left(Failure(data: e.response, type: FailureType.unknown));
+    } on KnownException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.known));
     }
   }
 
