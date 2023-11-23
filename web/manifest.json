@@ -1,6 +1,6 @@
 {
-    "name": "household_organizer",
-    "short_name": "household_organizer",
+    "name": "hmly",
+    "short_name": "hmly",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

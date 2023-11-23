@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "household_organizer" "\0"
+            VALUE "FileDescription", "hmly" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "hmly" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "household_organizer.exe" "\0"
-            VALUE "ProductName", "household_organizer" "\0"
+            VALUE "OriginalFilename", "hmly.exe" "\0"
+            VALUE "ProductName", "hmly" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
