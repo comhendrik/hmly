@@ -42,6 +42,16 @@ class AuthDataSourceImpl implements AuthDataSource {
       "household": householdID,
     };
     try {
+      final household = await householdRecordService.getOne(householdID);
+      bool isAllowed = false;
+      for(String id in household.data["allowed_users"]) {
+        if (id == userID) {
+          isAllowed = true;
+        }
+      }
+      if (!isAllowed) {
+        throw UnknownException();
+      }
       final _ = await userRecordService.update(userID, body: body);
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
