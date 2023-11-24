@@ -69,9 +69,9 @@ class HouseholdRepositoryImpl implements HouseholdRepository {
   }
 
   @override
-  Future<Either<Failure, Household>> addIdToAllowedUsers(String userID, Household household) async {
+  Future<Either<Failure, Household>> updateAllowedUsers(String userID, Household household, bool delete) async {
     try {
-      return Right(await remoteDataSource.addIdToAllowedUsers(userID, household));
+      return Right(await remoteDataSource.updateAllowedUsers(userID, household, delete));
     } on ServerException catch (e) {
       return Left(Failure(data: e.response, type: FailureType.server));
     } on UnknownException catch (e) {

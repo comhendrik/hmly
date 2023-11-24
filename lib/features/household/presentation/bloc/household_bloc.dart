@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hmly/core/error/failure.dart';
-import 'package:hmly/features/household/domain/usecases/add_id_to_allowed_users.dart';
+import 'package:hmly/features/household/domain/usecases/update_allowed_users.dart';
 import 'package:hmly/features/household/domain/usecases/load_household.dart';
 import 'package:hmly/features/household/domain/usecases/update_household_title.dart';
 import 'package:hmly/features/household/domain/usecases/delete_auth_data_from_household.dart';
@@ -18,14 +18,14 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
   final DeleteAuthDataFromHousehold deleteAuthDataFromHousehold;
   final UpdateAdmin updateAdmin;
   final DeleteHousehold deleteHousehold;
-  final AddIDToAllowedUsers addIDToAllowedUsers;
+  final UpdateAllowedUsers updateAllowedUsers;
   HouseholdBloc({
     required this.loadHousehold,
     required this.updateHouseholdTitle,
     required this.deleteAuthDataFromHousehold,
     required this.updateAdmin,
     required this.deleteHousehold,
-    required this.addIDToAllowedUsers
+    required this.updateAllowedUsers
   }) : super(HouseholdInitial()) {
     on<HouseholdEvent>((event, emit) async {
       emit(HouseholdInitial());
@@ -75,8 +75,8 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
         );
       } else if (event is DeleteHouseholdEvent) {
         await deleteHousehold.execute(event.householdID);
-      } else if (event is AddIDToAllowedUsersEvent) {
-        final resultEither = await addIDToAllowedUsers.execute(event.userID, event.household);
+      } else if (event is UpdateAllowedUsersEvent) {
+        final resultEither = await updateAllowedUsers.execute(event.userID, event.household, event.delete);
         resultEither.fold(
                 (failure) async {
               emit(HouseholdError(failure: failure));

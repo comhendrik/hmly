@@ -296,13 +296,19 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
             titleWidget: null,
             detailWidget: Wrap(
               children: [
+                for (String id in widget.household.allowedUsers)
+                  if (id != widget.mainUser.id)
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text(id),
+                    ),
                 if (widget.mainUser.id == widget.household.admin.id)
                   TextFormField(
                     controller: userIDController,
                     decoration: InputDecoration(
                       //TODO: Change hint text
                       hintText: AppLocalizations.of(context)!.user,
-                      prefixIcon: const Icon(Icons.home),
+                      prefixIcon: const Icon(Icons.verified_user),
                       border: const OutlineInputBorder(),
                     ),
                     validator: (value) {
@@ -312,23 +318,17 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                       return null;
                     },
                   ),
-                for (String id in widget.household.allowedUsers)
-                  if (id != widget.mainUser.id)
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(id),
-                    ),
               ],
             ),
-            button: HouseholdInformationCardButton(
+            button: widget.mainUser.id == widget.household.admin.id ? HouseholdInformationCardButton(
               action: () {
                 if (_IDFormKey.currentState!.validate()) {
-                  addIDToAllowedUsers(userIDController.text, widget.household);
+                  updateAllowedUsers(userIDController.text, widget.household, false);
                 }
               },
               buttonIcon: const Icon(Icons.add),
               buttonText: AppLocalizations.of(context)!.identifier,
-            ),
+            ) : null,
           ),
         ),
         HouseholdInformationCard(
@@ -400,9 +400,9 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
         .add(DeleteHouseholdEvent(householdID: householdID));
   }
 
-  void addIDToAllowedUsers(String userID, Household household) {
+  void updateAllowedUsers(String userID, Household household, bool delete) {
     BlocProvider.of<HouseholdBloc>(widget.context)
-        .add(AddIDToAllowedUsersEvent(userID: userID, household: household));
+        .add(UpdateAllowedUsersEvent(userID: userID, household: household, delete: delete));
   }
 
 }

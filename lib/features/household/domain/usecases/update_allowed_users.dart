@@ -3,12 +3,12 @@ import 'package:hmly/core/error/failure.dart';
 import 'package:hmly/features/household/domain/entities/household.dart';
 import 'package:hmly/features/household/domain/repositories/household_repository.dart';
 
-class AddIDToAllowedUsers {
+class UpdateAllowedUsers {
   final HouseholdRepository repository;
 
-  AddIDToAllowedUsers({required this.repository});
+  UpdateAllowedUsers({required this.repository});
 
-  Future<Either<Failure, Household>> execute(String userID, Household household) async {
-    return await repository.addIdToAllowedUsers(userID, household);
+  Future<Either<Failure, Household>> execute(String userID, Household household, bool delete) async {
+    return await repository.updateAllowedUsers(userID, household, delete);
   }
 }

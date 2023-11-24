@@ -12,7 +12,7 @@ abstract class HouseholdRemoteDataSource {
   Future<void> deleteAuthDataFromHousehold(String userID);
   Future<HouseholdModel> updateAdmin(String householdID, String userID);
   Future<void> deleteHousehold(String householdID);
-  Future<HouseholdModel> addIdToAllowedUsers(String userID, Household household);
+  Future<HouseholdModel> updateAllowedUsers(String userID, Household household, bool delete);
 }
 
 class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
@@ -117,13 +117,24 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
   }
 
   @override
-  Future<HouseholdModel> addIdToAllowedUsers(String userID, Household household) async {
+  Future<HouseholdModel> updateAllowedUsers(String userID, Household household, bool delete) async {
 
     try {
+      List<String> allowedUsers = household.allowedUsers;
+      if(!delete) {
+        allowedUsers.add(userID);
+      } else {
+        for (var i = 0; i < allowedUsers.length; i++) {
+          if (allowedUsers[i] == userID) {
+            allowedUsers.removeAt(i);
+
+            break;
+          }
+        }
+      }
+
       final body = <String, dynamic> {
-        "allowed_users" : [
-          userID
-        ]
+        "allowed_users" : allowedUsers
       };
       final result = await householdRecordService.update(household.id, body: body);
       return HouseholdModel(id: household.id, title: household.title, users: household.users, admin: household.admin, allowedUsers: [...result.data["allowed_users"]]);

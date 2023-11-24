@@ -60,13 +60,15 @@ class DeleteHouseholdEvent extends HouseholdEvent {
 }
 
 
-class AddIDToAllowedUsersEvent extends HouseholdEvent {
+class UpdateAllowedUsersEvent extends HouseholdEvent {
   final String userID;
   final Household household;
+  final bool delete;
 
-  const AddIDToAllowedUsersEvent({
+  const UpdateAllowedUsersEvent({
     required this.userID,
-    required this.household
+    required this.household,
+    required this.delete
   });
 }
 
