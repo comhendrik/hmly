@@ -59,3 +59,14 @@ class DeleteHouseholdEvent extends HouseholdEvent {
   });
 }
 
+
+class AddIDToAllowedUsersEvent extends HouseholdEvent {
+  final String userID;
+  final Household household;
+
+  const AddIDToAllowedUsersEvent({
+    required this.userID,
+    required this.household
+  });
+}
+

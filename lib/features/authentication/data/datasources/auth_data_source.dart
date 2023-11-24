@@ -67,6 +67,7 @@ class AuthDataSourceImpl implements AuthDataSource {
     final body = <String, dynamic>{
       "title": householdTitle,
       "admin": userID,
+      "allowed_users" : [userID]
     };
     try {
       final result = await householdRecordService.create(body: body);

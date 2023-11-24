@@ -2,6 +2,7 @@ import 'package:hmly/core/error/exceptions.dart';
 import 'package:hmly/features/household/data/models/household_model.dart';
 import 'package:hmly/core/models/user_model.dart';
 import 'package:hmly/core/entities/user.dart';
+import 'package:hmly/features/household/domain/entities/household.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 
@@ -11,6 +12,7 @@ abstract class HouseholdRemoteDataSource {
   Future<void> deleteAuthDataFromHousehold(String userID);
   Future<HouseholdModel> updateAdmin(String householdID, String userID);
   Future<void> deleteHousehold(String householdID);
+  Future<HouseholdModel> addIdToAllowedUsers(String userID, Household household);
 }
 
 class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
@@ -107,6 +109,24 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
   Future<void> deleteHousehold(String householdID) async {
     try {
       final _ = await householdRecordService.delete(householdID);
+    } on ClientException catch(err) {
+      throw ServerException(response: err.response);
+    } catch (_) {
+      throw UnknownException();
+    }
+  }
+
+  @override
+  Future<HouseholdModel> addIdToAllowedUsers(String userID, Household household) async {
+
+    try {
+      final body = <String, dynamic> {
+        "allowed_users" : [
+          userID
+        ]
+      };
+      final result = await householdRecordService.update(household.id, body: body);
+      return HouseholdModel(id: household.id, title: household.title, users: household.users, admin: household.admin, allowedUsers: [...result.data["allowed_users"]]);
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
     } catch (_) {

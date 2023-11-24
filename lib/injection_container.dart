@@ -24,6 +24,7 @@ import 'package:hmly/features/charts/presentation/bloc/chart_bloc.dart';
 import 'package:hmly/features/household/data/datasources/household_remote_data_source.dart';
 import 'package:hmly/features/household/data/repositories/household_repository_impl.dart';
 import 'package:hmly/features/household/domain/repositories/household_repository.dart';
+import 'package:hmly/features/household/domain/usecases/add_id_to_allowed_users.dart';
 import 'package:hmly/features/household/domain/usecases/delete_auth_data_from_household.dart';
 import 'package:hmly/features/household/domain/usecases/delete_household.dart';
 import 'package:hmly/features/household/domain/usecases/load_household.dart';
@@ -56,7 +57,8 @@ Future<void> init() async {
     initial: prefs.getString('pb_auth'),
   );
 
-  final pb = PocketBase('https://household-organizer.hop.sh', authStore: store);
+  //final pb = PocketBase('https://household-organizer.hop.sh', authStore: store);
+  final pb = PocketBase('http://127.0.0.1:8090', authStore: store);
 
   //! Features -
   // Bloc
@@ -77,7 +79,8 @@ Future<void> init() async {
           updateHouseholdTitle: sl(),
           deleteAuthDataFromHousehold: sl(),
           updateAdmin: sl(),
-          deleteHousehold: sl()
+          deleteHousehold: sl(),
+          addIDToAllowedUsers: sl()
     ),
   );
 
@@ -122,6 +125,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DeleteAuthDataFromHousehold(repository: sl()));
   sl.registerLazySingleton(() => UpdateAdmin(repository: sl()));
   sl.registerLazySingleton(() => DeleteHousehold(repository: sl()));
+  sl.registerLazySingleton(() => AddIDToAllowedUsers(repository: sl()));
 
   sl.registerLazySingleton(() => AddAuthDataToHousehold(repository: sl()));
   sl.registerLazySingleton(() => CreateHouseholdAndAddAuthData(repository: sl()));

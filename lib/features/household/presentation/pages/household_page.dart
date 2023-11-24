@@ -41,7 +41,9 @@ class HouseholdPage extends StatelessWidget {
               widget: HouseholdMainPage(context: context, household: state.household, mainUser: mainUser,),
             );
           } else if (state is HouseholdError) {
-            return BlocErrorWidget(failure: state.failure, reloadAction: () => loadingFunction(context, mainUser.householdID));
+            return BlocErrorWidget(failure: state.failure, reloadAction: () {
+              loadingFunction(context, mainUser.householdID);
+            });
           } else {
             return Text(AppLocalizations.of(context)!.supportErrorMessage);
           }
