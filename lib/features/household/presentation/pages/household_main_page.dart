@@ -298,9 +298,34 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
               children: [
                 for (String id in widget.household.allowedUsers)
                   if (id != widget.mainUser.id)
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(id),
+                    Row(
+                      children: [
+                        Text(id),
+                        if (widget.mainUser.id == widget.household.admin.id)
+                          IconButton(
+                              onPressed: () => showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  title: Text(AppLocalizations.of(context)!.warning),
+                                  content: const Text('Do you really want to remove this id?'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: ()  => Navigator.pop(context, 'Cancel'),
+                                      child: Text(AppLocalizations.of(context)!.cancel),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        updateAllowedUsers(id, widget.household, true);
+                                        Navigator.pop(context, 'Remove');
+                                      },
+                                      child: const Text('Remove', style: TextStyle(color: Colors.red),),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              icon: const Icon(Icons.delete)
+                          )
+                      ],
                     ),
                 if (widget.mainUser.id == widget.household.admin.id)
                   TextFormField(
