@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hmly/features/charts/domain/entities/pie_chart_data.dart';
 import 'package:hmly/features/charts/domain/entities/historical_data.dart';
-import 'package:hmly/features/charts/presentation/widgets/historical_chart.dart';
 import 'package:hmly/features/charts/presentation/widgets/pie_chart.dart';
 import 'package:hmly/features/charts/presentation/widgets/reminder_button.dart';
+import 'package:hmly/features/charts/presentation/widgets/historical_data_calendar.dart';
 
 class ChartMainPage extends StatefulWidget {
 
@@ -26,7 +26,7 @@ class _ChartMainPageState extends State<ChartMainPage> {
     return Column(
       children: [
         HouseholdPieChart(data: widget.pieChartData),
-        HistoricalChart(data: widget.historicalData),
+        HistoricalDataCalendar(data: widget.historicalData),
         ReminderButton(dailyPoints: 20),
       ],
     );
