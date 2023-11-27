@@ -31,7 +31,7 @@ class _FeatureWidgetBlueprintState extends State<FeatureWidgetBlueprint> {
         Row(
           children: [
             if (widget.titleIcon == null)
-              Image.asset('assets/png/logo-black.png', height: 75, width: 75,),
+              Image.asset('assets/png/logo-no-background.png', height: 50, width: 50,),
             if (widget.titleIcon != null)
               Icon(widget.titleIcon, weight: 5.0),
             Text(' ${widget.title}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),

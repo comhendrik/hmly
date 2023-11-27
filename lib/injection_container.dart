@@ -19,7 +19,7 @@ import 'package:hmly/features/charts/data/datasources/charts_data_source.dart';
 import 'package:hmly/features/charts/data/repositories/charts_repository_impl.dart';
 import 'package:hmly/features/charts/domain/repositories/charts_repository.dart';
 import 'package:hmly/features/charts/domain/usecases/get_daily_pie_chart_data.dart';
-import 'package:hmly/features/charts/domain/usecases/get_weekly_bar_chart_data.dart';
+import 'package:hmly/features/charts/domain/usecases/get_historical_data.dart';
 import 'package:hmly/features/charts/presentation/bloc/chart_bloc.dart';
 import 'package:hmly/features/household/data/datasources/household_remote_data_source.dart';
 import 'package:hmly/features/household/data/repositories/household_repository_impl.dart';
@@ -57,8 +57,8 @@ Future<void> init() async {
     initial: prefs.getString('pb_auth'),
   );
 
- // final pb = PocketBase('https://household-organizer.hop.sh', authStore: store);
-  final pb = PocketBase('http://127.0.0.1:8090', authStore: store);
+  final pb = PocketBase('https://household-organizer.hop.sh', authStore: store);
+  //final pb = PocketBase('http://127.0.0.1:8090', authStore: store);
 
   //! Features -
   // Bloc
@@ -105,7 +105,7 @@ Future<void> init() async {
 
   sl.registerFactory(
         () => ChartBloc(
-          getWeeklyBarChartData: sl(),
+          getHistoricalData: sl(),
           getDailyPieChartData: sl(),
         )
   );
@@ -141,7 +141,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => RefreshAuthData(repository: sl()));
   sl.registerLazySingleton(() => DeleteUser(repository: sl()));
 
-  sl.registerLazySingleton(() => GetWeeklyBarChartData(repository: sl()));
+  sl.registerLazySingleton(() => GetHistoricalData(repository: sl()));
   sl.registerLazySingleton(() => GetDailyPieChartData(repository: sl()));
 
   // Repository

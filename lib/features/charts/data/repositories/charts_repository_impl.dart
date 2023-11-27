@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:hmly/core/error/exceptions.dart';
 import 'package:hmly/core/error/failure.dart';
 import 'package:hmly/features/charts/data/datasources/charts_data_source.dart';
-import 'package:hmly/features/charts/domain/entities/bar_chart_data.dart';
+import 'package:hmly/features/charts/domain/entities/historical_data.dart';
 import 'package:hmly/features/charts/domain/entities/pie_chart_data.dart';
 import 'package:hmly/features/charts/domain/repositories/charts_repository.dart';
 
@@ -15,19 +15,9 @@ class ChartsRepositoryImpl implements ChartsRepository {
   });
 
   @override
-  Future<Either<Failure, List<BarChartData>>> getWeeklyBarChartData(String userID) async {
+  Future<Either<Failure, List<HistoricalData>>> getHistoricalData(String userID) async {
     try {
-      final weeklyBarChartData = await dataSource.getWeeklyBarChartData(userID);
-
-      int currentDayOfWeek = DateTime.now().weekday;
-
-
-      for (var i = 6; i >= currentDayOfWeek; i -= 1) {
-        weeklyBarChartData.insert(0, weeklyBarChartData[6]);
-        weeklyBarChartData.removeLast();
-      }
-
-      return Right(weeklyBarChartData);
+      return Right(await dataSource.getHistoricalData(userID));
     } on ServerException catch (e) {
       return Left(Failure(data: e.response, type: FailureType.server));
     } on UnknownException catch (e) {

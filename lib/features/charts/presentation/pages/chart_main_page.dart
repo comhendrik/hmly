@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:hmly/features/charts/domain/entities/bar_chart_data.dart';
 import 'package:hmly/features/charts/domain/entities/pie_chart_data.dart';
-import 'package:hmly/features/charts/presentation/widgets/bar_chart.dart';
+import 'package:hmly/features/charts/domain/entities/historical_data.dart';
+import 'package:hmly/features/charts/presentation/widgets/historical_chart.dart';
 import 'package:hmly/features/charts/presentation/widgets/pie_chart.dart';
 import 'package:hmly/features/charts/presentation/widgets/reminder_button.dart';
 
 class ChartMainPage extends StatefulWidget {
 
-  final List<BarChartData> barChartData;
   final List<PieChartData> pieChartData;
+  final List<HistoricalData> historicalData;
 
   const ChartMainPage({
     super.key,
-    required this.barChartData,
-    required this.pieChartData
+    required this.pieChartData,
+    required this.historicalData
   });
 
   @override
@@ -25,42 +25,9 @@ class _ChartMainPageState extends State<ChartMainPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.0)
-          ),
-          child: Card(
-              elevation: 0.125,
-              // No elevation for the Card; we'll use the shadow from the Container
-              child: Row(
-                children: [
-                  Container(
-                      margin: const EdgeInsets.all(10),
-                      padding: const EdgeInsets.only(left: 25.0,top: 15.0,right: 25.0,bottom: 15.0),
-                      decoration: BoxDecoration(
-                        color: Colors.blueGrey,
-                        borderRadius: BorderRadius.circular(16.0), // Adjust the radius as needed
-                      ),
-                      child: Text(
-                        "${widget.barChartData.last.value}",
-
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0,),
-                      )
-                  ),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Points reached today', style: TextStyle(fontWeight: FontWeight.bold),),
-                    ],
-                  ),
-                ],
-              )
-          ),
-        ),
-
-        BarChart(data: widget.barChartData),
         HouseholdPieChart(data: widget.pieChartData),
-        ReminderButton(dailyPoints: widget.barChartData.last.value),
+        HistoricalChart(data: widget.historicalData),
+        ReminderButton(dailyPoints: 20),
       ],
     );
   }

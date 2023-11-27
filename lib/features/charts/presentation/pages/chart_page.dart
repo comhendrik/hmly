@@ -38,7 +38,7 @@ class ChartPage extends StatelessWidget {
                 title: AppLocalizations.of(context)!.chartsTitle,
                 titleIcon: Icons.insert_chart,
                 reloadAction: () => loadingFunction(context, mainUser),
-                widget: ChartMainPage(barChartData: state.barChartDataList, pieChartData: state.pieChartDataList)
+                widget: ChartMainPage(pieChartData: state.pieChartDataList, historicalData: state.historicalDataList)
             );
           } else if (state is ChartError) {
             return BlocErrorWidget(failure: state.failure, reloadAction: () => loadingFunction(context, mainUser));

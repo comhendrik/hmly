@@ -120,7 +120,6 @@ class AuthDataSourceImpl implements AuthDataSource {
     };
     try {
       final record = await userRecordService.create(body: body);
-      createWeeklyPoints(record.id);
       login(email, password);
       return UserModel.fromJSON(record.data, record.id);
     } on ClientException catch(err) {
@@ -146,8 +145,6 @@ class AuthDataSourceImpl implements AuthDataSource {
       });
       RecordModel user = authStore.model;
 
-      //TODO: Point creation is needed but only when signing user in with oauth /Later Release
-      //createWeeklyPoints(user.id);
       return UserModel.fromJSON(user.data, user.id);
 
     } on ClientException catch(err) {
@@ -250,29 +247,11 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<void> deleteUser(User user) async {
     try {
-      final weeklyPointsList = await pointsRecordService.getFullList(filter: 'user="${user.id}"');
-      for (RecordModel point in weeklyPointsList) {
-        await pointsRecordService.delete(point.id);
-      }
       userRecordService.delete(user.id);
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
     } catch (_) {
       throw UnknownException();
-    }
-  }
-
-
-  void createWeeklyPoints(String userID) async {
-    final dayList = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-    for (var i = 1; i < 8; i++) {
-      final pointBody = <String, dynamic>{
-        "day": dayList[i-1],
-        "day_number": i,
-        "value" : 0,
-        "user" : userID,
-      };
-      pointsRecordService.create(body: pointBody);
     }
   }
 }

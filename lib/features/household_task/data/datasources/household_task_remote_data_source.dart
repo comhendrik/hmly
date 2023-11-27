@@ -74,11 +74,16 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
         operator = '-';
       }
       final pointBody = <String, dynamic> {
-        "value$operator" : task.pointsWorth
+        "value$operator" : task.pointsWorth,
+        "user" : userID
       };
-      int currentDayOfWeek = DateTime.now().weekday;
-      final pointToUpdate = await pointRecordService.getFirstListItem('day_number=$currentDayOfWeek && user="$userID"');
-      await pointRecordService.update(pointToUpdate.id, body: pointBody);
+      final String filter = 'user = "$userID" && created >= "${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}" && created < "${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day +1}"';
+      final pointToUpdate = await pointRecordService.getFullList(filter: filter);
+      if (pointToUpdate.isEmpty) {
+        pointRecordService.create(body: pointBody);
+      } else {
+        pointRecordService.update(pointToUpdate[0].id, body: pointBody);
+      }
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
     } catch (_) {

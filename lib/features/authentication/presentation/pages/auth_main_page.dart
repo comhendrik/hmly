@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hmly/core/entities/user.dart';
 import 'package:hmly/core/widgets/build_navigation_destination.dart';
 import 'package:hmly/features/authentication/presentation/pages/account_page.dart';
+import 'package:hmly/features/charts/presentation/pages/chart_page.dart';
 import 'package:hmly/features/household/presentation/pages/household_page.dart';
 import 'package:hmly/features/household_task/presentation/pages/household_task_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -49,13 +50,13 @@ class _AuthMainPage extends State<AuthMainPage> {
             icon: const Icon(Icons.task_outlined),
             label: AppLocalizations.of(context)!.tasksTitle,
           ),
-          /*
+
           NavigationDestination(
             selectedIcon: const Icon(Icons.insert_chart),
             icon: const Icon(Icons.insert_chart_outlined),
             label: AppLocalizations.of(context)!.chartsTitle,
           ),
-           */
+
           NavigationDestination(
             selectedIcon: const Icon(Icons.person),
             icon: const Icon(Icons.person_outline),
@@ -70,9 +71,9 @@ class _AuthMainPage extends State<AuthMainPage> {
       ),
       body: <Widget>[
         buildNavigationDestination(widget: HouseholdTaskPage(mainUser: widget.mainUser)),
-        /*
+
         buildNavigationDestination(widget: ChartPage(mainUser: widget.mainUser)),
-         */
+
         buildNavigationDestination(widget: AccountPage(mainUser: widget.mainUser, ancestorContext: context)),
         buildNavigationDestination(widget: HouseholdPage(mainUser: widget.mainUser))
       ][currentPageIndex],
