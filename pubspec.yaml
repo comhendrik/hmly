@@ -51,7 +51,6 @@ dependencies:
   intl: any
   flutter_localizations:
     sdk: flutter
-  flutter_svg: ^2.0.9
   flutter_svg_provider: ^1.0.6
 
 dev_dependencies:

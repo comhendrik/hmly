@@ -6,13 +6,15 @@ class HouseholdTask extends Equatable {
   final DateTime? date;
   final bool isDone;
   final int pointsWorth;
+  final String doneBy;//Only need to safe userID
 
   const HouseholdTask({
     required this.id,
     required this.title,
     required this.date,
     required this.isDone,
-    required this.pointsWorth
+    required this.pointsWorth,
+    required this.doneBy
   });
 
   String getCurrentDate() {
@@ -29,7 +31,7 @@ class HouseholdTask extends Equatable {
   }
 
   @override
-  List<Object> get props => [id, title, date ?? Object(), isDone];
+  List<Object> get props => [id, title, date ?? DateTime.now(), isDone, doneBy];
 
 }
 

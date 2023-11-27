@@ -8,8 +8,6 @@ import 'package:hmly/features/authentication/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-
 import '../../../../injection_container.dart';
 
 class AuthPage extends StatelessWidget {

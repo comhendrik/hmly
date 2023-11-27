@@ -26,10 +26,7 @@ class HouseholdTaskBloc extends Bloc<HouseholdTaskEvent, HouseholdTaskState> {
     required this.deleteTask
   }) : super(HouseholdTaskInitial()) {
     on<HouseholdTaskEvent>((event, emit) async {
-      emit(HouseholdTaskInitial());
       if (event is GetAllTasksForHouseholdEvent)  {
-
-
         emit(HouseholdTaskLoading(msg: event.msg));
         final resultEither = await getTasks.execute(event.householdID);
         resultEither.fold(
@@ -40,11 +37,7 @@ class HouseholdTaskBloc extends Bloc<HouseholdTaskEvent, HouseholdTaskState> {
               emit(HouseholdTaskLoaded(householdTaskList: tasks));
             }
         );
-
-
       } else if (event is CreateHouseholdTaskEvent) {
-
-
         emit(HouseholdTaskLoading(msg: event.msg));
         final resultEither = await createTask.execute(event.householdID, event.title, event.pointsWorth, event.dueTo);
         await resultEither.fold(

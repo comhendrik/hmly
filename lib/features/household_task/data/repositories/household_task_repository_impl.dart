@@ -41,6 +41,8 @@ class HouseholdTaskRepositoryImpl implements HouseholdTaskRepository {
   Future<Either<Failure, void>> toggleIsDoneHouseholdTask(HouseholdTask task, String userID) async {
     try {
       return Right(await remoteDataSource.toggleIsDoneHouseholdTask(task, userID));
+    } on KnownException catch (e) {
+      return Left(Failure(data: e.response, type: FailureType.known));
     } on ServerException catch (e) {
       return Left(Failure(data: e.response, type: FailureType.server));
     } on UnknownException catch (e) {

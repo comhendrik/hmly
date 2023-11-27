@@ -7,13 +7,15 @@ class HouseholdTaskModel extends HouseholdTask {
     required String title,
     required DateTime? date,
     required bool isDone,
-    required int pointsWorth
+    required int pointsWorth,
+    required String doneBy
   }) : super (
     id: id,
     title: title,
     date: date,
     isDone: isDone,
     pointsWorth: pointsWorth,
+    doneBy: doneBy
   );
    
    
@@ -30,7 +32,8 @@ class HouseholdTaskModel extends HouseholdTask {
        title: json['title'],
        date: dueTo,
        isDone: json['isDone'],
-       pointsWorth: json['points_worth']
+       pointsWorth: json['points_worth'],
+       doneBy: json['done_by']
      );
    }
 

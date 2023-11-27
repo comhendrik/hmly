@@ -62,8 +62,12 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
 
   @override
   Future<void> toggleIsDoneHouseholdTask(HouseholdTask task, String userID) async {
+    if (task.doneBy != userID && task.isDone) {
+    throw KnownException("You haven't done the task, so cant undo it. Please delete it and create a new one, if you want to have it undone");
+    }
     final taskBody = <String, dynamic>{
-      "isDone": !task.isDone
+      "isDone": !task.isDone,
+      "done_by" : userID
     };
     try {
       final _ = await taskRecordService.update(task.id, body: taskBody);
