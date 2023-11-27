@@ -48,7 +48,7 @@ class _HistoricalDataCalendarState extends State<HistoricalDataCalendar> {
         ),
         const SizedBox(height: 10),
         Table(
-          border: TableBorder.all(),
+          border: TableBorder.all(color: Colors.transparent),
           children: buildTableRows(),
         ),
       ],
@@ -61,10 +61,16 @@ class _HistoricalDataCalendarState extends State<HistoricalDataCalendar> {
     // Header row
     rows.add(
       TableRow(
+        decoration: const BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+        ),
         children: List.generate(7, (index) {
           return Container(
             padding: const EdgeInsets.all(8.0),
-            color: Colors.blue,
             child: Center(
               child: Text(
                 getWeekdayName(index),
@@ -114,26 +120,37 @@ class _HistoricalDataCalendarState extends State<HistoricalDataCalendar> {
         event.created.day == day.day).toList();
   }
 
+  //TODO: events nicht als List, da es immer nur einen Eintrag geben wird
   Widget buildDayWidget(int day, List<HistoricalData> events) {
     return Container(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          Text(
-            day.toString(),
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 5),
-          Column(
-            children: events.map((event) {
-              return Text(
-                '${event.value}',
-                style: const TextStyle(color: Colors.blue),
-              );
-            }).toList(),
-          ),
-        ],
-      ),
+      child: Container(
+        padding: const EdgeInsets.all(3.0),
+        decoration: events.isEmpty ? null : BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.black,
+        ),
+        child: Column(
+          children: [
+            Text(
+              day.toString(),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: events.isEmpty ? Colors.black : Colors.white
+              ),
+            ),
+            const SizedBox(height: 5),
+            Column(
+              children: events.map((event) {
+                return Text(
+                  '${event.value}',
+                  style: const TextStyle(color: Colors.white),
+                );
+              }).toList(),
+            ),
+          ],
+        ),
+      )
     );
   }
 
