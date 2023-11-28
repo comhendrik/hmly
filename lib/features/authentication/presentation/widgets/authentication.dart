@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hmly/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'widgets.dart';
 
 
@@ -39,32 +40,32 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
         key: _formKey,
         child: ListView(
           children: [
-            const Row(
+            Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.house, weight: 5.0),
-                Text(' Welcome', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+                const Icon(Icons.house, weight: 5.0),
+                Text(AppLocalizations.of(context)!.welcome, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
               ],
             ),
             const SizedBox(height: 5.0,),
             Text(
-              showLogin ? 'Login': 'SignUp',
+              showLogin ? AppLocalizations.of(context)!.login : AppLocalizations.of(context)!.signup,
               style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
             TextFormField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                labelText: 'E-Mail',
-                hintText: 'Enter your e-mail address',
-                prefixIcon: Icon(Icons.person), // Icon for username
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.email,
+                hintText: AppLocalizations.of(context)!.emailHint,
+                prefixIcon: const Icon(Icons.person), // Icon for username
               ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter an e-mail adress';
+                    return AppLocalizations.of(context)!.validatorMessageNull;
                   }
                   if (!value.contains('@') || !value.contains('.') || value.contains('@.')) {
-                    return 'No valid email';
+                    return AppLocalizations.of(context)!.emailValidatorMessage;
                   }
                   return null;
                 },
@@ -76,17 +77,17 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
               obscureText: true,
               controller: passwordController,
               keyboardType: TextInputType.text,
-              decoration: const InputDecoration(
-                labelText: 'Password',
-                hintText: 'Enter your password',
-                prefixIcon: Icon(Icons.lock), // Icon for password
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.password,
+                hintText: AppLocalizations.of(context)!.passwordHint,
+                prefixIcon: const Icon(Icons.lock), // Icon for password
               ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
+                    return AppLocalizations.of(context)!.validatorMessageNull;
                   }
                   if (value.length < 8) {
-                    return 'Use at least 8 characters for your password';
+                    return AppLocalizations.of(context)!.validatorMessagePasswordLength;
                   }
                   return null;
                 },
@@ -101,17 +102,17 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                     obscureText: true,
                     controller: passwordConfirmController,
                     keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
-                      labelText: 'Confirm Password',
-                      hintText: 'Re-enter your password',
-                      prefixIcon: Icon(Icons.lock), // Icon for password
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.password,
+                      hintText: AppLocalizations.of(context)!.reEnterPasswordHint,
+                      prefixIcon: const Icon(Icons.lock), // Icon for password
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please re-enter your password';
+                        return AppLocalizations.of(context)!.validatorMessageNull;
                       }
                       if (value != passwordStr) {
-                        return 'The passwords arent matching';
+                        return AppLocalizations.of(context)!.validatorMessagePasswordMatching;
                       }
                       return null;
                     },
@@ -122,18 +123,18 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                   TextFormField(
                     controller: usernameController,
                     keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
-                      labelText: 'Username',
-                      hintText: 'Enter your username',
-                      prefixIcon: Icon(Icons.person),
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.username,
+                      hintText: AppLocalizations.of(context)!.usernameHint,
+                      prefixIcon: const Icon(Icons.person),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your username';
+                        return AppLocalizations.of(context)!.validatorMessageNull;
                       }
 
                       if (value.contains(" ")) {
-                        return 'Must be in a valid format';
+                        return AppLocalizations.of(context)!.validatorMessageValidFormat;
                       }
                       return null;
                     },
@@ -144,14 +145,14 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                   TextFormField(
                     controller: nameController,
                     keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
-                      labelText: 'Name',
-                      hintText: 'Enter your name',
-                      prefixIcon: Icon(Icons.badge),
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.fullName,
+                      hintText: AppLocalizations.of(context)!.fullNameHint,
+                      prefixIcon: const Icon(Icons.badge),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your name';
+                        return AppLocalizations.of(context)!.validatorMessageNull;
                       }
                       return null;
                     },
@@ -172,7 +173,7 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                   }
                 },
                 icon: const Icon(Icons.arrow_forward),
-                label: Text(showLogin ? "Login" : "SignUp")
+                label: Text(showLogin ? AppLocalizations.of(context)!.login : AppLocalizations.of(context)!.signup)
             ),
 
             ElevatedButton(
@@ -181,7 +182,7 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                     showLogin = !showLogin;
                   });
                 },
-                child: showLogin ? const Text("No account? Register Now!") : const Text("Already registered? Login!")
+                child: showLogin ? Text(AppLocalizations.of(context)!.signUpQuestion) : Text(AppLocalizations.of(context)!.loginQuestion)
             ),
             ElevatedButton(
                 onPressed: () {
@@ -191,20 +192,8 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                     ),
                   );
                 },
-                child: const Text("Forget Password")
+                child: Text(AppLocalizations.of(context)!.forgetPassword)
             ),
-
-
-//TODO: Maket it possible to use oauth, but dont use it in first release /Later Release
-//            SignInButton(
-//              Buttons.Google,
-//              text: "Sign up with Google",
-//              onPressed: () {
-//                oAuth();
-//              },
-//            ),
-
-
           ],
         ),
       )

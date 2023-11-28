@@ -323,5 +323,79 @@
   "december" : "December",
   "@december" : {
     "description" : "String December"
+  },
+  "errorCode": "Error Code: {code}",
+    "@errorCode": {
+      "description": "Information Message, when error occured",
+      "placeholders": {
+        "code": {
+          "type": "String",
+          "example": "404"
+        }
+      }
+    },
+  "reload" : "Reload",
+    "@reload" : {
+      "description" : "String Reload"
+    },
+  "welcome" : "Welcome",
+    "@welcome" : {
+      "description" : "String Welcome"
+    },
+  "emailHint" : "Enter your e-mail address",
+    "@emailHint" : {
+      "description" : "Hint for entering email"
+    },
+  "emailValidatorMessage" : "No valid email",
+    "@emailValidatorMessage" : {
+      "description" : "Validator Message, when email is not valid"
+    },
+  "passwordHint" : "Enter your password",
+    "@passwordHint" : {
+      "description" : "Hint for entering password"
+    },
+  "login" : "Login",
+    "@login" : {
+      "description" : "String Login"
+    },
+  "loginQuestion" : "Already registered? Login!",
+  "@loginQuestion" : {
+    "description" : "Is shown when user is on sign up page"
+  },
+  "signup" : "Sign Up",
+    "@signup" : {
+      "description" : "String Sign Up"
+    },
+  "signUpQuestion" : "No account? Sign Up Now!",
+  "@signUpQuestion" : {
+    "description" : "Is shown when user is on login page"
+  },
+  "forgetPassword" : "Forget Password?",
+    "@forgetPassword" : {
+      "description" : "String Forget Password"
+    },
+  "validatorMessagePasswordLength" : "Use at least 8 characters for your password",
+    "@validatorMessagePasswordLength" : {
+      "description" : "ValidatorMessage when password is too short"
+    },
+  "validatorMessagePasswordMatching" : "The passwords arent matching",
+    "@validatorMessagePasswordMatching" : {
+      "description" : "ValidatorMessage when passwords arent matching"
+    },
+  "reEnterPasswordHint" : "Re enter Password",
+    "@reEnterPasswordHint" : {
+      "description" : "String Re enter Password"
+    },
+  "usernameHint" : "Enter your username",
+    "@usernameHint" : {
+      "description" : "Hint when entering username"
+    },
+  "validatorMessageValidFormat" : "Must be in a valid format",
+    "@validatorMessageValidFormat" : {
+      "description" : "Validator Message, when input is not valid"
+    },
+  "fullNameHint" : "Enter your name",
+  "@fullNameHint" : {
+    "description" : "Hint when entering Full Name"
   }
 }

@@ -76,5 +76,21 @@
     "september" : "September",
     "october" : "Oktober",
     "november" : "November",
-    "december" : "Dezember"
+    "december" : "Dezember",
+    "errorCode" : "Fehler Code: {code}",
+    "reload" : "Neuladen",
+    "welcome" : "Willkommen",
+    "emailHint" : "E-Mail Adresse eingeben",
+    "emailValidatorMessage" : "E-Mail ist nicht valide",
+    "passwordHint" : "Passwort eingeben",
+    "login" : "Anmelden",
+    "loginQuestion" : "Schon registriert? Melde dich an!",
+    "signup" : "Registrieren",
+    "signUpQuestion" : "Kein Account? Registriere dich!",
+    "forgetPassword" : "Passwort vergessen?",
+    "validatorMessagePasswordLength" : "Verwende mindestens 8 Zeichen",
+    "reEnterPasswordHint" : "Passwort erneut eingeben",
+    "usernameHint" : "Benutzernamen eingeben",
+    "validatorMessageValidFormat" : "Eingabe ist nicht valide",
+    "fullNameHint" : "Namen eingeben"
 }

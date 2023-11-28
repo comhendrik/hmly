@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hmly/core/error/failure.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BlocErrorWidget extends StatelessWidget {
 
@@ -36,7 +37,7 @@ class BlocErrorWidget extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Error Code: ${failure.data['code'].toString()}',
+              AppLocalizations.of(context)!.errorCode(failure.data['code'].toString()),
               style: const TextStyle(
                 fontSize: 18,
               ),
@@ -51,14 +52,14 @@ class BlocErrorWidget extends StatelessWidget {
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: reloadAction,
-              child: const Row(
+              child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Icon(Icons.refresh), // Retry icon
-                  SizedBox(width: 8),
+                  const Icon(Icons.refresh), // Retry icon
+                  const SizedBox(width: 8),
                   Text(
-                    'Retry',
-                    style: TextStyle(fontSize: 18),
+                    AppLocalizations.of(context)!.reload,
+                    style: const TextStyle(fontSize: 18),
                   ),
                 ],
               ),
