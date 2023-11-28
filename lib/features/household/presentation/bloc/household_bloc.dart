@@ -66,10 +66,10 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
         emit(HouseholdLoading(msg: event.msg));
         final resultEither = await updateAdmin.execute(event.householdID, event.userID);
         resultEither.fold(
-                (failure) async {
-                  emit(HouseholdError(failure: failure));
+            (failure) async {
+              emit(HouseholdError(failure: failure));
             },
-                (household) {
+            (household) {
               emit(HouseholdLoaded(household: household));
             }
         );
@@ -78,10 +78,10 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
       } else if (event is UpdateAllowedUsersEvent) {
         final resultEither = await updateAllowedUsers.execute(event.userID, event.household, event.delete);
         resultEither.fold(
-                (failure) async {
+            (failure) async {
               emit(HouseholdError(failure: failure));
             },
-                (household) {
+            (household) {
               emit(HouseholdLoaded(household: household));
             }
         );

@@ -28,7 +28,7 @@ class HouseholdTaskPage extends StatelessWidget {
         builder: (context, state) {
           if (state is HouseholdTaskInitial) {
             loadingFunction(context, mainUser.householdID);
-            return const Text("Household Task initialise...");
+            return Text(AppLocalizations.of(context)!.institutionTaskPageInit);
           } else if (state is HouseholdTaskLoading) {
             return CustomProcessIndicator(reloadAction: () => loadingFunction(context, mainUser.householdID), msg: state.msg);
           } else if (state is HouseholdTaskLoaded) {
@@ -42,7 +42,7 @@ class HouseholdTaskPage extends StatelessWidget {
           } else if (state is HouseholdTaskError) {
             return BlocErrorWidget(failure: state.failure, reloadAction: () => loadingFunction(context, mainUser.householdID));
           } else {
-            return const Text("Please contact support when this occurs");
+            return Text(AppLocalizations.of(context)!.supportErrorMessage);
           }
         },
       ),

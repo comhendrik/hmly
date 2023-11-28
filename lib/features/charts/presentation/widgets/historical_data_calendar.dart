@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hmly/features/charts/domain/entities/historical_data.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class HistoricalDataCalendar extends StatefulWidget {
@@ -155,24 +156,32 @@ class _HistoricalDataCalendarState extends State<HistoricalDataCalendar> {
   }
 
   String getWeekdayName(int index) {
-    const weekdayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    final List<String> weekdayNames = [
+      AppLocalizations.of(context)!.shortMonday,
+      AppLocalizations.of(context)!.shortTuesday,
+      AppLocalizations.of(context)!.shortWednesday,
+      AppLocalizations.of(context)!.shortThursday,
+      AppLocalizations.of(context)!.shortFriday,
+      AppLocalizations.of(context)!.shortSaturday,
+      AppLocalizations.of(context)!.shortSunday
+    ];
     return weekdayNames[index];
   }
 
   String getMonthName(int month) {
-    const monthNames = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
+    final List<String> monthNames = [
+      AppLocalizations.of(context)!.january,
+      AppLocalizations.of(context)!.february,
+      AppLocalizations.of(context)!.march,
+      AppLocalizations.of(context)!.april,
+      AppLocalizations.of(context)!.may,
+      AppLocalizations.of(context)!.june,
+      AppLocalizations.of(context)!.july,
+      AppLocalizations.of(context)!.august,
+      AppLocalizations.of(context)!.september,
+      AppLocalizations.of(context)!.october,
+      AppLocalizations.of(context)!.november,
+      AppLocalizations.of(context)!.december,
     ];
     return monthNames[month - 1];
   }

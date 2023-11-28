@@ -6,7 +6,6 @@ import 'package:hmly/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:hmly/features/household/domain/entities/household.dart';
 import 'package:hmly/features/household/presentation/bloc/household_bloc.dart';
 import '../widgets/widget.dart';
-import 'package:flutter_share/flutter_share.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HouseholdMainPage extends StatefulWidget {
@@ -244,7 +243,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
           button: HouseholdInformationCardButton(
             action: () {
               Clipboard.setData(ClipboardData(text: widget.household.id))
-                  .then((value) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Copied ID: '${widget.household.id}'"))));
+                  .then((value) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.copyIdentifierMessage(widget.household.id)))));
             },
             buttonIcon: const Icon(Icons.save),
             buttonText: AppLocalizations.of(context)!.copyIdentifier,
@@ -265,7 +264,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                               context: context,
                               builder: (BuildContext context) => AlertDialog(
                                 title: Text(AppLocalizations.of(context)!.warning),
-                                content: const Text('Do you really want to remove this user?'),
+                                content: Text(AppLocalizations.of(context)!.removingUserWarning),
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: ()  => Navigator.pop(context, 'Cancel'),
@@ -276,7 +275,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                                       deleteAuthDataFromHousehold(user.id, widget.household);
                                       Navigator.pop(context, 'Remove');
                                     },
-                                    child: const Text('Remove', style: TextStyle(color: Colors.red),),
+                                    child: Text(AppLocalizations.of(context)!.remove, style: const TextStyle(color: Colors.red),),
                                   ),
                                 ],
                               ),
@@ -297,17 +296,16 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
             detailWidget: Wrap(
               children: [
                 for (String id in widget.household.allowedUsers)
-                  if (id != widget.mainUser.id)
                     Row(
                       children: [
                         Text(id),
-                        if (widget.mainUser.id == widget.household.admin.id)
+                        if (widget.mainUser.id == widget.household.admin.id && id != widget.mainUser.id)
                           IconButton(
                               onPressed: () => showDialog<String>(
                                 context: context,
                                 builder: (BuildContext context) => AlertDialog(
                                   title: Text(AppLocalizations.of(context)!.warning),
-                                  content: const Text('Do you really want to remove this id?'),
+                                  content: Text(AppLocalizations.of(context)!.removingUserWarning),
                                   actions: <Widget>[
                                     TextButton(
                                       onPressed: ()  => Navigator.pop(context, 'Cancel'),
@@ -318,7 +316,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                                         updateAllowedUsers(id, widget.household, true);
                                         Navigator.pop(context, 'Remove');
                                       },
-                                      child: const Text('Remove', style: TextStyle(color: Colors.red),),
+                                      child: Text(AppLocalizations.of(context)!.remove, style: const TextStyle(color: Colors.red),),
                                     ),
                                   ],
                                 ),
@@ -359,16 +357,16 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
         HouseholdInformationCard(
             title: AppLocalizations.of(context)!.institutionTitle,
             titleWidget: null,
-            detailWidget: const Text("Click to leave household"),
+            detailWidget: Text(AppLocalizations.of(context)!.clickToLeaveInstitution),
             button: HouseholdInformationCardButton(
               action: () => showDialog<String>(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
-                  title: Text(widget.mainUser.id == widget.household.admin.id ? 'Admin Warning' : 'Warning'),
+                  title: Text(AppLocalizations.of(context)!.warning),
                   content: Text(
                       widget.mainUser.id == widget.household.admin.id ?
-                      (widget.household.users.length == 1 ? 'When u leave the household as an admin. The household will be deleted!' : 'You can only leave the household as an admin, when u are the only user in this household') :
-                      'When pressing okay, you will leave the household'
+                      (widget.household.users.length == 1 ? AppLocalizations.of(context)!.leaveInstitutionHintAdmin : AppLocalizations.of(context)!.leaveInstitutionHintAdminUser) :
+                      AppLocalizations.of(context)!.leaveInstitutionHint
                   ),
                   actions: <Widget>[
                     TextButton(
@@ -386,13 +384,13 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                           }
                           Navigator.pop(context, 'Leave');
                         },
-                        child: const Text('Leave', style: TextStyle(color: Colors.red),),
+                        child: Text(AppLocalizations.of(context)!.leave, style: const TextStyle(color: Colors.red),),
                       ),
                   ],
                 ),
               ),
               buttonIcon: const Icon(Icons.arrow_back),
-              buttonText: 'Leave',
+              buttonText: AppLocalizations.of(context)!.leave,
             )
         )
       ],

@@ -160,12 +160,12 @@
       "description" : "String Proceed"
     },
   "changeAdminWarningMessage": "Do you really want to give the user with the id {userIDFromNewAdmin} your admin rights? \nYou are not able to get them back on your own.",
-    "@hello": {
+    "@changeAdminWarningMessage": {
       "description": "A Warning Message When user is about to be changed",
       "placeholders": {
-        "userName": {
+        "userIDFromNewAdmin": {
           "type": "String",
-          "example": "Bob"
+          "example": "sotacqcsj6wz0fd"
         }
       }
     },
@@ -188,5 +188,140 @@
   "identifier" : "ID",
     "@identifier" : {
       "description" : "String ID"
-    }
+    },
+  "remove" : "Remove",
+    "@remove" : {
+      "description" : "String Remove"
+    },
+  "leave" : "Leave",
+    "@leave" : {
+      "description" : "String Leave"
+    },
+  "clickToLeaveInstitution" : "Click to leave Household",
+    "@clickToLeaveInstitution" : {
+      "description" : "String Click to leave Household"
+    },
+  "leaveInstitutionHint" : "When pressing okay, you will leave the household",
+    "@leaveInstitutionHint" : {
+      "description" : "Hint for normal user when leaving household"
+    },
+  "leaveInstitutionHintAdmin" : "When u leave the household as an admin. The household will be deleted!",
+    "@leaveInstitutionHintAdmin" : {
+      "description" : "Hint for admin user when leaving household and admin is the only user in household"
+    },
+  "leaveInstitutionHintAdminUser" : "You can only leave the household as an admin, when u are the only user in this household",
+    "@leaveInstitutionHintAdminUser" : {
+      "description" : "Hint for admin user when wanting to leave household, but household still has user"
+    },
+  "copyIdentifierMessage": "Copied ID: {ID}",
+    "@copyIdentifierMessage": {
+      "description": "Information Message, when userID is copied",
+      "placeholders": {
+        "ID": {
+          "type": "String",
+          "example": "sotacqcsj6wz0fd"
+        }
+      }
+    },
+  "institutionPageInit" : "Household initialise...",
+    "@institutionPageInit" : {
+      "description" : "String when Household is about to initialise"
+    },
+  "institutionTaskPageInit" : "Household Task initialise...",
+  "@institutionTaskPageInit" : {
+    "description" : "String when Household Task page is about to initialise"
+  },
+  "chartsPageInit" : "Household Task initialise...",
+  "@chartsPageInit" : {
+    "description" : "String when Charts page is about to initialise"
+  },
+  "noTaskHint" : "There is no Task. Create a new one",
+    "@noTaskHint" : {
+      "description" : "Hint when there is no task"
+    },
+  "pieChartTitle" : "Activity Today",
+  "@pieChartTitle" : {
+    "description" : "Title for pie chart"
+  },
+  "you" : "You",
+  "@you" : {
+    "description" : "String You"
+  },
+
+  "shortMonday" : "Mon",
+  "@shortMonday" : {
+    "description" : "String Mon"
+  },
+  "shortTuesday" : "Tue",
+  "@shortTuesday" : {
+    "description" : "String Tue"
+  },
+  "shortWednesday" : "Wed",
+  "@shortWednesday" : {
+    "description" : "String Wed"
+  },
+  "shortThursday" : "Thu",
+  "@shortThursday" : {
+    "description" : "String Thu"
+  },
+  "shortFriday" : "Fri",
+  "@shortFriday" : {
+    "description" : "String Fri"
+  },
+  "shortSaturday" : "Sat",
+  "@shortSaturday" : {
+    "description" : "String Sat"
+  },
+  "shortSunday" : "Sun",
+  "@shortSunday" : {
+    "description" : "String Sun"
+  },
+  "january" : "January",
+  "@january" : {
+    "description" : "String January"
+  },
+  "february" : "February",
+  "@february" : {
+    "description" : "String February"
+  },
+  "march" : "March",
+  "@march" : {
+    "description" : "String March"
+  },
+  "april" : "April",
+  "@april" : {
+    "description" : "String April"
+  },
+  "may" : "May",
+  "@may" : {
+    "description" : "String May"
+  },
+  "june" : "June",
+  "@june" : {
+    "description" : "String June"
+  },
+  "july" : "July",
+  "@july" : {
+    "description" : "String July"
+  },
+  "august" : "August",
+  "@august" : {
+    "description" : "String August"
+  },
+  "september" : "September",
+  "@september" : {
+    "description" : "String September"
+  },
+  "october" : "October",
+  "@october" : {
+    "description" : "String October"
+  },
+  "november" : "November",
+  "@november" : {
+    "description" : "String November"
+  },
+  "december" : "December",
+  "@december" : {
+    "description" : "String December"
+  }
 }

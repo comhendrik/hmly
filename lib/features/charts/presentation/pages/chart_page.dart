@@ -30,7 +30,7 @@ class ChartPage extends StatelessWidget {
         builder: (context, state) {
           if (state is ChartInitial) {
             loadingFunction(context, mainUser);
-            return const Text("Charts initialise...");
+            return Text(AppLocalizations.of(context)!.chartsPageInit);
           } else if (state is ChartLoading) {
             return CustomProcessIndicator(reloadAction: () => loadingFunction(context, mainUser), msg: state.msg);
           } else if (state is ChartLoaded) {
@@ -43,7 +43,7 @@ class ChartPage extends StatelessWidget {
           } else if (state is ChartError) {
             return BlocErrorWidget(failure: state.failure, reloadAction: () => loadingFunction(context, mainUser));
           } else {
-            return const Text("Please contact support when this occurs");
+            return Text(AppLocalizations.of(context)!.supportErrorMessage);
           }
         },
       ),

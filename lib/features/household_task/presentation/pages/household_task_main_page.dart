@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hmly/core/entities/user.dart';
 import 'package:hmly/features/household_task/domain/entities/household_task.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../widgets/widgets.dart';
 
 class HouseholdTaskMainPage extends StatelessWidget {
@@ -19,9 +20,9 @@ class HouseholdTaskMainPage extends StatelessWidget {
             return TaskWidget(task: task, householdID: mainUser.householdID, mainUser: mainUser,);
         }).toList())
       else
-        const Text("There is no Task. Create a new one"),
-        if (allTasks.isEmpty)
-          CreateHouseholdTaskSheet(householdID: mainUser.householdID,),
+        Center(
+          child: Text(AppLocalizations.of(context)!.noTaskHint),
+        )
       ],
     );
   }

@@ -30,7 +30,7 @@ class HouseholdPage extends StatelessWidget {
         builder: (context, state) {
           if (state is HouseholdInitial) {
             loadingFunction(context, mainUser.householdID);
-            return Text("Household'${mainUser.householdID}' initialise");
+            return Text(AppLocalizations.of(context)!.institutionPageInit);
           } else if (state is HouseholdLoading) {
             return CustomProcessIndicator(reloadAction: () => loadingFunction(context, mainUser.householdID), msg: state.msg);
           } else if (state is HouseholdLoaded) {
