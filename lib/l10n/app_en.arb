@@ -425,5 +425,14 @@
   "resetPassword" : " Reset Password",
   "requestPasswordReset" : "Request Password Reset",
   "requestSucceedMessage" : "Request send successfully",
-  "emailRequestInfo" : "Check your E-Mail for a link to reset your password"
+  "emailRequestInfo" : "Check your E-Mail for a link to reset your password",
+  "notVerified" : "The user {email} is not verified",
+  "verificationInformation" : "Please click the button below to request an verification email. After validating, reload application or click on 'Try again'",
+  "requestVerification" : "Request Verification",
+  "addTask" : "Add Task",
+  "deleteTaskWarning" : "Do you really want to delete this task?",
+  "validatorMessageDateFuture" : "Date must be in the future",
+  "validatorMessagePositiveNumber" : "Enter a positive number",
+  "dateLabel" : "Due To (YYYY-MM-DD)",
+  "pointsWorthLabel" : "Points Worth"
 }

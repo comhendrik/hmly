@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditableTextField extends StatefulWidget {
   final String title;
@@ -59,20 +60,20 @@ class _EditableTextFieldState extends State<EditableTextField> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'provide a value';
+                return AppLocalizations.of(context)!.validatorMessageNull;
               }
               switch (widget.type) {
                 case EditableTextFieldType.date:
                   if (DateTime.tryParse(value) == null) {
-                    return 'enter valid date';
+                    return AppLocalizations.of(context)!.validatorMessageValidFormat;
                   }
                   if (!DateTime.tryParse(value)!.isAfter(DateTime.now())) {
-                    return 'Date not in future';
+                    return AppLocalizations.of(context)!.validatorMessageDateFuture;
                   }
                   return null;
                 case EditableTextFieldType.number:
                   if (int.tryParse(value) == null || int.parse(value) <= 0) {
-                    return 'enter a positive number';
+                    return AppLocalizations.of(context)!.validatorMessagePositiveNumber;
                   }
                   return null;
                 case EditableTextFieldType.text:

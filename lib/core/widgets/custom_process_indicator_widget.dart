@@ -24,9 +24,7 @@ class _CustomProcessIndicatorState extends State<CustomProcessIndicator> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    // 1. Using Timer
     _delationTimer = Timer(const Duration(seconds: 3), () {
       setState(() {
         showRetryButton = true;

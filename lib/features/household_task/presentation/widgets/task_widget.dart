@@ -4,6 +4,7 @@ import 'package:hmly/features/household_task/domain/entities/household_task.dart
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hmly/features/household_task/presentation/bloc/household_task_bloc.dart';
 import 'widgets.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskWidget extends StatefulWidget {
   final HouseholdTask task;
@@ -73,7 +74,6 @@ class _TaskWidgetState extends State<TaskWidget> {
                       EditableTextField(
                         title: widget.task.getCurrentDate(),
                         callback: (data) {
-                          //TODO: Error handling
                           final dueDate = DateTime.parse(data);
                           updateTask(widget.task, {"due_to" : dueDate.toString()}, widget.householdID);
                         },
@@ -131,19 +131,19 @@ class _TaskWidgetState extends State<TaskWidget> {
                     onPressed: () => showDialog<String>(
                       context: context,
                       builder: (BuildContext context) => AlertDialog(
-                        title: const Text('Delete Warning'),
-                        content: const Text('Do you really want to delete this task?'),
+                        title: Text(AppLocalizations.of(context)!.warning),
+                        content: Text(AppLocalizations.of(context)!.deleteTaskWarning),
                         actions: <Widget>[
                           TextButton(
                             onPressed: ()  => Navigator.pop(context, 'Cancel'),
-                            child: const Text('Cancel'),
+                            child: Text(AppLocalizations.of(context)!.cancel),
                           ),
                           TextButton(
                             onPressed: () {
                               deleteTask(widget.task.id, widget.householdID);
                               Navigator.pop(context, 'Delete');
                             },
-                            child: const Text('Delete', style: TextStyle(color: Colors.red),),
+                            child: Text(AppLocalizations.of(context)!.delete, style: const TextStyle(color: Colors.red),),
                           ),
                         ],
                       ),

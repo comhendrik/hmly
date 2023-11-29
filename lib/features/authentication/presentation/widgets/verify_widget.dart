@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hmly/core/entities/user.dart';
 import 'package:hmly/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VerifyWidget extends StatefulWidget {
   final User mainUser;
@@ -32,32 +33,30 @@ class _VerifyWidgetState extends State<VerifyWidget> {
             ),
             const SizedBox(height: 16),
             Text(
-              "The user ${widget.mainUser.email} is not verified.",
+              AppLocalizations.of(context)!.notVerified(widget.mainUser.email),
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Please click the button below to request an verification email. After validating, reload application or click on "Try again"',
-              style: TextStyle(
-                fontSize: 18,
-              ),
+            Text(
+              AppLocalizations.of(context)!.verificationInformation,
+              style: const TextStyle(fontSize: 18,),
             ),
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () {
                 requestVerification(widget.mainUser);
               },
-              child: const Row(
+              child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Icon(Icons.email), // Retry icon
-                  SizedBox(width: 8),
+                  const Icon(Icons.email), // Retry icon
+                  const SizedBox(width: 8),
                   Text(
-                    'Request Verification',
-                    style: TextStyle(fontSize: 18),
+                    AppLocalizations.of(context)!.requestVerification,
+                    style: const TextStyle(fontSize: 18),
                   ),
                 ],
               ),
@@ -66,14 +65,14 @@ class _VerifyWidgetState extends State<VerifyWidget> {
               onPressed: () {
                 retry();
               },
-              child: const Row(
+              child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Icon(Icons.refresh), // Retry icon
-                  SizedBox(width: 8),
+                  const Icon(Icons.refresh), // Retry icon
+                  const SizedBox(width: 8),
                   Text(
-                    'Try again',
-                    style: TextStyle(fontSize: 18),
+                      AppLocalizations.of(context)!.reload,
+                    style: const TextStyle(fontSize: 18),
                   ),
                 ],
               ),
@@ -82,14 +81,14 @@ class _VerifyWidgetState extends State<VerifyWidget> {
               onPressed: () {
                 logout();
               },
-              child: const Row(
+              child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Icon(Icons.arrow_back), // Retry icon
-                  SizedBox(width: 8),
+                  const Icon(Icons.arrow_back), // Retry icon
+                  const SizedBox(width: 8),
                   Text(
-                    'Logout',
-                    style: TextStyle(fontSize: 18),
+                    AppLocalizations.of(context)!.logout,
+                    style: const TextStyle(fontSize: 18),
                   ),
                 ],
               ),
@@ -98,31 +97,31 @@ class _VerifyWidgetState extends State<VerifyWidget> {
               onPressed: () => showDialog<String>(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
-                  title: const Text("Warning"),
-                  content: const Text("You really want to delete your user?"),
+                  title: Text(AppLocalizations.of(context)!.warning),
+                  content: Text(AppLocalizations.of(context)!.deleteUserAlert),
                   actions: <Widget>[
                     TextButton(
                       onPressed: ()  => Navigator.pop(context, 'Cancel'),
-                      child: const Text('Cancel'),
+                      child: Text(AppLocalizations.of(context)!.cancel),
                     ),
                     TextButton(
                       onPressed: () {
                         deleteUser(widget.mainUser);
                         Navigator.pop(context, 'Delete');
                       },
-                      child: const Text('Delete', style: TextStyle(color: Colors.red),),
+                      child: Text(AppLocalizations.of(context)!.delete, style: const TextStyle(color: Colors.red),),
                     ),
                   ],
                 ),
               ),
-              child: const Row(
+              child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Icon(Icons.delete_forever), // Retry icon
-                  SizedBox(width: 8),
+                  const Icon(Icons.delete_forever), // Retry icon
+                  const SizedBox(width: 8),
                   Text(
-                    'Delete User',
-                    style: TextStyle(fontSize: 18),
+                    AppLocalizations.of(context)!.deleteUserSubtitle,
+                    style: const TextStyle(fontSize: 18),
                   ),
                 ],
               ),
