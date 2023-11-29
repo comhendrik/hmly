@@ -386,6 +386,10 @@
     "@reEnterPasswordHint" : {
       "description" : "String Re enter Password"
     },
+  "enterOldPasswordHint" : "Enter old password",
+    "@enterOldPasswordHint" : {
+      "description" : "Hint when entering old password"
+    },
   "usernameHint" : "Enter your username",
     "@usernameHint" : {
       "description" : "Hint when entering username"
@@ -395,7 +399,31 @@
       "description" : "Validator Message, when input is not valid"
     },
   "fullNameHint" : "Enter your name",
-  "@fullNameHint" : {
-    "description" : "Hint when entering Full Name"
-  }
+    "@fullNameHint" : {
+      "description" : "Hint when entering Full Name"
+    },
+  "changeEmail" : "Change E-Mail",
+  "@changeEmail" : {
+    "description" : "String Change E-Mail"
+  },
+  "changeName" : "Change Name",
+  "@changeName" : {
+    "description" : "String Change Name"
+  },
+  "changeUsername" : "Change Username",
+  "@changeUsername" : {
+    "description" : "String Change Username"
+  },
+  "hintNewEmail" : "New E-Mail",
+  "hintNewName" : "New Name",
+  "hintNewUsername" : "New Username",
+  "hintNewPassword" : "New Password",
+  "buttonTextEmail" : "Request E-Mail Change",
+  "buttonTextFullName" : "Update Name",
+  "buttonTextUsername" : "Update Username",
+  "buttonTextPassword" : "Update Password",
+  "resetPassword" : " Reset Password",
+  "requestPasswordReset" : "Request Password Reset",
+  "requestSucceedMessage" : "Request send successfully",
+  "emailRequestInfo" : "Check your E-Mail for a link to reset your password"
 }

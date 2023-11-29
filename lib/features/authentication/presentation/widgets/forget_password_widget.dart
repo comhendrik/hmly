@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hmly/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class ForgetPasswordWidget extends StatefulWidget {
@@ -41,24 +42,24 @@ class _AuthenticationWidget extends State<ForgetPasswordWidget> {
                       icon: const Icon(Icons.arrow_back)
                   ),
                   const Icon(Icons.lock, weight: 5.0),
-                  const Text(' Reset Password', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+                  Text(AppLocalizations.of(context)!.resetPassword, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
                 ],
               ),
               const SizedBox(height: 5.0,),
               TextFormField(
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    labelText: 'E-Mail',
-                    hintText: 'Enter your e-mail address',
-                    prefixIcon: Icon(Icons.person), // Icon for username
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.email,
+                    hintText: AppLocalizations.of(context)!.emailHint,
+                    prefixIcon: const Icon(Icons.email), // Icon for username
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter an e-mail adress';
+                      return AppLocalizations.of(context)!.validatorMessageNull;
                     }
                     if (!value.contains('@') || !value.contains('.') || value.contains('@.')) {
-                      return 'No valid email';
+                      return AppLocalizations.of(context)!.emailValidatorMessage;
                     }
                     return null;
                   },
@@ -70,15 +71,15 @@ class _AuthenticationWidget extends State<ForgetPasswordWidget> {
                       showDialog<String>(
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
-                            title: const Text('Request send successfully'),
-                            content: const Text('Check your E-Mail for a link to reset your password'),
+                            title: Text(AppLocalizations.of(context)!.requestSucceedMessage),
+                            content: Text(AppLocalizations.of(context)!.emailRequestInfo),
                             actions: <Widget>[
                               TextButton(
                                 onPressed: ()  {
-                                  Navigator.pop(context, 'Okay');
+                                  Navigator.pop(context, 'Proceed');
                                   Navigator.pop(context);
                                 },
-                                child: const Text('Okay'),
+                                child: Text(AppLocalizations.of(context)!.proceed),
                               ),
                             ],
                           )
@@ -86,7 +87,7 @@ class _AuthenticationWidget extends State<ForgetPasswordWidget> {
                     }
                   },
                   icon: const Icon(Icons.arrow_forward),
-                  label: const Text("Request Password Reset")
+                  label: Text(AppLocalizations.of(context)!.requestPasswordReset)
               ),
 
             ],

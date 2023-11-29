@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hmly/core/entities/user.dart';
 import 'package:hmly/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class ChangeUserAttributesWidget extends StatefulWidget {
@@ -62,7 +63,7 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                             padding: const EdgeInsets.symmetric(horizontal: 5.0),
                             child: Row(
                               children: [
-                                Text(widget.type.titleString, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+                                Text(widget.type.titleString(context), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
                               ],
                             ),
                           ),
@@ -72,16 +73,16 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                               controller: oldPasswordController,
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
-                                labelText: 'old password',
-                                hintText: 'old password',
+                                labelText: AppLocalizations.of(context)!.password,
+                                hintText: AppLocalizations.of(context)!.enterOldPasswordHint,
                                 prefixIcon: Icon(widget.type.icon), // Icon for username
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter your password';
+                                  return AppLocalizations.of(context)!.validatorMessageNull;
                                 }
                                 if (value.length < 8) {
-                                  return 'Use at least 8 characters for your password';
+                                  return AppLocalizations.of(context)!.validatorMessagePasswordLength;
                                 }
                                 return null;
                               },
@@ -91,28 +92,28 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                             controller: textfieldController,
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
-                              labelText: widget.type.labelText,
-                              hintText: widget.type.hintText,
+                              labelText: widget.type.labelText(context),
+                              hintText: widget.type.hintText(context),
                               prefixIcon: Icon(widget.type.icon), // Icon for username
                             ),
                             validator: (value) {
                               if (value == null || value == "") {
-                                return "Please provide a value";
+                                return AppLocalizations.of(context)!.validatorMessageNull;
                               }
                               switch (widget.type) {
                                 case UserChangeType.email:
                                   if (!value.contains('@') || !value.contains('.') || value.contains('@.')) {
-                                    return 'No valid email';
+                                    return AppLocalizations.of(context)!.emailValidatorMessage;
                                   }
                                 case UserChangeType.name:
                                   return null;
                                 case UserChangeType.username:
                                   if (value.contains(" ")) {
-                                    return 'Must be in a valid format';
+                                    return AppLocalizations.of(context)!.validatorMessageValidFormat;
                                   }
                                 case UserChangeType. password:
                                   if (value.length < 8) {
-                                    return 'Use at least 8 characters for your password';
+                                    return AppLocalizations.of(context)!.validatorMessagePasswordLength;
                                   }
                               }
 
@@ -125,16 +126,16 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                               controller: confirmationPasswordController,
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
-                                labelText: 're enter new password',
-                                hintText: 're enter new password',
+                                labelText: AppLocalizations.of(context)!.password,
+                                hintText: AppLocalizations.of(context)!.reEnterPasswordHint,
                                 prefixIcon: Icon(widget.type.icon), // Icon for username
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please re-enter your password';
+                                  return AppLocalizations.of(context)!.validatorMessageNull;
                                 }
                                 if (value != textfieldController.text) {
-                                  return 'The passwords arent matching';
+                                  return AppLocalizations.of(context)!.validatorMessagePasswordMatching;
                                 }
                                 return null;
                               }
@@ -153,7 +154,7 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                                   Navigator.pop(context);
                                 },
                                 icon: const Icon(Icons.update),
-                                label: Text(widget.type.buttonText)
+                                label: Text(widget.type.buttonText(context))
                             ),
                           )
                         ],
@@ -187,6 +188,7 @@ enum UserChangeType {
 
 extension UserChangeTypeExtenstion on UserChangeType {
 
+
   String get stringKey {
     switch (this) {
       case UserChangeType.email:
@@ -200,55 +202,55 @@ extension UserChangeTypeExtenstion on UserChangeType {
     }
   }
 
-  String get titleString {
+  String titleString(BuildContext context) {
     switch (this) {
       case UserChangeType.email:
-        return "Change E-Mail";
+        return AppLocalizations.of(context)!.changeEmail;
       case UserChangeType.name:
-        return "Change Name";
+        return AppLocalizations.of(context)!.changeName;
       case UserChangeType.username:
-        return "Change Username";
+        return AppLocalizations.of(context)!.changeUsername;
       case UserChangeType. password:
-        return "Change Password";
+        return AppLocalizations.of(context)!.changePassword;
     }
   }
 
-  String get labelText {
+  String labelText(BuildContext context) {
     switch (this) {
       case UserChangeType.email:
-        return "Email";
+        return AppLocalizations.of(context)!.email;
       case UserChangeType.name:
-        return "New Name";
+        return AppLocalizations.of(context)!.fullName;
       case UserChangeType.username:
-        return "New Username";
+        return AppLocalizations.of(context)!.username;
       case UserChangeType. password:
-        return "New Password";
+        return AppLocalizations.of(context)!.password;
     }
   }
 
-  String get hintText {
+  String hintText(BuildContext context) {
     switch (this) {
       case UserChangeType.email:
-        return "New E-Mail";
+        return AppLocalizations.of(context)!.hintNewEmail;
       case UserChangeType.name:
-        return "New Name";
+        return AppLocalizations.of(context)!.hintNewName;
       case UserChangeType.username:
-        return "New Username";
+        return AppLocalizations.of(context)!.hintNewUsername;
       case UserChangeType. password:
-        return "New Password";
+        return AppLocalizations.of(context)!.hintNewPassword;
     }
   }
 
-  String get buttonText {
+  String buttonText(BuildContext context) {
     switch (this) {
       case UserChangeType.email:
-        return "Request E-Mail Change";
+        return AppLocalizations.of(context)!.buttonTextEmail;
       case UserChangeType.name:
-        return "Update Name";
+        return AppLocalizations.of(context)!.buttonTextFullName;
       case UserChangeType.username:
-        return "Update Username";
+        return AppLocalizations.of(context)!.buttonTextUsername;
       case UserChangeType. password:
-        return "Update Password";
+        return AppLocalizations.of(context)!.buttonTextPassword;
     }
   }
 
