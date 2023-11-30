@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hmly/core/entities/user.dart';
+import 'package:hmly/features/charts/presentation/bloc/chart_bloc.dart';
 import 'package:hmly/features/household_task/domain/entities/household_task.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hmly/features/household_task/presentation/bloc/household_task_bloc.dart';
@@ -161,6 +162,8 @@ class _TaskWidgetState extends State<TaskWidget> {
   void toggleIsDoneHouseholdTask(HouseholdTask task, String householdID, String userID) {
     BlocProvider.of<HouseholdTaskBloc>(context)
         .add(ToggleIsDoneHouseholdTaskEvent(task: task, householdID: householdID, userID: userID));
+    BlocProvider.of<ChartBloc>(context)
+        .add(ReloadInitChartEvent());
   }
   void deleteTask(String taskId, String householdID) {
     BlocProvider.of<HouseholdTaskBloc>(context)

@@ -190,7 +190,7 @@ class _AccountPage extends State<AccountPage> {
   }
   void logout(BuildContext bContext) {
     BlocProvider.of<ChartBloc>(bContext)
-        .add(LogoutChartEvent());
+        .add(ReloadInitChartEvent());
     BlocProvider.of<AuthBloc>(bContext)
         .add(const LogoutEvent());
 

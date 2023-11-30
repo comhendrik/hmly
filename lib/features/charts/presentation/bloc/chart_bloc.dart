@@ -37,7 +37,7 @@ class ChartBloc extends Bloc<ChartEvent, ChartState> {
               );
             }
         );
-      } else if (event is LogoutChartEvent) {
+      } else if (event is ReloadInitChartEvent) {
         emit(ChartInitial());
       }
     });

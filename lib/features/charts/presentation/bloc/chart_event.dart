@@ -17,4 +17,4 @@ class GetWeeklyChartDataEvent extends ChartEvent {
   });
 }
 
-class LogoutChartEvent extends ChartEvent {}
+class ReloadInitChartEvent extends ChartEvent {}
