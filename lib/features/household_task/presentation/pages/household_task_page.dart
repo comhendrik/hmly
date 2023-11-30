@@ -48,7 +48,7 @@ class HouseholdTaskPage extends StatelessWidget {
 
   void loadingFunction(BuildContext bContext, String householdID) {
     BlocProvider.of<HouseholdTaskBloc>(bContext)
-        .add(GetAllTasksForHouseholdEvent(householdID: householdID));
+        .add(GetAllTasksForHouseholdEvent(householdID: householdID, context: bContext));
   }
 }
 

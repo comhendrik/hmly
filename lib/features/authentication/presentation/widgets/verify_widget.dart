@@ -50,18 +50,22 @@ class _VerifyWidgetState extends State<VerifyWidget> {
                 icon: Icons.email,
                 buttonText: AppLocalizations.of(context)!.requestVerification,
                 action: () {
-                  requestVerification(widget.mainUser);
+                  requestVerification(widget.mainUser, context);
                 }
             ),
             CustomIconElevatedButton(
                 icon: Icons.refresh,
                 buttonText: AppLocalizations.of(context)!.reload,
-                action: retry
+                action: () {
+                  retry(context);
+                }
             ),
             CustomIconElevatedButton(
                 icon: Icons.arrow_back,
                 buttonText: AppLocalizations.of(context)!.logout,
-                action: logout
+                action: () {
+                  logout(context);
+                }
             ),
             CustomIconElevatedButton(
                 icon: Icons.delete_forever,
@@ -78,7 +82,7 @@ class _VerifyWidgetState extends State<VerifyWidget> {
                       ),
                       TextButton(
                         onPressed: () {
-                          deleteUser(widget.mainUser);
+                          deleteUser(widget.mainUser, context);
                           Navigator.pop(context, 'Delete');
                         },
                         child: Text(AppLocalizations.of(context)!.delete, style: const TextStyle(color: Colors.red),),
@@ -93,23 +97,23 @@ class _VerifyWidgetState extends State<VerifyWidget> {
     );
   }
 
-  void requestVerification(User user) {
-    BlocProvider.of<AuthBloc>(context)
-        .add(RequestVerificationEvent(user: user));
+  void requestVerification(User user, BuildContext bContext) {
+    BlocProvider.of<AuthBloc>(bContext)
+        .add(RequestVerificationEvent(user: user, context: bContext));
   }
 
-  void retry() {
-    BlocProvider.of<AuthBloc>(context)
-        .add(LoadAuthEvent());
+  void retry(BuildContext bContext) {
+    BlocProvider.of<AuthBloc>(bContext)
+        .add(LoadAuthEvent(context: bContext));
   }
 
-  void logout() {
-    BlocProvider.of<AuthBloc>(context)
-        .add(const LogoutEvent());
+  void logout(BuildContext bContext) {
+    BlocProvider.of<AuthBloc>(bContext)
+        .add(LogoutEvent(context: bContext));
   }
 
-  void deleteUser(User user) {
+  void deleteUser(User user, BuildContext bContext) {
     BlocProvider.of<AuthBloc>(context)
-        .add(DeleteUserEvent(user: user));
+        .add(DeleteUserEvent(user: user, context: bContext));
   }
 }

@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Failure extends Equatable {
   final Map<String, dynamic> data;
@@ -22,18 +24,18 @@ enum FailureType {
 }
 
 extension FailureTypeExtension on FailureType {
-  String get title {
+  String title(BuildContext context) {
     switch (this) {
       case FailureType.server:
-        return "Server Failure";
+        return AppLocalizations.of(context)!.serverFailure;
       case FailureType.cache:
-        return "Cache Failure";
+        return AppLocalizations.of(context)!.cacheFailure;
       case FailureType.notFound:
-        return "Not Found Failure";
+        return AppLocalizations.of(context)!.notFoundFailure;
       case FailureType.unknown:
-        return "Unknown Failure";
+        return AppLocalizations.of(context)!.unknownFailure;
       case FailureType.known:
-        return "Known Failure";
+        return AppLocalizations.of(context)!.knownFailure;
     }
   }
 }

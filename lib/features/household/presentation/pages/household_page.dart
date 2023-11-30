@@ -50,7 +50,7 @@ class HouseholdPage extends StatelessWidget {
 
   void loadingFunction(BuildContext bContext, String householdID) {
     BlocProvider.of<HouseholdBloc>(bContext)
-        .add(LoadHouseholdEvent(householdID: householdID));
+        .add(LoadHouseholdEvent(householdID: householdID, context: bContext));
   }
 }
 

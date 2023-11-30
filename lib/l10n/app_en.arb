@@ -450,5 +450,27 @@
   "requestNewPasswordEvent" : "Password is going to be requested...",
   "requestEmailChangeEvent" : "E-Mail Change is going to be requested...",
   "requestVerificationEvent" : "Verification is going to be requested...",
-  "deleteUserEvent" : "User is getting deleted..."
+  "deleteUserEvent" : "User is getting deleted...",
+
+  "loadHouseholdEvent" : "Household is Loaded",
+  "updateHouseholdTitleEvent" : "Household Title is updated",
+  "deleteAuthDataFromHouseholdEvent" : "User is getting deleted from household",
+  "updateAdminEvent" : "Admin is getting updated",
+  "updateAllowedUsersEvent" : "Update List of allowed ID's",
+
+  "getAllTasksForHouseholdEvent" : "Fetch all Tasks",
+  "createHouseholdTaskEvent" : "Create new Tasks",
+  "toggleIsDoneHouseholdTaskEvent" : "Changing state of Task",
+  "deleteHouseholdTaskEvent" : "Deleting Task",
+  "updateHouseholdTaskEvent" : "Task is getting updated",
+
+  "serverFailure" : "Server Failure",
+  "cacheFailure" : "Cache Failure",
+  "notFoundFailure" : "Not Found Failure",
+  "unknownFailure" : "Unknown Failure",
+  "knownFailure" : "Known Failure"
+
+
+
+
 }

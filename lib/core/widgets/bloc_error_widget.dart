@@ -30,7 +30,7 @@ class BlocErrorWidget extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              failure.type.title,
+              failure.type.title(context),
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,

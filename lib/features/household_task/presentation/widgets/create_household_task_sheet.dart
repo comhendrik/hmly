@@ -63,7 +63,7 @@ class _CreateHouseholdTaskSheetState extends State<CreateHouseholdTaskSheet> {
 
   void createHouseholdTask(String householdID, String title, int pointsWorth, DateTime dueTo) {
     BlocProvider.of<HouseholdTaskBloc>(context)
-        .add(CreateHouseholdTaskEvent(householdID: householdID, title: title, pointsWorth: pointsWorth, dueTo: dueTo));
+        .add(CreateHouseholdTaskEvent(householdID: householdID, title: title, pointsWorth: pointsWorth, dueTo: dueTo, context: context));
   }
 
 }

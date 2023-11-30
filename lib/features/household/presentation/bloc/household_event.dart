@@ -10,45 +10,53 @@ abstract class HouseholdEvent extends Equatable {
 
 class LoadHouseholdEvent extends HouseholdEvent {
   final String householdID;
-  final String msg = "Household is Loaded";
+  final BuildContext context;
+  final String msg;
 
-  const LoadHouseholdEvent({
+  LoadHouseholdEvent({
     required this.householdID,
-  });
+    required this.context
+  }) : msg = AppLocalizations.of(context)!.loadHouseholdEvent;
 }
 
 class UpdateHouseholdTitleEvent extends HouseholdEvent {
   final String householdID;
   final String householdTitle;
-  final String msg = "Household Title is updated";
+  final BuildContext context;
+  final String msg;
 
-  const UpdateHouseholdTitleEvent({
+  UpdateHouseholdTitleEvent({
     required this.householdID,
-    required this.householdTitle
-  });
+    required this.householdTitle,
+    required this.context
+  }) : msg = AppLocalizations.of(context)!.updateHouseholdTitleEvent;
 }
 
 class DeleteAuthDataFromHouseholdEvent extends HouseholdEvent {
   final String userID;
   final Household household;
-  final String msg = "User is getting deleted from household";
+  final BuildContext context;
+  final String msg;
 
-  const DeleteAuthDataFromHouseholdEvent({
+  DeleteAuthDataFromHouseholdEvent({
     required this.userID,
     required this.household,
-  });
+    required this.context
+  }) :  msg = AppLocalizations.of(context)!.deleteAuthDataFromHouseholdEvent;
 }
 
 class UpdateAdminEvent extends HouseholdEvent {
   final String householdID;
   final String userID;
-  final String msg = "Admin is getting updated";
+  final BuildContext context;
+  final String msg;
 
 
-  const UpdateAdminEvent({
+  UpdateAdminEvent({
     required this.householdID,
     required this.userID,
-  });
+    required this.context
+  }) :  msg = AppLocalizations.of(context)!.updateAdminEvent;
 }
 
 class DeleteHouseholdEvent extends HouseholdEvent {
@@ -64,12 +72,15 @@ class UpdateAllowedUsersEvent extends HouseholdEvent {
   final String userID;
   final Household household;
   final bool delete;
+  final BuildContext context;
+  final String msg;
 
-  const UpdateAllowedUsersEvent({
+  UpdateAllowedUsersEvent({
     required this.userID,
     required this.household,
-    required this.delete
-  });
+    required this.delete,
+    required this.context
+  }) : msg = AppLocalizations.of(context)!.updateAllowedUsersEvent;
 }
 
 class LogoutHouseholdEvent extends HouseholdEvent {}

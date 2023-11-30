@@ -379,10 +379,10 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                       TextButton(
                         onPressed: () {
                           if (widget.mainUser.id == widget.household.admin.id || widget.household.users.length == 1) {
-                            leaveHousehold(widget.mainUser);
+                            leaveHousehold(widget.mainUser, context);
                             deleteHousehold(widget.household.id);
                           } else {
-                            leaveHousehold(widget.mainUser);
+                            leaveHousehold(widget.mainUser, context);
                           }
                           Navigator.pop(context, 'Leave');
                         },
@@ -401,23 +401,23 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
 
   void updateHouseholdTitle(String householdID, String householdTitle) {
     BlocProvider.of<HouseholdBloc>(widget.context)
-        .add(UpdateHouseholdTitleEvent(householdID: householdID, householdTitle: householdTitle));
+        .add(UpdateHouseholdTitleEvent(householdID: householdID, householdTitle: householdTitle, context: widget.context));
   }
 
   void deleteAuthDataFromHousehold(String userID, Household household) {
     BlocProvider.of<HouseholdBloc>(widget.context)
-      .add(DeleteAuthDataFromHouseholdEvent(userID: userID, household: household));
+      .add(DeleteAuthDataFromHouseholdEvent(userID: userID, household: household, context: widget.context));
 
   }
 
   void updateAdmin(String householdID, String userID) {
     BlocProvider.of<HouseholdBloc>(widget.context)
-        .add(UpdateAdminEvent(householdID: householdID, userID: userID));
+        .add(UpdateAdminEvent(householdID: householdID, userID: userID, context: widget.context));
   }
 
-  void leaveHousehold(User user) {
-    BlocProvider.of<AuthBloc>(widget.context)
-        .add(LeaveHouseholdEvent(user: user));
+  void leaveHousehold(User user, BuildContext bContext) {
+    BlocProvider.of<AuthBloc>(bContext)
+        .add(LeaveHouseholdEvent(user: user, context: bContext));
   }
 
   void deleteHousehold(String householdID) {
@@ -427,7 +427,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
 
   void updateAllowedUsers(String userID, Household household, bool delete) {
     BlocProvider.of<HouseholdBloc>(widget.context)
-        .add(UpdateAllowedUsersEvent(userID: userID, household: household, delete: delete));
+        .add(UpdateAllowedUsersEvent(userID: userID, household: household, delete: delete, context: widget.context));
   }
 
 }

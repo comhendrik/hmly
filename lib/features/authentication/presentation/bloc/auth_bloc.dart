@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hmly/core/entities/user.dart';
@@ -18,6 +19,7 @@ import 'package:hmly/features/authentication/domain/usecases/request_email_chang
 import 'package:hmly/features/authentication/presentation/widgets/change_user_attributes_widget.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

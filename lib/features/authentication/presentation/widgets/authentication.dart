@@ -169,9 +169,9 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                 action: () {
                   if (_formKey.currentState!.validate()) {
                     if (showLogin) {
-                      login(emailStr, passwordStr);
+                      login(emailStr, passwordStr, context);
                     } else {
-                      signUp(emailStr, passwordStr, passwordConfirmStr, usernameStr, nameStr);
+                      signUp(emailStr, passwordStr, passwordConfirmStr, usernameStr, nameStr, context);
                     }
                   }
                 }
@@ -200,9 +200,9 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
     );
   }
 
-  void login(String email, String password) {
-    BlocProvider.of<AuthBloc>(context)
-        .add(LoginAuthEvent(email: email, password: password));
+  void login(String email, String password, BuildContext bContext) {
+    BlocProvider.of<AuthBloc>(bContext)
+        .add(LoginAuthEvent(email: email, password: password, context: bContext));
   }
 
   void oAuth() {
@@ -210,9 +210,9 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
         .add(const LoadAuthDataWithOAuthEvent());
   }
 
-  void signUp(String email, String password, String passwordConfirm, String username, String name) {
-    BlocProvider.of<AuthBloc>(context)
-        .add(SignUpAuthEvent(email: email, password: password, passwordConfirm: passwordConfirm, username: username, name: name));
+  void signUp(String email, String password, String passwordConfirm, String username, String name, bContext) {
+    BlocProvider.of<AuthBloc>(bContext)
+        .add(SignUpAuthEvent(email: email, password: password, passwordConfirm: passwordConfirm, username: username, name: name, context: bContext));
   }
 }
 

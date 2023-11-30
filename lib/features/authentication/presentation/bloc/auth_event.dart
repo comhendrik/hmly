@@ -10,50 +10,62 @@ abstract class AuthEvent extends Equatable {
 class AddAuthDataToHouseholdEvent extends AuthEvent {
   final User user;
   final String householdID;
-  final String msg = "User is added to Household";
+  final BuildContext context;
+  final String msg;
 
-  const AddAuthDataToHouseholdEvent({
+  AddAuthDataToHouseholdEvent({
     required this.user,
-    required this.householdID
-  });
+    required this.householdID,
+    required this.context
+  }) : msg = AppLocalizations.of(context)!.addAuthDataToHouseholdEvent;
 }
 
 class CreateHouseholdAndAddAuthDataEvent extends AuthEvent {
   final User user;
   final String householdTitle;
-  final String msg = "Household is Created";
+  final BuildContext context;
+  final String msg;
 
-  const CreateHouseholdAndAddAuthDataEvent({
+  CreateHouseholdAndAddAuthDataEvent({
     required this.user,
-    required this.householdTitle
-  });
+    required this.householdTitle,
+    required this.context
+  }) : msg = AppLocalizations.of(context)!.createHouseholdAndAddAuthDataEvent;
 }
 
 class LeaveHouseholdEvent extends AuthEvent {
-
   final User user;
-  final String msg = "User leaves Household.";
+  final BuildContext context;
+  final String msg;
 
-  const LeaveHouseholdEvent({
-    required this.user
-  });
+  LeaveHouseholdEvent({
+    required this.user,
+    required this.context
+  }) : msg = AppLocalizations.of(context)!.leaveHouseholdEvent;
 }
 
 class LoginAuthEvent extends AuthEvent {
 
   final String email;
   final String password;
-  final String msg = "User is logged in";
+  final BuildContext context;
+  final String msg;
 
-  const LoginAuthEvent({
+  LoginAuthEvent({
     required this.email,
-    required this.password
-  });
+    required this.password,
+    required this.context
+  }) : msg = AppLocalizations.of(context)!.loginAuthEvent;
 
 }
 
 class LoadAuthEvent extends AuthEvent {
-  final String msg = "Loading User data";
+  final BuildContext context;
+  final String msg;
+
+  LoadAuthEvent({
+    required this.context
+  }) : msg = AppLocalizations.of(context)!.loadAuthEvent;
 }
 
 class SignUpAuthEvent extends AuthEvent {
@@ -62,15 +74,17 @@ class SignUpAuthEvent extends AuthEvent {
   final String passwordConfirm;
   final String username;
   final String name;
-  final String msg = "User is signed up";
+  final BuildContext context;
+  final String msg;
 
-  const SignUpAuthEvent({
+  SignUpAuthEvent({
     required this.email,
     required this.password,
     required this.passwordConfirm,
     required this.username,
     required this.name,
-  });
+    required this.context
+  }) : msg = AppLocalizations.of(context)!.signUpAuthEvent;
 }
 
 
@@ -83,11 +97,12 @@ class LoadAuthDataWithOAuthEvent extends AuthEvent {
 }
 
 class LogoutEvent extends AuthEvent {
+  final BuildContext context;
+  final String msg;
 
-  final String msg = "User is logged out";
-
-  const LogoutEvent();
-
+  LogoutEvent({
+    required this.context
+  }) : msg = AppLocalizations.of(context)!.logoutEvent;
 }
 
 class ChangeUserAttributesEvent extends AuthEvent {
@@ -96,53 +111,62 @@ class ChangeUserAttributesEvent extends AuthEvent {
   final String? oldPassword;
   final User user;
   final UserChangeType type;
-  final String msg = "Attribute of user is changed";
+  final BuildContext context;
+  final String msg;
 
-  const ChangeUserAttributesEvent({
+  ChangeUserAttributesEvent({
     required this.input,
     required this.confirmationPassword,
     required this.oldPassword,
     required this.user,
     required this.type,
-  });
+    required this.context
+  }) : msg = AppLocalizations.of(context)!.changeUserAttributesEvent;
 }
 
 class RequestNewPasswordEvent extends AuthEvent {
   final String userEmail;
-  final String msg = "Password is going to be requested";
+  final BuildContext context;
+  final String msg;
 
-  const RequestNewPasswordEvent({
-    required this.userEmail
-  });
+  RequestNewPasswordEvent({
+    required this.userEmail,
+    required this.context
+  }): msg = AppLocalizations.of(context)!.requestNewPasswordEvent;
 }
 
 class RequestEmailChangeEvent extends AuthEvent {
   final String newEmail;
   final User user;
-  final String msg = "E-mail change is going to be requested";
+  final BuildContext context;
+  final String msg;
 
-  const RequestEmailChangeEvent({
+  RequestEmailChangeEvent({
     required this.newEmail,
     required this.user,
-
-  });
+    required this.context
+  }) : msg = AppLocalizations.of(context)!.requestEmailChangeEvent;
 }
 
 class RequestVerificationEvent extends AuthEvent {
   final User user;
-  final String msg = "Verification is going to be requested";
+  final BuildContext context;
+  final String msg;
 
-  const RequestVerificationEvent({
-    required this.user
-  });
+  RequestVerificationEvent({
+    required this.user,
+    required this.context
+  }) : msg = AppLocalizations.of(context)!.requestVerificationEvent;
 }
 
 class DeleteUserEvent extends AuthEvent {
   final User user;
-  final String msg = "User is going to be deleted";
+  final BuildContext context;
+  final String msg;
 
-  const DeleteUserEvent({
-    required this.user
-  });
+  DeleteUserEvent({
+    required this.user,
+    required this.context
+  }) : msg = AppLocalizations.of(context)!.deleteUserEvent;
 }
 

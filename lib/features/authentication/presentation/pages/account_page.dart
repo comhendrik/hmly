@@ -30,7 +30,7 @@ class _AccountPage extends State<AccountPage> {
         titleIcon: Icons.person,
         reloadAction: () {
           BlocProvider.of<AuthBloc>(context)
-              .add(LoadAuthEvent());
+              .add(LoadAuthEvent(context: context));
         },
         widget: Column(
           children: [
@@ -116,7 +116,7 @@ class _AccountPage extends State<AccountPage> {
                     if (widget.mainUser.householdID == "")
                       TextButton(
                         onPressed: () {
-                          deleteUser(widget.mainUser);
+                          deleteUser(widget.mainUser, context);
                           Navigator.pop(context, 'Delete');
                         },
                         child: Text(AppLocalizations.of(context)!.delete, style: const TextStyle(color: Colors.red),),
@@ -192,12 +192,12 @@ class _AccountPage extends State<AccountPage> {
     BlocProvider.of<ChartBloc>(bContext)
         .add(ReloadInitChartEvent());
     BlocProvider.of<AuthBloc>(bContext)
-        .add(const LogoutEvent());
+        .add(LogoutEvent(context: bContext));
 
   }
 
-  void deleteUser(User user) {
-    BlocProvider.of<AuthBloc>(widget.ancestorContext)
-        .add(DeleteUserEvent(user: user));
+  void deleteUser(User user, BuildContext bContext) {
+    BlocProvider.of<AuthBloc>(bContext)
+        .add(DeleteUserEvent(user: user, context: bContext));
   }
 }

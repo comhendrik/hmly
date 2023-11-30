@@ -72,7 +72,7 @@ class _AddAuthDataToHouseholdPage extends State<AddAuthDataToHouseholdPage> {
                             buttonText: AppLocalizations.of(context)!.join,
                             action: () {
                               if (_idFormKey.currentState!.validate()) {
-                                addAuthDataToHousehold(widget.mainUser, householdIDStr);
+                                addAuthDataToHousehold(widget.mainUser, householdIDStr, context);
                               }
                             }
                         ),
@@ -123,7 +123,7 @@ class _AddAuthDataToHouseholdPage extends State<AddAuthDataToHouseholdPage> {
                             buttonText: AppLocalizations.of(context)!.create,
                             action: () {
                               if (_titleFormKey.currentState!.validate()) {
-                                createHouseholdAndAddAuthData(widget.mainUser, householdTitleStr);
+                                createHouseholdAndAddAuthData(widget.mainUser, householdTitleStr, context);
                               }
                             }
                         ),
@@ -138,13 +138,13 @@ class _AddAuthDataToHouseholdPage extends State<AddAuthDataToHouseholdPage> {
     );
   }
 
-  void addAuthDataToHousehold(User user, String householdID) {
-    BlocProvider.of<AuthBloc>(context)
-        .add(AddAuthDataToHouseholdEvent(user: user, householdID: householdID));
+  void addAuthDataToHousehold(User user, String householdID, BuildContext bContext) {
+    BlocProvider.of<AuthBloc>(bContext)
+        .add(AddAuthDataToHouseholdEvent(user: user, householdID: householdID, context: bContext));
   }
 
-  void createHouseholdAndAddAuthData(User user, String householdTitle) {
+  void createHouseholdAndAddAuthData(User user, String householdTitle, BuildContext bContext) {
     BlocProvider.of<AuthBloc>(context)
-        .add(CreateHouseholdAndAddAuthDataEvent(user: user, householdTitle: householdTitle));
+        .add(CreateHouseholdAndAddAuthDataEvent(user: user, householdTitle: householdTitle, context: bContext));
   }
 }

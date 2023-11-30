@@ -161,18 +161,18 @@ class _TaskWidgetState extends State<TaskWidget> {
 
   void toggleIsDoneHouseholdTask(HouseholdTask task, String householdID, String userID) {
     BlocProvider.of<HouseholdTaskBloc>(context)
-        .add(ToggleIsDoneHouseholdTaskEvent(task: task, householdID: householdID, userID: userID));
+        .add(ToggleIsDoneHouseholdTaskEvent(task: task, householdID: householdID, userID: userID, context: context));
     BlocProvider.of<ChartBloc>(context)
         .add(ReloadInitChartEvent());
   }
   void deleteTask(String taskId, String householdID) {
     BlocProvider.of<HouseholdTaskBloc>(context)
-        .add(DeleteHouseholdTaskEvent(taskId: taskId,householdID: householdID));
+        .add(DeleteHouseholdTaskEvent(taskId: taskId,householdID: householdID, context: context));
   }
 
   void updateTask(HouseholdTask task, Map<String, dynamic> updateData, String householdID) {
     BlocProvider.of<HouseholdTaskBloc>(context)
-        .add(UpdateHouseholdTaskEvent(task: task, updateData: updateData, householdID: householdID));
+        .add(UpdateHouseholdTaskEvent(task: task, updateData: updateData, householdID: householdID, context: context));
   }
 
 }

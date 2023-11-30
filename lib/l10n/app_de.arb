@@ -133,5 +133,23 @@
     "requestNewPasswordEvent" : "Neues Passwort wird angefragt...",
     "requestEmailChangeEvent" : "E-Mail Änderung wird angefragt...",
     "requestVerificationEvent" : "Verifizierung wird angefragt...",
-    "deleteUserEvent" : "Nutzer wird gelöscht"
+    "deleteUserEvent" : "Nutzer wird gelöscht",
+
+    "loadHouseholdEvent" : "Haushalt wird geladen...",
+    "updateHouseholdTitleEvent" : "Titel wird geändert",
+    "deleteAuthDataFromHouseholdEvent" : "Nutzer wird aus dem Haushalt entfernt",
+    "updateAdminEvent" : "Admin wird geändert",
+    "updateAllowedUsersEvent" : "Liste der erlaubten ID's wird geändert",
+
+    "getAllTasksForHouseholdEvent" : "Aufgaben werden geladen...",
+    "createHouseholdTaskEvent" : "Neue Aufgabe wird erstellt...",
+    "toggleIsDoneHouseholdTaskEvent" : "Status wird geändert...",
+    "deleteHouseholdTaskEvent" : "Aufgabe löschen...",
+    "updateHouseholdTaskEvent" : "Aufgabe wird geändert...",
+
+    "serverFailure" : "Server Fehler",
+    "cacheFailure" : "Zwischenspeicher Fehler",
+    "notFoundFailure" : "Nicht gefunden",
+    "unknownFailure" : "Unbekannter Fehler",
+    "knownFailure" : "Fehler"
 }

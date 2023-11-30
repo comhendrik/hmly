@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hmly/core/error/failure.dart';
 import 'package:hmly/features/household/domain/usecases/update_allowed_users.dart';
@@ -8,6 +9,7 @@ import 'package:hmly/features/household/domain/usecases/delete_auth_data_from_ho
 import 'package:hmly/features/household/domain/usecases/update_admin.dart';
 import 'package:hmly/features/household/domain/usecases/delete_household.dart';
 import 'package:hmly/features/household/domain/entities/household.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 part 'household_event.dart';
 part 'household_state.dart';
@@ -58,7 +60,7 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
                   emit(HouseholdError(failure: failure));
             },
                 (_) {
-                  add(LoadHouseholdEvent(householdID: event.household.id));
+                  add(LoadHouseholdEvent(householdID: event.household.id, context: event.context));
             }
         );
       } else if (event is UpdateAdminEvent) {
@@ -73,8 +75,11 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
             }
         );
       } else if (event is DeleteHouseholdEvent) {
+
         await deleteHousehold.execute(event.householdID);
+
       } else if (event is UpdateAllowedUsersEvent) {
+        emit(HouseholdLoading(msg: event.msg));
         final resultEither = await updateAllowedUsers.execute(event.userID, event.household, event.delete);
         resultEither.fold(
             (failure) async {

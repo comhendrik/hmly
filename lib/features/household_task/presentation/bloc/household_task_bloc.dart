@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hmly/core/error/failure.dart';
@@ -7,6 +8,7 @@ import 'package:hmly/features/household_task/domain/usecases/toggle_is_done_hous
 import '../../domain/usecases/get_all_tasks_for_household.dart';
 import 'package:hmly/features/household_task/domain/usecases/update_household_task.dart';
 import 'package:hmly/features/household_task/domain/usecases/delete_household_task.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 part 'household_task_event.dart';
 part 'household_task_state.dart';

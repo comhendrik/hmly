@@ -65,16 +65,16 @@ class AuthPage extends StatelessWidget {
 
   void loadingFunction(BuildContext bContext) {
     BlocProvider.of<AuthBloc>(bContext)
-        .add(LoadAuthEvent());
+        .add(LoadAuthEvent(context: bContext));
   }
 
   void loadEveryBloc(BuildContext bContext, String userID, String householdID) {
     BlocProvider.of<ChartBloc>(bContext)
         .add(GetWeeklyChartDataEvent(userID: userID, householdID: householdID, context: bContext));
     BlocProvider.of<HouseholdBloc>(bContext)
-        .add(LoadHouseholdEvent(householdID: householdID));
+        .add(LoadHouseholdEvent(householdID: householdID, context: bContext));
     BlocProvider.of<HouseholdTaskBloc>(bContext)
-        .add(GetAllTasksForHouseholdEvent(householdID: householdID));
+        .add(GetAllTasksForHouseholdEvent(householdID: householdID, context: bContext));
   }
 }
 

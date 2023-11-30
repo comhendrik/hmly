@@ -70,7 +70,7 @@ class _AuthenticationWidget extends State<ForgetPasswordWidget> {
                   buttonText: AppLocalizations.of(context)!.requestPasswordReset,
                   action: () {
                     if (_formKey.currentState!.validate()) {
-                      requestPasswordReset(emailController.text);
+                      requestPasswordReset(emailController.text, widget.ancestorContext);
                       showDialog<String>(
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
@@ -98,8 +98,8 @@ class _AuthenticationWidget extends State<ForgetPasswordWidget> {
     );
   }
 
-  void requestPasswordReset(String userEmail) {
-    BlocProvider.of<AuthBloc>(widget.ancestorContext)
-        .add(RequestNewPasswordEvent(userEmail: userEmail));
+  void requestPasswordReset(String userEmail, BuildContext bContext) {
+    BlocProvider.of<AuthBloc>(bContext)
+        .add(RequestNewPasswordEvent(userEmail: userEmail, context: bContext));
   }
 }

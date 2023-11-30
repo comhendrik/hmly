@@ -149,11 +149,11 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                                 action: () {
                                   if (!_formKey.currentState!.validate()) return;
                                   if (widget.type == UserChangeType.email) {
-                                    requestEmailChange(textfieldController.text, widget.mainUser);
+                                    requestEmailChange(textfieldController.text, widget.mainUser, widget.ancestorContext);
                                     Navigator.pop(context);
                                     return;
                                   }
-                                  changeAttribute(textfieldController.text, confirmationPasswordController?.text, oldPasswordController?.text, widget.mainUser, widget.type);
+                                  changeAttribute(textfieldController.text, confirmationPasswordController?.text, oldPasswordController?.text, widget.mainUser, widget.type, widget.ancestorContext);
                                   Navigator.pop(context);
                                 }
                             ),
@@ -169,14 +169,14 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
     );
   }
 
-  void changeAttribute(String input, String? confirmationPassword, String? oldPassword, User user, UserChangeType type, ) {
-    BlocProvider.of<AuthBloc>(widget.ancestorContext)
-        .add(ChangeUserAttributesEvent(input: input, confirmationPassword: confirmationPassword, oldPassword: oldPassword, user: user, type: type));
+  void changeAttribute(String input, String? confirmationPassword, String? oldPassword, User user, UserChangeType type, BuildContext bContext) {
+    BlocProvider.of<AuthBloc>(bContext)
+        .add(ChangeUserAttributesEvent(input: input, confirmationPassword: confirmationPassword, oldPassword: oldPassword, user: user, type: type, context: bContext));
   }
 
-  void requestEmailChange(String newEmail, User user) {
-    BlocProvider.of<AuthBloc>(widget.ancestorContext)
-        .add(RequestEmailChangeEvent(newEmail: newEmail, user: user));
+  void requestEmailChange(String newEmail, User user, BuildContext bContext) {
+    BlocProvider.of<AuthBloc>(bContext)
+        .add(RequestEmailChangeEvent(newEmail: newEmail, user: user, context: bContext));
   }
 }
 
