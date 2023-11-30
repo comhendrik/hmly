@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:hmly/core/entities/user.dart';
+import 'package:hmly/core/widgets/custom_button.dart';
 import 'package:hmly/core/widgets/feauture_widget_blueprint.dart';
 import 'package:hmly/features/authentication/presentation/bloc/auth_bloc.dart';
 
@@ -66,14 +67,14 @@ class _AddAuthDataToHouseholdPage extends State<AddAuthDataToHouseholdPage> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: ElevatedButton.icon(
-                            onPressed: () {
+                        child: CustomIconElevatedButton(
+                            icon: Icons.arrow_forward,
+                            buttonText: AppLocalizations.of(context)!.join,
+                            action: () {
                               if (_idFormKey.currentState!.validate()) {
                                 addAuthDataToHousehold(widget.mainUser, householdIDStr);
                               }
-                            },
-                            icon: const Icon(Icons.arrow_forward),
-                            label: Text(AppLocalizations.of(context)!.join)
+                            }
                         ),
                       ),
                     ],
@@ -117,14 +118,14 @@ class _AddAuthDataToHouseholdPage extends State<AddAuthDataToHouseholdPage> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            if (_titleFormKey.currentState!.validate()) {
-                              createHouseholdAndAddAuthData(widget.mainUser, householdTitleStr);
+                        child: CustomIconElevatedButton(
+                            icon: Icons.arrow_forward,
+                            buttonText: AppLocalizations.of(context)!.create,
+                            action: () {
+                              if (_titleFormKey.currentState!.validate()) {
+                                createHouseholdAndAddAuthData(widget.mainUser, householdTitleStr);
+                              }
                             }
-                          },
-                          icon: const Icon(Icons.arrow_forward),
-                          label: Text(AppLocalizations.of(context)!.create),
                         ),
                       )
                     ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hmly/core/entities/user.dart';
+import 'package:hmly/core/widgets/custom_button.dart';
 import 'package:hmly/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -142,8 +143,10 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                             ),
                           Padding(
                             padding: const EdgeInsets.all(5.0),
-                            child: ElevatedButton.icon(
-                                onPressed: () {
+                            child: CustomIconElevatedButton(
+                                icon: Icons.update,
+                                buttonText: widget.type.buttonText(context),
+                                action: () {
                                   if (!_formKey.currentState!.validate()) return;
                                   if (widget.type == UserChangeType.email) {
                                     requestEmailChange(textfieldController.text, widget.mainUser);
@@ -152,9 +155,7 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                                   }
                                   changeAttribute(textfieldController.text, confirmationPasswordController?.text, oldPasswordController?.text, widget.mainUser, widget.type);
                                   Navigator.pop(context);
-                                },
-                                icon: const Icon(Icons.update),
-                                label: Text(widget.type.buttonText(context))
+                                }
                             ),
                           )
                         ],

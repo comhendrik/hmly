@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hmly/core/widgets/custom_button.dart';
 
 class HouseholdInformationCardButton {
   final Function() action;
-  final Icon buttonIcon;
+  final IconData buttonIcon;
   final String buttonText;
 
   const HouseholdInformationCardButton({
@@ -56,12 +57,10 @@ class _HouseholdInformationCardState extends State<HouseholdInformationCard> {
                     ],
                   ),
                   if(widget.button != null)
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        widget.button!.action();
-                      },
-                      icon: widget.button!.buttonIcon,
-                      label: Text(widget.button!.buttonText),
+                    CustomIconElevatedButton(
+                        icon: widget.button!.buttonIcon,
+                        buttonText: widget.button!.buttonText,
+                        action: widget.button!.action
                     ),
                 ],
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hmly/core/widgets/custom_button.dart';
 import 'package:hmly/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -64,8 +65,10 @@ class _AuthenticationWidget extends State<ForgetPasswordWidget> {
                     return null;
                   },
               ),
-              ElevatedButton.icon(
-                  onPressed: () {
+              CustomIconElevatedButton(
+                  icon: Icons.arrow_forward,
+                  buttonText: AppLocalizations.of(context)!.requestPasswordReset,
+                  action: () {
                     if (_formKey.currentState!.validate()) {
                       requestPasswordReset(emailController.text);
                       showDialog<String>(
@@ -85,9 +88,7 @@ class _AuthenticationWidget extends State<ForgetPasswordWidget> {
                           )
                       );
                     }
-                  },
-                  icon: const Icon(Icons.arrow_forward),
-                  label: Text(AppLocalizations.of(context)!.requestPasswordReset)
+                  }
               ),
 
             ],

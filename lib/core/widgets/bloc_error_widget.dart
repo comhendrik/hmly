@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hmly/core/error/failure.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:hmly/core/widgets/custom_button.dart';
 
 class BlocErrorWidget extends StatelessWidget {
 
@@ -50,19 +51,10 @@ class BlocErrorWidget extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: reloadAction,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const Icon(Icons.refresh), // Retry icon
-                  const SizedBox(width: 8),
-                  Text(
-                    AppLocalizations.of(context)!.reload,
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                ],
-              ),
+            CustomIconElevatedButton(
+                icon: Icons.refresh,
+                buttonText: AppLocalizations.of(context)!.reload,
+                action: reloadAction
             ),
           ],
         ),

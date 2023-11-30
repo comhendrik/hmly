@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hmly/core/widgets/custom_button.dart';
 import 'package:hmly/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'widgets.dart';
@@ -162,8 +163,10 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                   ),
                 ],
               ),
-            ElevatedButton.icon(
-                onPressed: () {
+            CustomIconElevatedButton(
+                icon: Icons.arrow_forward,
+                buttonText: showLogin ? AppLocalizations.of(context)!.login : AppLocalizations.of(context)!.signup,
+                action: () {
                   if (_formKey.currentState!.validate()) {
                     if (showLogin) {
                       login(emailStr, passwordStr);
@@ -171,29 +174,26 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                       signUp(emailStr, passwordStr, passwordConfirmStr, usernameStr, nameStr);
                     }
                   }
-                },
-                icon: const Icon(Icons.arrow_forward),
-                label: Text(showLogin ? AppLocalizations.of(context)!.login : AppLocalizations.of(context)!.signup)
+                }
             ),
-
-            ElevatedButton(
-                onPressed: () {
+            CustomElevatedButton(
+                buttonText: showLogin ? AppLocalizations.of(context)!.signUpQuestion : AppLocalizations.of(context)!.loginQuestion,
+                action: () {
                   setState(() {
                     showLogin = !showLogin;
                   });
-                },
-                child: showLogin ? Text(AppLocalizations.of(context)!.signUpQuestion) : Text(AppLocalizations.of(context)!.loginQuestion)
+                }
             ),
-            ElevatedButton(
-                onPressed: () {
+            CustomElevatedButton(
+                buttonText: AppLocalizations.of(context)!.forgetPassword,
+                action: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                         builder: (newContext) => ForgetPasswordWidget(ancestorContext: context)
                     ),
                   );
-                },
-                child: Text(AppLocalizations.of(context)!.forgetPassword)
-            ),
+                }
+            )
           ],
         ),
       )

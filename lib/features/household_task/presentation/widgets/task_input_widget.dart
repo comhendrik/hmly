@@ -113,6 +113,7 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+                //Not Custom, because it is a cancel button
                 child: ElevatedButton.icon(
                     icon: const Icon(Icons.cancel),
                     style: ElevatedButton.styleFrom(
@@ -131,6 +132,7 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
               ),
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+                //Not custom because it is an proceed button
                 child: ElevatedButton.icon(
                     icon: const Icon(Icons.add),
                     style: ElevatedButton.styleFrom(

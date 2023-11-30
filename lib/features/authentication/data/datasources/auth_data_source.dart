@@ -247,6 +247,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<void> deleteUser(User user) async {
     try {
+      //TODO: Delete data from points table
       userRecordService.delete(user.id);
     } on ClientException catch(err) {
       throw ServerException(response: err.response);

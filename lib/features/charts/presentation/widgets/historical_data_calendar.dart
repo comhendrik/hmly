@@ -63,7 +63,7 @@ class _HistoricalDataCalendarState extends State<HistoricalDataCalendar> {
     rows.add(
       TableRow(
         decoration: const BoxDecoration(
-          color: Colors.black,
+          color: Colors.blueGrey,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(15),
             topRight: Radius.circular(15),
@@ -129,15 +129,15 @@ class _HistoricalDataCalendarState extends State<HistoricalDataCalendar> {
         padding: const EdgeInsets.all(3.0),
         decoration: events.isEmpty ? null : BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: Colors.black,
+          color: Colors.blueGrey,
         ),
         child: Column(
           children: [
             Text(
               day.toString(),
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
-                color: events.isEmpty ? Colors.black : Colors.white
+                color: Colors.black
               ),
             ),
             const SizedBox(height: 5),

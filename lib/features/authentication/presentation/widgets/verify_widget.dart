@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hmly/core/entities/user.dart';
+import 'package:hmly/core/widgets/custom_button.dart';
 import 'package:hmly/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -45,86 +46,46 @@ class _VerifyWidgetState extends State<VerifyWidget> {
               style: const TextStyle(fontSize: 18,),
             ),
             const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () {
-                requestVerification(widget.mainUser);
-              },
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const Icon(Icons.email), // Retry icon
-                  const SizedBox(width: 8),
-                  Text(
-                    AppLocalizations.of(context)!.requestVerification,
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                ],
-              ),
+            CustomIconElevatedButton(
+                icon: Icons.email,
+                buttonText: AppLocalizations.of(context)!.requestVerification,
+                action: () {
+                  requestVerification(widget.mainUser);
+                }
             ),
-            ElevatedButton(
-              onPressed: () {
-                retry();
-              },
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const Icon(Icons.refresh), // Retry icon
-                  const SizedBox(width: 8),
-                  Text(
-                      AppLocalizations.of(context)!.reload,
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                ],
-              ),
+            CustomIconElevatedButton(
+                icon: Icons.refresh,
+                buttonText: AppLocalizations.of(context)!.reload,
+                action: retry
             ),
-            ElevatedButton(
-              onPressed: () {
-                logout();
-              },
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const Icon(Icons.arrow_back), // Retry icon
-                  const SizedBox(width: 8),
-                  Text(
-                    AppLocalizations.of(context)!.logout,
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                ],
-              ),
+            CustomIconElevatedButton(
+                icon: Icons.arrow_back,
+                buttonText: AppLocalizations.of(context)!.logout,
+                action: logout
             ),
-            ElevatedButton(
-              onPressed: () => showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  title: Text(AppLocalizations.of(context)!.warning),
-                  content: Text(AppLocalizations.of(context)!.deleteUserAlert),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: ()  => Navigator.pop(context, 'Cancel'),
-                      child: Text(AppLocalizations.of(context)!.cancel),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        deleteUser(widget.mainUser);
-                        Navigator.pop(context, 'Delete');
-                      },
-                      child: Text(AppLocalizations.of(context)!.delete, style: const TextStyle(color: Colors.red),),
-                    ),
-                  ],
+            CustomIconElevatedButton(
+                icon: Icons.delete_forever,
+                buttonText: AppLocalizations.of(context)!.deleteUserSubtitle,
+                action: () => showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: Text(AppLocalizations.of(context)!.warning),
+                    content: Text(AppLocalizations.of(context)!.deleteUserAlert),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: ()  => Navigator.pop(context, 'Cancel'),
+                        child: Text(AppLocalizations.of(context)!.cancel),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          deleteUser(widget.mainUser);
+                          Navigator.pop(context, 'Delete');
+                        },
+                        child: Text(AppLocalizations.of(context)!.delete, style: const TextStyle(color: Colors.red),),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const Icon(Icons.delete_forever), // Retry icon
-                  const SizedBox(width: 8),
-                  Text(
-                    AppLocalizations.of(context)!.deleteUserSubtitle,
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                ],
-              ),
             ),
           ],
         ),

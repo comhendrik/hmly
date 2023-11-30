@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hmly/core/entities/user.dart';
+import 'package:hmly/core/widgets/custom_button.dart';
 import 'package:hmly/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:hmly/features/household/domain/entities/household.dart';
 import 'package:hmly/features/household/presentation/bloc/household_bloc.dart';
@@ -100,7 +101,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                   updateHouseholdTitle(widget.household.id, titleStr);
                 }
               },
-              buttonIcon: const Icon(Icons.update),
+              buttonIcon: Icons.update,
               buttonText: AppLocalizations.of(context)!.update,
             ) : null,
           ),
@@ -177,6 +178,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
+                                      //Not custom, because it is a cancel button
                                       ElevatedButton.icon(
                                           icon: const Icon(Icons.cancel),
                                           style: ElevatedButton.styleFrom(
@@ -192,34 +194,34 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                                           },
                                           label: Text(AppLocalizations.of(context)!.cancel)
                                       ),
-                                      ElevatedButton(
-                                        onPressed: userIDFromNewAdmin == "" ? null : ()  => showDialog<String>(
-                                          context: context,
-                                          builder: (BuildContext alertContext) => AlertDialog(
-                                            title: Text(AppLocalizations.of(context)!.warning),
-                                            content: Text(AppLocalizations.of(context)!.changeAdminWarningMessage(userIDFromNewAdmin)),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                onPressed: ()  => Navigator.pop(alertContext, 'Cancel'),
-                                                child: Text(AppLocalizations.of(context)!.cancel),
-                                              ),
-                                              TextButton(
-                                                onPressed: () {
-                                                  updateAdmin(widget.household.id, userIDFromNewAdmin);
+                                      CustomElevatedButton(
+                                          buttonText: AppLocalizations.of(context)!.proceed,
+                                          action: userIDFromNewAdmin == "" ? null : ()  => showDialog<String>(
+                                            context: context,
+                                            builder: (BuildContext alertContext) => AlertDialog(
+                                              title: Text(AppLocalizations.of(context)!.warning),
+                                              content: Text(AppLocalizations.of(context)!.changeAdminWarningMessage(userIDFromNewAdmin)),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: ()  => Navigator.pop(alertContext, 'Cancel'),
+                                                  child: Text(AppLocalizations.of(context)!.cancel),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    updateAdmin(widget.household.id, userIDFromNewAdmin);
 
 
-                                                  //Pop context of alert
-                                                  Navigator.pop(alertContext);
+                                                    //Pop context of alert
+                                                    Navigator.pop(alertContext);
 
-                                                  //Pop context of sheet
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text(AppLocalizations.of(context)!.change, style: const TextStyle(color: Colors.red),),
-                                              ),
-                                            ],
+                                                    //Pop context of sheet
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text(AppLocalizations.of(context)!.change, style: const TextStyle(color: Colors.red),),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        child: Text(AppLocalizations.of(context)!.proceed),
                                       )
                                     ],
                                   )
@@ -232,7 +234,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                 );
               },
             ),
-            buttonIcon: const Icon(Icons.admin_panel_settings),
+            buttonIcon: Icons.admin_panel_settings,
             buttonText: AppLocalizations.of(context)!.changeAdmin,
           ) : null,
         ),
@@ -245,7 +247,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
               Clipboard.setData(ClipboardData(text: widget.household.id))
                   .then((value) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.copyIdentifierMessage(widget.household.id)))));
             },
-            buttonIcon: const Icon(Icons.save),
+            buttonIcon: Icons.save,
             buttonText: AppLocalizations.of(context)!.copyIdentifier,
           ),
         ),
@@ -349,7 +351,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                   updateAllowedUsers(userIDController.text, widget.household, false);
                 }
               },
-              buttonIcon: const Icon(Icons.add),
+              buttonIcon: Icons.add,
               buttonText: AppLocalizations.of(context)!.identifier,
             ) : null,
           ),
@@ -389,7 +391,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                   ],
                 ),
               ),
-              buttonIcon: const Icon(Icons.arrow_back),
+              buttonIcon: Icons.arrow_back,
               buttonText: AppLocalizations.of(context)!.leave,
             )
         )
