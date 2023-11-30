@@ -118,5 +118,20 @@
     "validatorMessageDateFuture" : "Datum muss in der Zukunft liegen",
     "validatorMessagePositiveNumber" : "Gebe eine positive Zahl ein",
     "dateLabel" : "Zu Erledigen bis (YYYY-MM-DD)",
-    "pointsWorthLabel" : "Punkte wert"
+    "pointsWorthLabel" : "Punkte wert",
+
+    "getChartDataEvent" : "Laden von Statistiken...",
+
+    "addAuthDataToHouseholdEvent" : "Nutzer wird zum Haushalt hinzugefügt",
+    "createHouseholdAndAddAuthDataEvent" : "Haushalt wird erstellt",
+    "leaveHouseholdEvent" : "Haushalt wird verlassen...",
+    "loginAuthEvent" : "Nutzer wird angemeldet",
+    "loadAuthEvent" : "Nutzerdaten werden geladen",
+    "signUpAuthEvent" : "Nutzer wird registriert",
+    "logoutEvent" : "Abmelden...",
+    "changeUserAttributesEvent" : "Nutzerdaten werden geändert...",
+    "requestNewPasswordEvent" : "Neues Passwort wird angefragt...",
+    "requestEmailChangeEvent" : "E-Mail Änderung wird angefragt...",
+    "requestVerificationEvent" : "Verifizierung wird angefragt...",
+    "deleteUserEvent" : "Nutzer wird gelöscht"
 }

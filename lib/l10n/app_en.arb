@@ -434,5 +434,21 @@
   "validatorMessageDateFuture" : "Date must be in the future",
   "validatorMessagePositiveNumber" : "Enter a positive number",
   "dateLabel" : "Due To (YYYY-MM-DD)",
-  "pointsWorthLabel" : "Points Worth"
+  "pointsWorthLabel" : "Points Worth",
+
+  "getChartDataEvent" : "Getting Chart Data...",
+
+
+  "addAuthDataToHouseholdEvent" : "User is added to Household",
+  "createHouseholdAndAddAuthDataEvent" : "Household is Created",
+  "leaveHouseholdEvent" : "Leaving Household...",
+  "loginAuthEvent" : "User is getting logged in...",
+  "loadAuthEvent" : "Userdata is getting loaded...",
+  "signUpAuthEvent" : "User is getting signed up... ",
+  "logoutEvent" : "Loggin out...",
+  "changeUserAttributesEvent" : "Userdata is getting changed...",
+  "requestNewPasswordEvent" : "Password is going to be requested...",
+  "requestEmailChangeEvent" : "E-Mail Change is going to be requested...",
+  "requestVerificationEvent" : "Verification is going to be requested...",
+  "deleteUserEvent" : "User is getting deleted..."
 }

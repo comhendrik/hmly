@@ -70,7 +70,7 @@ class AuthPage extends StatelessWidget {
 
   void loadEveryBloc(BuildContext bContext, String userID, String householdID) {
     BlocProvider.of<ChartBloc>(bContext)
-        .add(GetWeeklyChartDataEvent(userID: userID, householdID: householdID));
+        .add(GetWeeklyChartDataEvent(userID: userID, householdID: householdID, context: bContext));
     BlocProvider.of<HouseholdBloc>(bContext)
         .add(LoadHouseholdEvent(householdID: householdID));
     BlocProvider.of<HouseholdTaskBloc>(bContext)

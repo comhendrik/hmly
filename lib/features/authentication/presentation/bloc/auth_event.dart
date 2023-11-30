@@ -74,7 +74,7 @@ class SignUpAuthEvent extends AuthEvent {
 }
 
 
-
+//TODO: Delete oauth
 class LoadAuthDataWithOAuthEvent extends AuthEvent {
   final String msg = "Signin in withoauth";
 

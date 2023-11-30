@@ -48,7 +48,7 @@ class ChartPage extends StatelessWidget {
 
   void loadingFunction(BuildContext bContext, User mainUser) {
     BlocProvider.of<ChartBloc>(bContext)
-        .add(GetWeeklyChartDataEvent(userID: mainUser.id, householdID: mainUser.householdID));
+        .add(GetWeeklyChartDataEvent(userID: mainUser.id, householdID: mainUser.householdID, context: bContext));
   }
 
 
