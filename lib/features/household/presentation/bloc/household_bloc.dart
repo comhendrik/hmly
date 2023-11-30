@@ -28,7 +28,6 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
     required this.updateAllowedUsers
   }) : super(HouseholdInitial()) {
     on<HouseholdEvent>((event, emit) async {
-      emit(HouseholdInitial());
       if (event is LoadHouseholdEvent)  {
         emit(HouseholdLoading(msg: event.msg));
         final resultEither = await loadHousehold.execute(event.householdID);
@@ -85,6 +84,8 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
               emit(HouseholdLoaded(household: household));
             }
         );
+      } else if (event is LogoutHouseholdEvent) {
+        emit(HouseholdInitial());
       }
     });
   }

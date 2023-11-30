@@ -124,6 +124,8 @@ class HouseholdTaskBloc extends Bloc<HouseholdTaskEvent, HouseholdTaskState> {
             );
           }
         );
+      } else if (event is LogoutHouseholdTaskEvent) {
+        emit(HouseholdTaskInitial());
       }
     });
   }

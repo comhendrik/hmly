@@ -72,3 +72,5 @@ class UpdateAllowedUsersEvent extends HouseholdEvent {
   });
 }
 
+class LogoutHouseholdEvent extends HouseholdEvent {}
+

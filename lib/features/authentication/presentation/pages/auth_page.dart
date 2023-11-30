@@ -8,6 +8,9 @@ import 'package:hmly/features/authentication/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:hmly/features/charts/presentation/bloc/chart_bloc.dart';
+import 'package:hmly/features/household/presentation/bloc/household_bloc.dart';
+import 'package:hmly/features/household_task/presentation/bloc/household_task_bloc.dart';
 import '../../../../injection_container.dart';
 
 class AuthPage extends StatelessWidget {
@@ -20,9 +23,23 @@ class AuthPage extends StatelessWidget {
     return buildBody(context);
   }
 
-  BlocProvider<AuthBloc> buildBody(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<AuthBloc>(),
+  MultiBlocProvider buildBody(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthBloc>(
+          create: (BuildContext context) => sl<AuthBloc>(),
+        ),
+        BlocProvider<HouseholdBloc>(
+          create: (BuildContext context) => sl<HouseholdBloc>(),
+        ),
+        BlocProvider<ChartBloc>(
+          create: (BuildContext context) => sl<ChartBloc>(),
+        ),
+        BlocProvider<HouseholdTaskBloc>(
+          create: (BuildContext context) => sl<HouseholdTaskBloc>(),
+        ),
+
+      ],
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           if (state is AuthInitial) {
@@ -49,6 +66,15 @@ class AuthPage extends StatelessWidget {
   void loadingFunction(BuildContext bContext) {
     BlocProvider.of<AuthBloc>(bContext)
         .add(LoadAuthEvent());
+  }
+
+  void loadEveryBloc(BuildContext bContext, String userID, String householdID) {
+    BlocProvider.of<ChartBloc>(bContext)
+        .add(GetWeeklyChartDataEvent(userID: userID, householdID: householdID));
+    BlocProvider.of<HouseholdBloc>(bContext)
+        .add(LoadHouseholdEvent(householdID: householdID));
+    BlocProvider.of<HouseholdTaskBloc>(bContext)
+        .add(GetAllTasksForHouseholdEvent(householdID: householdID));
   }
 }
 

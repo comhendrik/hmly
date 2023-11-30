@@ -18,7 +18,6 @@ class ChartBloc extends Bloc<ChartEvent, ChartState> {
     required this.getDailyPieChartData
   }) : super(ChartInitial()) {
     on<ChartEvent>((event, emit) async {
-      emit(ChartInitial());
       if (event is GetWeeklyChartDataEvent)  {
         emit(ChartLoading(msg: event.msg));
         final historicalDataResultEither = await getHistoricalData.execute(event.userID);
@@ -38,6 +37,8 @@ class ChartBloc extends Bloc<ChartEvent, ChartState> {
               );
             }
         );
+      } else if (event is LogoutChartEvent) {
+        emit(ChartInitial());
       }
     });
   }

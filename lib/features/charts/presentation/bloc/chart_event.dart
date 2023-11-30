@@ -16,3 +16,5 @@ class GetWeeklyChartDataEvent extends ChartEvent {
     required this.userID, required this.householdID
   });
 }
+
+class LogoutChartEvent extends ChartEvent {}

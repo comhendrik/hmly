@@ -5,6 +5,7 @@ import 'package:hmly/core/widgets/feauture_widget_blueprint.dart';
 import 'package:hmly/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:hmly/features/authentication/presentation/widgets/change_user_attributes_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:hmly/features/charts/presentation/bloc/chart_bloc.dart';
 
 class AccountPage extends StatefulWidget {
   final User mainUser;
@@ -93,7 +94,7 @@ class _AccountPage extends State<AccountPage> {
             ),
             GestureDetector(
               onTap: (){
-                logout();
+                logout(widget.ancestorContext);
               },
               child: _buildListTile(
                 leadingIcon: Icons.arrow_back,
@@ -118,7 +119,7 @@ class _AccountPage extends State<AccountPage> {
                           deleteUser(widget.mainUser);
                           Navigator.pop(context, 'Delete');
                         },
-                        child: Text(AppLocalizations.of(context)!.delete, style: TextStyle(color: Colors.red),),
+                        child: Text(AppLocalizations.of(context)!.delete, style: const TextStyle(color: Colors.red),),
                       ),
                   ],
                 ),
@@ -187,9 +188,12 @@ class _AccountPage extends State<AccountPage> {
       ),
     );
   }
-  void logout() {
-    BlocProvider.of<AuthBloc>(widget.ancestorContext)
+  void logout(BuildContext bContext) {
+    BlocProvider.of<ChartBloc>(bContext)
+        .add(LogoutChartEvent());
+    BlocProvider.of<AuthBloc>(bContext)
         .add(const LogoutEvent());
+
   }
 
   void deleteUser(User user) {

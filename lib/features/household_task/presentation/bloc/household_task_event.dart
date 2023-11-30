@@ -67,3 +67,5 @@ class UpdateHouseholdTaskEvent extends HouseholdTaskEvent {
     required this.householdID
   });
 }
+
+class LogoutHouseholdTaskEvent extends HouseholdTaskEvent {}
