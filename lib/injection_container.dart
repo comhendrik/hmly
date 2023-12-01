@@ -12,7 +12,6 @@ import 'package:hmly/features/authentication/domain/usecases/request_verificatio
 import 'package:hmly/features/authentication/domain/usecases/sign_up.dart';
 import 'package:hmly/features/authentication/domain/usecases/leave_household.dart';
 import 'package:hmly/features/authentication/domain/usecases/login.dart';
-import 'package:hmly/features/authentication/domain/usecases/load_auth_data_with_o_auth.dart';
 import 'package:hmly/features/authentication/domain/usecases/logout.dart';
 import 'package:hmly/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:hmly/features/charts/data/datasources/charts_data_source.dart';
@@ -91,7 +90,6 @@ Future<void> init() async {
           createHouseholdAndAddAuthData: sl(),
           addAuthDataToHousehold: sl(),
           leaveHousehold: sl(),
-          loadAuthDataWithOAuth: sl(),
           logout: sl(),
           changeUserAttributes: sl(),
           requestNewPassword: sl(),
@@ -132,7 +130,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => LeaveHousehold(repository: sl()));
   sl.registerLazySingleton(() => Login(repository: sl()));
   sl.registerLazySingleton(() => SignUp(repository: sl()));
-  sl.registerLazySingleton(() => LoadAuthDataWithOAuth(repository: sl()));
   sl.registerLazySingleton(() => Logout(repository: sl()));
   sl.registerLazySingleton(() => ChangeUserAttributes(repository: sl()));
   sl.registerLazySingleton(() => RequestNewPassword(repository: sl()));

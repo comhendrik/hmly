@@ -3,7 +3,6 @@ import 'package:hmly/core/error/exceptions.dart';
 import 'package:hmly/core/models/user_model.dart';
 import 'package:hmly/features/authentication/presentation/widgets/change_user_attributes_widget.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 
 abstract class AuthDataSource {
@@ -12,7 +11,6 @@ abstract class AuthDataSource {
   Future<void> leaveHousehold(User user);
   Future<UserModel> login(String email, String password);
   Future<UserModel> signUp(String email, String password,String passwordConfirm, String username, String name);
-  Future<UserModel> loadAuthDataWithOAuth();
   Future<void> logout();
   Future<UserModel> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, User user, UserChangeType type);
   Future<void> requestNewPassword(String userEmail);
@@ -122,31 +120,6 @@ class AuthDataSourceImpl implements AuthDataSource {
       final record = await userRecordService.create(body: body);
       login(email, password);
       return UserModel.fromJSON(record.data, record.id);
-    } on ClientException catch(err) {
-      throw ServerException(response: err.response);
-    } catch (_) {
-      throw UnknownException();
-    }
-  }
-
-  @override
-  Future<UserModel> loadAuthDataWithOAuth() async {
-    try {
-      final _ = await userRecordService.authWithOAuth2(
-          'google',
-          createData:  {
-            "name" : "google",
-          },
-          (url) async {
-        // or use something like flutter_custom_tabs to make the transitions between native and web content more seamless
-        await launchUrl(url);
-        //TODO: When cancelling it shows a loading view /Later Release
-
-      });
-      RecordModel user = authStore.model;
-
-      return UserModel.fromJSON(user.data, user.id);
-
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
     } catch (_) {

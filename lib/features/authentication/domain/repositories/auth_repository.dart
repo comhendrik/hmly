@@ -9,7 +9,6 @@ abstract class AuthRepository {
   Future<Either<Failure, void>> leaveHousehold(User user);
   Future<Either<Failure, User>> login(String email, String password);
   Future<Either<Failure, User>> signUp(String email, String password, String passwordConfirm, String username, String name);
-  Future<Either<Failure, User>> loadAuthDataWithOAuth();
   Future<Either<Failure, void>> logout();
   Future<Either<Failure, User>> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, User user, UserChangeType type);
   Future<Either<Failure, void>> requestNewPassword(String userEmail);

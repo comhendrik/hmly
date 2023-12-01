@@ -78,18 +78,6 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-  @override
-  Future<Either<Failure, User>> loadAuthDataWithOAuth() async {
-    try {
-      return Right(await dataSource.loadAuthDataWithOAuth());
-    } on ServerException catch (e) {
-      return Left(Failure(data: e.response, type: FailureType.server));
-    } on UnknownException catch (e) {
-      return Left(Failure(data: e.response, type: FailureType.unknown));
-    }
-  }
-
-
 
   @override
   Future<Either<Failure, void>> logout() async {

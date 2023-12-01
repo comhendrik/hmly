@@ -11,7 +11,6 @@ import 'package:hmly/features/authentication/domain/usecases/request_verificatio
 import 'package:hmly/features/authentication/domain/usecases/sign_up.dart';
 import 'package:hmly/features/authentication/domain/usecases/leave_household.dart';
 import 'package:hmly/features/authentication/domain/usecases/login.dart';
-import 'package:hmly/features/authentication/domain/usecases/load_auth_data_with_o_auth.dart';
 import 'package:hmly/features/authentication/domain/usecases/logout.dart';
 import 'package:hmly/features/authentication/domain/usecases/change_user_attributes.dart';
 import 'package:hmly/features/authentication/domain/usecases/request_new_password.dart';
@@ -30,7 +29,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AddAuthDataToHousehold addAuthDataToHousehold;
   final CreateHouseholdAndAddAuthData createHouseholdAndAddAuthData;
   final LeaveHousehold leaveHousehold;
-  final LoadAuthDataWithOAuth loadAuthDataWithOAuth;
   final Logout logout;
   final ChangeUserAttributes changeUserAttributes;
   final RequestNewPassword requestNewPassword;
@@ -47,7 +45,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.addAuthDataToHousehold,
     required this.createHouseholdAndAddAuthData,
     required this.leaveHousehold,
-    required this.loadAuthDataWithOAuth,
     required this.logout,
     required this.changeUserAttributes,
     required this.requestNewPassword,
@@ -144,17 +141,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               emit(AuthLoaded(authData: newUser, startCurrentPageIndex: 0));
             }
         );
-      } else if (event is LoadAuthDataWithOAuthEvent) {
-        emit(AuthLoading(msg: event.msg));
-        final resultEither = await loadAuthDataWithOAuth.execute();
-        await resultEither.fold(
-                (failure) async {
-                  emit(AuthError(failure: failure));
-            },
-                (auth) async {
-              emit(AuthLoaded(authData: auth, startCurrentPageIndex: 0));
-            }
-        );
+
       } else if (event is LogoutEvent) {
         emit(AuthLoading(msg: event.msg));
         final resultEither = await logout.execute();
@@ -167,6 +154,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             }
         );
         emit(AuthCreate());
+
       } else if (event is ChangeUserAttributesEvent) {
         emit(AuthLoading(msg: event.msg));
         final resultEither = await changeUserAttributes.execute(event.input, event.confirmationPassword, event.oldPassword, event.user, event.type);
