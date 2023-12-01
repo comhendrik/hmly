@@ -52,7 +52,6 @@ class AuthDataSourceImpl implements AuthDataSource {
       }
       final _ = await userRecordService.update(userID, body: body);
     } on ClientException catch (err) {
-      print(err);
       throw ServerException(response: err.response);
     } on KnownException catch (err){
       throw KnownException(err.response["message"]);
