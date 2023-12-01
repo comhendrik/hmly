@@ -178,7 +178,7 @@ Future<void> init() async {
   );
 
   sl.registerLazySingleton<HouseholdRemoteDataSource>(
-        () => HouseholdRemoteDataSourceImpl(userRecordService: RecordService(pb, 'users'), householdRecordService: RecordService(pb, 'household')),
+        () => HouseholdRemoteDataSourceImpl(userRecordService: RecordService(pb, 'users'), householdRecordService: RecordService(pb, 'household'), taskRecordService: RecordService(pb, 'tasks')),
   );
 
 

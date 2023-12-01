@@ -71,9 +71,7 @@ class _AuthMainPage extends State<AuthMainPage> {
       ),
       body: <Widget>[
         buildNavigationDestination(widget: HouseholdTaskPage(mainUser: widget.mainUser)),
-
         buildNavigationDestination(widget: ChartPage(mainUser: widget.mainUser)),
-
         buildNavigationDestination(widget: AccountPage(mainUser: widget.mainUser, ancestorContext: context)),
         buildNavigationDestination(widget: HouseholdPage(mainUser: widget.mainUser))
       ][currentPageIndex],

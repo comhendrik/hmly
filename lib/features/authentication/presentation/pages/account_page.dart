@@ -197,7 +197,7 @@ class _AccountPage extends State<AccountPage> {
   }
 
   void deleteUser(User user, BuildContext bContext) {
-    BlocProvider.of<AuthBloc>(bContext)
+    BlocProvider.of<AuthBloc>(widget.ancestorContext)
         .add(DeleteUserEvent(user: user, context: bContext));
   }
 }

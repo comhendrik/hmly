@@ -18,10 +18,12 @@ abstract class HouseholdRemoteDataSource {
 class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
   final RecordService userRecordService;
   final RecordService householdRecordService;
+  final RecordService taskRecordService;
 
   HouseholdRemoteDataSourceImpl({
     required this.userRecordService,
     required this.householdRecordService,
+    required this.taskRecordService
   });
 
   @override
@@ -108,8 +110,13 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
   @override
   Future<void> deleteHousehold(String householdID) async {
     try {
-      final _ = await householdRecordService.delete(householdID);
+      final tasks = await taskRecordService.getFullList(filter: 'household="$householdID"');
+      for (RecordModel task in tasks) {
+        taskRecordService.delete(task.id);
+      }
+      await householdRecordService.delete(householdID);
     } on ClientException catch(err) {
+      print(err);
       throw ServerException(response: err.response);
     } catch (_) {
       throw UnknownException();

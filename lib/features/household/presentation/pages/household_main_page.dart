@@ -416,7 +416,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
   }
 
   void leaveHousehold(User user, BuildContext bContext) {
-    BlocProvider.of<AuthBloc>(bContext)
+    BlocProvider.of<AuthBloc>(widget.context)
         .add(LeaveHouseholdEvent(user: user, context: bContext));
   }
 
