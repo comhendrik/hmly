@@ -6,7 +6,7 @@ import 'package:hmly/features/household/domain/entities/household.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 
-abstract class HouseholdRemoteDataSource {
+abstract class HouseholdDataSource {
   Future<HouseholdModel> loadHousehold(String householdID);
   Future<HouseholdModel> updateHouseholdTitle(String householdID, String title);
   Future<void> deleteAuthDataFromHousehold(String userID);
@@ -15,12 +15,12 @@ abstract class HouseholdRemoteDataSource {
   Future<HouseholdModel> updateAllowedUsers(String userID, Household household, bool delete);
 }
 
-class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
+class HouseholdDataSourceImpl implements HouseholdDataSource {
   final RecordService userRecordService;
   final RecordService householdRecordService;
   final RecordService taskRecordService;
 
-  HouseholdRemoteDataSourceImpl({
+  HouseholdDataSourceImpl({
     required this.userRecordService,
     required this.householdRecordService,
     required this.taskRecordService
@@ -112,11 +112,10 @@ class HouseholdRemoteDataSourceImpl implements HouseholdRemoteDataSource {
     try {
       final tasks = await taskRecordService.getFullList(filter: 'household="$householdID"');
       for (RecordModel task in tasks) {
-        taskRecordService.delete(task.id);
+        await taskRecordService.delete(task.id);
       }
       await householdRecordService.delete(householdID);
     } on ClientException catch(err) {
-      print(err);
       throw ServerException(response: err.response);
     } catch (_) {
       throw UnknownException();

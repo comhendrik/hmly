@@ -1,4 +1,5 @@
 import 'package:hmly/core/error/exceptions.dart';
+import 'package:hmly/core/widgets/helper_functions.dart';
 import 'package:hmly/features/household_task/data/models/household_task_model.dart';
 import 'package:hmly/features/household_task/domain/entities/household_task.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -81,7 +82,11 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
         "value$operator" : task.pointsWorth,
         "user" : userID
       };
-      final String filter = 'user = "$userID" && created >= "${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}" && created < "${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day +1}"';
+      final today = DateTime.now();
+      final todayFilter = createFilterDate(today);
+      final tomorrowFilter = createFilterDate(today.add(const Duration(days: 1)));
+
+      final String filter = 'user = "$userID" && created >= "$todayFilter" && created < "$tomorrowFilter"';
       final pointToUpdate = await pointRecordService.getFullList(filter: filter);
       if (pointToUpdate.isEmpty) {
         pointRecordService.create(body: pointBody);

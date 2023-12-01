@@ -20,7 +20,7 @@ import 'package:hmly/features/charts/domain/repositories/charts_repository.dart'
 import 'package:hmly/features/charts/domain/usecases/get_daily_pie_chart_data.dart';
 import 'package:hmly/features/charts/domain/usecases/get_historical_data.dart';
 import 'package:hmly/features/charts/presentation/bloc/chart_bloc.dart';
-import 'package:hmly/features/household/data/datasources/household_remote_data_source.dart';
+import 'package:hmly/features/household/data/datasources/household_data_source.dart';
 import 'package:hmly/features/household/data/repositories/household_repository_impl.dart';
 import 'package:hmly/features/household/domain/repositories/household_repository.dart';
 import 'package:hmly/features/household/domain/usecases/update_allowed_users.dart';
@@ -174,8 +174,8 @@ Future<void> init() async {
         () => HouseholdTaskRemoteDataSourceImpl(userRecordService: RecordService(pb, 'users'), taskRecordService: RecordService(pb, 'tasks'), pointRecordService: RecordService(pb, 'points')),
   );
 
-  sl.registerLazySingleton<HouseholdRemoteDataSource>(
-        () => HouseholdRemoteDataSourceImpl(userRecordService: RecordService(pb, 'users'), householdRecordService: RecordService(pb, 'household'), taskRecordService: RecordService(pb, 'tasks')),
+  sl.registerLazySingleton<HouseholdDataSource>(
+        () => HouseholdDataSourceImpl(userRecordService: RecordService(pb, 'users'), householdRecordService: RecordService(pb, 'household'), taskRecordService: RecordService(pb, 'tasks')),
   );
 
 
