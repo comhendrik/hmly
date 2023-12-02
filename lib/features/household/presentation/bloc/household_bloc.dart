@@ -43,7 +43,7 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
         );
       } else if (event is UpdateHouseholdTitleEvent) {
         emit(HouseholdLoading(msg: event.msg));
-        final resultEither = await updateHouseholdTitle.execute(event.householdID, event.householdTitle);
+        final resultEither = await updateHouseholdTitle.execute(event.household, event.householdTitle);
         resultEither.fold(
                 (failure) async {
                   emit(HouseholdError(failure: failure));
@@ -75,9 +75,7 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
             }
         );
       } else if (event is DeleteHouseholdEvent) {
-
-        await deleteHousehold.execute(event.householdID);
-
+        deleteHousehold.execute(event.householdID);
       } else if (event is UpdateAllowedUsersEvent) {
         emit(HouseholdLoading(msg: event.msg));
         final resultEither = await updateAllowedUsers.execute(event.userID, event.household, event.delete);

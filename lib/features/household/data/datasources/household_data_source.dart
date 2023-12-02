@@ -8,7 +8,7 @@ import 'package:pocketbase/pocketbase.dart';
 
 abstract class HouseholdDataSource {
   Future<HouseholdModel> loadHousehold(String householdID);
-  Future<HouseholdModel> updateHouseholdTitle(String householdID, String title);
+  Future<HouseholdModel> updateHouseholdTitle(Household household, String title);
   Future<void> deleteAuthDataFromHousehold(String userID);
   Future<HouseholdModel> updateAdmin(String householdID, String userID);
   Future<void> deleteHousehold(String householdID);
@@ -44,20 +44,14 @@ class HouseholdDataSourceImpl implements HouseholdDataSource {
   }
 
   @override
-  Future<HouseholdModel> updateHouseholdTitle(String householdID, String householdTitle) async {
+  Future<HouseholdModel> updateHouseholdTitle(Household household, String householdTitle) async {
     try {
       final body = <String, dynamic> {
         "title" : householdTitle,
       };
-      final result = await householdRecordService.update(householdID, body: body, expand: 'admin');
-      //TODO: Maybe no new call of users, because data is already there
-      final users = await userRecordService.getFullList(filter: 'household="$householdID"');
-      List<User> userList = [];
-      for (final user in users) {
-        userList.add(UserModel.fromJSON(user.data, user.id));
-      }
+      final result = await householdRecordService.update(household.id, body: body, expand: 'admin');
 
-      return HouseholdModel.fromJSON(result.data, result.id, userList, result.expand['admin']!.first.data, result.expand['admin']!.first.id);
+      return HouseholdModel.fromJSON(result.data, result.id, household.users, result.expand['admin']!.first.data, result.expand['admin']!.first.id);
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
     } catch (_) {
@@ -116,6 +110,7 @@ class HouseholdDataSourceImpl implements HouseholdDataSource {
       }
       await householdRecordService.delete(householdID);
     } on ClientException catch(err) {
+      print(err);
       throw ServerException(response: err.response);
     } catch (_) {
       throw UnknownException();

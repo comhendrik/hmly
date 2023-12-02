@@ -163,6 +163,7 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                   ),
                 ],
               ),
+            const SizedBox(height: 5.0,),
             CustomIconElevatedButton(
                 icon: Icons.arrow_forward,
                 buttonText: showLogin ? AppLocalizations.of(context)!.login : AppLocalizations.of(context)!.signup,

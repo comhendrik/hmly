@@ -20,13 +20,13 @@ class LoadHouseholdEvent extends HouseholdEvent {
 }
 
 class UpdateHouseholdTitleEvent extends HouseholdEvent {
-  final String householdID;
+  final Household household;
   final String householdTitle;
   final BuildContext context;
   final String msg;
 
   UpdateHouseholdTitleEvent({
-    required this.householdID,
+    required this.household,
     required this.householdTitle,
     required this.context
   }) : msg = AppLocalizations.of(context)!.updateHouseholdTitleEvent;
