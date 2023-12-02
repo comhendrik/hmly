@@ -379,8 +379,8 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                       TextButton(
                         onPressed: () {
                           if (widget.mainUser.id == widget.household.admin.id || widget.household.users.length == 1) {
-                            leaveHousehold(widget.mainUser);
                             deleteHousehold(widget.household.id);
+                            leaveHousehold(widget.mainUser);
                           } else {
                             leaveHousehold(widget.mainUser);
                           }
