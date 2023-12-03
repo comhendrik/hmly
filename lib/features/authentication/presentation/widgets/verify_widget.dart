@@ -51,21 +51,24 @@ class _VerifyWidgetState extends State<VerifyWidget> {
                 buttonText: AppLocalizations.of(context)!.requestVerification,
                 action: () {
                   requestVerification(widget.mainUser, context);
-                }
+                },
+              expand: true,
             ),
             CustomIconElevatedButton(
                 icon: Icons.refresh,
                 buttonText: AppLocalizations.of(context)!.reload,
                 action: () {
                   retry(context);
-                }
+                },
+              expand: true,
             ),
             CustomIconElevatedButton(
                 icon: Icons.arrow_back,
                 buttonText: AppLocalizations.of(context)!.logout,
                 action: () {
                   logout(context);
-                }
+                },
+              expand: true,
             ),
             CustomIconElevatedButton(
                 icon: Icons.delete_forever,
@@ -90,6 +93,7 @@ class _VerifyWidgetState extends State<VerifyWidget> {
                     ],
                   ),
                 ),
+              expand: true,
             ),
           ],
         ),

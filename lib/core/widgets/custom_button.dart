@@ -4,19 +4,24 @@ class CustomIconElevatedButton extends StatelessWidget {
   final IconData icon;
   final String buttonText;
   final Function() action;
+  final bool expand;
 
   const CustomIconElevatedButton({
     super.key,
     required this.icon,
     required this.buttonText,
-    required this.action
+    required this.action,
+    this.expand = false
   });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       onPressed: action,
-      style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll<Color>(Colors.blueGrey)),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blueGrey,
+        minimumSize: expand ? const Size.fromHeight(40) : null,
+      ),
       icon: Icon(icon, color: Colors.white,),
       label: Text(buttonText, style: const TextStyle(color: Colors.white),),
     );
@@ -26,18 +31,23 @@ class CustomIconElevatedButton extends StatelessWidget {
 class CustomElevatedButton extends StatelessWidget {
   final String buttonText;
   final Function()? action;
+  final bool expand;
 
   const CustomElevatedButton({
     super.key,
     required this.buttonText,
-    required this.action
+    required this.action,
+    this.expand = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: action,
-      style: ButtonStyle(backgroundColor: MaterialStatePropertyAll<Color>(action == null ? Colors.grey : Colors.blueGrey)),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blueGrey,
+        minimumSize: expand ? const Size.fromHeight(40) : null,
+      ),
       child: Text(buttonText, style: const TextStyle(color: Colors.white),),
     );
   }
