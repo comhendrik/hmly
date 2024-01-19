@@ -36,7 +36,7 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
       return householdTaskModelList;
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
-    } catch (_) {
+    } catch (err) {
       throw UnknownException();
     }
 
