@@ -9,10 +9,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class AuthDataSource {
   Future<void> addAuthDataToHousehold(String userID, String householdID);
-  Future<String> createHouseholdAndAddAuthData(String userID, String householdTitle);
+  Future<String> createHouseholdAndAddAuthData(String userID);
   Future<void> leaveHousehold(UserData user);
   Future<UserDataModel> login(String email, String password);
-  Future<UserDataModel> signUp(String email, String password,String passwordConfirm, String username, String name);
+  Future<UserDataModel> signUp(String email, String password, String passwordConfirm, String name);
   Future<void> logout();
   Future<UserDataModel> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, UserData user, UserChangeType type);
   Future<void> requestNewPassword(String userEmail);
@@ -66,16 +66,26 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<String> createHouseholdAndAddAuthData(String userID, String householdTitle) async {
-    final body = <String, dynamic>{
-      "title": householdTitle,
-      "admin": userID,
-      "allowed_users" : [userID]
-    };
+  Future<String> createHouseholdAndAddAuthData(String userID) async {
+
     try {
-      final result = await householdRecordService.create(body: body);
-      await addAuthDataToHousehold(userID, result.id);
-      return result.id;
+      DocumentReference userRef = firestore.collection('users').doc(userID);
+
+      Map<String, dynamic> body = {
+        'admin': userRef, // Store the DocumentReference to the user
+        'allowedUsers': [userRef]
+      };
+
+      // Add the post data with the document reference to the 'posts' collection
+      final household = await firestore.collection('households').add(body);
+
+      body = {
+        'household': household,
+      };
+
+      userRef.update(body);
+
+      return household.id;
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
     } catch (_) {
@@ -87,10 +97,9 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<void> leaveHousehold(UserData user) async {
     try {
-      final body = <String, dynamic> {
-        "household" : ""
-      };
-      final _ = await userRecordService.update("//TODO: should be changed", body: body);
+      await firestore.collection("users").doc(user.id).update({
+        "household": FieldValue.delete(), // Use FieldValue.delete() to remove the field
+      });
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
     } catch (_) {
@@ -101,8 +110,6 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<UserDataModel> login(String email, String password) async {
     try {
-      final t = await userRecordService.authWithPassword(email, password);
-
       final _ = await auth.signInWithEmailAndPassword(email: email, password: password);
       final userData = await loadUserData();
       return userData;
@@ -114,22 +121,16 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<UserDataModel> signUp(String email, String password, String passwordConfirm, String username, String name) async {
-    final body = <String, dynamic>{
-      "username": username,
-      "email": email,
-      "emailVisibility": true,
-      "password": password,
-      "passwordConfirm": passwordConfirm,
-      "name": name,
+  Future<UserDataModel> signUp(String email, String password, String passwordConfirm, String name) async {
+    //TODO: Localization
+    if(password != passwordConfirm) throw KnownException("Please confirm the password with the real one");
+    Map<String, dynamic> body = {
+      'name' : name
     };
     try {
+      await auth.createUserWithEmailAndPassword(email: email, password: password);
 
-      final _ = await auth.createUserWithEmailAndPassword(email: email, password: password);
-
-
-      final __ = await userRecordService.create(body: body);
-      login(email, password);
+      await firestore.collection("users").doc(auth.currentUser!.uid).set(body);
 
       return await loadUserData();
     } on ClientException catch(err) {
@@ -253,8 +254,10 @@ class AuthDataSourceImpl implements AuthDataSource {
       if (userData.data() == null) throw UnknownException(); //TODO: implement new exception type
       return UserDataModel.fromJSON(userData.data()!, auth.currentUser!.uid, auth.currentUser!.email!);
     } on FirebaseException catch(e) {
+      throw KnownException(e.toString()); //TODO: Implement new exception type
+    } catch(e) {
       print(e.toString());
-      throw UnknownException(); //TODO: Implement new exception type
+      throw UnknownException();
     }
   }
 }

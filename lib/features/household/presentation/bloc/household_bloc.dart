@@ -2,9 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hmly/core/error/failure.dart';
+import 'package:hmly/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:hmly/features/household/domain/usecases/update_allowed_users.dart';
 import 'package:hmly/features/household/domain/usecases/load_household.dart';
-import 'package:hmly/features/household/domain/usecases/update_household_title.dart';
 import 'package:hmly/features/household/domain/usecases/delete_auth_data_from_household.dart';
 import 'package:hmly/features/household/domain/usecases/update_admin.dart';
 import 'package:hmly/features/household/domain/usecases/delete_household.dart';
@@ -16,14 +16,12 @@ part 'household_state.dart';
 
 class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
   final LoadHousehold loadHousehold;
-  final UpdateHouseholdTitle updateHouseholdTitle;
   final DeleteAuthDataFromHousehold deleteAuthDataFromHousehold;
   final UpdateAdmin updateAdmin;
   final DeleteHousehold deleteHousehold;
   final UpdateAllowedUsers updateAllowedUsers;
   HouseholdBloc({
     required this.loadHousehold,
-    required this.updateHouseholdTitle,
     required this.deleteAuthDataFromHousehold,
     required this.updateAdmin,
     required this.deleteHousehold,
@@ -33,17 +31,6 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
       if (event is LoadHouseholdEvent)  {
         emit(HouseholdLoading(msg: event.msg));
         final resultEither = await loadHousehold.execute(event.householdID);
-        resultEither.fold(
-                (failure) async {
-                  emit(HouseholdError(failure: failure));
-            },
-                (household) {
-              emit(HouseholdLoaded(household: household));
-            }
-        );
-      } else if (event is UpdateHouseholdTitleEvent) {
-        emit(HouseholdLoading(msg: event.msg));
-        final resultEither = await updateHouseholdTitle.execute(event.household, event.householdTitle);
         resultEither.fold(
                 (failure) async {
                   emit(HouseholdError(failure: failure));
@@ -78,12 +65,13 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
         deleteHousehold.execute(event.householdID);
       } else if (event is UpdateAllowedUsersEvent) {
         emit(HouseholdLoading(msg: event.msg));
-        final resultEither = await updateAllowedUsers.execute(event.userID, event.household, event.delete);
+        final resultEither = await updateAllowedUsers.execute(
+            event.userID, event.household, event.delete);
         resultEither.fold(
-            (failure) async {
+                (failure) async {
               emit(HouseholdError(failure: failure));
             },
-            (household) {
+                (household) {
               emit(HouseholdLoaded(household: household));
             }
         );

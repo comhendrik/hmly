@@ -50,12 +50,10 @@ class HouseholdDataSourceImpl implements HouseholdDataSource {
 
   @override
   Future<void> deleteAuthDataFromHousehold(String userID) async {
-
     try {
-      final body = <String, dynamic> {
-        "household" : ""
-      };
-      final _ = await userRecordService.update(userID, body: body);
+      await firestore.collection("users").doc(userID).set({
+        "household": FieldValue.delete(), // Use FieldValue.delete() to remove the field
+      });
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
     } catch (_) {
@@ -92,13 +90,8 @@ class HouseholdDataSourceImpl implements HouseholdDataSource {
   @override
   Future<void> deleteHousehold(String householdID) async {
     try {
-      final tasks = await taskRecordService.getFullList(filter: 'household="$householdID"');
-      for (RecordModel task in tasks) {
-        await taskRecordService.delete(task.id);
-      }
-      await householdRecordService.delete(householdID);
+      await firestore.collection("households").doc(householdID).delete();
     } on ClientException catch(err) {
-      print(err);
       throw ServerException(response: err.response);
     } catch (_) {
       throw UnknownException();

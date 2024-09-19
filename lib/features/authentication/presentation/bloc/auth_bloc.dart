@@ -99,7 +99,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       } else if (event is SignUpAuthEvent) {
         emit(AuthLoading(msg: event.msg));
-        final resultEither = await createAuthDataOnServer.execute(event.email, event.password, event.passwordConfirm, event.username, event.name);
+        final resultEither = await createAuthDataOnServer.execute(event.email, event.password, event.passwordConfirm, event.name);
         await resultEither.fold(
                 (failure) async {
                   emit(AuthError(failure: failure));
@@ -123,13 +123,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       } else if (event is CreateHouseholdAndAddAuthDataEvent) {
         emit(AuthLoading(msg: event.msg));
-        final resultEither = await createHouseholdAndAddAuthData.execute(event.user.id, event.householdTitle);
+        final resultEither = await createHouseholdAndAddAuthData.execute(event.user.id);
         await resultEither.fold(
                 (failure) async {
                   AuthError(failure: failure);
             },
                 (householdID) async {
-              final newUser = event.user;
+              final newUser = UserData(id: event.user.id, name: event.user.name, householdID: householdID, email: event.user.email);
               emit(AuthLoaded(authData: newUser, startCurrentPageIndex: 0));
             }
         );
@@ -141,7 +141,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                   emit(AuthError(failure: failure));
             },
                 (_) async {
-              final newUser = event.user;
+              final newUser = UserData(id: event.user.id, name: event.user.name, householdID: "", email: event.user.email);
               emit(AuthLoaded(authData: newUser, startCurrentPageIndex: 0));
             }
         );

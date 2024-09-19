@@ -25,17 +25,6 @@ class HouseholdRepositoryImpl implements HouseholdRepository {
   }
 
   @override
-  Future<Either<Failure, Household>> updateHouseholdTitle(Household household, String householdTitle) async {
-    try {
-      return Right(await remoteDataSource.updateHouseholdTitle(household, householdTitle));
-    } on ServerException catch (e) {
-      return Left(Failure(data: e.response, type: FailureType.server));
-    } on UnknownException catch (e) {
-      return Left(Failure(data: e.response, type: FailureType.unknown));
-    }
-  }
-
-  @override
   Future<Either<Failure, void>> deleteAuthDataFromHousehold(String userID) async {
     try {
       return Right(await remoteDataSource.deleteAuthDataFromHousehold(userID));

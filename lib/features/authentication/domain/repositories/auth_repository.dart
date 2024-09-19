@@ -5,10 +5,10 @@ import 'package:hmly/features/authentication/presentation/widgets/change_user_at
 
 abstract class AuthRepository {
   Future<Either<Failure, void>> addAuthDataToHousehold(String userID, String householdID);
-  Future<Either<Failure, String>> createHouseholdAndAddAuthData(String userID, String householdTitle);
+  Future<Either<Failure, String>> createHouseholdAndAddAuthData(String userID);
   Future<Either<Failure, void>> leaveHousehold(UserData user);
   Future<Either<Failure, UserData>> login(String email, String password);
-  Future<Either<Failure, UserData>> signUp(String email, String password, String passwordConfirm, String username, String name);
+  Future<Either<Failure, UserData>> signUp(String email, String password, String passwordConfirm, String name);
   Future<Either<Failure, void>> logout();
   Future<Either<Failure, UserData>> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, UserData user, UserChangeType type);
   Future<Either<Failure, void>> requestNewPassword(String userEmail);

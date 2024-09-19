@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hmly/core/entities/user.dart';
 
 class UserDataModel extends UserData {
@@ -20,7 +19,7 @@ class UserDataModel extends UserData {
     return UserDataModel(
       id: userID,
       name: json['name'],
-      householdID: json['household'].id, //TODO: vielleicht entfernen und nicht aus json machen
+      householdID: json['household']?.id ?? "", //TODO: vielleicht entfernen und nicht aus json machen
       email: email,
     );
   }

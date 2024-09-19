@@ -24,12 +24,10 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final passwordConfirmController = TextEditingController();
-  final usernameController = TextEditingController();
   final nameController = TextEditingController();
   String emailStr = '';
   String passwordStr = '';
   String passwordConfirmStr = '';
-  String usernameStr = '';
   String nameStr = '';
   final _formKey = GlobalKey<FormState>();
 
@@ -122,28 +120,6 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                     }
                   ),
                   TextFormField(
-                    controller: usernameController,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      labelText: AppLocalizations.of(context)!.username,
-                      hintText: AppLocalizations.of(context)!.usernameHint,
-                      prefixIcon: const Icon(Icons.person),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return AppLocalizations.of(context)!.validatorMessageNull;
-                      }
-
-                      if (value.contains(" ")) {
-                        return AppLocalizations.of(context)!.validatorMessageValidFormat;
-                      }
-                      return null;
-                    },
-                    onChanged: (value) {
-                      usernameStr = value;
-                    }
-                  ),
-                  TextFormField(
                     controller: nameController,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
@@ -172,7 +148,7 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
                     if (showLogin) {
                       login(emailStr, passwordStr, context);
                     } else {
-                      signUp(emailStr, passwordStr, passwordConfirmStr, usernameStr, nameStr, context);
+                      signUp(emailStr, passwordStr, passwordConfirmStr, nameStr, context);
                     }
                   }
                 }
@@ -211,9 +187,9 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
         .add(const LoadAuthDataWithOAuthEvent());
   }
 
-  void signUp(String email, String password, String passwordConfirm, String username, String name, bContext) {
+  void signUp(String email, String password, String passwordConfirm, String name, bContext) {
     BlocProvider.of<AuthBloc>(bContext)
-        .add(SignUpAuthEvent(email: email, password: password, passwordConfirm: passwordConfirm, username: username, name: name, context: bContext));
+        .add(SignUpAuthEvent(email: email, password: password, passwordConfirm: passwordConfirm, name: name, context: bContext));
   }
 }
 

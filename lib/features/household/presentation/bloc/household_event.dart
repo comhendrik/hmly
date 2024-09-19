@@ -19,19 +19,6 @@ class LoadHouseholdEvent extends HouseholdEvent {
   }) : msg = AppLocalizations.of(context)!.loadHouseholdEvent;
 }
 
-class UpdateHouseholdTitleEvent extends HouseholdEvent {
-  final Household household;
-  final String householdTitle;
-  final BuildContext context;
-  final String msg;
-
-  UpdateHouseholdTitleEvent({
-    required this.household,
-    required this.householdTitle,
-    required this.context
-  }) : msg = AppLocalizations.of(context)!.updateHouseholdTitleEvent;
-}
-
 class DeleteAuthDataFromHouseholdEvent extends HouseholdEvent {
   final String userID;
   final Household household;

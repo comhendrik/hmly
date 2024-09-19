@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hmly/core/error/exceptions.dart';
 import 'package:hmly/core/widgets/helper_functions.dart';
 import 'package:hmly/features/household_task/data/models/household_task_model.dart';
@@ -18,6 +19,8 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
   final RecordService taskRecordService;
   final RecordService pointRecordService;
 
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
 
   HouseholdTaskRemoteDataSourceImpl({
     required this.userRecordService,
@@ -28,15 +31,16 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
   @override
   Future<List<HouseholdTaskModel>> getAllTaskForHousehold(String householdID) async {
     try {
-      final result = await taskRecordService.getFullList(filter: 'household="$householdID"', sort: 'isDone');
+      final tasks = await firestore.collection("households").doc(householdID).collection("tasks").get();
       List<HouseholdTaskModel> householdTaskModelList = [];
-      for (final task in result) {
-        householdTaskModelList.add(HouseholdTaskModel.fromJSON(task.data, task.id));
+      for (final task in tasks.docs) {
+        householdTaskModelList.add(HouseholdTaskModel.fromDocumentSnapshot(task));
       }
       return householdTaskModelList;
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
     } catch (err) {
+      print(err.toString());
       throw UnknownException();
     }
 
@@ -46,13 +50,14 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
   Future<HouseholdTaskModel> createHouseholdTask(String householdID, String title, int pointsWorth, String dueTo) async {
     final body = <String, dynamic>{
       "title": title,
-      "household": householdID,
-      "points_worth": pointsWorth,
-      "due_to" : dueTo,
+      "pointsWorth": pointsWorth,
+      "dueTo" : dueTo,
+      "isDone" : false,
     };
+
     try {
-      final record = await taskRecordService.create(body: body);
-      return HouseholdTaskModel.fromJSON(record.data, record.id);
+      final snap = await firestore.collection("households").doc(householdID).collection("tasks").add(body);
+      return HouseholdTaskModel.fromJSON(body, snap.id);
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
     } catch (_) {

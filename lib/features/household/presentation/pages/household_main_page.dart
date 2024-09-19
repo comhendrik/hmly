@@ -323,9 +323,11 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                     if (widget.household.admin.id != widget.mainUser.id || widget.household.users.length == 1)
                       TextButton(
                         onPressed: () {
+                          leaveHousehold(widget.mainUser);
                           if (widget.mainUser.id == widget.household.admin.id || widget.household.users.length == 1) {
-                            deleteHousehold(widget.household.id);
+
                             leaveHousehold(widget.mainUser);
+                            deleteHousehold(widget.household.id);
                           } else {
                             leaveHousehold(widget.mainUser);
                           }
@@ -342,11 +344,6 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
         )
       ],
     );
-  }
-
-  void updateHouseholdTitle(Household household, String householdTitle) {
-    BlocProvider.of<HouseholdBloc>(widget.context)
-        .add(UpdateHouseholdTitleEvent(household: household, householdTitle: householdTitle, context: widget.context));
   }
 
   void deleteAuthDataFromHousehold(String userID, Household household) {

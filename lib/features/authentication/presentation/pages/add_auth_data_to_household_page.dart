@@ -20,11 +20,8 @@ class AddAuthDataToHouseholdPage extends StatefulWidget {
 class _AddAuthDataToHouseholdPage extends State<AddAuthDataToHouseholdPage> {
 
   final householdIDController = TextEditingController();
-  final householdTitleController = TextEditingController();
   String householdIDStr = '';
-  String householdTitleStr = '';
   final _idFormKey = GlobalKey<FormState>();
-  final _titleFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -82,54 +79,28 @@ class _AddAuthDataToHouseholdPage extends State<AddAuthDataToHouseholdPage> {
                 ),
               ),
             ),
-            Form(
-              key: _titleFormKey,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Center(
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                           Text(AppLocalizations.of(context)!.createInstitution),
-                        ],
-                      ),
-                      TextFormField(
-                          controller: householdTitleController,
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            labelText: AppLocalizations.of(context)!.institutionTitleField,
-                            hintText: AppLocalizations.of(context)!.institutionTitleHint,
-                            prefixIcon: const Icon(Icons.person), // Icon for username
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return AppLocalizations.of(context)!.validatorMessageNull;
-                            }
-                            if (value.length >= 15) {
-                              return AppLocalizations.of(context)!.titleValidatorMessageLength;
-                            }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            householdTitleStr = value;
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Center(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(AppLocalizations.of(context)!.createInstitution),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: CustomIconElevatedButton(
+                          icon: Icons.arrow_forward,
+                          buttonText: AppLocalizations.of(context)!.create,
+                          action: () {
+                            createHouseholdAndAddAuthData(widget.mainUser, context);
                           }
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: CustomIconElevatedButton(
-                            icon: Icons.arrow_forward,
-                            buttonText: AppLocalizations.of(context)!.create,
-                            action: () {
-                              if (_titleFormKey.currentState!.validate()) {
-                                createHouseholdAndAddAuthData(widget.mainUser, householdTitleStr, context);
-                              }
-                            }
-                        ),
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 ),
               ),
             ),
@@ -143,8 +114,8 @@ class _AddAuthDataToHouseholdPage extends State<AddAuthDataToHouseholdPage> {
         .add(AddAuthDataToHouseholdEvent(user: user, householdID: householdID, context: bContext));
   }
 
-  void createHouseholdAndAddAuthData(UserData user, String householdTitle, BuildContext bContext) {
+  void createHouseholdAndAddAuthData(UserData user, BuildContext bContext) {
     BlocProvider.of<AuthBloc>(context)
-        .add(CreateHouseholdAndAddAuthDataEvent(user: user, householdTitle: householdTitle, context: bContext));
+        .add(CreateHouseholdAndAddAuthDataEvent(user: user, context: bContext));
   }
 }

@@ -28,7 +28,6 @@ import 'package:hmly/features/household/domain/usecases/delete_auth_data_from_ho
 import 'package:hmly/features/household/domain/usecases/delete_household.dart';
 import 'package:hmly/features/household/domain/usecases/load_household.dart';
 import 'package:hmly/features/household/domain/usecases/update_admin.dart';
-import 'package:hmly/features/household/domain/usecases/update_household_title.dart';
 import 'package:hmly/features/household/presentation/bloc/household_bloc.dart';
 import 'package:hmly/features/household_task/data/datasources/household_task_remote_data_source.dart';
 import 'package:hmly/features/household_task/data/repositories/household_task_repository_impl.dart';
@@ -75,7 +74,6 @@ Future<void> init() async {
   sl.registerFactory(
         () => HouseholdBloc(
           loadHousehold: sl(),
-          updateHouseholdTitle: sl(),
           deleteAuthDataFromHousehold: sl(),
           updateAdmin: sl(),
           deleteHousehold: sl(),
@@ -119,7 +117,6 @@ Future<void> init() async {
 
 
   sl.registerLazySingleton(() => LoadHousehold(repository: sl()));
-  sl.registerLazySingleton(() => UpdateHouseholdTitle(repository: sl()));
   sl.registerLazySingleton(() => DeleteAuthDataFromHousehold(repository: sl()));
   sl.registerLazySingleton(() => UpdateAdmin(repository: sl()));
   sl.registerLazySingleton(() => DeleteHousehold(repository: sl()));

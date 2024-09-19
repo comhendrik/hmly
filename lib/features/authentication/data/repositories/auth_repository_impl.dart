@@ -28,9 +28,9 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, String>> createHouseholdAndAddAuthData(String userID, String householdTitle) async {
+  Future<Either<Failure, String>> createHouseholdAndAddAuthData(String userID) async {
     try {
-      return Right(await dataSource.createHouseholdAndAddAuthData(userID, householdTitle));
+      return Right(await dataSource.createHouseholdAndAddAuthData(userID));
     } on ServerException catch (e) {
       return Left(Failure(data: e.response, type: FailureType.server));
     } on NotFoundException catch (e) {
@@ -68,9 +68,9 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, UserData>> signUp(String email, String password, String passwordConfirm, String username, String name) async {
+  Future<Either<Failure, UserData>> signUp(String email, String password, String passwordConfirm, String name) async {
     try {
-      return Right(await dataSource.signUp(email, password, passwordConfirm, username, name));
+      return Right(await dataSource.signUp(email, password, passwordConfirm, name));
     } on ServerException catch (e) {
       return Left(Failure(data: e.response, type: FailureType.server));
     } on UnknownException catch (e) {

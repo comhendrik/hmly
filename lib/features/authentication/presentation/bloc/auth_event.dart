@@ -22,13 +22,11 @@ class AddAuthDataToHouseholdEvent extends AuthEvent {
 
 class CreateHouseholdAndAddAuthDataEvent extends AuthEvent {
   final UserData user;
-  final String householdTitle;
   final BuildContext context;
   final String msg;
 
   CreateHouseholdAndAddAuthDataEvent({
     required this.user,
-    required this.householdTitle,
     required this.context
   }) : msg = AppLocalizations.of(context)!.createHouseholdAndAddAuthDataEvent;
 }
@@ -72,7 +70,6 @@ class SignUpAuthEvent extends AuthEvent {
   final String email;
   final String password;
   final String passwordConfirm;
-  final String username;
   final String name;
   final BuildContext context;
   final String msg;
@@ -81,7 +78,6 @@ class SignUpAuthEvent extends AuthEvent {
     required this.email,
     required this.password,
     required this.passwordConfirm,
-    required this.username,
     required this.name,
     required this.context
   }) : msg = AppLocalizations.of(context)!.signUpAuthEvent;

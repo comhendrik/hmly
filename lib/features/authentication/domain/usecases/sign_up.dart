@@ -8,7 +8,7 @@ class SignUp {
 
   SignUp({required this.repository});
 
-  Future<Either<Failure, UserData>> execute(String email, String password, String passwordConfirm, String username, String name) async {
-    return await repository.signUp(email, password, passwordConfirm, username, name);
+  Future<Either<Failure, UserData>> execute(String email, String password, String passwordConfirm, String name) async {
+    return await repository.signUp(email, password, passwordConfirm, name);
   }
 }
