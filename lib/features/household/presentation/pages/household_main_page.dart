@@ -12,7 +12,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class HouseholdMainPage extends StatefulWidget {
   final BuildContext context;
   final Household household;
-  final User mainUser;
+  final UserData mainUser;
   const HouseholdMainPage({
     super.key,
     required this.context,
@@ -25,20 +25,16 @@ class HouseholdMainPage extends StatefulWidget {
 }
 
 class _HouseholdMainPageState extends State<HouseholdMainPage> {
-
-  final titleController = TextEditingController();
   final userIDController = TextEditingController();
   String titleStr = "";
-  final GlobalKey<FormState> _titleFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _IDFormKey = GlobalKey<FormState>();
   String userIDFromNewAdmin = "";
   List<bool> isSelected = [];
-  List<User> selectedUser = [];
+  List<UserData> selectedUser = [];
   final double heightForSheetSizedBox = 10;
 
   @override
   void initState() {
-    titleController.text = widget.household.title;
     super.initState();
 
     //init list of tuples for users, this for getting the picker when wanting to change admin, initialized
@@ -55,64 +51,13 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Form(
-          key: _titleFormKey,
-          child: HouseholdInformationCard(
-            title: AppLocalizations.of(context)!.title,
-            titleWidget:
-            widget.mainUser.id == widget.household.admin.id ?
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(AppLocalizations.of(context)!.current),
-                Text(widget.household.title)
-              ],
-            ) : null ,
-            detailWidget:
-            widget.mainUser.id == widget.household.admin.id ?
-            TextFormField(
-              controller: titleController,
-              decoration: InputDecoration(
-                hintText: AppLocalizations.of(context)!.institutionTitleHint,
-                prefixIcon: const Icon(Icons.home),
-                border: const OutlineInputBorder(),
-              ),
-              onChanged: (value) {
-                titleStr = titleController.text;
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return AppLocalizations.of(context)!.validatorMessageNull;
-                }
-                if (value == widget.household.title) {
-                  return AppLocalizations.of(context)!.validatorMessageSame;
-                }
-                if (value.length >= 15) {
-                  return AppLocalizations.of(context)!.titleValidatorMessageLength;
-                }
-                return null;
-              },
-            ) : Text(widget.household.title),
-            button:
-            widget.mainUser.id == widget.household.admin.id ?
-            HouseholdInformationCardButton(
-              action: () {
-                if (_titleFormKey.currentState!.validate()) {
-                  updateHouseholdTitle(widget.household, titleStr);
-                }
-              },
-              buttonIcon: Icons.update,
-              buttonText: AppLocalizations.of(context)!.update,
-            ) : null,
-          ),
-        ),
         HouseholdInformationCard(
           title: AppLocalizations.of(context)!.admin,
           titleWidget: null,
           detailWidget: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('${AppLocalizations.of(context)!.username}: ${widget.household.admin.username}'),
+              Text('${AppLocalizations.of(context)!.username}: ${widget.household.admin.name}'),
               Text('${AppLocalizations.of(context)!.shortIdentifier}: ${widget.household.admin.id}'),
             ],
           ),
@@ -166,7 +111,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
 
                                     },
                                     children:  <Widget>[
-                                      for (User user in widget.household.users)
+                                      for (UserData user in widget.household.users)
                                         if (user.id != widget.household.admin.id)
                                           Padding(
                                             padding: const EdgeInsets.all(10.0),
@@ -256,7 +201,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
             titleWidget: null,
             detailWidget: Column(
               children: [
-                for (User user in widget.household.users)
+                for (UserData user in widget.household.users)
                   Row(
                     children: [
                       Text(user.name),
@@ -415,7 +360,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
         .add(UpdateAdminEvent(householdID: householdID, userID: userID, context: widget.context));
   }
 
-  void leaveHousehold(User user) {
+  void leaveHousehold(UserData user) {
     BlocProvider.of<AuthBloc>(widget.context)
         .add(LeaveHouseholdEvent(user: user, context: widget.context));
   }

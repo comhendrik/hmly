@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../widgets/widgets.dart';
 
 class HouseholdTaskMainPage extends StatelessWidget {
-  final User mainUser;
+  final UserData mainUser;
   final List<HouseholdTask> allTasks;
 
   const HouseholdTaskMainPage({super.key, required this.allTasks, required this.mainUser});

@@ -8,7 +8,7 @@ abstract class AuthEvent extends Equatable {
 }
 
 class AddAuthDataToHouseholdEvent extends AuthEvent {
-  final User user;
+  final UserData user;
   final String householdID;
   final BuildContext context;
   final String msg;
@@ -21,7 +21,7 @@ class AddAuthDataToHouseholdEvent extends AuthEvent {
 }
 
 class CreateHouseholdAndAddAuthDataEvent extends AuthEvent {
-  final User user;
+  final UserData user;
   final String householdTitle;
   final BuildContext context;
   final String msg;
@@ -34,7 +34,7 @@ class CreateHouseholdAndAddAuthDataEvent extends AuthEvent {
 }
 
 class LeaveHouseholdEvent extends AuthEvent {
-  final User user;
+  final UserData user;
   final BuildContext context;
   final String msg;
 
@@ -109,7 +109,7 @@ class ChangeUserAttributesEvent extends AuthEvent {
   final String input;
   final String? confirmationPassword;
   final String? oldPassword;
-  final User user;
+  final UserData user;
   final UserChangeType type;
   final BuildContext context;
   final String msg;
@@ -137,7 +137,7 @@ class RequestNewPasswordEvent extends AuthEvent {
 
 class RequestEmailChangeEvent extends AuthEvent {
   final String newEmail;
-  final User user;
+  final UserData user;
   final BuildContext context;
   final String msg;
 
@@ -149,7 +149,7 @@ class RequestEmailChangeEvent extends AuthEvent {
 }
 
 class RequestVerificationEvent extends AuthEvent {
-  final User user;
+  final UserData user;
   final BuildContext context;
   final String msg;
 
@@ -160,7 +160,7 @@ class RequestVerificationEvent extends AuthEvent {
 }
 
 class DeleteUserEvent extends AuthEvent {
-  final User user;
+  final UserData user;
   final BuildContext context;
   final String msg;
 

@@ -1,32 +1,27 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hmly/core/entities/user.dart';
 
-class UserModel extends User {
+class UserDataModel extends UserData {
 
-  const UserModel({
+  const UserDataModel({
     required String id,
-    required String username,
+    required String name,
     required String householdID,
     required String email,
-    required String name,
-    required bool verified
   }) : super (
     id: id,
-    username: username,
-    householdID: householdID,
-    email: email,
     name: name,
-    verified: verified
+    householdID: householdID,
+    email: email
   );
 
 
-  factory UserModel.fromJSON(Map<String, dynamic> json, String id) {
-    return UserModel(
-      id: id,
-      username: json['username'],
-      householdID: json['household'],
-      email: json['email'],
+  factory UserDataModel.fromJSON(Map<String, dynamic> json, String userID, String email) {
+    return UserDataModel(
+      id: userID,
       name: json['name'],
-      verified: json['verified']
+      householdID: json['household'].id, //TODO: vielleicht entfernen und nicht aus json machen
+      email: email,
     );
   }
 

@@ -52,6 +52,8 @@ dependencies:
     sdk: flutter
   flutter_svg_provider: ^1.0.6
   firebase_core: ^3.5.0
+  cloud_firestore: ^5.4.2
+  firebase_auth: ^5.3.0
 
 dev_dependencies:
   flutter_test:

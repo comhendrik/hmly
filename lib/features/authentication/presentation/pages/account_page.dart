@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hmly/core/entities/user.dart';
@@ -8,7 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hmly/features/charts/presentation/bloc/chart_bloc.dart';
 
 class AccountPage extends StatefulWidget {
-  final User mainUser;
+  final UserData mainUser;
   final BuildContext ancestorContext;
   const AccountPage({
     super.key,
@@ -22,6 +23,8 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPage extends State<AccountPage> {
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -45,20 +48,7 @@ class _AccountPage extends State<AccountPage> {
               child: _buildListTile(
                 leadingIcon: Icons.email,
                 title: AppLocalizations.of(context)!.email,
-                subtitle: widget.mainUser.email,
-              ),
-            ),
-            GestureDetector(
-              onTap: () => showModalBottomSheet<void>(
-                  isScrollControlled: true,
-                  context: context,
-                  builder: (BuildContext context) {
-                    return ChangeUserAttributesWidget(type: UserChangeType.username, mainUser: widget.mainUser, ancestorContext: widget.ancestorContext);
-                  }),
-              child: _buildListTile(
-                leadingIcon: Icons.person,
-                title: AppLocalizations.of(context)!.username,
-                subtitle: widget.mainUser.username,
+                subtitle: auth.currentUser?.email ?? "no email",
               ),
             ),
             GestureDetector(
@@ -77,7 +67,7 @@ class _AccountPage extends State<AccountPage> {
             _buildListTile(
               leadingIcon: Icons.confirmation_number,
               title: AppLocalizations.of(context)!.shortIdentifier,
-              subtitle: widget.mainUser.id,
+              subtitle: auth.currentUser?.uid ?? "no uid",
             ),
             GestureDetector(
               onTap: () => showModalBottomSheet<void>(
@@ -196,7 +186,7 @@ class _AccountPage extends State<AccountPage> {
 
   }
 
-  void deleteUser(User user, BuildContext bContext) {
+  void deleteUser(UserData user, BuildContext bContext) {
     BlocProvider.of<AuthBloc>(widget.ancestorContext)
         .add(DeleteUserEvent(user: user, context: bContext));
   }

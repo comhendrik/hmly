@@ -20,11 +20,11 @@ class AuthLoading extends AuthState {
 }
 
 class AuthLoaded extends AuthState {
-  final User authData;
+  final UserData authData;
   final int startCurrentPageIndex;
   const AuthLoaded({
     required this.authData,
-    required this.startCurrentPageIndex
+    required this.startCurrentPageIndex,
   });
 
   @override

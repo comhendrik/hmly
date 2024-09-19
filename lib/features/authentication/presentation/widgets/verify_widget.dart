@@ -6,7 +6,7 @@ import 'package:hmly/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VerifyWidget extends StatefulWidget {
-  final User mainUser;
+  final UserData mainUser;
 
   const VerifyWidget({
     super.key,
@@ -34,7 +34,7 @@ class _VerifyWidgetState extends State<VerifyWidget> {
             ),
             const SizedBox(height: 16),
             Text(
-              AppLocalizations.of(context)!.notVerified(widget.mainUser.email),
+              AppLocalizations.of(context)!.notVerified(widget.mainUser.name),
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -101,7 +101,7 @@ class _VerifyWidgetState extends State<VerifyWidget> {
     );
   }
 
-  void requestVerification(User user, BuildContext bContext) {
+  void requestVerification(UserData user, BuildContext bContext) {
     BlocProvider.of<AuthBloc>(bContext)
         .add(RequestVerificationEvent(user: user, context: bContext));
   }
@@ -116,7 +116,7 @@ class _VerifyWidgetState extends State<VerifyWidget> {
         .add(LogoutEvent(context: bContext));
   }
 
-  void deleteUser(User user, BuildContext bContext) {
+  void deleteUser(UserData user, BuildContext bContext) {
     BlocProvider.of<AuthBloc>(context)
         .add(DeleteUserEvent(user: user, context: bContext));
   }

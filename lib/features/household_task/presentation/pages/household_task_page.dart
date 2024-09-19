@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 class HouseholdTaskPage extends StatelessWidget {
-  final User mainUser;
+  final UserData mainUser;
   const HouseholdTaskPage({
     super.key,
     required this.mainUser,

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -56,6 +57,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   }) : super(AuthInitial()) {
 
+    final FirebaseAuth auth = FirebaseAuth.instance;
+
     on<AuthEvent>((event, emit) async {
       emit(AuthInitial());
       if (event is LoginAuthEvent)  {
@@ -79,15 +82,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
          */
         emit(AuthLoading(msg: event.msg));
 
-        if (authStore.model != null) {
+        if (auth.currentUser != null) {
           final resultEither = await refreshAuthData.execute();
           await resultEither.fold(
                   (failure) async {
                 emit(AuthError(failure: failure));
               },
-                  (auth) async {
-                    RecordModel user = authStore.model;
-                    emit(AuthLoaded(authData: User(id: user.id,username: user.data["username"],householdID: user.data["household"],email: user.data["email"], name: user.data["name"], verified: user.data["verified"]), startCurrentPageIndex: 2));
+                  (user) async {
+
+                    emit(AuthLoaded(authData: user, startCurrentPageIndex: 2));
               }
           );
         } else {
@@ -107,13 +110,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       } else if (event is AddAuthDataToHouseholdEvent) {
         emit(AuthLoading(msg: event.msg));
-        final resultEither = await addAuthDataToHousehold.execute(event.user.id, event.householdID);
+        //TODO: check if is right event.user.household.id
+        final resultEither = await addAuthDataToHousehold.execute(event.user.householdID, event.householdID);
         await resultEither.fold(
                 (failure) async {
                   emit(AuthError(failure: failure));
             },
                 (_) async {
-                  final newUser = User(id: event.user.id, username: event.user.username, householdID: event.householdID, email: event.user.email, name: event.user.name, verified: event.user.verified);
+                  final newUser = event.user;
                   emit(AuthLoaded(authData: newUser,  startCurrentPageIndex: 0));
             }
         );
@@ -125,7 +129,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                   AuthError(failure: failure);
             },
                 (householdID) async {
-              final newUser = User(id: event.user.id, username: event.user.username, householdID: householdID, email: event.user.email, name: event.user.name, verified: event.user.verified);
+              final newUser = event.user;
               emit(AuthLoaded(authData: newUser, startCurrentPageIndex: 0));
             }
         );
@@ -137,7 +141,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                   emit(AuthError(failure: failure));
             },
                 (_) async {
-              final newUser = User(id: event.user.id, username: event.user.username, householdID: "", email: event.user.email, name: event.user.name, verified: event.user.verified);
+              final newUser = event.user;
               emit(AuthLoaded(authData: newUser, startCurrentPageIndex: 0));
             }
         );
@@ -196,7 +200,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       } else if (event is RequestVerificationEvent) {
         emit(AuthLoading(msg: event.msg));
-        final resultEither = await requestVerification.execute(event.user.email);
+        //TODO: change user email
+        final resultEither = await requestVerification.execute("user email");
         await resultEither.fold(
           (failure) async {
             emit(AuthError(failure: failure));

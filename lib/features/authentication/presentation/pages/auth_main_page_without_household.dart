@@ -7,7 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AuthMainPageWithoutHousehold extends StatefulWidget {
   
-  final User mainUser;
+  final UserData mainUser;
   const AuthMainPageWithoutHousehold({
     super.key,
     required this.mainUser

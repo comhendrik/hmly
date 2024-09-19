@@ -10,7 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class TaskWidget extends StatefulWidget {
   final HouseholdTask task;
   final String householdID;
-  final User mainUser;
+  final UserData mainUser;
 
   const TaskWidget({
     super.key,

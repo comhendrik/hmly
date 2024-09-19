@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 class ChartPage extends StatelessWidget {
-  final User mainUser;
+  final UserData mainUser;
 
   const ChartPage({
     super.key,
@@ -46,7 +46,7 @@ class ChartPage extends StatelessWidget {
     );
   }
 
-  void loadingFunction(BuildContext bContext, User mainUser) {
+  void loadingFunction(BuildContext bContext, UserData mainUser) {
     BlocProvider.of<ChartBloc>(bContext)
         .add(GetWeeklyChartDataEvent(userID: mainUser.id, householdID: mainUser.householdID, context: bContext));
   }

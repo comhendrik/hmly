@@ -9,7 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ChangeUserAttributesWidget extends StatefulWidget {
   final UserChangeType type;
   final BuildContext ancestorContext;
-  final User mainUser;
+  final UserData mainUser;
 
   const ChangeUserAttributesWidget({
     super.key,
@@ -169,12 +169,12 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
     );
   }
 
-  void changeAttribute(String input, String? confirmationPassword, String? oldPassword, User user, UserChangeType type, BuildContext bContext) {
+  void changeAttribute(String input, String? confirmationPassword, String? oldPassword, UserData user, UserChangeType type, BuildContext bContext) {
     BlocProvider.of<AuthBloc>(bContext)
         .add(ChangeUserAttributesEvent(input: input, confirmationPassword: confirmationPassword, oldPassword: oldPassword, user: user, type: type, context: bContext));
   }
 
-  void requestEmailChange(String newEmail, User user, BuildContext bContext) {
+  void requestEmailChange(String newEmail, UserData user, BuildContext bContext) {
     BlocProvider.of<AuthBloc>(bContext)
         .add(RequestEmailChangeEvent(newEmail: newEmail, user: user, context: bContext));
   }

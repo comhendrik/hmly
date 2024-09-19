@@ -8,7 +8,7 @@ import 'package:hmly/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddAuthDataToHouseholdPage extends StatefulWidget {
-  final User mainUser;
+  final UserData mainUser;
 
   const AddAuthDataToHouseholdPage({super.key, required this.mainUser});
 
@@ -138,12 +138,12 @@ class _AddAuthDataToHouseholdPage extends State<AddAuthDataToHouseholdPage> {
     );
   }
 
-  void addAuthDataToHousehold(User user, String householdID, BuildContext bContext) {
+  void addAuthDataToHousehold(UserData user, String householdID, BuildContext bContext) {
     BlocProvider.of<AuthBloc>(bContext)
         .add(AddAuthDataToHouseholdEvent(user: user, householdID: householdID, context: bContext));
   }
 
-  void createHouseholdAndAddAuthData(User user, String householdTitle, BuildContext bContext) {
+  void createHouseholdAndAddAuthData(UserData user, String householdTitle, BuildContext bContext) {
     BlocProvider.of<AuthBloc>(context)
         .add(CreateHouseholdAndAddAuthDataEvent(user: user, householdTitle: householdTitle, context: bContext));
   }

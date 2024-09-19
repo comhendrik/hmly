@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hmly/features/household/domain/entities/household.dart';
 import 'package:hmly/core/entities/user.dart';
 
@@ -5,25 +6,30 @@ class HouseholdModel extends Household {
 
   const HouseholdModel({
     required String id,
-    required String title,
-    required List<User> users,
-    required User admin,
+    required List<UserData> users,
+    required UserData admin,
     required List<String> allowedUsers
   }) : super (
     id: id,
-    title: title,
     users: users,
     admin: admin,
     allowedUsers: allowedUsers
   );
 
 
-  factory HouseholdModel.fromJSON(Map<String, dynamic> json, String id, List<User> users, Map<String, dynamic> admin, String adminID) {
+  factory HouseholdModel.fromDocumentSnapshot(DocumentSnapshot<Map<String, dynamic>> snap) {
+    return HouseholdModel(id: snap.id, users: [
+      UserData(id: "id", name: "name", householdID: "householdID", email: "email")
+    ], admin: UserData(id: "id", name: "name", householdID: "householdID", email: "email"), allowedUsers: [
+      "fasdfs"
+    ]);
+  }
+
+  factory HouseholdModel.fromJSON(Map<String, dynamic> json, String id, List<UserData> users, Map<String, dynamic> admin, String adminID) {
     return HouseholdModel(
       id: id,
-      title: json['title'],
       users: users,
-      admin: User.fromJSON(admin, adminID),
+      admin: UserData.fromJSON(admin, adminID, "email"),
       allowedUsers: [...json["allowed_users"]] //casts List<dynamic> into List<String
     );
   }

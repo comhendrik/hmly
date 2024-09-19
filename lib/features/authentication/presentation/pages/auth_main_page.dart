@@ -8,7 +8,7 @@ import 'package:hmly/features/household_task/presentation/pages/household_task_p
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AuthMainPage extends StatefulWidget {
-  final User mainUser;
+  final UserData mainUser;
   final int startCurrentPageIndex;
   const AuthMainPage({
     super.key,

@@ -43,7 +43,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
 
   @override
-  Future<Either<Failure, void>> leaveHousehold(User user) async {
+  Future<Either<Failure, void>> leaveHousehold(UserData user) async {
     try {
       return Right(await dataSource.leaveHousehold(user));
     } on ServerException catch (e) {
@@ -57,7 +57,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
 
   @override
-  Future<Either<Failure, User>> login(String email, String password) async {
+  Future<Either<Failure, UserData>> login(String email, String password) async {
     try {
       return Right(await dataSource.login(email, password));
     } on ServerException catch (e) {
@@ -68,7 +68,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, User>> signUp(String email, String password, String passwordConfirm, String username, String name) async {
+  Future<Either<Failure, UserData>> signUp(String email, String password, String passwordConfirm, String username, String name) async {
     try {
       return Right(await dataSource.signUp(email, password, passwordConfirm, username, name));
     } on ServerException catch (e) {
@@ -92,7 +92,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
 
   @override
-  Future<Either<Failure, User>> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, User user, UserChangeType type) async {
+  Future<Either<Failure, UserData>> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, UserData user, UserChangeType type) async {
     try {
       return Right(await dataSource.changeUserAttributes(input, confirmationPassword, oldPassword, user, type));
     } on ServerException catch (e) {
@@ -114,7 +114,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, void>> requestEmailChange(String newEmail, User user) async {
+  Future<Either<Failure, void>> requestEmailChange(String newEmail, UserData user) async {
     try {
       return Right(await dataSource.requestEmailChange(newEmail, user));
     } on ServerException catch (e) {
@@ -136,7 +136,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, void>> refreshAuthData() async {
+  Future<Either<Failure, UserData>> refreshAuthData() async {
     try {
       return Right(await dataSource.refreshAuthData());
     } on ServerException catch (e) {
@@ -147,7 +147,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deleteUser(User user) async {
+  Future<Either<Failure, void>> deleteUser(UserData user) async {
     try {
       return Right(await dataSource.deleteUser(user));
     } on ServerException catch (e) {
