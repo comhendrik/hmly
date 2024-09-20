@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hmly/core/error/exceptions.dart';
 import 'package:hmly/features/household_task/data/models/household_task_model.dart';
 import 'package:hmly/features/household_task/domain/entities/household_task.dart';
-import 'package:pocketbase/pocketbase.dart';
 
 import '../../../../core/entities/user.dart';
 
@@ -31,8 +30,8 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
         householdTaskModelList.add(HouseholdTaskModel.fromDocumentSnapshot(task));
       }
       return householdTaskModelList;
-    } on ClientException catch(err) {
-      throw ServerException(response: err.response);
+    } on FirebaseException catch(err) {
+      throw ServerException(response: {"message" : err.message});
     } catch (_) {
       throw UnknownException();
     }
@@ -51,8 +50,8 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
     try {
       final snap = await firestore.collection("households").doc(householdID).collection("tasks").add(body);
       return HouseholdTaskModel.fromJSON(body, snap.id);
-    } on ClientException catch(err) {
-      throw ServerException(response: err.response);
+    } on FirebaseException catch(err) {
+      throw ServerException(response: {"message" : err.message});
     } catch (_) {
       throw UnknownException();
     }
@@ -70,8 +69,8 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
     };
     try {
       await firestore.collection("households").doc(user.householdID).collection("tasks").doc(task.id).update(taskBody);
-    } on ClientException catch(err) {
-      throw ServerException(response: err.response);
+    } on FirebaseException catch(err) {
+      throw ServerException(response: {"message" : err.message});
     } catch (_) {
       throw UnknownException();
     }
@@ -82,8 +81,8 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
   Future<void> deleteHouseholdTask(String householdID, String taskId) async {
     try {
        await firestore.collection("households").doc(householdID).collection("tasks").doc(taskId).delete();
-    } on ClientException catch(err) {
-      throw ServerException(response: err.response);
+    } on FirebaseException catch(err) {
+      throw ServerException(response: {"message" : err.message});
     } catch (_) {
       throw UnknownException();
     }
@@ -93,11 +92,9 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
   @override
   Future<void> updateHouseholdTask(String householdID, HouseholdTask task, Map<String, dynamic> updateData) async {
     try {
-      print(householdID);
-      print(task.id);
       await firestore.collection("households").doc(householdID).collection("tasks").doc(task.id).update(updateData);
-    } on ClientException catch(err) {
-      throw ServerException(response: err.response);
+    } on FirebaseException catch(err) {
+      throw ServerException(response: {"message" : err.message});
     } catch (_) {
       throw UnknownException();
     }
