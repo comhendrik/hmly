@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hmly/core/entities/user.dart';
 import 'package:hmly/core/error/failure.dart';
 import 'package:hmly/features/household_task/domain/entities/household_task.dart';
 import 'package:hmly/features/household_task/domain/usecases/create_household_task.dart';
@@ -64,7 +65,7 @@ class HouseholdTaskBloc extends Bloc<HouseholdTaskEvent, HouseholdTaskState> {
 
 
         emit(HouseholdTaskLoading(msg: event.msg));
-        final resultEither = await toggleIsDoneHouseholdTask.execute(event.task, event.userID);
+        final resultEither = await toggleIsDoneHouseholdTask.execute(event.task, event.user);
         await resultEither.fold(
           (failure) async {
             emit(HouseholdTaskError(failure: failure));

@@ -5,11 +5,13 @@ import 'package:hmly/features/household_task/data/models/household_task_model.da
 import 'package:hmly/features/household_task/domain/entities/household_task.dart';
 import 'package:pocketbase/pocketbase.dart';
 
+import '../../../../core/entities/user.dart';
+
 
 abstract class HouseholdTaskRemoteDataSource {
   Future<List<HouseholdTask>> getAllTaskForHousehold(String householdID);
   Future<HouseholdTask> createHouseholdTask(String householdID, String title, int pointsWorth, String dueTo);
-  Future<void> toggleIsDoneHouseholdTask(HouseholdTask task, String userID);
+  Future<void> toggleIsDoneHouseholdTask(HouseholdTask task, UserData user);
   Future<void> deleteHouseholdTask(String taskId);
   Future<void> updateHouseholdTask(HouseholdTask task, Map<String, dynamic> updateData);
 }
@@ -67,40 +69,20 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
   }
 
   @override
-  Future<void> toggleIsDoneHouseholdTask(HouseholdTask task, String userID) async {
-    if (task.doneBy != userID && task.isDone) {
+  Future<void> toggleIsDoneHouseholdTask(HouseholdTask task, UserData user) async {
+    if (task.doneBy != user.id && task.isDone) {
     throw KnownException("You haven't done the task, so cant undo it. Please delete it and create a new one, if you want to have it undone");
     }
-    final taskBody = <String, dynamic>{
+    final taskBody = <String, dynamic> {
       "isDone": !task.isDone,
-      "done_by" : userID
+      "doneBy" : user.id
     };
     try {
-      final _ = await taskRecordService.update(task.id, body: taskBody);
-      String operator = '+';
-
-      //task.isDone is static which is why this will be executed, when you undo the task
-      if (task.isDone == true) {
-        operator = '-';
-      }
-      final pointBody = <String, dynamic> {
-        "value$operator" : task.pointsWorth,
-        "user" : userID
-      };
-      final today = DateTime.now();
-      final todayFilter = createFilterDate(today);
-      final tomorrowFilter = createFilterDate(today.add(const Duration(days: 1)));
-
-      final String filter = 'user = "$userID" && created >= "$todayFilter" && created < "$tomorrowFilter"';
-      final pointToUpdate = await pointRecordService.getFullList(filter: filter);
-      if (pointToUpdate.isEmpty) {
-        pointRecordService.create(body: pointBody);
-      } else {
-        pointRecordService.update(pointToUpdate[0].id, body: pointBody);
-      }
+      await firestore.collection("households").doc(user.householdID).collection("tasks").doc(task.id).update(taskBody);
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
-    } catch (_) {
+    } catch (err) {
+      print(err.toString());
       throw UnknownException();
     }
 

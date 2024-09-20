@@ -39,14 +39,14 @@ class CreateHouseholdTaskEvent extends HouseholdTaskEvent {
 class ToggleIsDoneHouseholdTaskEvent extends HouseholdTaskEvent {
   final HouseholdTask task;
   final String householdID;
-  final String userID;
+  final UserData user;
   final BuildContext context;
   final String msg;
 
   ToggleIsDoneHouseholdTaskEvent({
     required this.task,
     required this.householdID,
-    required this.userID,
+    required this.user,
     required this.context
   }) : msg = AppLocalizations.of(context)!.toggleIsDoneHouseholdTaskEvent;
 }

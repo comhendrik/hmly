@@ -27,7 +27,7 @@ class HouseholdTaskModel extends HouseholdTask {
         date: snap.data()?["date"] ?? DateTime.now(),
         isDone: snap.data()?["isDone"] ?? false,
         pointsWorth: snap.data()?["pointsWorth"] ?? 0,
-        doneBy: snap.data()?["doneBy"]?.id ?? ""
+        doneBy: snap.data()?["doneBy"] ?? ""
     );
   }
    

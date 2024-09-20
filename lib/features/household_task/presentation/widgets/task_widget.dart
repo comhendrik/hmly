@@ -117,7 +117,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                     ),
 
                     onPressed: () {
-                      toggleIsDoneHouseholdTask(widget.task, widget.householdID, widget.mainUser.id);
+                      toggleIsDoneHouseholdTask(widget.task, widget.householdID, widget.mainUser);
                     },
                   ),
                   IconButton(
@@ -159,9 +159,9 @@ class _TaskWidgetState extends State<TaskWidget> {
     );
   }
 
-  void toggleIsDoneHouseholdTask(HouseholdTask task, String householdID, String userID) {
+  void toggleIsDoneHouseholdTask(HouseholdTask task, String householdID, UserData user) {
     BlocProvider.of<HouseholdTaskBloc>(context)
-        .add(ToggleIsDoneHouseholdTaskEvent(task: task, householdID: householdID, userID: userID, context: context));
+        .add(ToggleIsDoneHouseholdTaskEvent(task: task, householdID: householdID, user: user, context: context));
     BlocProvider.of<ChartBloc>(context)
         .add(ReloadInitChartEvent());
   }

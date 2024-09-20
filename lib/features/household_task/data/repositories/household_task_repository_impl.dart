@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:hmly/core/entities/user.dart';
 import 'package:hmly/core/error/exceptions.dart';
 import 'package:hmly/core/error/failure.dart';
 import 'package:hmly/features/household_task/data/datasources/household_task_remote_data_source.dart';
@@ -38,9 +39,9 @@ class HouseholdTaskRepositoryImpl implements HouseholdTaskRepository {
   }
 
   @override
-  Future<Either<Failure, void>> toggleIsDoneHouseholdTask(HouseholdTask task, String userID) async {
+  Future<Either<Failure, void>> toggleIsDoneHouseholdTask(HouseholdTask task, UserData user) async {
     try {
-      return Right(await remoteDataSource.toggleIsDoneHouseholdTask(task, userID));
+      return Right(await remoteDataSource.toggleIsDoneHouseholdTask(task, user));
     } on KnownException catch (e) {
       return Left(Failure(data: e.response, type: FailureType.known));
     } on ServerException catch (e) {

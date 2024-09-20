@@ -1,3 +1,4 @@
+import 'package:hmly/core/entities/user.dart';
 import 'package:hmly/core/error/failure.dart';
 import 'package:hmly/features/household_task/domain/entities/household_task.dart';
 import 'package:hmly/features/household_task/domain/repositories/household_task_repository.dart';
@@ -10,7 +11,7 @@ class ToggleIsDoneHouseholdTask {
     required this.repository
   });
 
-  Future<Either<Failure, void>> execute(HouseholdTask task, String userID) async {
-    return await repository.toggleIsDoneHouseholdTask(task, userID);
+  Future<Either<Failure, void>> execute(HouseholdTask task, UserData user) async {
+    return await repository.toggleIsDoneHouseholdTask(task, user);
   }
 }
