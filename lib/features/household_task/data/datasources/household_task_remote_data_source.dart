@@ -65,7 +65,8 @@ class HouseholdTaskRemoteDataSourceImpl implements HouseholdTaskRemoteDataSource
     }
     final taskBody = <String, dynamic> {
       "isDone": !task.isDone,
-      "doneBy" : user.id
+      "doneBy" : !task.isDone ? user.id : FieldValue.delete(),
+      "doneAt" : !task.isDone ? DateTime.now() : FieldValue.delete()
     };
     try {
       await firestore.collection("households").doc(user.householdID).collection("tasks").doc(task.id).update(taskBody);

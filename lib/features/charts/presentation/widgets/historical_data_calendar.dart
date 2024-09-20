@@ -121,8 +121,12 @@ class _HistoricalDataCalendarState extends State<HistoricalDataCalendar> {
         event.created.day == day.day).toList();
   }
 
+
+
   //TODO: events nicht als List, da es immer nur einen Eintrag geben wird
   Widget buildDayWidget(int day, List<HistoricalData> events) {
+    int sumOfValues = events.map((event) => event.value).fold(0, (sum, value) => sum + value);
+
     return Container(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -141,14 +145,10 @@ class _HistoricalDataCalendarState extends State<HistoricalDataCalendar> {
               ),
             ),
             const SizedBox(height: 5),
-            Column(
-              children: events.map((event) {
-                return Text(
-                  '${event.value}',
-                  style: const TextStyle(color: Colors.white),
-                );
-              }).toList(),
-            ),
+            Text(
+              '$sumOfValues',
+              style: const TextStyle(color: Colors.white),
+            )
           ],
         ),
       )

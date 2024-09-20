@@ -8,6 +8,8 @@ import 'package:hmly/features/charts/domain/entities/pie_chart_data.dart';
 import 'package:hmly/features/charts/domain/usecases/get_historical_data.dart';
 import 'package:hmly/features/charts/domain/usecases/get_daily_pie_chart_data.dart';
 
+import '../../../../core/entities/user.dart';
+
 part 'chart_event.dart';
 part 'chart_state.dart';
 
@@ -21,13 +23,13 @@ class ChartBloc extends Bloc<ChartEvent, ChartState> {
     on<ChartEvent>((event, emit) async {
       if (event is GetWeeklyChartDataEvent)  {
         emit(ChartLoading(msg: event.msg));
-        final historicalDataResultEither = await getHistoricalData.execute(event.userID);
+        final historicalDataResultEither = await getHistoricalData.execute(event.user);
         await historicalDataResultEither.fold(
               (failure) async {
               emit(ChartError(failure: failure));
             },
             (historicalData) async {
-              final pieChartResultEither = await getDailyPieChartData.execute(event.userID, event.householdID);
+              final pieChartResultEither = await getDailyPieChartData.execute(event.user.id, event.user.householdID);
               await pieChartResultEither.fold(
                       (failure) async {
                     emit(ChartError(failure: failure));

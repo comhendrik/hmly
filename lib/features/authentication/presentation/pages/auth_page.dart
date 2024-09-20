@@ -11,6 +11,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hmly/features/charts/presentation/bloc/chart_bloc.dart';
 import 'package:hmly/features/household/presentation/bloc/household_bloc.dart';
 import 'package:hmly/features/household_task/presentation/bloc/household_task_bloc.dart';
+import '../../../../core/entities/user.dart';
 import '../../../../injection_container.dart';
 
 class AuthPage extends StatelessWidget {
@@ -69,13 +70,13 @@ class AuthPage extends StatelessWidget {
         .add(LoadAuthEvent(context: bContext));
   }
 
-  void loadEveryBloc(BuildContext bContext, String userID, String householdID) {
+  void loadEveryBloc(BuildContext bContext, UserData user) {
     BlocProvider.of<ChartBloc>(bContext)
-        .add(GetWeeklyChartDataEvent(userID: userID, householdID: householdID, context: bContext));
+        .add(GetWeeklyChartDataEvent(user: user, context: bContext));
     BlocProvider.of<HouseholdBloc>(bContext)
-        .add(LoadHouseholdEvent(householdID: householdID, context: bContext));
+        .add(LoadHouseholdEvent(householdID: user.householdID, context: bContext));
     BlocProvider.of<HouseholdTaskBloc>(bContext)
-        .add(GetAllTasksForHouseholdEvent(householdID: householdID, context: bContext));
+        .add(GetAllTasksForHouseholdEvent(householdID: user.householdID, context: bContext));
   }
 }
 

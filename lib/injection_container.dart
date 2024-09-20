@@ -181,7 +181,7 @@ Future<void> init() async {
   );
 
   sl.registerLazySingleton<ChartsDataSource>(
-        () => ChartsDataSourceImpl(userRecordService: RecordService(pb, 'users'), pointRecordService: RecordService(pb, 'points'), householdRecordService: RecordService(pb, 'household')),
+        () => ChartsDataSourceImpl(),
   );
 
 

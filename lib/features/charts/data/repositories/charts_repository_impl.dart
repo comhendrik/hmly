@@ -6,6 +6,8 @@ import 'package:hmly/features/charts/domain/entities/historical_data.dart';
 import 'package:hmly/features/charts/domain/entities/pie_chart_data.dart';
 import 'package:hmly/features/charts/domain/repositories/charts_repository.dart';
 
+import '../../../../core/entities/user.dart';
+
 class ChartsRepositoryImpl implements ChartsRepository {
 
   final ChartsDataSource dataSource;
@@ -15,9 +17,9 @@ class ChartsRepositoryImpl implements ChartsRepository {
   });
 
   @override
-  Future<Either<Failure, List<HistoricalData>>> getHistoricalData(String userID) async {
+  Future<Either<Failure, List<HistoricalData>>> getHistoricalData(UserData user) async {
     try {
-      return Right(await dataSource.getHistoricalData(userID));
+      return Right(await dataSource.getHistoricalData(user));
     } on ServerException catch (e) {
       return Left(Failure(data: e.response, type: FailureType.server));
     } on UnknownException catch (e) {

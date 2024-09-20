@@ -1,3 +1,4 @@
+import 'package:hmly/core/entities/user.dart';
 import 'package:hmly/core/error/failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:hmly/features/charts/domain/entities/historical_data.dart';
@@ -10,7 +11,7 @@ class GetHistoricalData {
     required this.repository
   });
 
-  Future<Either<Failure, List<HistoricalData>>> execute(String userID) async {
-    return await repository.getHistoricalData(userID);
+  Future<Either<Failure, List<HistoricalData>>> execute(UserData user) async {
+    return await repository.getHistoricalData(user);
   }
 }

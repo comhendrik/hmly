@@ -9,15 +9,13 @@ abstract class ChartEvent extends Equatable {
 }
 
 class GetWeeklyChartDataEvent extends ChartEvent {
-  final String userID;
-  final String householdID;
+  final UserData user;
   final BuildContext context;
   final String msg;
 
 
   GetWeeklyChartDataEvent({
-    required this.userID,
-    required this.householdID,
+    required this.user,
     required this.context
   }) : msg = AppLocalizations.of(context)!.getChartDataEvent;
 }
