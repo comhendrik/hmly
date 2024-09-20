@@ -7,7 +7,7 @@ class DeleteHouseholdTask {
 
   DeleteHouseholdTask({required this.repository});
 
-  Future<Either<Failure, void>> execute(String taskId) async {
-    return await repository.deleteHouseholdTask(taskId);
+  Future<Either<Failure, void>> execute(String householdID, String taskId) async {
+    return await repository.deleteHouseholdTask(householdID, taskId);
   }
 }

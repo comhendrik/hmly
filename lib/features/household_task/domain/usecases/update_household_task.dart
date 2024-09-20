@@ -10,7 +10,7 @@ class UpdateHouseholdTask {
     required this.repository
   });
 
-  Future<Either<Failure, void>> execute(HouseholdTask task, Map<String, dynamic> updateData) async {
-    return await repository.updateHouseholdTask(task, updateData);
+  Future<Either<Failure, void>> execute(String householdID, HouseholdTask task, Map<String, dynamic> updateData) async {
+    return await repository.updateHouseholdTask(householdID, task, updateData);
   }
 }

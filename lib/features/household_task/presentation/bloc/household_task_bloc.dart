@@ -88,7 +88,7 @@ class HouseholdTaskBloc extends Bloc<HouseholdTaskEvent, HouseholdTaskState> {
 
 
         emit(HouseholdTaskLoading(msg: event.msg));
-        final resultEither = await deleteTask.execute(event.taskId);
+        final resultEither = await deleteTask.execute(event.householdID, event.taskId);
         await resultEither.fold(
                 (failure) async {
                   emit(HouseholdTaskError(failure: failure));
@@ -110,7 +110,7 @@ class HouseholdTaskBloc extends Bloc<HouseholdTaskEvent, HouseholdTaskState> {
 
 
         emit(HouseholdTaskLoading(msg: event.msg));
-        final resultEither = await updateTask.execute(event.task, event.updateData);
+        final resultEither = await updateTask.execute(event.householdID, event.task, event.updateData);
         await resultEither.fold(
           (failure) async {
             emit(HouseholdTaskError(failure: failure));
