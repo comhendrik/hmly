@@ -131,6 +131,8 @@ class _AccountPage extends State<AccountPage> {
     required String subtitle,
     IconData? trailingIcon
   }) {
+    int length = 25;
+    String truncatedText = subtitle.length > length ? '${subtitle.substring(0, length)}...' : subtitle;
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0)
@@ -159,7 +161,7 @@ class _AccountPage extends State<AccountPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(title, style: const TextStyle(fontWeight: FontWeight.bold),),
-                    Text(subtitle),
+                    Text(truncatedText),
                   ],
                 ),
 

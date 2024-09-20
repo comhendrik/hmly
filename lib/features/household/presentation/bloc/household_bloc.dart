@@ -2,11 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hmly/core/error/failure.dart';
-import 'package:hmly/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:hmly/features/household/domain/usecases/update_allowed_users.dart';
 import 'package:hmly/features/household/domain/usecases/load_household.dart';
 import 'package:hmly/features/household/domain/usecases/delete_auth_data_from_household.dart';
-import 'package:hmly/features/household/domain/usecases/update_admin.dart';
 import 'package:hmly/features/household/domain/usecases/delete_household.dart';
 import 'package:hmly/features/household/domain/entities/household.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -17,13 +15,11 @@ part 'household_state.dart';
 class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
   final LoadHousehold loadHousehold;
   final DeleteAuthDataFromHousehold deleteAuthDataFromHousehold;
-  final UpdateAdmin updateAdmin;
   final DeleteHousehold deleteHousehold;
   final UpdateAllowedUsers updateAllowedUsers;
   HouseholdBloc({
     required this.loadHousehold,
     required this.deleteAuthDataFromHousehold,
-    required this.updateAdmin,
     required this.deleteHousehold,
     required this.updateAllowedUsers
   }) : super(HouseholdInitial()) {
@@ -48,17 +44,6 @@ class HouseholdBloc extends Bloc<HouseholdEvent, HouseholdState> {
             },
                 (_) {
                   add(LoadHouseholdEvent(householdID: event.household.id, context: event.context));
-            }
-        );
-      } else if (event is UpdateAdminEvent) {
-        emit(HouseholdLoading(msg: event.msg));
-        final resultEither = await updateAdmin.execute(event.householdID, event.userID);
-        resultEither.fold(
-            (failure) async {
-              emit(HouseholdError(failure: failure));
-            },
-            (household) {
-              emit(HouseholdLoaded(household: household));
             }
         );
       } else if (event is DeleteHouseholdEvent) {

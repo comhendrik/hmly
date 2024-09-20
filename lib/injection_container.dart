@@ -27,7 +27,6 @@ import 'package:hmly/features/household/domain/usecases/update_allowed_users.dar
 import 'package:hmly/features/household/domain/usecases/delete_auth_data_from_household.dart';
 import 'package:hmly/features/household/domain/usecases/delete_household.dart';
 import 'package:hmly/features/household/domain/usecases/load_household.dart';
-import 'package:hmly/features/household/domain/usecases/update_admin.dart';
 import 'package:hmly/features/household/presentation/bloc/household_bloc.dart';
 import 'package:hmly/features/household_task/data/datasources/household_task_remote_data_source.dart';
 import 'package:hmly/features/household_task/data/repositories/household_task_repository_impl.dart';
@@ -38,24 +37,14 @@ import 'package:hmly/features/household_task/domain/usecases/get_all_tasks_for_h
 import 'package:hmly/features/household_task/domain/usecases/toggle_is_done_household_task.dart';
 import 'package:hmly/features/household_task/domain/usecases/update_household_task.dart';
 import 'package:hmly/features/household_task/presentation/bloc/household_task_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:get_it/get_it.dart';
-import 'package:pocketbase/pocketbase.dart';
 
 final sl = GetIt.instance;
 
 
 
 Future<void> init() async {
-
-  final prefs = await SharedPreferences.getInstance();
-  final store = AsyncAuthStore(
-    save:    (String data) async => prefs.setString('pb_auth', data),
-    initial: prefs.getString('pb_auth'),
-  );
-
-  final pb = PocketBase('http://127.0.0.1:8090', authStore: store);
 
   //! Features -
   // Bloc
@@ -74,7 +63,6 @@ Future<void> init() async {
         () => HouseholdBloc(
           loadHousehold: sl(),
           deleteAuthDataFromHousehold: sl(),
-          updateAdmin: sl(),
           deleteHousehold: sl(),
           updateAllowedUsers: sl()
     ),
@@ -93,8 +81,7 @@ Future<void> init() async {
           requestEmailChange: sl(),
           requestVerification: sl(),
           refreshAuthData: sl(),
-          deleteUser: sl(),
-          authStore: store
+          deleteUser: sl()
         )
   );
 
@@ -117,7 +104,6 @@ Future<void> init() async {
 
   sl.registerLazySingleton(() => LoadHousehold(repository: sl()));
   sl.registerLazySingleton(() => DeleteAuthDataFromHousehold(repository: sl()));
-  sl.registerLazySingleton(() => UpdateAdmin(repository: sl()));
   sl.registerLazySingleton(() => DeleteHousehold(repository: sl()));
   sl.registerLazySingleton(() => UpdateAllowedUsers(repository: sl()));
 
@@ -171,13 +157,13 @@ Future<void> init() async {
   );
 
   sl.registerLazySingleton<HouseholdDataSource>(
-        () => HouseholdDataSourceImpl(userRecordService: RecordService(pb, 'users'), householdRecordService: RecordService(pb, 'household'), taskRecordService: RecordService(pb, 'tasks')),
+        () => HouseholdDataSourceImpl(),
   );
 
 
 
   sl.registerLazySingleton<AuthDataSource>(
-        () => AuthDataSourceImpl(userRecordService: RecordService(pb, 'users'), householdRecordService: RecordService(pb, 'household'), pointsRecordService: RecordService(pb, 'points'), authStore: pb.authStore),
+        () => AuthDataSourceImpl(),
   );
 
   sl.registerLazySingleton<ChartsDataSource>(

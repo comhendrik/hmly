@@ -49,8 +49,7 @@ class AuthPage extends StatelessWidget {
           } else if (state is AuthLoading) {
             return CustomProcessIndicator(reloadAction: () => loadingFunction(context), msg: state.msg);
           } else if (state is AuthLoaded) {
-            //!state.authData.verified belongs there
-            return  false ? VerifyWidget(mainUser: state.authData) : state.authData.householdID == "" ? AuthMainPageWithoutHousehold(mainUser: state.authData) : AuthMainPage(mainUser: state.authData, startCurrentPageIndex: state.startCurrentPageIndex);
+            return  !state.authData.verified ? VerifyWidget(mainUser: state.authData) : state.authData.householdID == "" ? AuthMainPageWithoutHousehold(mainUser: state.authData) : AuthMainPage(mainUser: state.authData, startCurrentPageIndex: state.startCurrentPageIndex);
           } else if (state is AuthError) {
             return BlocErrorWidget(failure: state.failure, reloadAction: () =>  loadingFunction(context),);
           } else if (state is AuthCreate){

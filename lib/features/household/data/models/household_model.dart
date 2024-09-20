@@ -7,20 +7,18 @@ class HouseholdModel extends Household {
   const HouseholdModel({
     required String id,
     required List<UserData> users,
-    required UserData admin,
     required List<String> allowedUsers
   }) : super (
     id: id,
     users: users,
-    admin: admin,
     allowedUsers: allowedUsers
   );
 
 
   factory HouseholdModel.fromDocumentSnapshot(DocumentSnapshot<Map<String, dynamic>> snap) {
     return HouseholdModel(id: snap.id, users: [
-      UserData(id: "id", name: "name", householdID: "householdID", email: "email")
-    ], admin: UserData(id: "id", name: "name", householdID: "householdID", email: "email"), allowedUsers: [
+      UserData(id: "id", name: "name", householdID: "householdID", email: "email", verified: false)
+    ], allowedUsers: [
       "fasdfs"
     ]);
   }
@@ -29,7 +27,6 @@ class HouseholdModel extends Household {
     return HouseholdModel(
       id: id,
       users: users,
-      admin: UserData.fromJSON(admin, adminID, "email"),
       allowedUsers: [...json["allowed_users"]] //casts List<dynamic> into List<String
     );
   }

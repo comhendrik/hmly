@@ -5,20 +5,23 @@ class UserData extends Equatable {
   final String name;
   final String householdID;
   final String email;
+  final bool verified;
 
   const UserData({
     required this.id,
     required this.name,
     required this.householdID,
     required this.email,
+    required this.verified
   });
 
-  factory UserData.fromJSON(Map<String, dynamic> json, String userID, String email) {
+  factory UserData.fromJSON(Map<String, dynamic> json, String userID, String email, bool verified) {
     return UserData(
-      id: userID,
-      name: json['username'],
-      householdID: json['household'].id, //TODO: Vielleicht entfernen
-      email: email
+        id: userID,
+        name: json['username'],
+        householdID: json['household'].id, //TODO: Vielleicht entfernen
+        email: email,
+        verified: verified
     );
   }
 

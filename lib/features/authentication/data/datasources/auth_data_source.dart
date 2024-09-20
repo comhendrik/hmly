@@ -24,20 +24,10 @@ abstract class AuthDataSource {
 
 class AuthDataSourceImpl implements AuthDataSource {
 
-  final RecordService userRecordService;
-  final RecordService householdRecordService;
-  final RecordService pointsRecordService;
-  final AuthStore authStore;
-
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  AuthDataSourceImpl({
-    required this.userRecordService,
-    required this.householdRecordService,
-    required this.pointsRecordService,
-    required this.authStore,
-  });
+  AuthDataSourceImpl();
 
   @override
   Future<void> addAuthDataToHousehold(String userID, String householdID) async {
@@ -45,9 +35,10 @@ class AuthDataSourceImpl implements AuthDataSource {
       "household": householdID,
     };
     try {
-      final household = await householdRecordService.getOne(householdID);
+     // final household = await householdRecordService.getOne(householdID);
+      final household = [];
       bool isAllowed = false;
-      for (String id in household.data["allowed_users"]) {
+      for (String id in household) {
         if (id == userID) {
           isAllowed = true;
         }
@@ -55,7 +46,7 @@ class AuthDataSourceImpl implements AuthDataSource {
       if (!isAllowed) {
         throw KnownException("You are ID is not allowed in this institution, please contact the admin.");
       }
-      final _ = await userRecordService.update(userID, body: body);
+      //final _ = await userRecordService.update(userID, body: body);
     } on ClientException catch (err) {
       throw ServerException(response: err.response);
     } on KnownException catch (err){
@@ -111,8 +102,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   Future<UserDataModel> login(String email, String password) async {
     try {
       final _ = await auth.signInWithEmailAndPassword(email: email, password: password);
-      final userData = await loadUserData();
-      return userData;
+      return await loadUserData();
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
     } catch (err) {
@@ -132,10 +122,13 @@ class AuthDataSourceImpl implements AuthDataSource {
 
       await firestore.collection("users").doc(auth.currentUser!.uid).set(body);
 
+      await auth.signOut();
+      await auth.signInWithEmailAndPassword(email: email, password: password);
       return await loadUserData();
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
-    } catch (_) {
+    } catch (err) {
+      print(err.toString());
       throw UnknownException();
     }
   }
@@ -154,6 +147,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<UserDataModel> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, UserData user, UserChangeType type) async {
     try {
+      //TODO: format to firebase
       Map<String, dynamic> data = {};
       switch (type) {
         case UserChangeType.email:
@@ -163,7 +157,7 @@ class AuthDataSourceImpl implements AuthDataSource {
         case UserChangeType.name || UserChangeType.username:
 
           data.addAll({type.stringKey : input});
-          final result = await userRecordService.update("//TODO: should be changed", body: data);
+         // final result = await userRecordService.update("//TODO: should be changed", body: data);
           return await loadUserData();
 
         case UserChangeType.password:
@@ -174,7 +168,7 @@ class AuthDataSourceImpl implements AuthDataSource {
             "oldPassword" : oldPassword,
             "passwordConfirm" : confirmationPassword,
           });
-          final result = await userRecordService.update("//TODO: should be changed", body: data);
+          //final result = await userRecordService.update("//TODO: should be changed", body: data);
           return await loadUserData();
       }
     } on ClientException catch(err) {
@@ -188,7 +182,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   Future<void> requestNewPassword(String userEmail) async {
 
     try {
-      await userRecordService.requestPasswordReset(userEmail);
+      await auth.sendPasswordResetEmail(email: userEmail);
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
     } catch (_) {
@@ -199,7 +193,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<void> requestEmailChange(String newEmail, UserData user) async {
     try {
-      await userRecordService.requestEmailChange(newEmail);
+      await auth.currentUser?.verifyBeforeUpdateEmail(newEmail);
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
     } catch (_) {
@@ -211,7 +205,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<void> requestVerification(String email) async {
     try {
-      await userRecordService.requestVerification(email);
+      await auth.currentUser?.sendEmailVerification();
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
     } catch (_) {
@@ -234,14 +228,15 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<void> deleteUser(UserData user) async {
     try {
-      final points = await pointsRecordService.getFullList(filter: 'user="${"//TODO: should be changed"}"');
-      for (RecordModel point in points) {
-        pointsRecordService.delete(point.id);
-      }
-      userRecordService.delete("//TODO: should be changed");
+
+      //TODO handle user deletion properly
+      await auth.currentUser?.delete();
+      await firestore.collection("users").doc(user.id).delete();
 
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
+    } on FirebaseAuthException catch(err) {
+      throw ServerException(response: {"message" : err.message});
     } catch (_) {
       throw UnknownException();
     }
@@ -250,9 +245,10 @@ class AuthDataSourceImpl implements AuthDataSource {
   Future<UserDataModel> loadUserData() async {
     if (auth.currentUser == null) throw UnknownException(); //TODO: implement new exception type
     try {
+      print(auth.currentUser?.emailVerified);
       final userData = await firestore.collection("users").doc(auth.currentUser!.uid).get();
       if (userData.data() == null) throw UnknownException(); //TODO: implement new exception type
-      return UserDataModel.fromJSON(userData.data()!, auth.currentUser!.uid, auth.currentUser!.email!);
+      return UserDataModel.fromJSON(userData.data()!, auth.currentUser!.uid, auth.currentUser!.email!, auth.currentUser!.emailVerified);
     } on FirebaseException catch(e) {
       throw KnownException(e.toString()); //TODO: Implement new exception type
     } catch(e) {

@@ -17,7 +17,6 @@ import 'package:hmly/features/authentication/domain/usecases/change_user_attribu
 import 'package:hmly/features/authentication/domain/usecases/request_new_password.dart';
 import 'package:hmly/features/authentication/domain/usecases/request_email_change.dart';
 import 'package:hmly/features/authentication/presentation/widgets/change_user_attributes_widget.dart';
-import 'package:pocketbase/pocketbase.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -37,7 +36,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final RequestVerification requestVerification;
   final RefreshAuthData refreshAuthData;
   final DeleteUser deleteUser;
-  final AsyncAuthStore authStore;
 
   AuthBloc({
 
@@ -53,7 +51,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.requestVerification,
     required this.refreshAuthData,
     required this.deleteUser,
-    required this.authStore
 
   }) : super(AuthInitial()) {
 
@@ -129,7 +126,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                   AuthError(failure: failure);
             },
                 (householdID) async {
-              final newUser = UserData(id: event.user.id, name: event.user.name, householdID: householdID, email: event.user.email);
+              final newUser = UserData(id: event.user.id, name: event.user.name, householdID: householdID, email: event.user.email, verified: event.user.verified);
               emit(AuthLoaded(authData: newUser, startCurrentPageIndex: 0));
             }
         );
@@ -141,7 +138,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                   emit(AuthError(failure: failure));
             },
                 (_) async {
-              final newUser = UserData(id: event.user.id, name: event.user.name, householdID: "", email: event.user.email);
+              final newUser = UserData(id: event.user.id, name: event.user.name, householdID: "", email: event.user.email, verified: event.user.verified);
               emit(AuthLoaded(authData: newUser, startCurrentPageIndex: 0));
             }
         );

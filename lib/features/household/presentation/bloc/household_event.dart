@@ -32,20 +32,6 @@ class DeleteAuthDataFromHouseholdEvent extends HouseholdEvent {
   }) :  msg = AppLocalizations.of(context)!.deleteAuthDataFromHouseholdEvent;
 }
 
-class UpdateAdminEvent extends HouseholdEvent {
-  final String householdID;
-  final String userID;
-  final BuildContext context;
-  final String msg;
-
-
-  UpdateAdminEvent({
-    required this.householdID,
-    required this.userID,
-    required this.context
-  }) :  msg = AppLocalizations.of(context)!.updateAdminEvent;
-}
-
 class DeleteHouseholdEvent extends HouseholdEvent {
   final String householdID;
 
