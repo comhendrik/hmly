@@ -209,23 +209,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       } else if (event is DeleteUserEvent) {
         emit(AuthLoading(msg: event.msg));
-        final logoutResultEither = await logout.execute();
-        await logoutResultEither.fold(
-          (failure) async {
-
-            emit(AuthError(failure: failure));
-          },
-          (success) async {
-            final resultEither = await deleteUser.execute(event.user);
-            await resultEither.fold(
-                    (failure) async {
-                  emit(AuthError(failure: failure));
-                },
-                    (_) async {
-                  emit(AuthCreate());
-                }
-            );
-          }
+        final resultEither = await deleteUser.execute(event.user);
+        await resultEither.fold(
+                (failure) async {
+              emit(AuthError(failure: failure));
+            },
+                (_) async {
+              emit(AuthCreate());
+            }
         );
 
       }

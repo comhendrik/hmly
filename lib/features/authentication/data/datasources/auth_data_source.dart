@@ -127,8 +127,7 @@ class AuthDataSourceImpl implements AuthDataSource {
       return await loadUserData();
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
-    } catch (err) {
-      print(err.toString());
+    } catch (_) {
       throw UnknownException();
     }
   }
@@ -228,32 +227,50 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<void> deleteUser(UserData user) async {
     try {
-
       //TODO handle user deletion properly
+      final curUser = auth.currentUser;
+
+      if(curUser == null) {
+        throw UnknownException();
+      }
+
       await auth.currentUser?.delete();
       await firestore.collection("users").doc(user.id).delete();
 
     } on ClientException catch(err) {
       throw ServerException(response: err.response);
     } on FirebaseAuthException catch(err) {
-      throw ServerException(response: {"message" : err.message});
+      if (err.code == "requires-recent-login") {
+        await _reauthenticateAndDelete();
+      }
     } catch (_) {
-      throw UnknownException();
+      throw UnknownException(); //TODO implement a code for the function to be shown
     }
   }
 
   Future<UserDataModel> loadUserData() async {
     if (auth.currentUser == null) throw UnknownException(); //TODO: implement new exception type
     try {
-      print(auth.currentUser?.emailVerified);
       final userData = await firestore.collection("users").doc(auth.currentUser!.uid).get();
       if (userData.data() == null) throw UnknownException(); //TODO: implement new exception type
       return UserDataModel.fromJSON(userData.data()!, auth.currentUser!.uid, auth.currentUser!.email!, auth.currentUser!.emailVerified);
     } on FirebaseException catch(e) {
       throw KnownException(e.toString()); //TODO: Implement new exception type
-    } catch(e) {
-      print(e.toString());
+    } catch(_) {
       throw UnknownException();
     }
   }
+
+    Future<void> _reauthenticateAndDelete() async {
+      try {
+        final providerData = auth.currentUser!.providerData.first;
+        final authCredential = AuthCredential(providerId: providerData.providerId, signInMethod: 'password');
+
+        await auth.currentUser!.reauthenticateWithCredential(authCredential);
+
+        await auth.currentUser?.delete();
+      } catch (e) {
+        throw KnownException(e.toString());
+      }
+    }
 }
