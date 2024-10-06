@@ -137,7 +137,7 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                     border: const OutlineInputBorder(),
                   ),
                   validator: (value) {
-                    if (value == null || value.length != 20) {
+                    if (value == null) {
                       return AppLocalizations.of(context)!.identifierValidatorMessage;
                     }
                     return null;

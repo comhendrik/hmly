@@ -23,7 +23,7 @@
     "joinInstitution": "Trete einem existierenden Haushalt bei",
     "institutionIdentifier": "Haushalt ID",
     "institutionIdentifierHint": "Gebe die ID eines Haushalts an",
-    "identifierValidatorMessage": "ID muss 20 Zeichen lang sein",
+    "identifierValidatorMessage": "ID gegeben sein",
     "join": "Beitreten",
     "createInstitution": "Oder erstelle einen neuen Haushalt",
     "institutionTitleField": "Haushalt Titel",

@@ -90,6 +90,14 @@ class HouseholdDataSourceImpl implements HouseholdDataSource {
       bool delete
       ) async {
     try {
+
+      //TODO: rebuild this to .contains if question
+
+      for(UserData ur in household.users) {
+        if(ur.id == userID) return HouseholdModel(id: household.id, users: household.users, allowedUsers: household.allowedUsers);
+      }
+
+
       List<String> allowedUsers = household.allowedUsers;
 
       // Get the document reference
@@ -98,34 +106,32 @@ class HouseholdDataSourceImpl implements HouseholdDataSource {
       // Run the Firestore transaction to safely read and update the document
       await FirebaseFirestore.instance.runTransaction((transaction) async {
 
-        if(delete) {
-          allowedUsers.remove(userID);
-          // Update the document with the modified list
-          transaction.update(docRef, {"allowedUsers": allowedUsers});
-        } else {
-          // Get the snapshot of the document
-          DocumentSnapshot docSnapshot = await transaction.get(docRef);
+        // Get the snapshot of the document
+        DocumentSnapshot docSnapshot = await transaction.get(docRef);
 
-          // Check if the document exists
-          if (docSnapshot.exists) {
-            // Get the current list from the field (assumes it's a list of DocumentReference)
-            List<dynamic>? currentList = docSnapshot.get("allowedUsers") as List<dynamic>?;
+        // Check if the document exists
+        if (docSnapshot.exists) {
+          // Get the current list from the field (assumes it's a list of DocumentReference)
+          List<dynamic>? currentList = docSnapshot.get("allowedUsers") as List<dynamic>?;
 
-            DocumentReference refToModify = FirebaseFirestore.instance.collection("users").doc(userID);
+          DocumentReference refToModify = FirebaseFirestore.instance.collection("users").doc(userID);
 
-            // Initialize the list if it's null
-            currentList ??= [];
+          // Initialize the list if it's null
+          currentList ??= [];
 
-            // Check if the reference is already in the list
-            bool refExists = currentList.any((item) => item == refToModify.path);
-
-            if (!refExists) {
-              currentList.add(refToModify.path);
-              allowedUsers.add(userID);
-              // Update the document with the modified list
-              transaction.update(docRef, {"allowedUsers": currentList});
-            }
+          if(delete) {
+            currentList.remove(refToModify.path);
+            allowedUsers.remove(userID);
+            // Update the document with the modified list
+            transaction.update(docRef, {"allowedUsers": currentList});
+          } else {
+            currentList.add(refToModify.path);
+            allowedUsers.add(userID);
+            // Update the document with the modified list
+            transaction.update(docRef, {"allowedUsers": currentList});
           }
+
+
         }
       });
 
