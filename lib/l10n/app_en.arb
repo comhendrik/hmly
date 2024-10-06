@@ -95,7 +95,7 @@
     "@institutionIdentifierHint": {
       "description": "Hint for Textfield when you need to enter institution ID"
     },
-  "identifierValidatorMessage" : "The length must be exactly 15.",
+  "identifierValidatorMessage" : "The length must be exactly 20.",
     "@identifierValidatorMessage": {
       "description": "Hint when entering ID"
     },

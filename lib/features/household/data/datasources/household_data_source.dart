@@ -84,35 +84,59 @@ class HouseholdDataSourceImpl implements HouseholdDataSource {
   }
 
   @override
-  Future<HouseholdModel> updateAllowedUsers(String userID, Household household, bool delete) async {
-
-
-    //TODO: Build for firebase
+  Future<HouseholdModel> updateAllowedUsers(
+      String userID,
+      Household household,
+      bool delete
+      ) async {
     try {
       List<String> allowedUsers = household.allowedUsers;
-      if(!delete) {
-        allowedUsers.add(userID);
-      } else {
-        for (var i = 0; i < allowedUsers.length; i++) {
-          if (allowedUsers[i] == userID) {
-            allowedUsers.removeAt(i);
 
-            break;
+      // Get the document reference
+      DocumentReference docRef = FirebaseFirestore.instance.collection("households").doc(household.id);
+
+      // Run the Firestore transaction to safely read and update the document
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+
+        if(delete) {
+          allowedUsers.remove(userID);
+          // Update the document with the modified list
+          transaction.update(docRef, {"allowedUsers": allowedUsers});
+        } else {
+          // Get the snapshot of the document
+          DocumentSnapshot docSnapshot = await transaction.get(docRef);
+
+          // Check if the document exists
+          if (docSnapshot.exists) {
+            // Get the current list from the field (assumes it's a list of DocumentReference)
+            List<dynamic>? currentList = docSnapshot.get("allowedUsers") as List<dynamic>?;
+
+            DocumentReference refToModify = FirebaseFirestore.instance.collection("users").doc(userID);
+
+            // Initialize the list if it's null
+            currentList ??= [];
+
+            // Check if the reference is already in the list
+            bool refExists = currentList.any((item) => item == refToModify.path);
+
+            if (!refExists) {
+              currentList.add(refToModify.path);
+              allowedUsers.add(userID);
+              // Update the document with the modified list
+              transaction.update(docRef, {"allowedUsers": currentList});
+            }
           }
         }
-      }
-
-      final body = <String, dynamic> {
-        "allowed_users" : allowedUsers
-      };
-      //final result = await householdRecordService.update(household.id, body: body);
+      });
 
       return HouseholdModel(
           id: household.id,
-          users: household.users, allowedUsers: household.allowedUsers);
-    } on ClientException catch(err) {
+          users: household.users,
+          allowedUsers: allowedUsers);
+    } on ClientException catch (err) {
       throw ServerException(response: err.response);
-    } catch (_) {
+    } catch (e) {
+      print(e.toString());
       throw UnknownException();
     }
   }
