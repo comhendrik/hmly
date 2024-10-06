@@ -24,7 +24,9 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPage extends State<AccountPage> {
 
+  final TextEditingController passwordController = TextEditingController();
   final FirebaseAuth auth = FirebaseAuth.instance;
+
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +98,25 @@ class _AccountPage extends State<AccountPage> {
               onTap: () => showDialog<String>(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
+                  scrollable: true,
                   title: Text(AppLocalizations.of(context)!.warning),
-                  content: Text(widget.mainUser.householdID == "" ? AppLocalizations.of(context)!.deleteUserAlert : AppLocalizations.of(context)!.deleteUserInformation),
+                  content: widget.mainUser.householdID == "" ?
+                  Column(
+                    children: [
+                      Text(AppLocalizations.of(context)!.deleteUserAlert),
+                      TextFormField(
+                        obscureText: true,
+                        controller: passwordController,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.password,
+                          hintText: AppLocalizations.of(context)!.passwordHint,
+                          prefixIcon: const Icon(Icons.password), // Icon for username
+                        ),
+                      ),
+                    ],
+                  ) :
+                  Text(AppLocalizations.of(context)!.deleteUserInformation),
                   actions: <Widget>[
                     TextButton(
                       onPressed: ()  => Navigator.pop(context, 'Cancel'),
@@ -105,8 +124,10 @@ class _AccountPage extends State<AccountPage> {
                     ),
                     if (widget.mainUser.householdID == "")
                       TextButton(
+                        //TODO: Implement real disabling of button
                         onPressed: () {
-                          deleteUser(widget.mainUser, context);
+                          if(passwordController.text.isEmpty) return;
+                          deleteUser(widget.mainUser, passwordController.text, context);
                           Navigator.pop(context, 'Delete');
                         },
                         child: Text(AppLocalizations.of(context)!.delete, style: const TextStyle(color: Colors.red),),
@@ -188,8 +209,8 @@ class _AccountPage extends State<AccountPage> {
 
   }
 
-  void deleteUser(UserData user, BuildContext bContext) {
+  void deleteUser(UserData user, String password, BuildContext bContext) {
     BlocProvider.of<AuthBloc>(widget.ancestorContext)
-        .add(DeleteUserEvent(user: user, context: bContext));
+        .add(DeleteUserEvent(user: user, password: password, context: bContext));
   }
 }

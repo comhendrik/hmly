@@ -157,11 +157,13 @@ class RequestVerificationEvent extends AuthEvent {
 
 class DeleteUserEvent extends AuthEvent {
   final UserData user;
+  final String password;
   final BuildContext context;
   final String msg;
 
   DeleteUserEvent({
     required this.user,
+    required this.password,
     required this.context
   }) : msg = AppLocalizations.of(context)!.deleteUserEvent;
 }

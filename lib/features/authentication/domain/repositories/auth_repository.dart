@@ -15,5 +15,5 @@ abstract class AuthRepository {
   Future<Either<Failure, void>> requestEmailChange(String newEmail, UserData user);
   Future<Either<Failure, void>> requestVerification(String email);
   Future<Either<Failure, UserData>> refreshAuthData();
-  Future<Either<Failure, void>> deleteUser(UserData user);
+  Future<Either<Failure, void>> deleteUser(UserData user, String password);
 }

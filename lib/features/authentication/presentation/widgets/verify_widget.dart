@@ -18,6 +18,9 @@ class VerifyWidget extends StatefulWidget {
 }
 
 class _VerifyWidgetState extends State<VerifyWidget> {
+
+  final TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -76,20 +79,38 @@ class _VerifyWidgetState extends State<VerifyWidget> {
                 action: () => showDialog<String>(
                   context: context,
                   builder: (BuildContext context) => AlertDialog(
+                    scrollable: true,
                     title: Text(AppLocalizations.of(context)!.warning),
-                    content: Text(AppLocalizations.of(context)!.deleteUserAlert),
+                    content: Column(
+                      children: [
+                        Text(AppLocalizations.of(context)!.deleteUserAlert),
+                        TextFormField(
+                          obscureText: true,
+                          controller: passwordController,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                            labelText: AppLocalizations.of(context)!.password,
+                            hintText: AppLocalizations.of(context)!.passwordHint,
+                            prefixIcon: const Icon(Icons.password), // Icon for username
+                          ),
+                        ),
+                      ],
+                    ),
                     actions: <Widget>[
                       TextButton(
                         onPressed: ()  => Navigator.pop(context, 'Cancel'),
                         child: Text(AppLocalizations.of(context)!.cancel),
                       ),
                       TextButton(
+                        //TODO: Implement real disabling of button
                         onPressed: () {
-                          deleteUser(widget.mainUser, context);
+                          if(passwordController.text.isEmpty) return;
+                          deleteUser(widget.mainUser, passwordController.text, context);
                           Navigator.pop(context, 'Delete');
                         },
                         child: Text(AppLocalizations.of(context)!.delete, style: const TextStyle(color: Colors.red),),
                       ),
+
                     ],
                   ),
                 ),
@@ -116,8 +137,8 @@ class _VerifyWidgetState extends State<VerifyWidget> {
         .add(LogoutEvent(context: bContext));
   }
 
-  void deleteUser(UserData user, BuildContext bContext) {
+  void deleteUser(UserData user, String password, BuildContext bContext) {
     BlocProvider.of<AuthBloc>(context)
-        .add(DeleteUserEvent(user: user, context: bContext));
+        .add(DeleteUserEvent(user: user, password: password, context: bContext));
   }
 }

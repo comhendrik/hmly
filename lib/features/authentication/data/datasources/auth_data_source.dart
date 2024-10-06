@@ -19,7 +19,7 @@ abstract class AuthDataSource {
   Future<void> requestEmailChange(String newEmail, UserData user);
   Future<void> requestVerification(String email);
   Future<UserDataModel> refreshAuthData();
-  Future<void> deleteUser(UserData user);
+  Future<void> deleteUser(UserData user, String password);
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -44,7 +44,7 @@ class AuthDataSourceImpl implements AuthDataSource {
         }
       }
       if (!isAllowed) {
-        throw KnownException("You are ID is not allowed in this institution, please contact the admin.");
+        throw KnownException("You are ID is not allowed in this institution");
       }
       //final _ = await userRecordService.update(userID, body: body);
     } on ClientException catch (err) {
@@ -63,7 +63,6 @@ class AuthDataSourceImpl implements AuthDataSource {
       DocumentReference userRef = firestore.collection('users').doc(userID);
 
       Map<String, dynamic> body = {
-        'admin': userRef, // Store the DocumentReference to the user
         'allowedUsers': [userRef]
       };
 
@@ -225,13 +224,13 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<void> deleteUser(UserData user) async {
+  Future<void> deleteUser(UserData user, String password) async {
     try {
       //TODO handle user deletion properly
       final curUser = auth.currentUser;
 
       if(curUser == null) {
-        throw UnknownException();
+        throw KnownException("No logged in user");
       }
 
       await auth.currentUser?.delete();
@@ -241,7 +240,11 @@ class AuthDataSourceImpl implements AuthDataSource {
       throw ServerException(response: err.response);
     } on FirebaseAuthException catch(err) {
       if (err.code == "requires-recent-login") {
-        await _reauthenticateAndDelete();
+        try {
+          await _reauthenticateAndDelete(password);
+        } catch (e) {
+          throw UnknownException();
+        }
       }
     } catch (_) {
       throw UnknownException(); //TODO implement a code for the function to be shown
@@ -261,14 +264,15 @@ class AuthDataSourceImpl implements AuthDataSource {
     }
   }
 
-    Future<void> _reauthenticateAndDelete() async {
+    Future<void> _reauthenticateAndDelete(String password) async {
       try {
-        final providerData = auth.currentUser!.providerData.first;
-        final authCredential = AuthCredential(providerId: providerData.providerId, signInMethod: 'password');
+        final authCredential = EmailAuthProvider.credential(
+            email: auth.currentUser!.email!, password: password
+        );
 
         await auth.currentUser!.reauthenticateWithCredential(authCredential);
 
-        await auth.currentUser?.delete();
+        await auth.currentUser!.delete();
       } catch (e) {
         throw KnownException(e.toString());
       }

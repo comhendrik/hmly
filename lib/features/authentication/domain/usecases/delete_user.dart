@@ -8,7 +8,7 @@ class DeleteUser {
 
   DeleteUser({required this.repository});
 
-  Future<Either<Failure, void>> execute(UserData user) async {
-    return repository.deleteUser(user);
+  Future<Either<Failure, void>> execute(UserData user, String password) async {
+    return repository.deleteUser(user, password);
   }
 }
