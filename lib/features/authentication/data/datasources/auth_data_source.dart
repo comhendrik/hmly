@@ -33,6 +33,7 @@ class AuthDataSourceImpl implements AuthDataSource {
 
     try {
 
+      //TODO: Reload appliction if user is added to existing household, to this day the user has to it himself
       final householdRef = firestore.collection("households").doc(householdID);
 
       final snap = await householdRef.get();
@@ -96,6 +97,7 @@ class AuthDataSourceImpl implements AuthDataSource {
       await firestore.collection("users").doc(user.id).update({
         "household": FieldValue.delete(), // Use FieldValue.delete() to remove the field
       });
+      //TODO: Delete household if user is alone in household
     } on FirebaseException catch(e) {
       throw KnownException(e.toString());
     } catch (_) {
