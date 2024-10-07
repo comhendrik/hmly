@@ -114,9 +114,9 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, void>> requestEmailChange(String newEmail, UserData user) async {
+  Future<Either<Failure, void>> requestEmailChange(String newEmail, String password, UserData user) async {
     try {
-      return Right(await dataSource.requestEmailChange(newEmail, user));
+      return Right(await dataSource.requestEmailChange(newEmail, password, user));
     } on ServerException catch (e) {
       return Left(Failure(data: e.response, type: FailureType.server));
     } on UnknownException catch (e) {

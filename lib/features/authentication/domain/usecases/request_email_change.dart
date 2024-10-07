@@ -8,7 +8,7 @@ class RequestEmailChange {
 
   RequestEmailChange({required this.repository});
 
-  Future<Either<Failure, void>> execute(String newEmail, UserData user) async {
-    return await repository.requestEmailChange(newEmail, user);
+  Future<Either<Failure, void>> execute(String newEmail, String password, UserData user) async {
+    return await repository.requestEmailChange(newEmail, password, user);
   }
 }

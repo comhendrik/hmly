@@ -34,7 +34,7 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
   void initState() {
     super.initState();
 
-    if (widget.type == UserChangeType.password) {
+    if (widget.type == UserChangeType.password || widget.type == UserChangeType.email) {
       confirmationPasswordController = TextEditingController();
       oldPasswordController = TextEditingController();
     }
@@ -68,7 +68,7 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                               ],
                             ),
                           ),
-                          if (widget.type == UserChangeType.password)
+                          if (widget.type == UserChangeType.password || widget.type == UserChangeType.email)
                             TextFormField(
                               obscureText: true,
                               controller: oldPasswordController,
@@ -145,7 +145,7 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                                 action: () {
                                   if (!_formKey.currentState!.validate()) return;
                                   if (widget.type == UserChangeType.email) {
-                                    requestEmailChange(textfieldController.text, widget.mainUser, widget.ancestorContext);
+                                    requestEmailChange(textfieldController.text, oldPasswordController!.text, widget.mainUser, widget.ancestorContext);
                                     Navigator.pop(context);
                                     return;
                                   }
@@ -170,9 +170,9 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
         .add(ChangeUserAttributesEvent(input: input, confirmationPassword: confirmationPassword, oldPassword: oldPassword, user: user, type: type, context: bContext));
   }
 
-  void requestEmailChange(String newEmail, UserData user, BuildContext bContext) {
+  void requestEmailChange(String newEmail, String password, UserData user, BuildContext bContext) {
     BlocProvider.of<AuthBloc>(bContext)
-        .add(RequestEmailChangeEvent(newEmail: newEmail, user: user, context: bContext));
+        .add(RequestEmailChangeEvent(newEmail: newEmail, password: password, user: user, context: bContext));
   }
 }
 

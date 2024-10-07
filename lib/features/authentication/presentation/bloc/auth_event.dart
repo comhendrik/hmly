@@ -133,12 +133,14 @@ class RequestNewPasswordEvent extends AuthEvent {
 
 class RequestEmailChangeEvent extends AuthEvent {
   final String newEmail;
+  final String password;
   final UserData user;
   final BuildContext context;
   final String msg;
 
   RequestEmailChangeEvent({
     required this.newEmail,
+    required this.password,
     required this.user,
     required this.context
   }) : msg = AppLocalizations.of(context)!.requestEmailChangeEvent;

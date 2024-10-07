@@ -15,7 +15,7 @@ abstract class AuthDataSource {
   Future<void> logout();
   Future<UserDataModel> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, UserData user, UserChangeType type);
   Future<void> requestNewPassword(String userEmail);
-  Future<void> requestEmailChange(String newEmail, UserData user);
+  Future<void> requestEmailChange(String newEmail, String password, UserData user);
   Future<void> requestVerification(String email);
   Future<UserDataModel> refreshAuthData();
   Future<void> deleteUser(UserData user, String password);
@@ -32,8 +32,6 @@ class AuthDataSourceImpl implements AuthDataSource {
   Future<void> addAuthDataToHousehold(String userID, String householdID) async {
 
     try {
-
-      //TODO: Reload appliction if user is added to existing household, to this day the user has to it himself
       final householdRef = firestore.collection("households").doc(householdID);
 
       final snap = await householdRef.get();
@@ -119,7 +117,6 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   @override
   Future<UserDataModel> signUp(String email, String password, String passwordConfirm, String name) async {
-    //TODO: Localization
     if(password != passwordConfirm) throw KnownException("Please confirm the password with the real one");
     Map<String, dynamic> body = {
       'name' : name
@@ -203,12 +200,17 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<void> requestEmailChange(String newEmail, UserData user) async {
+  Future<void> requestEmailChange(String newEmail, String password, UserData user) async {
     //TODO: needs to be handled for working with firebase
     try {
-      await auth.currentUser?.verifyBeforeUpdateEmail(newEmail);
+      final authCredential = EmailAuthProvider.credential(
+          email: auth.currentUser!.email!, password: password
+      );
+
+      await auth.currentUser!.reauthenticateWithCredential(authCredential);
+      await auth.currentUser!.verifyBeforeUpdateEmail(newEmail);
     } on FirebaseException catch(e) {
-      throw KnownException(e.toString());
+      throw ServerException(response: {"message" : e.toString()});
     } catch (_) {
       throw UnknownException();
     }

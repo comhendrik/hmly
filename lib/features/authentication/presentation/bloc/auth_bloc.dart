@@ -113,7 +113,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                   emit(AuthError(failure: failure));
             },
                 (_) async {
-                  final newUser = event.user;
+                  var newUser = UserData(id: event.user.id, name: event.user.name, householdID: event.householdID, email: event.user.email, verified: event.user.verified);
                   emit(AuthLoaded(authData: newUser,  startCurrentPageIndex: 0));
             }
         );
@@ -184,7 +184,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       } else if (event is RequestEmailChangeEvent) {
         emit(AuthLoading(msg: event.msg));
-        final resultEither = await requestEmailChange.execute(event.newEmail, event.user);
+        final resultEither = await requestEmailChange.execute(event.newEmail, event.password, event.user);
         await resultEither.fold(
                 (failure) async {
               emit(AuthError(failure: failure));
