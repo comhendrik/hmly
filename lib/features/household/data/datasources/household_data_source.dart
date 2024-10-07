@@ -101,10 +101,10 @@ class HouseholdDataSourceImpl implements HouseholdDataSource {
       List<String> allowedUsers = household.allowedUsers;
 
       // Get the document reference
-      DocumentReference docRef = FirebaseFirestore.instance.collection("households").doc(household.id);
+      DocumentReference docRef = firestore.collection("households").doc(household.id);
 
       // Run the Firestore transaction to safely read and update the document
-      await FirebaseFirestore.instance.runTransaction((transaction) async {
+      await firestore.runTransaction((transaction) async {
 
         // Get the snapshot of the document
         DocumentSnapshot docSnapshot = await transaction.get(docRef);
@@ -114,7 +114,7 @@ class HouseholdDataSourceImpl implements HouseholdDataSource {
           // Get the current list from the field (assumes it's a list of DocumentReference)
           List<dynamic>? currentList = docSnapshot.get("allowedUsers") as List<dynamic>?;
 
-          DocumentReference refToModify = FirebaseFirestore.instance.collection("users").doc(userID);
+          DocumentReference refToModify = firestore.collection("users").doc(userID);
 
           // Initialize the list if it's null
           currentList ??= [];

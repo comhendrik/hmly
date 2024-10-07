@@ -108,10 +108,6 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
                                   }
                                 case UserChangeType.name:
                                   return null;
-                                case UserChangeType.username:
-                                  if (value.contains(" ")) {
-                                    return AppLocalizations.of(context)!.validatorMessageValidFormat;
-                                  }
                                 case UserChangeType. password:
                                   if (value.length < 8) {
                                     return AppLocalizations.of(context)!.validatorMessagePasswordLength;
@@ -183,7 +179,6 @@ class _ChangeUserAttributesWidgetState extends State<ChangeUserAttributesWidget>
 enum UserChangeType {
   email,
   name,
-  username,
   password
 }
 
@@ -196,8 +191,6 @@ extension UserChangeTypeExtenstion on UserChangeType {
         return "email";
       case UserChangeType.name:
         return "name";
-      case UserChangeType.username:
-        return "username";
       case UserChangeType. password:
         return "password";
     }
@@ -209,8 +202,6 @@ extension UserChangeTypeExtenstion on UserChangeType {
         return AppLocalizations.of(context)!.changeEmail;
       case UserChangeType.name:
         return AppLocalizations.of(context)!.changeName;
-      case UserChangeType.username:
-        return AppLocalizations.of(context)!.changeUsername;
       case UserChangeType. password:
         return AppLocalizations.of(context)!.changePassword;
     }
@@ -222,8 +213,6 @@ extension UserChangeTypeExtenstion on UserChangeType {
         return AppLocalizations.of(context)!.email;
       case UserChangeType.name:
         return AppLocalizations.of(context)!.fullName;
-      case UserChangeType.username:
-        return AppLocalizations.of(context)!.username;
       case UserChangeType. password:
         return AppLocalizations.of(context)!.password;
     }
@@ -235,8 +224,6 @@ extension UserChangeTypeExtenstion on UserChangeType {
         return AppLocalizations.of(context)!.hintNewEmail;
       case UserChangeType.name:
         return AppLocalizations.of(context)!.hintNewName;
-      case UserChangeType.username:
-        return AppLocalizations.of(context)!.hintNewUsername;
       case UserChangeType. password:
         return AppLocalizations.of(context)!.hintNewPassword;
     }
@@ -248,8 +235,6 @@ extension UserChangeTypeExtenstion on UserChangeType {
         return AppLocalizations.of(context)!.buttonTextEmail;
       case UserChangeType.name:
         return AppLocalizations.of(context)!.buttonTextFullName;
-      case UserChangeType.username:
-        return AppLocalizations.of(context)!.buttonTextUsername;
       case UserChangeType. password:
         return AppLocalizations.of(context)!.buttonTextPassword;
     }
@@ -261,8 +246,6 @@ extension UserChangeTypeExtenstion on UserChangeType {
         return Icons.email;
       case UserChangeType.name:
         return Icons.badge;
-      case UserChangeType.username:
-        return Icons.password;
       case UserChangeType. password:
         return Icons.lock;
     }

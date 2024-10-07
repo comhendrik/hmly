@@ -3,7 +3,6 @@ import 'package:hmly/core/entities/user.dart';
 import 'package:hmly/core/error/exceptions.dart';
 import 'package:hmly/core/models/user_model.dart';
 import 'package:hmly/features/authentication/presentation/widgets/change_user_attributes_widget.dart';
-import 'package:pocketbase/pocketbase.dart';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -31,24 +30,31 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   @override
   Future<void> addAuthDataToHousehold(String userID, String householdID) async {
-    final body = <String, dynamic>{
-      "household": householdID,
-    };
+
     try {
-     // final household = await householdRecordService.getOne(householdID);
-      final household = [];
+
+      final householdRef = firestore.collection("households").doc(householdID);
+
+      final snap = await householdRef.get();
+
       bool isAllowed = false;
-      for (String id in household) {
-        if (id == userID) {
+      for (final allowedUser in snap.data()?["allowedUsers"] as List<dynamic>) {
+        if (allowedUser.id == userID) {
           isAllowed = true;
         }
       }
       if (!isAllowed) {
         throw KnownException("You are ID is not allowed in this institution");
       }
-      //final _ = await userRecordService.update(userID, body: body);
-    } on ClientException catch (err) {
-      throw ServerException(response: err.response);
+      DocumentReference userRef = firestore.collection('users').doc(userID);
+
+      Map<String, dynamic> body = {
+        'household': householdRef,
+      };
+
+      userRef.update(body);
+    } on FirebaseException catch(e) {
+      throw KnownException(e.toString());
     } on KnownException catch (err){
       throw KnownException(err.response["message"]);
     } catch (_) {
@@ -76,8 +82,8 @@ class AuthDataSourceImpl implements AuthDataSource {
       userRef.update(body);
 
       return household.id;
-    } on ClientException catch(err) {
-      throw ServerException(response: err.response);
+    } on FirebaseException catch(e) {
+      throw KnownException(e.toString());
     } catch (_) {
       throw UnknownException();
     }
@@ -90,8 +96,8 @@ class AuthDataSourceImpl implements AuthDataSource {
       await firestore.collection("users").doc(user.id).update({
         "household": FieldValue.delete(), // Use FieldValue.delete() to remove the field
       });
-    } on ClientException catch(err) {
-      throw ServerException(response: err.response);
+    } on FirebaseException catch(e) {
+      throw KnownException(e.toString());
     } catch (_) {
       throw UnknownException();
     }
@@ -102,8 +108,8 @@ class AuthDataSourceImpl implements AuthDataSource {
     try {
       final _ = await auth.signInWithEmailAndPassword(email: email, password: password);
       return await loadUserData();
-    } on ClientException catch(err) {
-      throw ServerException(response: err.response);
+    } on FirebaseException catch(e) {
+      throw KnownException(e.toString());
     } catch (err) {
       throw UnknownException();
     }
@@ -124,8 +130,8 @@ class AuthDataSourceImpl implements AuthDataSource {
       await auth.signOut();
       await auth.signInWithEmailAndPassword(email: email, password: password);
       return await loadUserData();
-    } on ClientException catch(err) {
-      throw ServerException(response: err.response);
+    } on FirebaseException catch(e) {
+      throw KnownException(e.toString());
     } catch (_) {
       throw UnknownException();
     }
@@ -135,8 +141,8 @@ class AuthDataSourceImpl implements AuthDataSource {
   Future<void> logout() async {
     try {
       await auth.signOut();
-    } on ClientException catch(err) {
-      throw ServerException(response: err.response);
+    } on FirebaseException catch(e) {
+      throw KnownException(e.toString());
     } catch (_) {
       throw UnknownException();
     }
@@ -145,32 +151,38 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<UserDataModel> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, UserData user, UserChangeType type) async {
     try {
-      //TODO: format to firebase
-      Map<String, dynamic> data = {};
+      final DocumentReference userRef = firestore.collection("users").doc(user.id);
       switch (type) {
         case UserChangeType.email:
 
           throw Exception("Type email shouldn't be used in this context!!");
 
-        case UserChangeType.name || UserChangeType.username:
+        case UserChangeType.name:
 
-          data.addAll({type.stringKey : input});
-         // final result = await userRecordService.update("//TODO: should be changed", body: data);
+          await userRef.update({"name": input});
           return await loadUserData();
 
         case UserChangeType.password:
 
-          if (confirmationPassword == null || oldPassword == null) throw Exception("No confirmation or old password");
-          data.addAll({
-            type.stringKey : input,
-            "oldPassword" : oldPassword,
-            "passwordConfirm" : confirmationPassword,
-          });
-          //final result = await userRecordService.update("//TODO: should be changed", body: data);
+          if(input != confirmationPassword) throw Exception("Check confirmation password");
+          if(auth.currentUser == null) throw Exception("Please login");
+
+          auth.currentUser!.updatePassword(input);
+
           return await loadUserData();
       }
-    } on ClientException catch(err) {
-      throw ServerException(response: err.response);
+    } on FirebaseAuthException catch(err) {
+      if (err.code == "requires-recent-login") {
+        try {
+          await _reauthenticateAndChangePassword(input, oldPassword!);
+
+        } catch (e) {
+          throw UnknownException();
+        }
+      }
+      return await loadUserData();
+    } on FirebaseException catch(e) {
+      throw KnownException(e.toString());
     } catch (_) {
       throw UnknownException();
     }
@@ -181,8 +193,8 @@ class AuthDataSourceImpl implements AuthDataSource {
 
     try {
       await auth.sendPasswordResetEmail(email: userEmail);
-    } on ClientException catch(err) {
-      throw ServerException(response: err.response);
+    } on FirebaseException catch(e) {
+      throw KnownException(e.toString());
     } catch (_) {
       throw UnknownException();
     }
@@ -190,10 +202,11 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   @override
   Future<void> requestEmailChange(String newEmail, UserData user) async {
+    //TODO: needs to be handled for working with firebase
     try {
       await auth.currentUser?.verifyBeforeUpdateEmail(newEmail);
-    } on ClientException catch(err) {
-      throw ServerException(response: err.response);
+    } on FirebaseException catch(e) {
+      throw KnownException(e.toString());
     } catch (_) {
       throw UnknownException();
     }
@@ -204,8 +217,8 @@ class AuthDataSourceImpl implements AuthDataSource {
   Future<void> requestVerification(String email) async {
     try {
       await auth.currentUser?.sendEmailVerification();
-    } on ClientException catch(err) {
-      throw ServerException(response: err.response);
+    } on FirebaseException catch(e) {
+      throw KnownException(e.toString());
     } catch (_) {
       throw UnknownException();
     }
@@ -216,8 +229,8 @@ class AuthDataSourceImpl implements AuthDataSource {
     try {
       await auth.currentUser?.reload();
       return await loadUserData();
-    } on ClientException catch(err) {
-      throw ServerException(response: err.response);
+    } on FirebaseException catch(e) {
+      throw KnownException(e.toString());
     } catch (_) {
       throw UnknownException();
     }
@@ -233,11 +246,10 @@ class AuthDataSourceImpl implements AuthDataSource {
         throw KnownException("No logged in user");
       }
 
-      await auth.currentUser?.delete();
+      await auth.currentUser!.delete();
       await firestore.collection("users").doc(user.id).delete();
 
-    } on ClientException catch(err) {
-      throw ServerException(response: err.response);
+    //TODO: Implement new exception type
     } on FirebaseAuthException catch(err) {
       if (err.code == "requires-recent-login") {
         try {
@@ -246,6 +258,8 @@ class AuthDataSourceImpl implements AuthDataSource {
           throw UnknownException();
         }
       }
+    } on FirebaseException catch(e) {
+      throw KnownException(e.toString());
     } catch (_) {
       throw UnknownException(); //TODO implement a code for the function to be shown
     }
@@ -264,17 +278,30 @@ class AuthDataSourceImpl implements AuthDataSource {
     }
   }
 
-    Future<void> _reauthenticateAndDelete(String password) async {
-      try {
-        final authCredential = EmailAuthProvider.credential(
-            email: auth.currentUser!.email!, password: password
-        );
+  Future<void> _reauthenticateAndDelete(String password) async {
+    try {
+      final authCredential = EmailAuthProvider.credential(
+          email: auth.currentUser!.email!, password: password
+      );
 
-        await auth.currentUser!.reauthenticateWithCredential(authCredential);
+      await auth.currentUser!.reauthenticateWithCredential(authCredential);
 
-        await auth.currentUser!.delete();
-      } catch (e) {
-        throw KnownException(e.toString());
-      }
+      await auth.currentUser!.delete();
+    } catch (e) {
+      throw KnownException(e.toString());
     }
+  }
+
+  Future<void> _reauthenticateAndChangePassword(String password, String oldPassword) async {
+    try {
+      final authCredential = EmailAuthProvider.credential(
+          email: auth.currentUser!.email!, password: oldPassword
+      );
+
+      await auth.currentUser!.reauthenticateWithCredential(authCredential);
+      await auth.currentUser!.updatePassword(password);
+    } catch (e) {
+      throw KnownException(e.toString());
+    }
+  }
 }

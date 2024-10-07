@@ -107,8 +107,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       } else if (event is AddAuthDataToHouseholdEvent) {
         emit(AuthLoading(msg: event.msg));
-        //TODO: check if is right event.user.household.id
-        final resultEither = await addAuthDataToHousehold.execute(event.user.householdID, event.householdID);
+        final resultEither = await addAuthDataToHousehold.execute(event.user.id, event.householdID);
         await resultEither.fold(
                 (failure) async {
                   emit(AuthError(failure: failure));

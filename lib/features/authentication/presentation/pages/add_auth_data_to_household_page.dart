@@ -53,7 +53,7 @@ class _AddAuthDataToHouseholdPage extends State<AddAuthDataToHouseholdPage> {
                             prefixIcon: const Icon(Icons.person), // Icon for username
                           ),
                           validator: (value) {
-                            if (value == null || value.length != 15) {
+                            if (value == null) {
                               return AppLocalizations.of(context)!.identifierValidatorMessage;
                             }
                             return null;
