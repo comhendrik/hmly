@@ -95,7 +95,16 @@ class AuthDataSourceImpl implements AuthDataSource {
       await firestore.collection("users").doc(user.id).update({
         "household": FieldValue.delete(), // Use FieldValue.delete() to remove the field
       });
-      //TODO: Delete household if user is alone in household
+      DocumentReference householdRef = firestore.collection("households").doc(user.householdID);
+
+      QuerySnapshot querySnapshot = await firestore.collection("users")
+          .where('household', isEqualTo: householdRef)
+          .limit(1) // We only need to know if there's at least one match
+          .get();
+
+      if (querySnapshot.docs.isEmpty) {
+        await householdRef.delete();
+      }
     } on FirebaseException catch(e) {
       throw KnownException(e.toString());
     } catch (_) {
@@ -252,7 +261,6 @@ class AuthDataSourceImpl implements AuthDataSource {
       await auth.currentUser!.delete();
       await firestore.collection("users").doc(user.id).delete();
 
-    //TODO: Implement new exception type
     } on FirebaseAuthException catch(err) {
       if (err.code == "requires-recent-login") {
         try {
@@ -269,10 +277,10 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   Future<UserDataModel> loadUserData() async {
-    if (auth.currentUser == null) throw UnknownException(); //TODO: implement new exception type
+    if (auth.currentUser == null) throw KnownException("no logged in user");
     try {
       final userData = await firestore.collection("users").doc(auth.currentUser!.uid).get();
-      if (userData.data() == null) throw UnknownException(); //TODO: implement new exception type
+      if (userData.data() == null) throw KnownException("No Data for user");
       return UserDataModel.fromJSON(userData.data()!, auth.currentUser!.uid, auth.currentUser!.email!, auth.currentUser!.emailVerified);
     } on FirebaseException catch(e) {
       throw KnownException(e.toString()); //TODO: Implement new exception type
