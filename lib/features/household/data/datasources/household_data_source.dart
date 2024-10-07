@@ -1,9 +1,7 @@
 import 'package:hmly/core/error/exceptions.dart';
 import 'package:hmly/features/household/data/models/household_model.dart';
-import 'package:hmly/core/models/user_model.dart';
 import 'package:hmly/core/entities/user.dart';
 import 'package:hmly/features/household/domain/entities/household.dart';
-import 'package:pocketbase/pocketbase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 
@@ -51,8 +49,8 @@ class HouseholdDataSourceImpl implements HouseholdDataSource {
           users: userList,
           allowedUsers: allowedUsers
       );
-    } on ClientException catch(err) {
-      throw ServerException(response: err.response);
+    } on FirebaseException catch(e) {
+      throw KnownException(e.toString());
     } catch (err) {
       print(err.toString());
       throw UnknownException();
@@ -65,8 +63,8 @@ class HouseholdDataSourceImpl implements HouseholdDataSource {
       await firestore.collection("users").doc(userID).set({
         "household": FieldValue.delete(), // Use FieldValue.delete() to remove the field
       });
-    } on ClientException catch(err) {
-      throw ServerException(response: err.response);
+    } on FirebaseException catch(e) {
+      throw KnownException(e.toString());
     } catch (_) {
       throw UnknownException();
     }
@@ -76,8 +74,8 @@ class HouseholdDataSourceImpl implements HouseholdDataSource {
   Future<void> deleteHousehold(String householdID) async {
     try {
       await firestore.collection("households").doc(householdID).delete();
-    } on ClientException catch(err) {
-      throw ServerException(response: err.response);
+    } on FirebaseException catch(e) {
+      throw KnownException(e.toString());
     } catch (_) {
       throw UnknownException();
     }
@@ -139,10 +137,9 @@ class HouseholdDataSourceImpl implements HouseholdDataSource {
           id: household.id,
           users: household.users,
           allowedUsers: allowedUsers);
-    } on ClientException catch (err) {
-      throw ServerException(response: err.response);
+    } on FirebaseException catch(e) {
+      throw KnownException(e.toString());
     } catch (e) {
-      print(e.toString());
       throw UnknownException();
     }
   }
