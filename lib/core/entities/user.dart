@@ -19,7 +19,7 @@ class UserData extends Equatable {
     return UserData(
         id: userID,
         name: json['username'],
-        householdID: json['household'].id, //TODO: Vielleicht entfernen
+        householdID: json['household'].id,
         email: email,
         verified: verified
     );

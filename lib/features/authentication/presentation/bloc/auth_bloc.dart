@@ -196,8 +196,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       } else if (event is RequestVerificationEvent) {
         emit(AuthLoading(msg: event.msg));
-        //TODO: change user email
-        final resultEither = await requestVerification.execute("user email");
+        final resultEither = await requestVerification.execute();
         await resultEither.fold(
           (failure) async {
             emit(AuthError(failure: failure));

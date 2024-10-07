@@ -7,7 +7,7 @@ class RequestVerification {
 
   RequestVerification({required this.repository});
 
-  Future<Either<Failure, void>> execute(String email) async {
-    return await repository.requestVerification(email);
+  Future<Either<Failure, void>> execute() async {
+    return await repository.requestVerification();
   }
 }

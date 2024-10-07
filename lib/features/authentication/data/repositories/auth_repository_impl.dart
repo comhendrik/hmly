@@ -125,9 +125,9 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, void>> requestVerification(String email) async {
+  Future<Either<Failure, void>> requestVerification() async {
     try {
-      return Right(await dataSource.requestVerification(email));
+      return Right(await dataSource.requestVerification());
     } on ServerException catch (e) {
       return Left(Failure(data: e.response, type: FailureType.server));
     } on UnknownException catch (e) {

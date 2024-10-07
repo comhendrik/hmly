@@ -16,7 +16,7 @@ abstract class AuthDataSource {
   Future<UserDataModel> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, UserData user, UserChangeType type);
   Future<void> requestNewPassword(String userEmail);
   Future<void> requestEmailChange(String newEmail, String password, UserData user);
-  Future<void> requestVerification(String email);
+  Future<void> requestVerification();
   Future<UserDataModel> refreshAuthData();
   Future<void> deleteUser(UserData user, String password);
 }
@@ -201,7 +201,6 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   @override
   Future<void> requestEmailChange(String newEmail, String password, UserData user) async {
-    //TODO: needs to be handled for working with firebase
     try {
       final authCredential = EmailAuthProvider.credential(
           email: auth.currentUser!.email!, password: password
@@ -218,7 +217,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<void> requestVerification(String email) async {
+  Future<void> requestVerification() async {
     try {
       await auth.currentUser?.sendEmailVerification();
     } on FirebaseException catch(e) {

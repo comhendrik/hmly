@@ -83,15 +83,6 @@ class SignUpAuthEvent extends AuthEvent {
   }) : msg = AppLocalizations.of(context)!.signUpAuthEvent;
 }
 
-
-//TODO: Delete oauth
-class LoadAuthDataWithOAuthEvent extends AuthEvent {
-  final String msg = "Signin in withoauth";
-
-  const LoadAuthDataWithOAuthEvent();
-
-}
-
 class LogoutEvent extends AuthEvent {
   final BuildContext context;
   final String msg;

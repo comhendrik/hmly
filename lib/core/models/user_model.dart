@@ -21,7 +21,7 @@ class UserDataModel extends UserData {
     return UserDataModel(
       id: userID,
       name: json['name'],
-      householdID: json['household']?.id ?? "", //TODO: vielleicht entfernen und nicht aus json machen
+      householdID: json['household']?.id ?? "",
       email: email,
       veriefied: verified
     );

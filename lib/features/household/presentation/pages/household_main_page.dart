@@ -131,7 +131,6 @@ class _HouseholdMainPageState extends State<HouseholdMainPage> {
                 TextFormField(
                   controller: userIDController,
                   decoration: InputDecoration(
-                    //TODO: Change hint text
                     hintText: AppLocalizations.of(context)!.user,
                     prefixIcon: const Icon(Icons.verified_user),
                     border: const OutlineInputBorder(),

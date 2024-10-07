@@ -89,8 +89,6 @@ class HouseholdDataSourceImpl implements HouseholdDataSource {
       ) async {
     try {
 
-      //TODO: rebuild this to .contains if question
-
       for(UserData ur in household.users) {
         if(ur.id == userID) return HouseholdModel(id: household.id, users: household.users, allowedUsers: household.allowedUsers);
       }

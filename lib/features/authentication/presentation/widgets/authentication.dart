@@ -182,11 +182,6 @@ class _AuthenticationWidget extends State<AuthenticationWidget> {
         .add(LoginAuthEvent(email: email, password: password, context: bContext));
   }
 
-  void oAuth() {
-    BlocProvider.of<AuthBloc>(context)
-        .add(const LoadAuthDataWithOAuthEvent());
-  }
-
   void signUp(String email, String password, String passwordConfirm, String name, bContext) {
     BlocProvider.of<AuthBloc>(bContext)
         .add(SignUpAuthEvent(email: email, password: password, passwordConfirm: passwordConfirm, name: name, context: bContext));

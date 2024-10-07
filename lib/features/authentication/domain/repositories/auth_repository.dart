@@ -13,7 +13,7 @@ abstract class AuthRepository {
   Future<Either<Failure, UserData>> changeUserAttributes(String input, String? confirmationPassword, String? oldPassword, UserData user, UserChangeType type);
   Future<Either<Failure, void>> requestNewPassword(String userEmail);
   Future<Either<Failure, void>> requestEmailChange(String newEmail, String password, UserData user);
-  Future<Either<Failure, void>> requestVerification(String email);
+  Future<Either<Failure, void>> requestVerification();
   Future<Either<Failure, UserData>> refreshAuthData();
   Future<Either<Failure, void>> deleteUser(UserData user, String password);
 }
